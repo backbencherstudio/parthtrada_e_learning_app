@@ -25,6 +25,7 @@ class AppColors {
 
   static const Color mainIconColor = Color(0xffFFFFFF);
   static const Color textColor = Color(0xffFFFFFF);
-  static const Color secondaryTextColor = Color(0xff777980);
+  static const Color secondaryTextColor = Color(0xffD2D2D5);
+  static const Color onSurfaceTextColor = Color(0xff777980);
   static const Color secondaryButtonBgColor = Color(0xff191919);
 }
