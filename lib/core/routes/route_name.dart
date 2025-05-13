@@ -6,4 +6,5 @@ class RouteName{
   ///       or, static const String homeScreen = '/homeScreen';
 
   static const String splash = '/splash';
+  static const String onboarding = '/onboarding';
 }
