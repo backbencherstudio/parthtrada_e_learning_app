@@ -5,6 +5,12 @@ class RouteName{
   /// example : static const String home = '/home';
   ///       or, static const String homeScreen = '/homeScreen';
 
+
   static const String messageScreen = '/messageScreen';
   static const String inboxScreen = '/inboxScreen';
+
+  static const String splash = '/splash';
+  static const String onboarding = '/onboarding';
+  static const String parents_screen = "/ParentScreen";
+
 }

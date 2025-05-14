@@ -4,6 +4,7 @@ import 'package:e_learning_app/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
 
@@ -15,14 +16,14 @@ void main() async {
   ///ensuring screen size for screen util package to implement pixel perfect UI
   await ScreenUtil.ensureScreenSize();
 
-  runApp(const MyApp());
+  runApp( ProviderScope(child: MyApp()));
 
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // Transparent status bar
       systemNavigationBarColor: Colors.transparent, // Transparent nav bar
-      systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarIconBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.light,
     ),
   );
 }
