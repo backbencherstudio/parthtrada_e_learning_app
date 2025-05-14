@@ -3,6 +3,7 @@ import 'package:e_learning_app/src/features/parents/presentation/dummy_screen/du
 import 'package:e_learning_app/src/features/parents/presentation/dummy_screen/dummy_one.dart';
 import 'package:e_learning_app/src/features/parents/presentation/dummy_screen/dummy_three.dart';
 import 'package:e_learning_app/src/features/parents/presentation/dummy_screen/dummy_two.dart';
+import 'package:e_learning_app/src/features/profile/presentation/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,7 +14,7 @@ class ParentsScreenProvider extends StateNotifier<ParentScreenRiverPodModel> {
     DummyOne(),
     DummyTwo(),
     DummyThree(),
-    DummyFour(),
+    ProfileScreen(),
   ];
 
   List<Widget> get pageList => _pageList;

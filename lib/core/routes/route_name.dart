@@ -7,5 +7,7 @@ class RouteName{
 
   static const String splash = '/splash';
   static const String onboarding = '/onboarding';
-  static const String parents_screen = "/ParentScreen";
+  static const String parentscreen = "/ParentScreen";
+  static const String profileScreen = "/ProfileScreen";
+  static const String userProfile ="/UserProfile";
 }
