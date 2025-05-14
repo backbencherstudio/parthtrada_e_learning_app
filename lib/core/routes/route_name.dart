@@ -3,6 +3,9 @@ class RouteName{
   /// first character of the variable should be capitalize
   /// variable name and the path name should be same
   /// example : static const String home = '/home';
-  ///       or,
-     static const String parentScreen = '/ParentScreen';
+  ///       or, static const String homeScreen = '/homeScreen';
+
+  static const String splash = '/splash';
+  static const String onboarding = '/onboarding';
+  static const String parents_screen = "/ParentScreen";
 }
