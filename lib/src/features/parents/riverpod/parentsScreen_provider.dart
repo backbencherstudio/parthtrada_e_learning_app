@@ -1,3 +1,4 @@
+import 'package:e_learning_app/src/features/message/presentation/message_screen/message_screen.dart';
 import 'package:e_learning_app/src/features/parents/model/ParentScreenRiverPodModel.dart';
 import 'package:e_learning_app/src/features/parents/presentation/dummy_screen/dummy_four.dart';
 import 'package:e_learning_app/src/features/parents/presentation/dummy_screen/dummy_one.dart';
@@ -13,7 +14,7 @@ class ParentsScreenProvider extends StateNotifier<ParentScreenRiverPodModel> {
   final List<Widget> _pageList = [
     DummyOne(),
     DummyTwo(),
-    DummyThree(),
+    MessageScreen(),
     ProfileScreen(),
   ];
 
