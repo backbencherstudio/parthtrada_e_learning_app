@@ -1,10 +1,13 @@
-import 'package:e_learning_app/core/constant/padding.dart';
-import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
-import 'package:e_learning_app/src/data/chat/message_list.dart';
-import 'package:e_learning_app/src/features/message/model/message_model.dart';
-import 'package:e_learning_app/src/features/message/presentation/inbox_screen/widgets/inbox_screen_header_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../../core/constant/padding.dart';
+import '../../../../../core/theme/theme_part/app_colors.dart';
+import '../../../../data/chat/message_list.dart';
+import '../../model/message_model.dart';
+import 'widgets/inbox_screen_header_widgets.dart';
+import 'widgets/message_card_widget.dart';
+import 'widgets/message_writing_widget.dart';
 
 class InboxScreen extends StatefulWidget {
   const InboxScreen({
@@ -61,7 +64,7 @@ class _InboxScreenState extends State<InboxScreen> {
                     image: widget.image,
                     name: widget.name,
                   ),
-                  Divider(),
+                  Divider(color: AppColors.secondaryStrokeColor,),
                 ],
               ),
               Expanded(
@@ -72,103 +75,18 @@ class _InboxScreenState extends State<InboxScreen> {
                     final msg = chatMessages[index];
                     final isMe = msg.isMe;
 
-                    return Align(
-                      alignment:
-                          isMe ? Alignment.centerRight : Alignment.centerLeft,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (!isMe)
-                                CircleAvatar(
-                                  radius: 12.r,
-                                  backgroundImage: NetworkImage(widget.image),
-                                ),
-                              Container(
-                                constraints: BoxConstraints(
-                                  maxWidth: ScreenUtil.defaultSize.width * 0.8,
-                                ),
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 4,
-                                  horizontal: 10,
-                                ),
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color:
-                                      isMe
-                                          ? AppColors.primary
-                                          : AppColors.secondaryButtonBgColor,
-                                  borderRadius:
-                                      isMe
-                                          ? BorderRadius.only(
-                                            bottomLeft: Radius.circular(16.r),
-                                            bottomRight: Radius.circular(16.r),
-                                            topLeft: Radius.circular(16.r),
-                                          )
-                                          : BorderRadius.only(
-                                            bottomLeft: Radius.circular(16.r),
-                                            bottomRight: Radius.circular(16.r),
-                                            topRight: Radius.circular(16.r),
-                                          ),
-                                ),
-                                child: Text(
-                                  msg.message,
-                                  style: textTheme.bodySmall,
-                                ),
-                              ),
-                              if (isMe)
-                                CircleAvatar(
-                                  radius: 12.r,
-                                  backgroundImage: NetworkImage('https://randomuser.me/api/portraits/men/10.jpg'),
-                                ),
-                            ],
-                          ),
-                          if (index == chatMessages.length - 1)
-                            SizedBox(height: 50.h),
-                        ],
-                      ),
+                    return MessageCardWidget(
+                      isMe: isMe,
+                      widget: widget,
+                      msg: msg,
+                      textTheme: textTheme,
+                      chatMessages: chatMessages,
+                      index: index,
                     );
                   },
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 8,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        //controller: _controller,
-                        decoration: InputDecoration(
-                          hintText: 'Type here...',
-                          fillColor: AppColors.secondary,
-                          filled: true,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                  ],
-                ),
-              ),
+              MessageWritingWidget(textTheme: textTheme),
             ],
           ),
         ),
@@ -176,3 +94,4 @@ class _InboxScreenState extends State<InboxScreen> {
     );
   }
 }
+

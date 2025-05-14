@@ -243,7 +243,7 @@ final messages = [
   {
     "userId": "0",
     "name": "Me",
-    "message": "Yes, they’re organizing the Q2 check-in. I’ll schedule mine later today.",
+    "message": "",
     "time": "12:07 PM",
     "isRead": true,
     "isMe": true,
@@ -251,7 +251,7 @@ final messages = [
   {
     "userId": "1",
     "name": "Sarah Chen",
-    "message": "Alright, don’t miss it!",
+    "message": "Yes, they’re organizing the Q2 check-in. I’ll schedule mine later today.",
     "time": "12:08 PM",
     "isRead": true,
     "isMe": false,

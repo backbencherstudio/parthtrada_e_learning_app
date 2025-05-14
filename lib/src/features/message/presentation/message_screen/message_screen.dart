@@ -35,10 +35,11 @@ class MessageScreen extends StatelessWidget {
                       name: chat.name,
                       lastMessage: chat.lastMessage,
                       time: chat.time,
-                      unreadCount: chat.unreadCount, userId: chat.userId,
+                      unreadCount: chat.unreadCount,
+                      userId: chat.userId,
                     );
                   },
-                )
+                ),
               ),
             ],
           ),

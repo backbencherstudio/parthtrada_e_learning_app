@@ -27,4 +27,5 @@ class AppColors {
   static const Color textColor = Color(0xffFFFFFF);
   static const Color secondaryTextColor = Color(0xff777980);
   static const Color secondaryButtonBgColor = Color(0xff191919);
+  static const Color secondaryStrokeColor = Color(0xff2B2C31);
 }
