@@ -1,4 +1,4 @@
-import 'package:e_learning_app/src/features/parents/mode/ParentScreenRiverPodModel.dart';
+import 'package:e_learning_app/src/features/parents/model/ParentScreenRiverPodModel.dart';
 import 'package:e_learning_app/src/features/parents/presentation/dummy_screen/dummy_four.dart';
 import 'package:e_learning_app/src/features/parents/presentation/dummy_screen/dummy_one.dart';
 import 'package:e_learning_app/src/features/parents/presentation/dummy_screen/dummy_three.dart';

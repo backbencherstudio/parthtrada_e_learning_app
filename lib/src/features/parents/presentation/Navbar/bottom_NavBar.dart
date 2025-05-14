@@ -1,4 +1,4 @@
-// ignore_for_file: use_super_parameters
+// ignore_for_file: use_super_parameters, deprecated_member_use
 import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -21,7 +21,7 @@ class CustomBottomNavBar extends StatelessWidget {
         topRight: Radius.circular(32),
       ),
       child: Container(
-        color: const Color(0xFF1C1C1E),
+        color: const Color(0xFF191919),
         padding: const EdgeInsets.only(top: 8, bottom: 12),
         child: Column(
           mainAxisSize: MainAxisSize.min,
