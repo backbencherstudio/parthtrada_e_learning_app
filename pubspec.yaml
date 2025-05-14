@@ -42,6 +42,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.3
   nuts_activity_indicator: ^1.0.0
   dots_indicator: ^4.0.1
+  flutter_riverpod: ^2.6.1
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
@@ -78,7 +79,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/images/onboarding/
-  #   - images/a_dot_ham.jpeg
+    - assets/bottomNavbar_icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
