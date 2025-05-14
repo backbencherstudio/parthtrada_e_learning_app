@@ -4,6 +4,7 @@ import 'package:e_learning_app/src/features/message/presentation/inbox_screen/in
 
 import 'package:e_learning_app/src/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:e_learning_app/src/features/parents/presentation/parents_screen.dart';
+import 'package:e_learning_app/src/features/profile/presentation/user_profile/user_profile.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
@@ -15,7 +16,9 @@ import '../../src/features/message/presentation/message_screen/message_screen.da
 
 class RouteConfig {
   GoRouter goRouter = GoRouter(
-    initialLocation: RouteName.messageScreen,
+     initialLocation: RouteName.parentscreen,
+
+  
     routes: [
       GoRoute(
         path: RouteName.messageScreen,
@@ -41,10 +44,17 @@ class RouteConfig {
         },
       ),
  GoRoute(
-        name: RouteName.parents_screen,
-        path: RouteName.parents_screen,
+        name: RouteName.parentscreen,
+        path: RouteName.parentscreen,
         pageBuilder: (context, state) {
           return const MaterialPage(child: ParentScreen());
+        },
+      ),
+       GoRoute(
+        name: RouteName.userProfile,
+        path: RouteName.userProfile,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: UserProfile());
         },
       ),
       GoRoute(
@@ -58,7 +68,6 @@ class RouteConfig {
             child: OnboardingScreen(),
           );
 
-          //return const MaterialPage(child: TodayMoodMosaicScreen());
         },
       ),
 

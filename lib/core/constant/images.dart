@@ -6,4 +6,6 @@ class AppImages{
   static const String onboardingImageOne = "${AssetPath.onboarding}onboarding_image_1.png";
   static const String onboardingImageTwo = "${AssetPath.onboarding}onboarding_image_2.png";
   static const String onboardingImageThree = "${AssetPath.onboarding}onboarding_image_3.png";
+  //profile
+  static const String maiya = "assets/images/onboarding/maiya.png";
 }
