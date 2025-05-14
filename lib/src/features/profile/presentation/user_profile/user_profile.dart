@@ -7,16 +7,17 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        final textStyle = Theme.of(context).textTheme;
+    final textStyle = Theme.of(context).textTheme;
 
     return Scaffold(
       body: Padding(
-        padding:  EdgeInsets.only(left: 24.w, right: 24.w,),
-        child: Column(
-          children: [
-            SizedBox(height: 48.h,),
-            Headers(),
-            SizedBox(height: 24.h,),
+        padding: EdgeInsets.only(left: 24.w, right: 24.w),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 48.h),
+              Headers(),
+              SizedBox(height: 24.h),
               Text(
                 "Jenny Wilson",
                 style: textStyle.titleSmall!.copyWith(
@@ -34,13 +35,66 @@ class UserProfile extends StatelessWidget {
               SizedBox(height: 20.h),
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text("Profession",
-                style: textStyle.bodyMedium!.copyWith(
-                  color: Color(0xffffffff)
+                child: Text(
+                  "Profession",
+                  style: textStyle.bodyMedium!.copyWith(
+                    color: Color(0xffffffff),
+                  ),
                 ),
+              ),
+              SizedBox(height: 8.h),
+              TextFormField(decoration: InputDecoration(hintText: "student")),
+              SizedBox(height: 14.h),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Organization Name",
+                  style: textStyle.bodyMedium!.copyWith(
+                    color: Color(0xffffffff),
+                  ),
                 ),
-              )
-          ],
+              ),
+              SizedBox(height: 8.h),
+              TextFormField(decoration: InputDecoration(hintText: "Tesla")),
+
+              SizedBox(height: 14.h),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Location",
+                  style: textStyle.bodyMedium!.copyWith(
+                    color: Color(0xffffffff),
+                  ),
+                ),
+              ),
+              SizedBox(height: 8.h),
+              TextFormField(decoration: InputDecoration(hintText: "USA")),
+              SizedBox(height: 14.h),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Professional Bio",
+                  style: textStyle.bodyMedium!.copyWith(
+                    color: Color(0xffffffff),
+                  ),
+                ),
+              ),
+              SizedBox(height: 8.h),
+             
+                        SizedBox(
+                          width: 326.w,
+                          height: 127.h,
+                          child: TextFormField(
+                            expands: false,
+                            maxLines: 5, 
+                            minLines: 3, 
+                            textAlignVertical: TextAlignVertical.top,
+                           decoration: InputDecoration(
+                            hintText: "Description"
+                           ),
+                          )),
+            ],
+          ),
         ),
       ),
     );

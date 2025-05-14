@@ -43,7 +43,6 @@ class RouteConfig {
             child: OnboardingScreen(),
           );
 
-          //return const MaterialPage(child: TodayMoodMosaicScreen());
         },
       ),
 
