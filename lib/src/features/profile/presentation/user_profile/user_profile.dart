@@ -1,3 +1,5 @@
+import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
+import 'package:e_learning_app/src/features/profile/presentation/user_profile/widget/custom_button.dart';
 import 'package:e_learning_app/src/features/profile/presentation/user_profile/widget/headers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -92,6 +94,18 @@ class UserProfile extends StatelessWidget {
                   decoration: InputDecoration(hintText: "Description"),
                 ),
               ),
+              Row(
+                children: [
+                  Mybutton(color: Color(0xff2B2C31), text: "Discard", onTap: () {
+                    Navigator.pop(context);
+                  },),
+                  SizedBox(width: 8.w,),
+                  Mybutton(color:AppColors.primary , text: "Save", onTap: () {
+                    
+                  },)
+                ],
+              ),
+              SizedBox(height: 100.h,)
             ],
           ),
         ),
