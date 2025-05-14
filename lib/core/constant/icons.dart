@@ -1,6 +1,9 @@
 import 'package:e_learning_app/core/constant/asset_path.dart';
-
 class AppIcons{
+  static const notificationIcon = 'assets/icons/notification_icon.svg';
+  static const sendIcon = 'assets/icons/send_icon.svg';
+  
+
   static const String calender = "assets/bottomNavbar_icons/calendar.svg";
   static const String search ="assets/bottomNavbar_icons/search 02.svg";
   static const String user = "assets/bottomNavbar_icons/user.svg";
@@ -21,5 +24,6 @@ static const String userAcc = "$icons/user.svg";
 static const String backIcon = "$icons/arrow-right.svg";
 static const String backlongArrow = "$icons/back_long_arrow.svg";
 static const String bell = "$icons/bell.svg";
+
 
 }

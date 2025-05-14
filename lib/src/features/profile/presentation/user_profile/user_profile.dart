@@ -80,19 +80,18 @@ class UserProfile extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 8.h),
-             
-                        SizedBox(
-                          width: 326.w,
-                          height: 127.h,
-                          child: TextFormField(
-                            expands: false,
-                            maxLines: 5, 
-                            minLines: 3, 
-                            textAlignVertical: TextAlignVertical.top,
-                           decoration: InputDecoration(
-                            hintText: "Description"
-                           ),
-                          )),
+
+              SizedBox(
+                width: 326.w,
+                height: 127.h,
+                child: TextFormField(
+                  expands: false,
+                  maxLines: 5,
+                  minLines: 3,
+                  textAlignVertical: TextAlignVertical.top,
+                  decoration: InputDecoration(hintText: "Description"),
+                ),
+              ),
             ],
           ),
         ),

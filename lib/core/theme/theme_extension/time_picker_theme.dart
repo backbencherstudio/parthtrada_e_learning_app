@@ -3,21 +3,21 @@ import '../theme_part/app_colors.dart';
 
 class CustomTimePickerTheme{
   static TimePickerThemeData timePickerTheme = TimePickerThemeData(
-    hourMinuteColor: MaterialStateColor.resolveWith((states){
-      return states.contains(MaterialState.selected) ? AppColors.primary : Colors.white;
+    hourMinuteColor: WidgetStateColor.resolveWith((states){
+      return states.contains(WidgetState.selected) ? AppColors.primary : Colors.white;
     }),
-    hourMinuteTextColor: MaterialStateColor.resolveWith((states) {
-      return states.contains(MaterialState.selected)
+    hourMinuteTextColor: WidgetStateColor.resolveWith((states) {
+      return states.contains(WidgetState.selected)
           ? Colors.white
           : AppColors.primary;
     }),
-    dayPeriodColor: MaterialStateColor.resolveWith((states) {
-      return states.contains(MaterialState.selected)
+    dayPeriodColor: WidgetStateColor.resolveWith((states) {
+      return states.contains(WidgetState.selected)
           ? AppColors.primary
           : Colors.white;
     }),
-    dayPeriodTextColor: MaterialStateColor.resolveWith((states) {
-      return states.contains(MaterialState.selected)
+    dayPeriodTextColor: WidgetStateColor.resolveWith((states) {
+      return states.contains(WidgetState.selected)
           ? Colors.white
           : AppColors.primary;
     }),
