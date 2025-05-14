@@ -28,18 +28,22 @@ class CommonWidget {
               ),
             ],
           ),
-          isNotification?Container(
-            height: 48.h,
-            width: 48.w,
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 11.h),
-            decoration: BoxDecoration(
-              color: AppColors.secondaryButtonBgColor,
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: SvgPicture.asset(AppIcons.notificationIcon),
-          ):SizedBox.shrink(),
+          isNotification?notificationWidget():SizedBox.shrink(),
         ],
       ),
     );
+  }
+
+  static Container notificationWidget() {
+    return Container(
+          height: 48.h,
+          width: 48.w,
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 11.h),
+          decoration: BoxDecoration(
+            color: AppColors.secondaryButtonBgColor,
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: SvgPicture.asset(AppIcons.notificationIcon),
+        );
   }
 }
