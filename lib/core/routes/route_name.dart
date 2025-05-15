@@ -17,4 +17,5 @@ class RouteName{
   static const String parents_screen = "/ParentScreen";
   static const String sentRequest = '/sent-request';
   static const String pastCall = '/past-call';
+  static const String transactionHistory = '/transaction-history';
 }
