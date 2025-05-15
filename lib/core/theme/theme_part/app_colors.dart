@@ -30,4 +30,5 @@ class AppColors {
   static const Color secondaryButtonBgColor = Color(0xff191919);
   static const Color fillColor = Color(0xff191919);
   static const Color secondaryStrokeColor = Color(0xff2B2C31);
+  static const Color refundedColor = Color(0xffFF7F48);
 }
