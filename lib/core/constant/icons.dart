@@ -26,6 +26,8 @@ static const String backIcon = "$icons/arrow-right.svg";
 static const String backlongArrow = "$icons/back_long_arrow.svg";
 static const String bell = "$icons/bell.svg";
 static const String scanner = "$icons/scanner.svg";
+static const String calendar = "$icons/calendar.svg";
+static const String filter = "${AssetPath.icon}/filter.svg";
 
 
 }

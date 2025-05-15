@@ -50,7 +50,12 @@ class RouteConfig {
         name: RouteName.parentScreen,
         path: RouteName.parentScreen,
         pageBuilder: (context, state) {
-          return const MaterialPage(child: ParentScreen());
+          return buildPageWithTransition(
+            transitionType: PageTransitionType.fade,
+            context: context,
+            state: state,
+            child: ParentScreen(),
+          );
         },
       ),
      
