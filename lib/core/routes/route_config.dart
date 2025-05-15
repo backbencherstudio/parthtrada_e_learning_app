@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
 import '../../src/features/past_call/presentation/past_call.dart';
+import '../../src/features/privacy_policy/presentation/privacy_policy.dart';
 import '../../src/features/sent_request/presentation/sent_request_page.dart';
 import '../../src/features/splash/presentation/splash_screen.dart';
 import '../../src/features/transection_history/presentation/transaction_history.dart';
@@ -17,7 +18,7 @@ import '../../src/features/message/presentation/message_screen/message_screen.da
 
 class RouteConfig {
   GoRouter goRouter = GoRouter(
-    initialLocation: RouteName.transactionHistory,
+    initialLocation: RouteName.parents_screen,
 
     routes: [
       GoRoute(
@@ -88,6 +89,13 @@ class RouteConfig {
         path: RouteName.transactionHistory,
         pageBuilder: (context, state) {
           return const MaterialPage(child: TransactionHistory());
+        },
+      ),
+      GoRoute(
+        name: RouteName.privacyPolicy,
+        path: RouteName.privacyPolicy,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: PrivacyPolicy());
         },
       ),
     ],

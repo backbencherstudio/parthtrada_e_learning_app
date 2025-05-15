@@ -15,7 +15,7 @@ class CommonWidget {
     bool? isBackIcon,
   }) {
     return SizedBox(
-      height: 76.h,
+
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,12 +33,17 @@ class CommonWidget {
                       color: AppColors.mainIconColor,
                       size: 32.w,
                     ),
-                  Text(title, style: textTheme.headlineLarge),
-                  if (subtitle != null)
-                    Text(
-                      subtitle,
-                      style: textTheme.labelLarge!.copyWith(fontSize: 16.sp),
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title, style: textTheme.headlineLarge),
+                      if (subtitle != null)
+                        Text(
+                          subtitle,
+                          style: textTheme.labelLarge!.copyWith(fontSize: 16.sp),
+                        ),
+                    ],
+                  )
                 ],
               ),
             ],

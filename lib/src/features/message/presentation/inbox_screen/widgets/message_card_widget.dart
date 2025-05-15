@@ -49,7 +49,7 @@ class MessageCardWidget extends StatelessWidget {
                 children: [
                   Container(
                     constraints: BoxConstraints(
-                      maxWidth: ScreenUtil.defaultSize.width * 0.8,
+                      maxWidth: 260.w,
                       minWidth: ScreenUtil.defaultSize.width * 0.25,
                     ),
                     margin: EdgeInsets.symmetric(
