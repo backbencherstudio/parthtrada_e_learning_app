@@ -20,7 +20,7 @@ class MessageScreen extends StatelessWidget {
             children: [
               CommonWidget.customAppBar(
                 textTheme: textTheme,
-                isNotification: true,
+                isNotification: false,
                 title: 'Messages',
                 subtitle: 'Chat with your connections',
               ),
