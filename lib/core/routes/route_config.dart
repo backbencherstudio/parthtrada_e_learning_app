@@ -19,11 +19,8 @@ import '../../src/features/message/presentation/message_screen/message_screen.da
 
 class RouteConfig {
   GoRouter goRouter = GoRouter(
-<<<<<<< HEAD
      initialLocation: RouteName.parentScreen,
-=======
-    initialLocation: RouteName.parents_screen,
->>>>>>> 1c9abd343cc43bf299a61ef5d8d415c4c187b40a
+
 
     routes: [
       GoRoute(
@@ -49,19 +46,14 @@ class RouteConfig {
           return const MaterialPage(child: SplashScreen());
         },
       ),
-<<<<<<< HEAD
- GoRoute(
+  GoRoute(
         name: RouteName.parentScreen,
         path: RouteName.parentScreen,
-=======
-      GoRoute(
-        name: RouteName.parentscreen,
-        path: RouteName.parentscreen,
->>>>>>> 1c9abd343cc43bf299a61ef5d8d415c4c187b40a
         pageBuilder: (context, state) {
           return const MaterialPage(child: ParentScreen());
         },
       ),
+     
       GoRoute(
         name: RouteName.userProfile,
         path: RouteName.userProfile,
@@ -81,7 +73,6 @@ class RouteConfig {
           );
         },
       ),
-<<<<<<< HEAD
   GoRoute(
         name: RouteName.paymentMethodScreen,
         path: RouteName.paymentMethodScreen,
@@ -90,10 +81,9 @@ class RouteConfig {
             transitionType: PageTransitionType.fade,
             context: context,
             state: state,
-            child: PaymentMethodScreen(),
-          );
+            child: PaymentMethodScreen());}
+          ),
 
-=======
       GoRoute(
         name: RouteName.sentRequest,
         path: RouteName.sentRequest,
@@ -120,7 +110,6 @@ class RouteConfig {
         path: RouteName.privacyPolicy,
         pageBuilder: (context, state) {
           return const MaterialPage(child: PrivacyPolicy());
->>>>>>> 1c9abd343cc43bf299a61ef5d8d415c4c187b40a
         },
       ),
     ],
