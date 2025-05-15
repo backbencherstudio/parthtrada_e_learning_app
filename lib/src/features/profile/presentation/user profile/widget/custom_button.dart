@@ -4,11 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class Mybutton extends StatelessWidget {
   final String text;
   final Color color;
+  final double? width;
   final void Function()? onTap;
   const Mybutton({super.key,
   required this.color,
   required this.text,
-  required this.onTap
+  required this.onTap,
+  this.width,
 
   });
 
@@ -18,7 +20,7 @@ class Mybutton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height:56.h,
-        width: 158.w,
+        width: width ?? 158.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),
           color: color

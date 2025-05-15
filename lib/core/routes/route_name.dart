@@ -11,9 +11,9 @@ class RouteName{
 
   static const String splash = '/splash';
   static const String onboarding = '/onboarding';
-  static const String parentscreen = "/ParentScreen";
   static const String profileScreen = "/ProfileScreen";
   static const String userProfile ="/UserProfile";
-  static const String parents_screen = "/ParentScreen";
+  static const String parentScreen = "/ParentScreen";
+  static const String paymentMethodScreen = "/PaymentMethodScreen";
 
 }

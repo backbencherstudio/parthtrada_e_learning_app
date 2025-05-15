@@ -1,6 +1,6 @@
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
-import 'package:e_learning_app/src/features/profile/presentation/user_profile/widget/custom_button.dart';
-import 'package:e_learning_app/src/features/profile/presentation/user_profile/widget/headers.dart';
+import 'package:e_learning_app/src/features/profile/presentation/user%20profile/widget/custom_button.dart';
+import 'package:e_learning_app/src/features/profile/presentation/user%20profile/widget/headers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
