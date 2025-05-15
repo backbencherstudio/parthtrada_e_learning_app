@@ -16,4 +16,5 @@ class RouteName{
   static const String userProfile ="/UserProfile";
   static const String parents_screen = "/ParentScreen";
   static const String sentRequest = '/sent-request';
+  static const String pastCall = '/past-call';
 }

@@ -7,7 +7,8 @@ import 'package:e_learning_app/src/features/profile/presentation/user_profile/us
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
-import '../../src/features/sent_request/sent_request_page.dart';
+import '../../src/features/past_call/presentation/past_call.dart';
+import '../../src/features/sent_request/presentation/sent_request_page.dart';
 import '../../src/features/splash/presentation/splash_screen.dart';
 import 'build_page_with_transition.dart';
 
@@ -15,7 +16,7 @@ import '../../src/features/message/presentation/message_screen/message_screen.da
 
 class RouteConfig {
   GoRouter goRouter = GoRouter(
-    initialLocation: RouteName.sentRequest,
+    initialLocation: RouteName.pastCall,
 
     routes: [
       GoRoute(
@@ -72,6 +73,13 @@ class RouteConfig {
         path: RouteName.sentRequest,
         pageBuilder: (context, state) {
           return const MaterialPage(child: SentRequestPage());
+        },
+      ),
+      GoRoute(
+        name: RouteName.pastCall,
+        path: RouteName.pastCall,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: PastCall());
         },
       ),
     ],
