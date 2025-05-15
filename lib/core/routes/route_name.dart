@@ -18,4 +18,5 @@ class RouteName{
   static const String sentRequest = '/sent-request';
   static const String pastCall = '/past-call';
   static const String transactionHistory = '/transaction-history';
+  static const String privacyPolicy = '/privacy-policy';
 }
