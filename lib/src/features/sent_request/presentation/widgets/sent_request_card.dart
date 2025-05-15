@@ -1,3 +1,4 @@
+import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -65,7 +66,7 @@ class SentRequestCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 8.w,
             children: [
-              SvgPicture.asset(AppIcons.calendar),
+              SvgPicture.asset(AppIcons.calender),
               Text(
                 'June 1 Monday 02:00 PM',
                 style: textTheme.bodyMedium!.copyWith(

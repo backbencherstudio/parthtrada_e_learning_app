@@ -3,7 +3,8 @@ import 'package:e_learning_app/src/features/message/presentation/inbox_screen/in
 
 import 'package:e_learning_app/src/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:e_learning_app/src/features/parents/presentation/parents_screen.dart';
-import 'package:e_learning_app/src/features/profile/presentation/user_profile/user_profile.dart';
+import 'package:e_learning_app/src/features/profile/presentation/payment%20method/payment_method.dart';
+import 'package:e_learning_app/src/features/profile/presentation/user%20profile/user_profile.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
@@ -18,7 +19,8 @@ import '../../src/features/message/presentation/message_screen/message_screen.da
 
 class RouteConfig {
   GoRouter goRouter = GoRouter(
-    initialLocation: RouteName.parents_screen,
+     initialLocation: RouteName.parentScreen,
+
 
     routes: [
       GoRoute(
@@ -44,13 +46,14 @@ class RouteConfig {
           return const MaterialPage(child: SplashScreen());
         },
       ),
-      GoRoute(
-        name: RouteName.parentscreen,
-        path: RouteName.parentscreen,
+  GoRoute(
+        name: RouteName.parentScreen,
+        path: RouteName.parentScreen,
         pageBuilder: (context, state) {
           return const MaterialPage(child: ParentScreen());
         },
       ),
+     
       GoRoute(
         name: RouteName.userProfile,
         path: RouteName.userProfile,
@@ -70,6 +73,17 @@ class RouteConfig {
           );
         },
       ),
+  GoRoute(
+        name: RouteName.paymentMethodScreen,
+        path: RouteName.paymentMethodScreen,
+        pageBuilder: (context, state) {
+          return buildPageWithTransition(
+            transitionType: PageTransitionType.fade,
+            context: context,
+            state: state,
+            child: PaymentMethodScreen());}
+          ),
+
       GoRoute(
         name: RouteName.sentRequest,
         path: RouteName.sentRequest,
