@@ -6,7 +6,7 @@ class RouteName{
   ///       or, static const String homeScreen = '/homeScreen';
 
 
-  static const String messageScreen = '/messageScreen';
+  static const String messageScreen = '/message-screen';
   static const String inboxScreen = '/inboxScreen';
 
   static const String splash = '/splash';
@@ -15,5 +15,5 @@ class RouteName{
   static const String profileScreen = "/ProfileScreen";
   static const String userProfile ="/UserProfile";
   static const String parents_screen = "/ParentScreen";
-
+  static const String sentRequest = '/sent-request';
 }

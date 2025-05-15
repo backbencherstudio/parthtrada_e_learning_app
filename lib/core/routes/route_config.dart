@@ -1,4 +1,3 @@
-
 import 'package:e_learning_app/core/routes/route_name.dart';
 import 'package:e_learning_app/src/features/message/presentation/inbox_screen/inbox_screen.dart';
 
@@ -8,17 +7,16 @@ import 'package:e_learning_app/src/features/profile/presentation/user_profile/us
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
+import '../../src/features/sent_request/sent_request_page.dart';
 import '../../src/features/splash/presentation/splash_screen.dart';
 import 'build_page_with_transition.dart';
-
 
 import '../../src/features/message/presentation/message_screen/message_screen.dart';
 
 class RouteConfig {
   GoRouter goRouter = GoRouter(
-     initialLocation: RouteName.parentscreen,
+    initialLocation: RouteName.sentRequest,
 
-  
     routes: [
       GoRoute(
         path: RouteName.messageScreen,
@@ -43,14 +41,14 @@ class RouteConfig {
           return const MaterialPage(child: SplashScreen());
         },
       ),
- GoRoute(
+      GoRoute(
         name: RouteName.parentscreen,
         path: RouteName.parentscreen,
         pageBuilder: (context, state) {
           return const MaterialPage(child: ParentScreen());
         },
       ),
-       GoRoute(
+      GoRoute(
         name: RouteName.userProfile,
         path: RouteName.userProfile,
         pageBuilder: (context, state) {
@@ -67,10 +65,15 @@ class RouteConfig {
             state: state,
             child: OnboardingScreen(),
           );
-
         },
       ),
-
+      GoRoute(
+        name: RouteName.sentRequest,
+        path: RouteName.sentRequest,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: SentRequestPage());
+        },
+      ),
     ],
   );
 }
