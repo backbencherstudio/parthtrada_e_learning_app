@@ -5,7 +5,21 @@ class RouteName{
   /// example : static const String home = '/home';
   ///       or, static const String homeScreen = '/homeScreen';
 
+
+  static const String messageScreen = '/message-screen';
+  static const String inboxScreen = '/inboxScreen';
+
   static const String splash = '/splash';
   static const String onboarding = '/onboarding';
-  static const String parents_screen = "/ParentScreen";
+  static const String profileScreen = "/ProfileScreen";
+  static const String userProfile ="/UserProfile";
+
+  static const String parentScreen = "/ParentScreen";
+  static const String paymentMethodScreen = "/PaymentMethodScreen";
+
+
+  static const String sentRequest = '/sent-request';
+  static const String pastCall = '/past-call';
+  static const String transactionHistory = '/transaction-history';
+  static const String privacyPolicy = '/privacy-policy';
 }
