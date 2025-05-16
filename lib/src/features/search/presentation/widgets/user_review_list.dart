@@ -29,7 +29,6 @@ class UserReviewList extends StatelessWidget{
                 return FittedBox(
                   child: Container(
                     width: 274.w,
-                    height: 176.h,
                     margin: EdgeInsets.only(right: 12.w),
                     padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 12.h),
                     decoration: Utils.commonBoxDecoration(),
@@ -59,6 +58,11 @@ class UserReviewList extends StatelessWidget{
                         Text("\"The Al matching was spot-on! Found the perfect expert for our ML project in minutes.\"",
                         maxLines: 2,
                           overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FontStyle.italic
+                          ),
                         ),
 
                         SizedBox(height: 12.h,),

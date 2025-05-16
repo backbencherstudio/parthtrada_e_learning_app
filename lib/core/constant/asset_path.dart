@@ -5,4 +5,5 @@ class AssetPath{
   /// Image Path
   static const String onboarding = "assets/images/onboarding";
   static const String search = "assets/images/search";
+  static const String logo = "assets/logos";
 }
