@@ -8,11 +8,13 @@ import 'package:e_learning_app/src/features/profile/presentation/profile_screen.
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../search/presentation/serach_screen.dart';
+
 class ParentsScreenProvider extends StateNotifier<ParentScreenRiverPodModel> {
   ParentsScreenProvider() : super(const ParentScreenRiverPodModel());
 
   final List<Widget> _pageList = [
-    DummyOne(),
+    SearchScreen(),
     DummyTwo(),
     MessageScreen(),
     ProfileScreen(),
