@@ -8,7 +8,7 @@ class AppIcons {
   static const String search = "assets/bottomNavbar_icons/search 02.svg";
   static const String user = "assets/bottomNavbar_icons/user.svg";
   static const String chat = "assets/bottomNavbar_icons/chat 02.svg";
-  static const String pngLogo = "${AssetPath.icon}logo.png";
+  static const String pngLogo = "${AssetPath.icon}/logo.png";
 
 // profile
 static const String icons = "assets/icons";
