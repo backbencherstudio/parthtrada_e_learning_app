@@ -1,10 +1,10 @@
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
-import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/date_time_selection_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../user profile/widget/custom_button.dart';
-
-void sessionDetailstBottomSheet(BuildContext context) {
+import 'select_skills_sheet.dart';
+import 'session_details_bottomSheet.dart';
+void showBeExpertBottomSheet(BuildContext context) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -50,7 +50,7 @@ void sessionDetailstBottomSheet(BuildContext context) {
                     color: Color(0xff2B2C31),
                   ),
                   SizedBox(height: 16.h),
-                  Text("Profession",
+                  Text("Professional Skills",
                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
                       fontWeight: FontWeight.w600,
                       color: Color(0xffffffff),
@@ -58,13 +58,21 @@ void sessionDetailstBottomSheet(BuildContext context) {
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                      hintText: "Senior Data Scientist",
-                    )
+                      hintText: "Select Skills",
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          selectSkillsBottomSheet(context);
+                          //new bottomSheet
+
+                        },
+                        child: Icon(Icons.add))
+                    ),
                   ),
                   //eikahne provider condition jaibo
 
                   SizedBox(height: 16.h),
-                  Text("Organization Name",
+                  Text("Hourly Rate",
                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
                       fontWeight: FontWeight.w600,
                       color: Color(0xffffffff),
@@ -72,20 +80,27 @@ void sessionDetailstBottomSheet(BuildContext context) {
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                      hintText: "Google",
+                      hintText: "\$150",
                     ),
                   ),
                    SizedBox(height: 16.h),
-                  Text("Location",
+                  Text("Professional Bio",
                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
                       fontWeight: FontWeight.w600,
                       color: Color(0xffffffff),
                     ),
                   ),
-                  TextFormField(
-
-                    decoration: InputDecoration(hintText: "USA"),
-                  ),
+                  SizedBox(
+                width: 326.w,
+                height: 127.h,
+                child: TextFormField(
+                  expands: false,
+                  maxLines: 5,
+                  minLines: 3,
+                  textAlignVertical: TextAlignVertical.top,
+                  decoration: InputDecoration(hintText: "Description"),
+                ),
+              ),
               SizedBox(height: 15.h,),
                Row(
                 children: [
@@ -97,13 +112,13 @@ void sessionDetailstBottomSheet(BuildContext context) {
                   SizedBox(width: 8.w,),
                   Expanded(
                     child: Mybutton(color:AppColors.primary , text: "Save", onTap: () {
-                      Navigator.pop(context);
-                      timeDateSelectionBottomSheet(context);
+                    Navigator.pop(context);
+                    sessionDetailsBottomSheet(context);
                     },),
                   )
                 ],
               ),
-              SizedBox(height: 15.h,)
+              SizedBox(height: 10.h,)
                 ],
               ),
             ),

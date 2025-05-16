@@ -1,11 +1,12 @@
 import 'package:e_learning_app/core/constant/padding.dart';
-import 'package:e_learning_app/src/features/privacy_policy/presentation/widgets/policy_card.dart';
-import 'package:e_learning_app/src/features/privacy_policy/riverpod/scroll_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/theme/theme_part/app_colors.dart';
+import '../../../../../../core/theme/theme_part/app_colors.dart';
+import '../riverpod/scroll_riverpod.dart';
+import 'widgets/policy_card.dart';
+
 
 class PrivacyPolicy extends ConsumerWidget {
   const PrivacyPolicy({super.key});

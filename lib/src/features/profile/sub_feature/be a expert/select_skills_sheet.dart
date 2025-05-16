@@ -1,11 +1,10 @@
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
-import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/session_details_bottomSheet.dart';
-import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/sub%20widgets/custom_skill_check.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../user profile/widget/custom_button.dart';
 import 'be_a_expert_sheet.dart';
 import 'date_time_selection_sheet.dart';
+import 'sub widgets/custom_skill_check.dart';
 
 void selectSkillsBottomSheet(BuildContext context) {
   showModalBottomSheet(

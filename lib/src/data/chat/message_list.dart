@@ -58,7 +58,7 @@ final messages = [
   {
     "userId": "1",
     "name": "Sarah Chen",
-    "message": "Don't forget the presentation notes.",
+    "message": "Don't forget the sub_feature notes.",
     "time": "12:04 PM",
     "isRead": true,
     "isMe": false,

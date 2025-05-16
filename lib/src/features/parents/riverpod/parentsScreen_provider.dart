@@ -1,12 +1,11 @@
-import 'package:e_learning_app/src/features/message/presentation/message_screen/message_screen.dart';
-import 'package:e_learning_app/src/features/parents/model/ParentScreenRiverPodModel.dart';
-import 'package:e_learning_app/src/features/parents/presentation/dummy_screen/dummy_four.dart';
-import 'package:e_learning_app/src/features/parents/presentation/dummy_screen/dummy_one.dart';
-import 'package:e_learning_app/src/features/parents/presentation/dummy_screen/dummy_three.dart';
-import 'package:e_learning_app/src/features/parents/presentation/dummy_screen/dummy_two.dart';
-import 'package:e_learning_app/src/features/profile/presentation/profile_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../message/presentation/message_screen/message_screen.dart';
+import '../../profile/sub_feature/profile_screen.dart';
+import '../model/ParentScreenRiverPodModel.dart';
+import '../presentation/dummy_screen/dummy_one.dart';
+import '../presentation/dummy_screen/dummy_two.dart';
 
 class ParentsScreenProvider extends StateNotifier<ParentScreenRiverPodModel> {
   ParentsScreenProvider() : super(const ParentScreenRiverPodModel());
@@ -27,6 +26,8 @@ class ParentsScreenProvider extends StateNotifier<ParentScreenRiverPodModel> {
 }
 
 final parentsScreenProvider =
-    StateNotifierProvider<ParentsScreenProvider, ParentScreenRiverPodModel>((ref) {
-  return ParentsScreenProvider();
-});
+    StateNotifierProvider<ParentsScreenProvider, ParentScreenRiverPodModel>((
+      ref,
+    ) {
+      return ParentsScreenProvider();
+    });
