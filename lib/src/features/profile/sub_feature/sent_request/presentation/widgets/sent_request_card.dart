@@ -58,7 +58,7 @@ class SentRequestCard extends StatelessWidget {
           Text(
             'Senior Data Scientist at Google',
             style: textTheme.bodyMedium!.copyWith(
-              color: AppColors.onSurfaceTextColor,
+              color: AppColors.secondaryTextColor,
             ),
           ),
           SizedBox(height: 5.h),
@@ -70,7 +70,7 @@ class SentRequestCard extends StatelessWidget {
               Text(
                 'June 1 Monday 02:00 PM',
                 style: textTheme.bodyMedium!.copyWith(
-                  color: AppColors.onSurfaceTextColor,
+                  color: AppColors.secondaryTextColor,
                 ),
               ),
             ],

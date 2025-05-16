@@ -13,37 +13,35 @@ class MessageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: AppPadding.screenHorizontal,
-          child: Column(
-            children: [
-              CommonWidget.customAppBar(
-                textTheme: textTheme,
-                isNotification: true,
-                title: 'Messages',
-                subtitle: 'Chat with your connections',
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: chats.length,
-                  itemBuilder: (context, index) {
-                    final chat = ChatItem.fromJson(chats[index]);
-                    return ChatListWidget(
-                      textTheme: textTheme,
-                      imageUrl: chat.imageUrl,
-                      name: chat.name,
-                      lastMessage: chat.lastMessage,
-                      time: chat.time,
-                      unreadCount: chat.unreadCount,
-                      userId: chat.userId,
-                    );
-                  },
-                ),
-              ),
-            ],
+      body: Column(
+        children: [
+          CommonWidget.customAppBar(
+            textTheme: textTheme,
+            isNotification: true,
+            title: 'Messages',
+            subtitle: 'Chat with your connections',
           ),
-        ),
+          Expanded(
+            child: Padding(
+              padding: AppPadding.screenHorizontal,
+              child: ListView.builder(
+                itemCount: chats.length,
+                itemBuilder: (context, index) {
+                  final chat = ChatItem.fromJson(chats[index]);
+                  return ChatListWidget(
+                    textTheme: textTheme,
+                    imageUrl: chat.imageUrl,
+                    name: chat.name,
+                    lastMessage: chat.lastMessage,
+                    time: chat.time,
+                    unreadCount: chat.unreadCount,
+                    userId: chat.userId,
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

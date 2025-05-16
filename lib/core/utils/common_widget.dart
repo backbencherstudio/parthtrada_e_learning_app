@@ -1,3 +1,4 @@
+import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,60 +11,51 @@ class CommonWidget {
     required TextTheme textTheme,
     required bool isNotification,
     required String title,
-    String? subtitle,
-    Widget? trailing,
-    bool? isBackIcon,
+    required String subtitle,
   }) {
-    return SizedBox(
-
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                spacing: 10,
+    return SafeArea(
+      child: Padding(
+        padding: AppPadding.screenHorizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (isBackIcon != null && isBackIcon)
-                    Icon(
-                      Icons.arrow_back_outlined,
-                      color: AppColors.mainIconColor,
-                      size: 32.w,
-                    ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(title, style: textTheme.headlineLarge),
-                      if (subtitle != null)
-                        Text(
-                          subtitle,
-                          style: textTheme.labelLarge!.copyWith(fontSize: 16.sp),
-                        ),
-                    ],
-                  )
+                  Text(title, style: textTheme.headlineLarge),
+                  Text(
+                    subtitle,
+                    style: textTheme.labelLarge!.copyWith(fontSize: 16.sp),
+                  ),
                 ],
               ),
-            ],
-          ),
-          isNotification ? notificationWidget() : trailing ?? SizedBox.shrink(),
-        ],
+            ),
+            isNotification?notificationWidget():SizedBox.shrink(),
+          ],
+        ),
       ),
     );
   }
 
   static Container notificationWidget() {
     return Container(
-      height: 48.h,
-      width: 48.w,
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 11.h),
-      decoration: BoxDecoration(
-        color: AppColors.secondaryButtonBgColor,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: SvgPicture.asset(AppIcons.notificationIcon),
+          height: 48.h,
+          width: 48.w,
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 11.h),
+          decoration: BoxDecoration(
+            color: AppColors.secondaryButtonBgColor,
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: SvgPicture.asset(AppIcons.notificationIcon),
+        );
+  }
+
+
+  static Widget primaryButton({required BuildContext context, required VoidCallback onPressed, required String text}){
+    return ElevatedButton(onPressed: onPressed, child: Text(text,style: Theme.of(context).textTheme.bodySmall,),
     );
   }
+
 }

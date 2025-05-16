@@ -1,7 +1,9 @@
 import 'package:e_learning_app/core/constant/padding.dart';
+import 'package:e_learning_app/core/routes/route_name.dart';
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class OnboardingPageWidget extends StatelessWidget {
   const OnboardingPageWidget({
@@ -36,7 +38,7 @@ class OnboardingPageWidget extends StatelessWidget {
           Text(
             bodyText,
             style: textTheme.bodyMedium?.copyWith(
-              color: AppColors.secondaryTextColor,
+              color: AppColors.onBoardingSecondaryTextColor,
             ),
             textAlign: TextAlign.center,
           ),
@@ -60,11 +62,17 @@ class OnboardingPageWidget extends StatelessWidget {
                       tabController.index == tabController.length - 1
                           ? 0
                           : tabController.index + 1;
-                      tabController.animateTo(
-                        nextIndex,
-                        duration: Duration(milliseconds: 1000),
-                        //    curve: curve
-                      );
+                      if(tabController.index == tabController.length - 1){
+                        context.go(RouteName.parentScreen);
+                      }
+                      else{
+                        tabController.animateTo(
+                          nextIndex,
+                          duration: Duration(milliseconds: 2000),
+                          //    curve: curve
+                        );
+                      }
+
                     },
                     child: Text(buttonText,style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700

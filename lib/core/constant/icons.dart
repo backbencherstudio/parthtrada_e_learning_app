@@ -8,8 +8,8 @@ class AppIcons {
   static const String search = "assets/bottomNavbar_icons/search 02.svg";
   static const String user = "assets/bottomNavbar_icons/user.svg";
   static const String chat = "assets/bottomNavbar_icons/chat 02.svg";
-  static const String pngLogo = "${AssetPath.icon}logo.png";
- 
+  static const String pngLogo = "${AssetPath.icon}/logo.png";
+
 // profile
 static const String icons = "assets/icons";
 static const String creditCard = "$icons/credit-card.svg";
@@ -26,7 +26,13 @@ static const String backIcon = "$icons/arrow-right.svg";
 static const String backlongArrow = "$icons/back_long_arrow.svg";
 static const String bell = "$icons/bell.svg";
 static const String scanner = "$icons/scanner.svg";
+static const String calendar = "$icons/calendar.svg";
+static const String filter = "${AssetPath.icon}/filter.svg";
 
+static const String trophyOutline = "${AssetPath.icon}/trophy_outline.svg";
+static const String starOutline = "${AssetPath.icon}/star_outline.svg";
+static const String usersOutline = "${AssetPath.icon}/users_outline.svg";
+static const String targetBoardOutline = "${AssetPath.icon}/target_board_outline.svg";
 
 }
 
