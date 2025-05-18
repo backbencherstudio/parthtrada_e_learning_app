@@ -27,7 +27,7 @@ class SearchScreen extends StatelessWidget {
             SizedBox(height: 24.h),
 
             /// Search Container
-            SearchScreenSearchBar(),
+            ExpertSearchBar(),
 
             SizedBox(height: 24.h),
 

@@ -23,7 +23,7 @@ class WrapItemContainer extends StatelessWidget {
         text,
         style: Theme.of(
           context,
-        ).textTheme.labelMedium?.copyWith(color: AppColors.primary),
+        ).textTheme.bodyMedium?.copyWith(color: AppColors.primary),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
