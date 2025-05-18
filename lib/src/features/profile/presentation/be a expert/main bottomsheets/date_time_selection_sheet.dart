@@ -1,13 +1,13 @@
 import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/Riverpod/time_selection_provider.dart';
-import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/session_details_bottomSheet.dart';
+import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/main%20bottomsheets/session_details_bottomSheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../user profile/widget/custom_button.dart';
-import 'time_availability_sheet.dart';
+import '../../user profile/widget/custom_button.dart';
+import '../sub bottomsheets/time_availability_sheet.dart';
 
 void timeDateSelectionBottomSheet(BuildContext context) {
   showModalBottomSheet(
