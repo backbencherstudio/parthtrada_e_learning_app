@@ -3,8 +3,8 @@ import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../user profile/widget/custom_button.dart';
-import 'date_time_selection_sheet.dart';
+import '../../user profile/widget/custom_button.dart';
+import '../main bottomsheets/date_time_selection_sheet.dart';
 
 void availabilityBottomSheet(BuildContext context) {
   final List<String> timeSlot = [
@@ -75,7 +75,7 @@ void availabilityBottomSheet(BuildContext context) {
                               )),
                       SizedBox(height: 12.h),
                       Wrap(
-                        spacing: 8.w,
+                        spacing: 4.w,
                         runSpacing: 12.h,
                         children: days.map((day) {
                           final isSelected = availability.days.contains(day);
@@ -112,7 +112,7 @@ void availabilityBottomSheet(BuildContext context) {
                               )),
                       SizedBox(height: 12.h),
                       Wrap(
-                        spacing: 8.w,
+                        spacing: 4.w,
                         runSpacing: 12.h,
                         children: timeSlot.map((slot) {
                           final isSelected = availability.times.contains(slot);

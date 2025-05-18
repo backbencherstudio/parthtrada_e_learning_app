@@ -6,7 +6,7 @@ import 'package:e_learning_app/src/features/parents/presentation/parents_screen.
 import 'package:e_learning_app/src/features/profile/presentation/language/language.dart';
 import 'package:e_learning_app/src/features/profile/presentation/notification/view/notification.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/view/payment_method.dart';
-import 'package:e_learning_app/src/features/profile/presentation/user%20profile/user_profile.dart';
+import 'package:e_learning_app/src/features/profile/presentation/user%20profile/view/user_profile.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
