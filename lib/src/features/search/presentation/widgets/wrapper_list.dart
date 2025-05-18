@@ -1,4 +1,3 @@
-import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/wrap_item_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,7 +25,11 @@ class WrapperList extends StatelessWidget {
       runSpacing: 8.h,
       children: List.generate(
         listLength,
-        (index) => WrapItemContainer(text: contentList[index]),
+        (index) => GestureDetector(
+            onTap: (){
+              debugPrint("\nTaped index : $index\n");
+            },
+            child: WrapItemContainer(text: contentList[index])),
       ),
     );
   }

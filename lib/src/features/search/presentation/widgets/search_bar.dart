@@ -5,9 +5,10 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../../core/constant/icons.dart';
 import '../../../../../core/constant/padding.dart';
 import '../../../../../core/utils/utils.dart';
+import 'expert_search_bottom_sheet.dart';
 
-class SearchScreenSearchBar extends StatelessWidget{
-  const SearchScreenSearchBar({super.key});
+class ExpertSearchBar extends StatelessWidget{
+  const ExpertSearchBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +40,13 @@ class SearchScreenSearchBar extends StatelessWidget{
               ),
             ),
 
-            Container(
-              padding: EdgeInsets.all(14.r),
-              decoration: Utils.commonBoxDecoration(),
-              child: SvgPicture.asset(AppIcons.filter),
+            GestureDetector(
+              onTap: ()=>expertSearchBottomSheet(context: context),
+              child: Container(
+                padding: EdgeInsets.all(14.r),
+                decoration: Utils.commonBoxDecoration(),
+                child: SvgPicture.asset(AppIcons.filter),
+              ),
             )
           ],
         ),
