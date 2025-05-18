@@ -1,13 +1,21 @@
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
-import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/session_details_bottomSheet.dart';
+import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/Riverpod/skill_selection_provider.dart' show skillSelectionProvider;
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/sub%20widgets/custom_skill_check.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../user profile/widget/custom_button.dart';
 import 'be_a_expert_sheet.dart';
-import 'date_time_selection_sheet.dart';
 
 void selectSkillsBottomSheet(BuildContext context) {
+  final skills = [
+    "Machine Learning",
+    "System Design",
+    "Cloud Architecture",
+    "Data Science",
+    "Frontend Development",
+    "Flutter App Development", 
+  ];
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -29,15 +37,22 @@ void selectSkillsBottomSheet(BuildContext context) {
               child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                   Align(
                     alignment: Alignment.centerRight,
                     child: ClipOval(
                       child: SizedBox(
                         height: 22.h,
                         width: 22.w,
-                        child: CircleAvatar(
-                          backgroundColor: AppColors.secondaryStrokeColor,
-                          child: Icon(Icons.close),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            showBeExpertBottomSheet(context);
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: AppColors.secondaryStrokeColor,
+                            child: Icon(Icons.close),
+                          ),
                         ),
                       ),
                     ),
@@ -49,22 +64,34 @@ void selectSkillsBottomSheet(BuildContext context) {
                       color: Color(0xffffffff),
                     ),
                   ),
-                 Column(
-                   children: [
-                    CustomSkillCheck( text:"Machine Learning", onTap: (){}),
-                    CustomSkillCheck( text:"System Design", onTap: (){}),
-                    CustomSkillCheck( text:"Cloud Architecture", onTap: (){}),
-                    CustomSkillCheck( text:"Frontend Development", onTap: (){}),
+                  SizedBox(height: 20.h,),
+                Consumer(
+  builder: (context, ref, _) {
+    final selectedSkills = ref.watch(skillSelectionProvider);
 
-                   ], 
-                 ),
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
+      children: skills.map((skill) {
+        return CustomSkillCheck(
+          text: skill,
+          isSelected: selectedSkills.contains(skill),
+          onTap: () {
+            ref.read(skillSelectionProvider.notifier).toggle(skill);
+          },
+        );
+      }).toList(),
+    );
+  },
+),
+
                 
-              SizedBox(height: 15.h,),
+              SizedBox(height: 119.h,),
                Center(
                  child: Mybutton(color: AppColors.primary, text: "Done", onTap: () {
                    Navigator.pop(context);
                     showBeExpertBottomSheet(context);
-                 },),
+                 }, width: 327.w,),
                ),
               
               SizedBox(height: 15.h,)
