@@ -40,7 +40,7 @@ class CustomSkillCheck extends StatelessWidget {
               SizedBox(width: 6.w),
               Text(
                 text,
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
                   color: AppColors.primary,
                   fontWeight: FontWeight.w400,
                 ),

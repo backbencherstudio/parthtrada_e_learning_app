@@ -15,4 +15,9 @@ class SkillSelectionNotifier extends StateNotifier<Set<String>> {
       state = {...state, skill};
     }
   }
+   void remove(String skill) {
+    state = {...state}..remove(skill);
+  }
+
+  void clear() => state = {};
 }

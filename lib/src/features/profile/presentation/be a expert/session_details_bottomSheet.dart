@@ -1,4 +1,5 @@
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
+import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/be_a_expert_sheet.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/date_time_selection_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,19 +23,25 @@ void sessionDetailstBottomSheet(BuildContext context) {
               ),
             ),
             child: Padding(
-              padding:  EdgeInsets.only(left: 8.w, right: 8.w),            
+              padding: EdgeInsets.only(left: 8.w, right: 8.w),
               child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Align(
                     alignment: Alignment.centerRight,
                     child: ClipOval(
                       child: SizedBox(
                         height: 22.h,
                         width: 22.w,
-                        child: CircleAvatar(
-                          backgroundColor: AppColors.secondaryStrokeColor,
-                          child: Icon(Icons.close),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            showBeExpertBottomSheet(context);
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: AppColors.secondaryStrokeColor,
+                            child: Icon(Icons.close),
+                          ),
                         ),
                       ),
                     ),
@@ -46,12 +53,11 @@ void sessionDetailstBottomSheet(BuildContext context) {
                       color: Color(0xffffffff),
                     ),
                   ),
-                  Divider(thickness: 1,
-                    color: Color(0xff2B2C31),
-                  ),
+                  Divider(thickness: 1, color: Color(0xff2B2C31)),
                   SizedBox(height: 16.h),
-                  Text("Profession",
-                   style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  Text(
+                    "Profession",
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
                       fontWeight: FontWeight.w600,
                       color: Color(0xffffffff),
                     ),
@@ -59,51 +65,56 @@ void sessionDetailstBottomSheet(BuildContext context) {
                   TextFormField(
                     decoration: InputDecoration(
                       hintText: "Senior Data Scientist",
-                    )
+                    ),
                   ),
-                  //eikahne provider condition jaibo
+                
 
                   SizedBox(height: 16.h),
-                  Text("Organization Name",
-                   style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  Text(
+                    "Organization Name",
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
                       fontWeight: FontWeight.w600,
                       color: Color(0xffffffff),
                     ),
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
-                      hintText: "Google",
-                    ),
+                    decoration: InputDecoration(hintText: "Google"),
                   ),
-                   SizedBox(height: 16.h),
-                  Text("Location",
-                   style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  SizedBox(height: 16.h),
+                  Text(
+                    "Location",
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
                       fontWeight: FontWeight.w600,
                       color: Color(0xffffffff),
                     ),
                   ),
-                  TextFormField(
-
-                    decoration: InputDecoration(hintText: "USA"),
+                  TextFormField(decoration: InputDecoration(hintText: "USA")),
+                  SizedBox(height: 15.h),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Mybutton(
+                          color: Color(0xff2B2C31),
+                          text: "Discard",
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Expanded(
+                        child: Mybutton(
+                          color: AppColors.primary,
+                          text: "Save",
+                          onTap: () {
+                            Navigator.pop(context);
+                            timeDateSelectionBottomSheet(context);
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-              SizedBox(height: 15.h,),
-               Row(
-                children: [
-                  Expanded(
-                    child: Mybutton(color: Color(0xff2B2C31), text: "Discard", onTap: () {
-                      Navigator.pop(context);
-                    },),
-                  ),
-                  SizedBox(width: 8.w,),
-                  Expanded(
-                    child: Mybutton(color:AppColors.primary , text: "Save", onTap: () {
-                      Navigator.pop(context);
-                      timeDateSelectionBottomSheet(context);
-                    },),
-                  )
-                ],
-              ),
-              SizedBox(height: 15.h,)
+                  SizedBox(height: 15.h),
                 ],
               ),
             ),

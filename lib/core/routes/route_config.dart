@@ -3,7 +3,9 @@ import 'package:e_learning_app/src/features/message/presentation/inbox_screen/in
 
 import 'package:e_learning_app/src/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:e_learning_app/src/features/parents/presentation/parents_screen.dart';
-import 'package:e_learning_app/src/features/profile/presentation/payment%20method/payment_method.dart';
+import 'package:e_learning_app/src/features/profile/presentation/language/language.dart';
+import 'package:e_learning_app/src/features/profile/presentation/notification/view/notification.dart';
+import 'package:e_learning_app/src/features/profile/presentation/payment%20method/view/payment_method.dart';
 import 'package:e_learning_app/src/features/profile/presentation/user%20profile/user_profile.dart';
 import 'package:flutter/material.dart';
 
@@ -83,7 +85,7 @@ class RouteConfig {
         path: RouteName.paymentMethodScreen,
         pageBuilder: (context, state) {
           return buildPageWithTransition(
-            transitionType: PageTransitionType.fade,
+            transitionType: PageTransitionType.slideRightToLeft,
             context: context,
             state: state,
             child: PaymentMethodScreen());}
@@ -101,6 +103,20 @@ class RouteConfig {
         path: RouteName.pastCall,
         pageBuilder: (context, state) {
           return const MaterialPage(child: PastCall());
+        },
+      ),
+       GoRoute(
+        name: RouteName.notification,
+        path: RouteName.notification,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: NotificationScreen());
+        },
+      ),
+        GoRoute(
+        name: RouteName.languageScreen,
+        path: RouteName.languageScreen,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: LanguageScreen());
         },
       ),
       GoRoute(

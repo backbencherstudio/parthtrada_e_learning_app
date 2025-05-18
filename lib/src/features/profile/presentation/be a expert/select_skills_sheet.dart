@@ -14,7 +14,7 @@ void selectSkillsBottomSheet(BuildContext context) {
     "Cloud Architecture",
     "Data Science",
     "Frontend Development",
-    "Frontend Development", 
+    "Flutter App Development", 
   ];
   showModalBottomSheet(
     context: context,
@@ -37,15 +37,22 @@ void selectSkillsBottomSheet(BuildContext context) {
               child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                   Align(
                     alignment: Alignment.centerRight,
                     child: ClipOval(
                       child: SizedBox(
                         height: 22.h,
                         width: 22.w,
-                        child: CircleAvatar(
-                          backgroundColor: AppColors.secondaryStrokeColor,
-                          child: Icon(Icons.close),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            showBeExpertBottomSheet(context);
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: AppColors.secondaryStrokeColor,
+                            child: Icon(Icons.close),
+                          ),
                         ),
                       ),
                     ),
@@ -57,6 +64,7 @@ void selectSkillsBottomSheet(BuildContext context) {
                       color: Color(0xffffffff),
                     ),
                   ),
+                  SizedBox(height: 20.h,),
                 Consumer(
   builder: (context, ref, _) {
     final selectedSkills = ref.watch(skillSelectionProvider);
@@ -78,12 +86,12 @@ void selectSkillsBottomSheet(BuildContext context) {
 ),
 
                 
-              SizedBox(height: 15.h,),
+              SizedBox(height: 119.h,),
                Center(
                  child: Mybutton(color: AppColors.primary, text: "Done", onTap: () {
                    Navigator.pop(context);
                     showBeExpertBottomSheet(context);
-                 },),
+                 }, width: 327.w,),
                ),
               
               SizedBox(height: 15.h,)
