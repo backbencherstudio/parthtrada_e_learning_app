@@ -1,4 +1,5 @@
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
+import 'package:e_learning_app/core/utils/common_widget.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/Riverpod/skill_selection_provider.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/main%20bottomsheets/session_details_bottomSheet.dart'
     show sessionDetailstBottomSheet;
@@ -32,16 +33,7 @@ void showBeExpertBottomSheet(BuildContext context) {
                 children: [
                   Align(
                     alignment: Alignment.centerRight,
-                    child: ClipOval(
-                      child: SizedBox(
-                        height: 22.h,
-                        width: 22.w,
-                        child: CircleAvatar(
-                          backgroundColor: AppColors.secondaryStrokeColor,
-                          child: Icon(Icons.close),
-                        ),
-                      ),
-                    ),
+                    child: CommonWidget.closeButton(context: context),
                   ),
                   Text(
                     "Session Details",
