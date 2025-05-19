@@ -5,7 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class WrapperList extends StatelessWidget {
   final List<String> contentList;
   final int? minimumShow;
-  const WrapperList({super.key, required this.contentList, this.minimumShow});
+  final TextStyle? textStyle;
+  const WrapperList({super.key, required this.contentList, this.minimumShow,this.textStyle});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,10 @@ class WrapperList extends StatelessWidget {
             onTap: (){
               debugPrint("\nTaped index : $index\n");
             },
-            child: WrapItemContainer(text: contentList[index])),
+            child: WrapItemContainer(
+                textStyle: textStyle,
+                text: contentList[index],
+            ),),
       ),
     );
   }

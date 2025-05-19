@@ -6,8 +6,9 @@ import '../../../../../core/theme/theme_part/app_colors.dart';
 class WrapItemContainer extends StatelessWidget {
   final String text;
   final bool? isRemainingItemShow;
+  final TextStyle? textStyle;
 
-  const WrapItemContainer({super.key, required this.text, this.isRemainingItemShow});
+  const WrapItemContainer({super.key, required this.text, this.isRemainingItemShow, this.textStyle});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class WrapItemContainer extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: Theme.of(
+        style: textStyle?.copyWith(color: AppColors.primary) ?? Theme.of(
           context,
         ).textTheme.bodyMedium?.copyWith(color: AppColors.primary),
         maxLines: 1,

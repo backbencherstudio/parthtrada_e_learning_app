@@ -34,6 +34,9 @@ static const String trophyOutline = "${AssetPath.icon}/trophy_outline.svg";
 static const String starOutline = "${AssetPath.icon}/star_outline.svg";
 static const String usersOutline = "${AssetPath.icon}/users_outline.svg";
 static const String targetBoardOutline = "${AssetPath.icon}/target_board_outline.svg";
+static const String userFill = "${AssetPath.icon}/user_fill.svg";
+static const String starFill = "${AssetPath.icon}/star_fill.svg";
+static const String circleTikMarkFill = "${AssetPath.icon}/circle_tik_mark_fill.svg";
 
 }
 

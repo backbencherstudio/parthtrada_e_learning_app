@@ -68,10 +68,15 @@ class CommonWidget {
     Color? backgroundColor,
     Color? foregroundColor,
     TextStyle? textStyle,
+    EdgeInsets? padding,
+  }){
+=======
   }) {
+
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor ?? AppColors.primary,
+        padding: padding ?? EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
       ),
       onPressed: onPressed,
       child: Text(
