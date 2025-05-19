@@ -21,7 +21,7 @@ class Headers extends StatelessWidget {
         SizedBox(width: 70.w),
         Image.asset(AppImages.maiya, height: 140.h, width: 140.w),
         Spacer(),
-        CommonWidget.notificationWidget(),
+        CommonWidget.notificationWidget(context),
         
       ],
     );

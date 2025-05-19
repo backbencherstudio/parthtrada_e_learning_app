@@ -1,6 +1,7 @@
 import 'package:e_learning_app/core/routes/route_name.dart';
 import 'package:e_learning_app/src/features/expert_details/presentation/expert_details_screen.dart';
 import 'package:e_learning_app/src/features/message/presentation/inbox_screen/inbox_screen.dart';
+import 'package:e_learning_app/src/features/notification/global_notification_screen.dart';
 
 import 'package:e_learning_app/src/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:e_learning_app/src/features/parents/presentation/parents_screen.dart';
@@ -93,6 +94,7 @@ class RouteConfig {
           ),
 
 
+
       GoRoute(
           name: RouteName.expertDetailsScreen,
           path: RouteName.expertDetailsScreen,
@@ -104,6 +106,18 @@ class RouteConfig {
                 child: ExpertDetailsScreen(),);}
       ),
 
+
+
+ GoRoute(
+        name: RouteName.globalNotificationScreen,
+        path: RouteName.globalNotificationScreen,
+        pageBuilder: (context, state) {
+          return buildPageWithTransition(
+            transitionType: PageTransitionType.slideRightToLeft,
+            context: context,
+            state: state,
+            child: GlobalNotificationScreen());}
+          ),
 
       GoRoute(
         name: RouteName.sentRequest,
