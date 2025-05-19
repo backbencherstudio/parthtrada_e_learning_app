@@ -40,7 +40,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         Expanded(child: SizedBox()),
 
-                        Flexible(child: CommonWidget.notificationWidget()),
+                        Flexible(child: CommonWidget.notificationWidget(context)),
                       ],
                     ),
                   ),

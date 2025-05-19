@@ -24,4 +24,5 @@ class RouteName{
   static const String privacyPolicy = '/privacy-policy';
   static const String notification = '/NotificationScreen';
   static const String languageScreen ="/LanguageScreen";
+  static const String globalNotificationScreen = "/GlobalNotificationScreen";
 }
