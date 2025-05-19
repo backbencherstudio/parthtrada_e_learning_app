@@ -22,7 +22,7 @@ import '../../src/features/message/presentation/message_screen/message_screen.da
 
 class RouteConfig {
   GoRouter goRouter = GoRouter(
-     initialLocation: RouteName.expertDetailsScreen,
+     initialLocation: RouteName.splash,
 
 
     routes: [

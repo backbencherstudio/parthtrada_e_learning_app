@@ -63,7 +63,7 @@ class ExpertDetailsHeader extends StatelessWidget{
 
             /// Designation
             Text("Senior Data Scientist at Google",style: textTheme.labelMedium,),
-            SizedBox(height: 4.h,),
+            SizedBox(height: 10.h,),
 
             /// Location
             Row(
@@ -73,7 +73,7 @@ class ExpertDetailsHeader extends StatelessWidget{
                 Text("Olmstead Rd",style: textTheme.labelMedium,)
               ],
             ),
-            SizedBox(height: 12.h,),
+            SizedBox(height: 10.h,),
 
             /// Message button
             CommonWidget.primaryButton(context: context, onPressed: (){}, text: "Message")
