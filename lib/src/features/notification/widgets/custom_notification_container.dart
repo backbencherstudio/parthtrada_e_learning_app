@@ -6,12 +6,15 @@ class CustomNotificationContainer extends StatelessWidget {
   final String title;
   final String img;
   final String discription;
+  final VoidCallback onClose;
 
   const CustomNotificationContainer({
     super.key,
     required this.title,
     required this.discription,
     required this.img,
+        required this.onClose,
+
   });
 
   @override
@@ -58,7 +61,7 @@ class CustomNotificationContainer extends StatelessWidget {
                             ),
                       ),
                     ),
-                    CommonWidget.closeButton(context: context),
+                    CommonWidget.closeButton(context: context, ontap:onClose),
                   ],
                 ),
                 SizedBox(height: 8.h),

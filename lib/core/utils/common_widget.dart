@@ -15,9 +15,8 @@ class CommonWidget {
     required bool isNotification,
     required String title,
     required String subtitle,
-    BuildContext? context
-  })
-  {
+    BuildContext? context,
+  }) {
     return SafeArea(
       child: Padding(
         padding: AppPadding.screenHorizontal,
@@ -37,32 +36,30 @@ class CommonWidget {
                 ],
               ),
             ),
-            isNotification?notificationWidget(context!):SizedBox.shrink(),
+            isNotification ? notificationWidget(context!) : SizedBox.shrink(),
           ],
         ),
       ),
     );
   }
 
-  static Container notificationWidget(BuildContext context)
-  {
+  static Container notificationWidget(BuildContext context) {
     return Container(
-    
-          height: 48.h,
-          width: 48.w,
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 11.h),
-          decoration: BoxDecoration(
-            color: AppColors.secondaryButtonBgColor,
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: GestureDetector(
-            onTap: () {
-              context.push(RouteName.globalNotificationScreen);
-            },
-            child: SvgPicture.asset(AppIcons.notificationIcon)),
-        );
+      height: 48.h,
+      width: 48.w,
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 11.h),
+      decoration: BoxDecoration(
+        color: AppColors.secondaryButtonBgColor,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: GestureDetector(
+        onTap: () {
+          context.push(RouteName.globalNotificationScreen);
+        },
+        child: SvgPicture.asset(AppIcons.notificationIcon),
+      ),
+    );
   }
-
 
   static Widget primaryButton({
     required BuildContext context,
@@ -71,31 +68,52 @@ class CommonWidget {
     Color? backgroundColor,
     Color? foregroundColor,
     TextStyle? textStyle,
-  }){
+  }) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor ?? AppColors.primary,
       ),
       onPressed: onPressed,
-      child: Text(text,style: textStyle ?? Theme.of(context).textTheme.bodySmall?.copyWith(
-        color: foregroundColor ?? Colors.white,
-      ),),
+      child: Text(
+        text,
+        style:
+            textStyle ??
+            Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: foregroundColor ?? Colors.white,
+            ),
+      ),
     );
   }
 
-
-  static Widget closeButton({required BuildContext context, Color? backgroundColor, Color? foregroundColor}){
+  static Widget closeButton({
+    required BuildContext context,
+    Color? backgroundColor,
+    Color? foregroundColor,
+    VoidCallback? ontap,
+  }) {
     return GestureDetector(
-      onTap: ()=>Navigator.pop(context),
+      onTap: () {
+        if (ontap != null) {
+          ontap();
+        } else {
+          Navigator.pop(context);
+        }
+      },
+
       child: Container(
         padding: EdgeInsets.all(8.r),
-      decoration: BoxDecoration(
-        color: backgroundColor ?? AppColors.secondaryStrokeColor,
-        shape: BoxShape.circle
-      ),
-        child: SvgPicture.asset(AppIcons.close,colorFilter: ColorFilter.mode(foregroundColor ?? Colors.white, BlendMode.srcIn),),
+        decoration: BoxDecoration(
+          color: backgroundColor ?? AppColors.secondaryStrokeColor,
+          shape: BoxShape.circle,
+        ),
+        child: SvgPicture.asset(
+          AppIcons.close,
+          colorFilter: ColorFilter.mode(
+            foregroundColor ?? Colors.white,
+            BlendMode.srcIn,
+          ),
+        ),
       ),
     );
   }
-
 }
