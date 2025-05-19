@@ -1,5 +1,4 @@
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
-import 'package:e_learning_app/core/utils/common_widget.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/main%20bottomsheets/be_a_expert_sheet.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/main%20bottomsheets/date_time_selection_sheet.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,22 @@ void sessionDetailstBottomSheet(BuildContext context) {
                 children: [
                   Align(
                     alignment: Alignment.centerRight,
-                    child: CommonWidget.closeButton(context: context),
+                    child: ClipOval(
+                      child: SizedBox(
+                        height: 22.h,
+                        width: 22.w,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            showBeExpertBottomSheet(context);
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: AppColors.secondaryStrokeColor,
+                            child: Icon(Icons.close),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                   Text(
                     "Session Details",
