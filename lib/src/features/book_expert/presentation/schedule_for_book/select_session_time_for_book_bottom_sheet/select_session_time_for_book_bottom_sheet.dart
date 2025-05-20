@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../../core/constant/padding.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../horizontal_list_view_calendar/presentation/horizontal_list_calendar.dart';
+import '../answer_session_details_for_book/answer_session_details_for_book_bottomsheet.dart';
 import 'session_grid_view.dart';
 
 Future<void> selectSessionTimeForBook({required BuildContext context}) async {
@@ -13,7 +14,7 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
     useSafeArea: false,
     isScrollControlled: true,
     context: context,
-    builder: (context) {
+    builder: (_) {
       return Container(
         //padding: AppPadding.screenHorizontal,
         constraints: BoxConstraints(minHeight: 590.h),
@@ -77,24 +78,27 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
 
               Padding(
                 padding: AppPadding.screenHorizontal,
-                child: Row(
-                  spacing: 10.w,
-                  children: [
-                    Expanded(child: CommonWidget.primaryButton(
-                        backgroundColor: AppColors.secondary,
-                        context: context, onPressed: (){
-                          context.pop();
-                    }, text: "Cancel",
+                child: SafeArea(
+                  child: Row(
+                    spacing: 10.w,
+                    children: [
+                      Expanded(child: CommonWidget.primaryButton(
+                          backgroundColor: AppColors.secondaryStrokeColor,
+                          context: context, onPressed: (){
+                            context.pop();
+                      }, text: "Cancel",
 
-                    textStyle: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    ),
-                    Expanded(child: CommonWidget.primaryButton(context: context, onPressed: (){
-                      context.pop();
-                    }, text: "Next",
                       textStyle: Theme.of(context).textTheme.titleMedium,
-                    ),),
-                  ],
+                      ),
+                      ),
+                      Expanded(child: CommonWidget.primaryButton(context: context, onPressed: () async {
+                        context.pop();
+                        await answerSessionDetailsForBook(context: context);
+                      }, text: "Next",
+                        textStyle: Theme.of(context).textTheme.titleMedium,
+                      ),),
+                    ],
+                  ),
                 ),
               ),
 
