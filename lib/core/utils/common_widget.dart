@@ -70,8 +70,7 @@ class CommonWidget {
     TextStyle? textStyle,
     EdgeInsets? padding,
   }){
-=======
-  }) {
+
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
