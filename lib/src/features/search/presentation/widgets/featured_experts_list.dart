@@ -12,6 +12,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../book_expert/presentation/schedule_for_book/schedule_for_book.dart';
+
 class FeaturedExpertsList extends StatelessWidget{
   const FeaturedExpertsList({super.key});
 
@@ -100,7 +102,9 @@ class FeaturedExpertsList extends StatelessWidget{
                             width : double.infinity,
                             child: CommonWidget.primaryButton(
                               context: context,
-                              onPressed: (){},
+                              onPressed: () async {
+                               await scheduleForBook(context: context);
+                              },
                               text: "Book \$150/hour"
                             ),
                           )

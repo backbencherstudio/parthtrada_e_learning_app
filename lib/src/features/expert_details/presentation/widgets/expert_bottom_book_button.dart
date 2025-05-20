@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../../core/utils/common_widget.dart';
+import '../../../book_expert/presentation/schedule_for_book/schedule_for_book.dart';
 
 class ExpertDetailsBottomBackButton extends StatelessWidget{
   const ExpertDetailsBottomBackButton({super.key});
@@ -22,6 +23,7 @@ class ExpertDetailsBottomBackButton extends StatelessWidget{
               context: context,
               onPressed: (){
                 debugPrint("\nExpert\n");
+                scheduleForBook(context: context);
               },
               text: "Book \$150/hour"),
         ),
