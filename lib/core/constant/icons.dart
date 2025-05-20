@@ -38,6 +38,9 @@ static const String userFill = "${AssetPath.icon}/user_fill.svg";
 static const String starFill = "${AssetPath.icon}/star_fill.svg";
 static const String circleTikMarkFill = "${AssetPath.icon}/circle_tik_mark_fill.svg";
 
+static const String arrowLeft = "${AssetPath.icon}/arrow_left.svg";
+static const String arrowRight = "${AssetPath.icon}/arrow_right.svg";
+
 }
 
   // profile
