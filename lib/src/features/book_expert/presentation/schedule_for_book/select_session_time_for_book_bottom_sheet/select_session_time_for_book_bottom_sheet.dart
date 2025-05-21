@@ -1,10 +1,12 @@
 import 'package:e_learning_app/core/utils/common_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../../core/constant/padding.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../horizontal_list_view_calendar/presentation/horizontal_list_calendar.dart';
+import '../../../rvierpod/book_expert_riverpod.dart';
 import '../answer_session_details_for_book/answer_session_details_for_book_bottomsheet.dart';
 import 'session_grid_view.dart';
 
@@ -37,44 +39,47 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
                 },
               ),
 
-              SizedBox(height: 34.h,),
+              SizedBox(height: 34.h),
               Padding(
                 padding: AppPadding.screenHorizontal,
-                child: SessionGridView(
-                  heading: "Morning Session",
-                  sessions: [
-                    "08:00 AM",
-                    "08:30 AM",
-                    "09:00 AM",
-                    "09:30 AM",
-                    "10:00 AM",
-                    "10:30 AM",
-                    "11:00 AM",
-                    "11:30 AM",
-                  ],
+                child: Consumer(
+                  builder: (_, ref, _) {
+                    final bookExpertState = ref.watch(bookExpertRiverpod);
+                    final bookExpertNotifier = ref.watch(
+                      bookExpertRiverpod.notifier,
+                    );
+                    return SessionGridView(
+                      isMorningShift: true,
+                      state: bookExpertState,
+                      stateNotifier: bookExpertNotifier,
+                      heading: "Morning Session",
+                      sessions: bookExpertNotifier.morningSessionTimeList,
+                    );
+                  },
                 ),
               ),
 
-              SizedBox(height: 34.h,),
+              SizedBox(height: 34.h),
               Padding(
                 padding: AppPadding.screenHorizontal,
-                child: SessionGridView(
-                  heading: "Afternoon Session",
-                  sessions: [
-                    "08:00 AM",
-                    "08:30 AM",
-                    "09:00 AM",
-                    "09:30 AM",
-                    "10:00 AM",
-                    "10:30 AM",
-                    "11:00 AM",
-                    "11:30 AM",
-                  ],
+                child: Consumer(
+                  builder: (_, ref, _) {
+                    final bookExpertState = ref.watch(bookExpertRiverpod);
+                    final bookExpertNotifier = ref.watch(
+                      bookExpertRiverpod.notifier,
+                    );
+                    return SessionGridView(
+                      state: bookExpertState,
+                      stateNotifier: bookExpertNotifier,
+                      heading: "Afternoon Session",
+                      sessions: bookExpertNotifier.afternoonSessionTimeList,
+                      isMorningShift: false,
+                    );
+                  },
                 ),
               ),
 
-
-              SizedBox(height: 34.h,),
+              SizedBox(height: 34.h),
 
               Padding(
                 padding: AppPadding.screenHorizontal,
@@ -82,28 +87,39 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
                   child: Row(
                     spacing: 10.w,
                     children: [
-                      Expanded(child: CommonWidget.primaryButton(
+                      Expanded(
+                        child: CommonWidget.primaryButton(
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
                           backgroundColor: AppColors.secondaryStrokeColor,
-                          context: context, onPressed: (){
+                          context: context,
+                          onPressed: () {
                             context.pop();
-                      }, text: "Cancel",
+                          },
+                          text: "Cancel",
 
-                      textStyle: Theme.of(context).textTheme.titleMedium,
+                          textStyle: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                        ),
                       ),
+                      Expanded(
+                        child: CommonWidget.primaryButton(
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          context: context,
+                          onPressed: () async {
+                            context.pop();
+                            await answerSessionDetailsForBook(context: context);
+                          },
+                          text: "Next",
+                          textStyle: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                        ),
                       ),
-                      Expanded(child: CommonWidget.primaryButton(context: context, onPressed: () async {
-                        context.pop();
-                        await answerSessionDetailsForBook(context: context);
-                      }, text: "Next",
-                        textStyle: Theme.of(context).textTheme.titleMedium,
-                      ),),
                     ],
                   ),
                 ),
               ),
 
-              SizedBox(height: 28.h,),
-
+              SizedBox(height: 28.h),
             ],
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../../core/theme/theme_part/app_colors.dart';
+import '../select_duration_for_booking_bottom_sheet/select_duration_for_booking_bottom_sheet.dart';
 
 Future<void> answerSessionDetailsForBook({required BuildContext context}) async {
   await showModalBottomSheet(
@@ -15,6 +16,9 @@ Future<void> answerSessionDetailsForBook({required BuildContext context}) async 
     builder: (_){
       final textTheme = Theme.of(context).textTheme;
       return Container(
+        constraints: BoxConstraints(
+          maxHeight: 690.h
+        ),
         decoration: BoxDecoration(
           color: AppColors.screenBackgroundColor,
           borderRadius: BorderRadius.only(
@@ -22,24 +26,26 @@ Future<void> answerSessionDetailsForBook({required BuildContext context}) async 
             topRight: Radius.circular(32.r),
           ),
         ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: AppPadding.screenHorizontal,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: 32.h,),
-                Text("Session Details",style: textTheme.headlineSmall,),
-                Text("Help us prepare for your session with Sarah Chen",style: textTheme.bodyMedium?.copyWith(color: AppColors.secondaryTextColor),),
-                SizedBox(height: 12.h,),
-                Divider(color: AppColors.secondary,height: 2,thickness: 2,),
+        child: Padding(
+          padding: AppPadding.screenHorizontal,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(height: 32.h,),
+              Text("Session Details",style: textTheme.headlineSmall,),
+              Text("Help us prepare for your session with Sarah Chen",style: textTheme.bodyMedium?.copyWith(color: AppColors.secondaryTextColor),),
+              SizedBox(height: 12.h,),
+              Divider(color: AppColors.secondary,height: 2,thickness: 2,),
+              SizedBox(height: 12.h,),
 
-                ListView.builder(
+              /// Listview of question answer
+              Expanded(
+                child: ListView.builder(
                   itemCount: 3,
                     padding: EdgeInsets.only(top: 16.h),
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    // shrinkWrap: true,
+                    // physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (_, index){
                     return Column(
                       spacing: 12.h,
@@ -58,29 +64,42 @@ Future<void> answerSessionDetailsForBook({required BuildContext context}) async 
                     );
                     }
                 ),
+              ),
 
-                SizedBox(height: 32.h,),
+              SizedBox(height: 32.h,),
 
-                SafeArea(
-                  child: Row(
-                    spacing: 10.w,
-                    children: [
-                      Expanded(
-                        child: CommonWidget.primaryButton(context: context, onPressed: (){
+              /// Cancel or Next Button
+              SafeArea(
+                child: Row(
+                  spacing: 10.w,
+                  children: [
+                    Expanded(
+                      child: CommonWidget.primaryButton(
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          textStyle: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                          context: context, onPressed: (){
+                        context.pop();
+                      }, text: "Cancel", backgroundColor: AppColors.secondaryStrokeColor),
+                    ),
+
+                    Expanded(
+                      child: CommonWidget.primaryButton(
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        textStyle: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                        context: context,
+                        onPressed: () async {
                           context.pop();
-                        }, text: "Cancel", textStyle: textTheme.titleMedium,backgroundColor: AppColors.secondaryStrokeColor),
-                      ),
-
-                      Expanded(
-                        child: CommonWidget.primaryButton(context: context, onPressed: (){}, text: "Next", textStyle: textTheme.titleMedium,),
-                      ),
-                    ],
-                  ),
+                         await selectSessionTimeForBook(context: context);
+                        },
+                        text: "Next",
+                        ),
+                    ),
+                  ],
                 ),
+              ),
 
-                SizedBox(height: 28.h,),
-              ],
-            ),
+              SizedBox(height: 28.h,),
+            ],
           ),
         ),
       );
