@@ -7,8 +7,28 @@ import '../../../../../core/constant/padding.dart';
 import '../../../../../core/utils/utils.dart';
 import 'expert_search_bottom_sheet.dart';
 
-class ExpertSearchBar extends StatelessWidget{
+class ExpertSearchBar extends StatefulWidget{
   const ExpertSearchBar({super.key});
+
+  @override
+  State<ExpertSearchBar> createState() => _ExpertSearchBarState();
+}
+
+class _ExpertSearchBarState extends State<ExpertSearchBar> {
+
+  late final FocusNode _focusNode;
+
+  @override
+  void initState() {
+    _focusNode = FocusNode();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +41,10 @@ class ExpertSearchBar extends StatelessWidget{
           children: [
             Expanded(
               child: TextFormField(
+                focusNode: _focusNode,
+                onTapOutside: (_){
+                  _focusNode.unfocus();
+                },
                 decoration: InputDecoration(
                   hintText: "Type expert name",
                   prefixIcon: Padding(
