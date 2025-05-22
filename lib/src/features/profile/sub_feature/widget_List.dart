@@ -1,11 +1,8 @@
-// ignore_for_file: file_names
-
 import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:e_learning_app/core/routes/route_name.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import 'be a expert/be_a_expert_sheet.dart';
+import '../presentation/be a expert/main bottomsheets/be_a_expert_sheet.dart';
 import 'widgets/profile_container.dart';
 
 List<Widget> callContainerGeneral(BuildContext context) {

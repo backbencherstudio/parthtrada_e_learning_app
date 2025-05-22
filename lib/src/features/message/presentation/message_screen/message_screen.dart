@@ -16,6 +16,7 @@ class MessageScreen extends StatelessWidget {
       body: Column(
         children: [
           CommonWidget.customAppBar(
+            context: context,
             textTheme: textTheme,
             isNotification: true,
             title: 'Messages',
