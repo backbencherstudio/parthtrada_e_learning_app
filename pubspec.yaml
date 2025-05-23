@@ -43,6 +43,9 @@ dependencies:
   nuts_activity_indicator: ^1.0.0
   dots_indicator: ^4.0.1
   flutter_riverpod: ^2.6.1
+  expandable_text: ^2.3.0
+  intl: ^0.20.2
+  shimmer: ^3.0.0
 
 flutter_launcher_icons:
   android: "launcher_icon"

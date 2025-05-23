@@ -9,6 +9,7 @@ class AppIcons {
   static const String user = "assets/bottomNavbar_icons/user.svg";
   static const String chat = "assets/bottomNavbar_icons/chat 02.svg";
   static const String pngLogo = "${AssetPath.icon}/logo.png";
+  static const String close = "${AssetPath.icon}/close.svg";
 
 // profile
 static const String icons = "assets/icons";
@@ -33,6 +34,12 @@ static const String trophyOutline = "${AssetPath.icon}/trophy_outline.svg";
 static const String starOutline = "${AssetPath.icon}/star_outline.svg";
 static const String usersOutline = "${AssetPath.icon}/users_outline.svg";
 static const String targetBoardOutline = "${AssetPath.icon}/target_board_outline.svg";
+static const String userFill = "${AssetPath.icon}/user_fill.svg";
+static const String starFill = "${AssetPath.icon}/star_fill.svg";
+static const String circleTikMarkFill = "${AssetPath.icon}/circle_tik_mark_fill.svg";
+
+static const String arrowLeft = "${AssetPath.icon}/arrow_left.svg";
+static const String arrowRight = "${AssetPath.icon}/arrow_right.svg";
 
 }
 
