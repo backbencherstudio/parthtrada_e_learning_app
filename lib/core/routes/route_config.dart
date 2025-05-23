@@ -1,4 +1,5 @@
 import 'package:e_learning_app/core/routes/route_name.dart';
+import 'package:e_learning_app/src/features/authentication/presentation/authentication_screen.dart';
 import 'package:e_learning_app/src/features/expert_details/presentation/expert_details_screen.dart';
 import 'package:e_learning_app/src/features/message/presentation/inbox_screen/inbox_screen.dart';
 import 'package:e_learning_app/src/features/notification/global_notification_screen.dart';
@@ -55,7 +56,7 @@ class RouteConfig {
         path: RouteName.parentScreen,
         pageBuilder: (context, state) {
           return buildPageWithTransition(
-            transitionType: PageTransitionType.fade,
+            transitionType: PageTransitionType.slideBottomToTop,
             context: context,
             state: state,
             child: ParentScreen(),
@@ -161,6 +162,19 @@ class RouteConfig {
           return const MaterialPage(child: PrivacyPolicy());
         },
       ),
+
+
+      GoRoute(
+          name: RouteName.authenticationScreen,
+          path: RouteName.authenticationScreen,
+          pageBuilder: (context, state) {
+            return buildPageWithTransition(
+                transitionType: PageTransitionType.slideRightToLeft,
+                context: context,
+                state: state,
+                child: AuthenticationScreen());}
+      ),
+
     ],
   );
 }
