@@ -45,7 +45,7 @@ class ScheduleRiverpod extends StateNotifier<ScheduleState> {
       "userName": "Md. Shakin",
       "designation": "Senior Software Engineer at Meta",
       "scheduleDate": "June 1 Monday 02:00 PM",
-      "status": "completed"
+      "status": "no response"
     },
     {
       "profilePicture":AppImages.men,
