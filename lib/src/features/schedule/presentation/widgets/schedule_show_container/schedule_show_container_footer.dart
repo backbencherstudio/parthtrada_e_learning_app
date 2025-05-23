@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../../../core/constant/icons.dart';
-import '../../../../../core/theme/theme_part/app_colors.dart';
-import '../../../../../core/utils/common_widget.dart';
-import '../../model/meeting_model.dart';
+import '../../../../../../core/constant/icons.dart';
+import '../../../../../../core/theme/theme_part/app_colors.dart';
+import '../../../../../../core/utils/common_widget.dart';
+import '../../../model/meeting_model.dart';
+import '../add_review_bottom_sheet/add_review_bottom_sheet.dart';
+
 
 class ScheduleShowContainerFooter extends StatelessWidget {
   final MeetingScheduleModel meetingScheduleModel;
@@ -86,7 +88,7 @@ class ScheduleShowContainerFooter extends StatelessWidget {
                       child: CommonWidget.primaryButton(
                         backgroundColor: Color(0xffFF7F48),
                         context: context,
-                        onPressed: () {},
+                        onPressed: () async {await addReviewBottomSheet(context: context);},
                         text: "Add Review",
                         textStyle: buttonTextStyle,
                       ),
