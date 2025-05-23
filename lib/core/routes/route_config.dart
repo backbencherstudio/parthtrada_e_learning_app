@@ -3,6 +3,7 @@ import 'package:e_learning_app/src/features/message/presentation/inbox_screen/in
 
 import 'package:e_learning_app/src/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:e_learning_app/src/features/parents/presentation/parents_screen.dart';
+import 'package:e_learning_app/src/features/profile/sub_feature/help_and_support/help_and_support.dart';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -19,7 +20,7 @@ import '../../src/features/message/presentation/message_screen/message_screen.da
 
 class RouteConfig {
   GoRouter goRouter = GoRouter(
-    initialLocation: RouteName.parentScreen,
+    initialLocation: RouteName.helpAndSupport,
 
     routes: [
       GoRoute(
@@ -111,6 +112,13 @@ class RouteConfig {
         path: RouteName.privacyPolicy,
         pageBuilder: (context, state) {
           return const MaterialPage(child: PrivacyPolicy());
+        },
+      ),
+      GoRoute(
+        name: RouteName.helpAndSupport,
+        path: RouteName.helpAndSupport,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: HelpAndSupport());
         },
       ),
     ],

@@ -63,6 +63,7 @@ class _InboxScreenState extends State<InboxScreen> {
                   InboxScreenHeaderWidget(
                     image: widget.image,
                     name: widget.name,
+
                   ),
                   Divider(color: AppColors.secondaryStrokeColor,),
                 ],
