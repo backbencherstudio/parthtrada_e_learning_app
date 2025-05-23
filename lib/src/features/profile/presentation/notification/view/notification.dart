@@ -1,13 +1,13 @@
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/src/features/profile/presentation/notification/Riverpod/notification_provider.dart'
     show notificationToggleProvider;
-import 'package:e_learning_app/src/features/profile/presentation/user%20profile/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart' show SvgPicture;
 
 import '../../../../../../core/constant/icons.dart';
+import '../../../sub_feature/user profile/widget/custom_button.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});

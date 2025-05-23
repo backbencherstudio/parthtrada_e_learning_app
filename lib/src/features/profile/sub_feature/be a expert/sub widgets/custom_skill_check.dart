@@ -2,9 +2,10 @@
 
 
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
-import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/sub%20widgets/custom_checkBox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'custom_checkBox.dart';
 
 class CustomSkillCheck extends StatelessWidget {
   final String text;

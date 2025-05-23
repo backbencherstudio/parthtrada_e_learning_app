@@ -6,7 +6,7 @@ import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../user profile/widget/custom_button.dart';
+import '../../../sub_feature/user profile/widget/custom_button.dart';
 import '../sub bottomsheets/select_skills_sheet.dart';
 
 void showBeExpertBottomSheet(BuildContext context) {

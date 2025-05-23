@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/constant/padding.dart';
-import '../../../../core/theme/theme_part/app_colors.dart';
+import '../../../../../../core/constant/padding.dart';
+import '../../../../../../core/theme/theme_part/app_colors.dart';
 import 'widgets/past_call_card.dart';
 
 class PastCall extends StatelessWidget {

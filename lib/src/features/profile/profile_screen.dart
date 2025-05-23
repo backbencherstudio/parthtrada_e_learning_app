@@ -1,6 +1,6 @@
 import 'package:e_learning_app/core/constant/images.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
-import 'package:e_learning_app/src/features/profile/presentation/widgets/widget_List.dart';
+import 'package:e_learning_app/src/features/profile/sub_feature/widgets/widget_List.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
