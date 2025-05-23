@@ -56,7 +56,7 @@ class RouteConfig {
         path: RouteName.parentScreen,
         pageBuilder: (context, state) {
           return buildPageWithTransition(
-            transitionType: PageTransitionType.slideBottomToTop,
+            transitionType: PageTransitionType.fade,
             context: context,
             state: state,
             child: ParentScreen(),

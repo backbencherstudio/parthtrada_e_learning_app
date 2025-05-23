@@ -10,7 +10,7 @@ class ExpertDetailsScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: ExpertDetailsBottomBackButton(),
+      bottomNavigationBar: ExpertDetailsBottomBookButton(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
