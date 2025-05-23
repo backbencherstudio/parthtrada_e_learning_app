@@ -58,12 +58,9 @@ class OnboardingPageWidget extends StatelessWidget {
                   bottom: 0.h,
                   child: ElevatedButton(
                     onPressed: () {
-                      final int nextIndex =
-                      tabController.index == tabController.length - 1
-                          ? 0
-                          : tabController.index + 1;
+                      final int nextIndex = tabController.index + 1;
                       if(tabController.index == tabController.length - 1){
-                        context.go(RouteName.parentScreen);
+                        context.go(RouteName.authenticationScreen);
                       }
                       else{
                         tabController.animateTo(
