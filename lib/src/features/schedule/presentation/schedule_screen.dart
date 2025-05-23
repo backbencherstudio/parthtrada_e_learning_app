@@ -1,5 +1,5 @@
 import 'package:e_learning_app/core/constant/padding.dart';
-import 'package:e_learning_app/src/features/schedule/presentation/widgets/schedule_show_container.dart';
+import 'package:e_learning_app/src/features/schedule/presentation/widgets/schedule_show_container/schedule_show_container.dart';
 import 'package:e_learning_app/src/features/schedule/riverpod/schedule_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
