@@ -7,6 +7,8 @@ import 'package:e_learning_app/src/features/profile/sub_feature/widgets/profile_
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'logout_dialog.dart';
+
 List<Widget> callContainerGeneral(BuildContext context) {
   List<Widget> profileContainerList = [
     ProfileContainer(
@@ -70,7 +72,7 @@ List<Widget> callContainerGeneral(BuildContext context) {
   return profileContainerList;
 }
 
-List<Widget> callContainerPreferencess(BuildContext context) {
+List<Widget> callContainerPreferences(BuildContext context) {
   List<Widget> profilePreferenceList = [
     ProfileContainer(
       title: "Privacy Policy",
@@ -86,7 +88,9 @@ List<Widget> callContainerPreferencess(BuildContext context) {
         context.push(RouteName.helpAndSupport);
       },
     ),
-    ProfileContainer(title: "Logout", icon: AppIcons.logout, onTap: () {}),
+    ProfileContainer(title: "Logout", icon: AppIcons.logout, onTap: () {
+      showLogoutDialog(context);
+    }),
   ];
   return profilePreferenceList;
 }
