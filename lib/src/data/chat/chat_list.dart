@@ -1,7 +1,7 @@
 final chats = [
   {
     'userId': '1',
-    'imageUrl': 'https://live.staticflickr.com/3483/3737695916_ff07a25150_z.jpg',
+    'imageUrl': 'https://randomuser.me/api/portraits/women/12.jpg',
     'name': 'Sarah Chen',
     'lastMessage': 'Looking forward to our call tomorrow',
     'time': '12:00 PM',
