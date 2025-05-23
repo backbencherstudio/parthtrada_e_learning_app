@@ -5,8 +5,8 @@ import '../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../../core/utils/common_widget.dart';
 import '../../../book_expert/presentation/schedule_for_book/schedule_for_book.dart';
 
-class ExpertDetailsBottomBackButton extends StatelessWidget{
-  const ExpertDetailsBottomBackButton({super.key});
+class ExpertDetailsBottomBookButton extends StatelessWidget{
+  const ExpertDetailsBottomBookButton({super.key});
 
   @override
   Widget build(BuildContext context) {
