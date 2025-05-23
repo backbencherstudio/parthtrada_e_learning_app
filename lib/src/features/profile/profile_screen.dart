@@ -87,7 +87,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 18.h),
-              ...callContainerPreferences(context),
+              ...callContainerPreferencess(context),
               SizedBox(height: 18.h),
             ],
           ),
