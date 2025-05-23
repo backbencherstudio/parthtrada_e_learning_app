@@ -54,22 +54,10 @@ class InboxScreenHeaderWidget extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                style: textTheme.titleMedium,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Row(
-                spacing: 4.w,
-                children: [
-                  Icon(Icons.circle,color: AppColors.primary,size: 10.r,),
-                  Text('Online',style: textTheme.labelSmall!.copyWith(color: AppColors.primary,),)
-                ],
-              )
-            ],
+          child: Text(
+            name,
+            style: textTheme.titleMedium,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ],

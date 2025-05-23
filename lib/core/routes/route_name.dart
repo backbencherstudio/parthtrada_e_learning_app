@@ -22,7 +22,6 @@ class RouteName{
   static const String pastCall = '/past-call';
   static const String transactionHistory = '/transaction-history';
   static const String privacyPolicy = '/privacy-policy';
-  static const String helpAndSupport = '/help-and-support';
   static const String notification = '/NotificationScreen';
   static const String languageScreen ="/LanguageScreen";
 
