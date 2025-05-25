@@ -1,8 +1,8 @@
 import 'package:e_learning_app/core/constant/images.dart';
+import 'package:e_learning_app/src/features/profile/sub_feature/widgets/widget_List.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'widget_List.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -62,7 +62,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 18.h,),
-            ...callContainerPreferences(context),
+            ...callContainerPreferencess(context),
               SizedBox(height: 18.h,),
             ],
           ),

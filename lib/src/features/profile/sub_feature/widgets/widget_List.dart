@@ -9,44 +9,95 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-List<Widget> callContainerGeneral(BuildContext context){
-   List <Widget>  profileContainerList = [
- 
-              ProfileContainer(title: "Profile",icon: AppIcons.userAcc, onTap: () {
-                debugPrint("tap hoitase");
-                context.push(RouteName.userProfile); }),
-             Consumer(
+List<Widget> callContainerGeneral(BuildContext context) {
+  List<Widget> profileContainerList = [
+    ProfileContainer(
+      title: "Profile",
+      icon: AppIcons.userAcc,
+      onTap: () {
+        debugPrint("tap hoitase");
+        context.push(RouteName.userProfile);
+      },
+    ),
+    Consumer(
       builder: (context, ref, _) {
         final isExpert = ref.watch(isExpertProvider);
         return ProfileContainer(
-          title: "Be A Expert",
+          title: isExpert ?  "Be A Expert" :"Be A Student" ,
           icon: AppIcons.userAdd,
           onTap: () {
-            ref.read(isExpertProvider.notifier).setExpert(true);
+            // ref.read(isExpertProvider.notifier).toggle();
+
+            // // ref.read(isExpertProvider.notifier).setExpert(true);
             debugPrint("$isExpert");
             showBeExpertBottomSheet(context);
           },
         );
-      }
+      },
     ),
-              ProfileContainer(title: "Payment Method",icon: AppIcons.creditCard, onTap: () {context.push(RouteName.paymentMethodScreen);}),
-              ProfileContainer(title: "Notifications",icon: AppIcons.notification, onTap: () {context.push(RouteName.notification);}),
-              ProfileContainer(title: "Language",icon: AppIcons.globalIcon, onTap: () {context.push(RouteName.languageScreen);}),
-              ProfileContainer(title: "Past Calls",icon: AppIcons.icbaseline, onTap: () {context.push(RouteName.pastCall);}),
-              ProfileContainer(title: "Transaction History",icon: AppIcons.icbaseline, onTap: () {context.push(RouteName.transactionHistory);}),
-              ProfileContainer(title: "Sent Requests",icon: AppIcons.icbaseline, onTap: () {context.push(RouteName.sentRequest);}),
-
-
-];
-return profileContainerList;
+    ProfileContainer(
+      title: "Payment Method",
+      icon: AppIcons.creditCard,
+      onTap: () {
+        context.push(RouteName.paymentMethodScreen);
+      },
+    ),
+    ProfileContainer(
+      title: "Notifications",
+      icon: AppIcons.notification,
+      onTap: () {
+        context.push(RouteName.notification);
+      },
+    ),
+    ProfileContainer(
+      title: "Language",
+      icon: AppIcons.globalIcon,
+      onTap: () {
+        context.push(RouteName.languageScreen);
+      },
+    ),
+    ProfileContainer(
+      title: "Past Calls",
+      icon: AppIcons.icbaseline,
+      onTap: () {
+        context.push(RouteName.pastCall);
+      },
+    ),
+    ProfileContainer(
+      title: "Transaction History",
+      icon: AppIcons.icbaseline,
+      onTap: () {
+        context.push(RouteName.transactionHistory);
+      },
+    ),
+    ProfileContainer(
+      title: "Sent Requests",
+      icon: AppIcons.icbaseline,
+      onTap: () {
+        context.push(RouteName.sentRequest);
+      },
+    ),
+  ];
+  return profileContainerList;
 }
 
-List<Widget> callContainerPreferencess(BuildContext context){
-
-  List<Widget> profilePreferenceList =[
-           ProfileContainer(title: "Privacy Policy",icon: AppIcons.security, onTap: () {context.push(RouteName.privacyPolicy);}),
-              ProfileContainer(title: "Help & Support",icon: AppIcons.frameIcon, onTap: () {context.push(RouteName.messageScreen);}),
-              ProfileContainer(title: "Logout",icon: AppIcons.logout, onTap: () {}),
+List<Widget> callContainerPreferencess(BuildContext context) {
+  List<Widget> profilePreferenceList = [
+    ProfileContainer(
+      title: "Privacy Policy",
+      icon: AppIcons.security,
+      onTap: () {
+        context.push(RouteName.privacyPolicy);
+      },
+    ),
+    ProfileContainer(
+      title: "Help & Support",
+      icon: AppIcons.frameIcon,
+      onTap: () {
+        context.push(RouteName.messageScreen);
+      },
+    ),
+    ProfileContainer(title: "Logout", icon: AppIcons.logout, onTap: () {}),
   ];
   return profilePreferenceList;
 }
