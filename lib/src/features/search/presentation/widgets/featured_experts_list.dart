@@ -15,7 +15,9 @@ import 'package:go_router/go_router.dart';
 import '../../../book_expert/presentation/schedule_for_book/schedule_for_book.dart';
 
 class FeaturedExpertsList extends StatelessWidget{
-  const FeaturedExpertsList({super.key});
+   const FeaturedExpertsList({super.key});
+
+  final bool isExpert = true;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +107,12 @@ class FeaturedExpertsList extends StatelessWidget{
                               onPressed: () async {
                                await scheduleForBook(context: context);
                               },
-                              text: "Book \$150/hour"
+                              text: "Book \$150/hour",
+
+                              backgroundColor: isExpert ? Color(0xff4A4C56) : null,
+                              textStyle: textTheme.bodyMedium?.copyWith(
+                                color: isExpert ? Color(0xffA5A5AB) : null,
+                              )
                             ),
                           )
 
