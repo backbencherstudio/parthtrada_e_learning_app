@@ -5,12 +5,14 @@ class Mybutton extends StatelessWidget {
   final String text;
   final Color color;
   final double? width;
+  final double? height;
   final void Function()? onTap;
   const Mybutton({super.key,
   required this.color,
   required this.text,
   required this.onTap,
   this.width,
+ this.height
 
   });
 
@@ -19,7 +21,7 @@ class Mybutton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height:56.h,
+        height: height?? 56.h,
         width: width ?? 158.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),

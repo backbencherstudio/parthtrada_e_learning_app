@@ -55,29 +55,26 @@ class NotificationContainer extends StatelessWidget {
                 context,
               ).textTheme.bodyLarge!.copyWith(color: Color(0xff777980)),
             ),
-       SizedBox(height: 12.h,),
+       SizedBox(height: 15.h,),
             isRefund?
-            Expanded(
-              child: Mybutton(
-                       width: double.infinity,
-                    color: AppColors.primary,
-                      text: "Mark as Refunded",
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-            ):
+            Mybutton(
+              height: 40.h,
+                     width: double.infinity,
+                  color: AppColors.primary,
+                    text: "Mark as Refunded",
+                    onTap: () {
+            
+                    },
+                  ):
             Expanded(
               child: Row(
                 children: [
-                  Expanded(
-                    child: Mybutton(
-                      color: Color(0xff2B2C31),
-                      text: "Decline",
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
+                  Mybutton(
+                    color: Color(0xff2B2C31),
+                    text: "Decline",
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
                   ),
                   SizedBox(width: 8.w),
                   Expanded(
