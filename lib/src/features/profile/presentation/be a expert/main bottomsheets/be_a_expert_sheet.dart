@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../sub_feature/user profile/widget/custom_button.dart';
 import '../sub bottomsheets/select_skills_sheet.dart';
 
-void showBeExpertBottomSheet(BuildContext context) {
+Future<void> showBeExpertBottomSheet(BuildContext context) async {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,

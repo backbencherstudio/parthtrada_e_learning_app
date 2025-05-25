@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../core/constant/icons.dart';
 import '../../../../../core/constant/images.dart';
@@ -22,7 +23,10 @@ class HeaderWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Flexible(child: SvgPicture.asset(AppIcons.backlongArrow)),
+              Flexible(child: GestureDetector(
+                onTap: ()=> context.pop(),
+
+                  child: SvgPicture.asset(AppIcons.backlongArrow))),
               Expanded(child: SizedBox()),
               Expanded(child: SizedBox()),
               Expanded(child: SizedBox()),

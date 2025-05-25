@@ -9,12 +9,10 @@ import '../add_review_bottom_sheet/add_review_bottom_sheet.dart';
 
 class ScheduleShowContainerFooter extends StatelessWidget {
   final MeetingScheduleModel meetingScheduleModel;
-  final bool isExpert;
 
   const ScheduleShowContainerFooter({
     super.key,
     required this.meetingScheduleModel,
-    this.isExpert = true,
   });
 
   @override

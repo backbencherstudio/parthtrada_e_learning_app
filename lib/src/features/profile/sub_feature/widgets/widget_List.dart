@@ -2,6 +2,7 @@
 
 import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:e_learning_app/core/routes/route_name.dart';
+import 'package:e_learning_app/src/features/parents/riverpod/parentsScreen_provider.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/Riverpod/is_expert_provider.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/main%20bottomsheets/be_a_expert_sheet.dart';
 import 'package:e_learning_app/src/features/profile/sub_feature/widgets/logout_dialog.dart';
@@ -24,14 +25,22 @@ List<Widget> callContainerGeneral(BuildContext context) {
       builder: (context, ref, _) {
         final isExpert = ref.watch(isExpertProvider);
         return ProfileContainer(
-          title: isExpert ?  "Be A Expert" :"Be A Student" ,
+          title: isExpert ?  "Be A Student" :"Be A Expert" ,
           icon: AppIcons.userAdd,
-          onTap: () {
+          onTap: () async {
             // ref.read(isExpertProvider.notifier).toggle();
 
             // // ref.read(isExpertProvider.notifier).setExpert(true);
             debugPrint("$isExpert");
-            showBeExpertBottomSheet(context);
+            if(!isExpert){
+             await showBeExpertBottomSheet(context);
+            }
+            if(isExpert){
+              ref.read(isExpertProvider.notifier).toggle();
+              context.go(RouteName.splash);
+            }
+
+
           },
         );
       },
