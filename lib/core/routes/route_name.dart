@@ -33,4 +33,5 @@ class RouteName{
 
   static const String helpAndSupport = "/help-and-support";
   static const String studentDetailsScreen = "/student-details-screen";
+  static const String expertNotificationScreen = '/ExpertNotificationScreen';
 }

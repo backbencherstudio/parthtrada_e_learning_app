@@ -10,4 +10,6 @@ class AppImages{
   static const String maiya = "${AssetPath.onboarding}/maiya.png";
   static const String women = "${AssetPath.search}/women.png";
   static const String men = "${AssetPath.search}/men.png";
+    static const String bedi = "assets/images/onboarding/bedi.png";
+
 }

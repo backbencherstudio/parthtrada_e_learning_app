@@ -2,7 +2,8 @@ import 'package:e_learning_app/core/routes/route_name.dart';
 import 'package:e_learning_app/src/features/authentication/presentation/authentication_screen.dart';
 import 'package:e_learning_app/src/features/expert_details/presentation/expert_details_screen.dart';
 import 'package:e_learning_app/src/features/message/presentation/inbox_screen/inbox_screen.dart';
-import 'package:e_learning_app/src/features/notification/global_notification_screen.dart';
+import 'package:e_learning_app/src/features/notification/Expert_notification/presentation/expert_notification.dart';
+import 'package:e_learning_app/src/features/notification/Student_notification/presentation/global_notification_screen.dart';
 
 import 'package:e_learning_app/src/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:e_learning_app/src/features/parents/presentation/parents_screen.dart';
@@ -175,6 +176,16 @@ class RouteConfig {
                 context: context,
                 state: state,
                 child: AuthenticationScreen());}
+      ),
+       GoRoute(
+          name: RouteName.expertNotificationScreen,
+          path: RouteName.expertNotificationScreen,
+          pageBuilder: (context, state) {
+            return buildPageWithTransition(
+                transitionType: PageTransitionType.slideRightToLeft,
+                context: context,
+                state: state,
+                child: ExpertNotificationScreen());}
       ),
       GoRoute(
           name: RouteName.helpAndSupport,
