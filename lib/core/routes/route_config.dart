@@ -10,9 +10,11 @@ import 'package:e_learning_app/src/features/profile/presentation/language/langua
 import 'package:e_learning_app/src/features/profile/presentation/notification/view/notification.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/view/payment_method.dart';
 import 'package:e_learning_app/src/features/profile/presentation/user%20profile/view/user_profile.dart';
+import 'package:e_learning_app/src/features/student_details/presentation/student_details_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
+import '../../src/features/profile/sub_feature/help_and_support/help_and_support.dart';
 import '../../src/features/profile/sub_feature/past_call/presentation/past_call.dart';
 import '../../src/features/profile/sub_feature/privacy_policy/presentation/privacy_policy.dart';
 import '../../src/features/profile/sub_feature/sent_request/presentation/sent_request_page.dart';
@@ -24,7 +26,7 @@ import '../../src/features/message/presentation/message_screen/message_screen.da
 
 class RouteConfig {
   GoRouter goRouter = GoRouter(
-     initialLocation: RouteName.splash,
+     initialLocation: RouteName.studentDetailsScreen,
 
 
     routes: [
@@ -173,6 +175,20 @@ class RouteConfig {
                 context: context,
                 state: state,
                 child: AuthenticationScreen());}
+      ),
+      GoRoute(
+          name: RouteName.helpAndSupport,
+          path: RouteName.helpAndSupport,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: HelpAndSupport());
+          }
+      ),
+      GoRoute(
+          name: RouteName.studentDetailsScreen,
+          path: RouteName.studentDetailsScreen,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: StudentDetailsScreen());
+          }
       ),
 
     ],

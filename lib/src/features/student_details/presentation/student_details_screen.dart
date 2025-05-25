@@ -4,8 +4,8 @@ import 'package:e_learning_app/src/features/profile/sub_feature/widgets/widget_L
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class StudentDetailsScreen extends StatelessWidget {
+  const StudentDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,33 +64,6 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(height: 20.h),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "General",
-                  style: textStyle.bodyMedium!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xffffffff),
-                  ),
-                ),
-              ),
-              SizedBox(height: 18.h),
-              ...callContainerGeneral(context),
-              SizedBox(height: 28.h),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Preferencess",
-                  style: textStyle.bodyMedium!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xffffffff),
-                  ),
-                ),
-              ),
-              SizedBox(height: 18.h),
-              ...callContainerPreferences(context),
-              SizedBox(height: 18.h),
             ],
           ),
         ),
