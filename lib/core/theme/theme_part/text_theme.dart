@@ -61,13 +61,13 @@ class AppTextTheme {
     ),
 
     labelLarge: GoogleFonts.nunitoSans(
-      fontSize: 14,
+      fontSize: 14.sp,
       color: AppColors.secondaryTextColor,
       fontWeight: FontWeight.w400,
     ),
 
     labelMedium: GoogleFonts.nunitoSans(
-      fontSize: 12,
+      fontSize: 12.sp,
       color: AppColors.secondaryTextColor,
       fontWeight: FontWeight.w400,
     ),
