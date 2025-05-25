@@ -41,16 +41,7 @@ class GlobalNotificationScreen extends StatelessWidget {
                   ),
                 ],
               ),
-          
-              SizedBox(height: 8.h),
-              Text(
-                "See your notifications",
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xffffffff),
-                ),
-              ),
+
               Consumer(
                 builder: (context, ref, _) {
                   final notifications = ref.watch(notificationProvider);

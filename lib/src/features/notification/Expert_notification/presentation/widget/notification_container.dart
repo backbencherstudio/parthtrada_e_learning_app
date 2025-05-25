@@ -22,7 +22,7 @@ class NotificationContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 245.h,
+      height: 235.h,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),
@@ -43,9 +43,10 @@ class NotificationContainer extends StatelessWidget {
             SizedBox(height: 16.h),
             Text(
               title,
-              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontWeight: FontWeight.w800,
                 color: Color(0xffffffff),
+
               ),
             ),
             SizedBox(height: 4.h),
@@ -53,7 +54,7 @@ class NotificationContainer extends StatelessWidget {
               discription,
               style: Theme.of(
                 context,
-              ).textTheme.bodyLarge!.copyWith(color: Color(0xff777980)),
+              ).textTheme.bodyMedium!.copyWith(color: Color(0xff777980)),
             ),
        SizedBox(height: 15.h,),
             isRefund?
@@ -63,7 +64,7 @@ class NotificationContainer extends StatelessWidget {
                   color: AppColors.primary,
                     text: "Mark as Refunded",
                     onTap: () {
-            
+
                     },
                   ):
             Expanded(
@@ -73,7 +74,6 @@ class NotificationContainer extends StatelessWidget {
                     color: Color(0xff2B2C31),
                     text: "Decline",
                     onTap: () {
-                      Navigator.pop(context);
                     },
                   ),
                   SizedBox(width: 8.w),
