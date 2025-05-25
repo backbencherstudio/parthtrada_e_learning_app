@@ -46,6 +46,7 @@ dependencies:
   expandable_text: ^2.3.0
   intl: ^0.20.2
   shimmer: ^3.0.0
+  horizontal_list_calendar: ^0.0.3
 
 flutter_launcher_icons:
   android: "launcher_icon"

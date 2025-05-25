@@ -2,12 +2,13 @@
 
 import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:e_learning_app/core/routes/route_name.dart';
+import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/Riverpod/is_expert_provider.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/main%20bottomsheets/be_a_expert_sheet.dart';
+import 'package:e_learning_app/src/features/profile/sub_feature/widgets/logout_dialog.dart';
 import 'package:e_learning_app/src/features/profile/sub_feature/widgets/profile_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import 'logout_dialog.dart';
 
 List<Widget> callContainerGeneral(BuildContext context) {
   List<Widget> profileContainerList = [
@@ -19,11 +20,18 @@ List<Widget> callContainerGeneral(BuildContext context) {
         context.push(RouteName.userProfile);
       },
     ),
-    ProfileContainer(
-      title: "Be A Expert",
-      icon: AppIcons.userAdd,
-      onTap: () {
-        showBeExpertBottomSheet(context);
+    Consumer(
+      builder: (context, ref, _) {
+        final isExpert = ref.watch(isExpertProvider);
+        return ProfileContainer(
+          title: "Be A Expert",
+          icon: AppIcons.userAdd,
+          onTap: () {
+            ref.read(isExpertProvider.notifier).setExpert(true);
+            debugPrint("$isExpert");
+            showBeExpertBottomSheet(context);
+          },
+        );
       },
     ),
     ProfileContainer(
