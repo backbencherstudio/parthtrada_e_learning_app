@@ -8,14 +8,18 @@ import 'package:e_learning_app/core/utils/utils.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/wrap_item_container.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/wrapper_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../book_expert/presentation/schedule_for_book/schedule_for_book.dart';
+import '../../../profile/presentation/be a expert/Riverpod/is_expert_provider.dart';
 
 class FeaturedExpertsList extends StatelessWidget{
-  const FeaturedExpertsList({super.key});
+   const FeaturedExpertsList({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -100,12 +104,26 @@ class FeaturedExpertsList extends StatelessWidget{
 
                           SizedBox(
                             width : double.infinity,
-                            child: CommonWidget.primaryButton(
-                              context: context,
-                              onPressed: () async {
-                               await scheduleForBook(context: context);
-                              },
-                              text: "Book \$150/hour"
+                            child: Consumer(
+                              builder: (_, ref, _) {
+
+                                final isExpert = ref.watch(isExpertProvider);
+
+                                debugPrint("\nIs Expert : $isExpert\n\n");
+
+                                return CommonWidget.primaryButton(
+                                  context: context,
+                                  onPressed: () async {
+                                   await scheduleForBook(context: context);
+                                  },
+                                  text: "Book \$150/hour",
+
+                                  backgroundColor: isExpert ? Color(0xff4A4C56) : null,
+                                  textStyle: textTheme.bodyMedium?.copyWith(
+                                    color: isExpert ? Color(0xffA5A5AB) : null,
+                                  )
+                                );
+                              }
                             ),
                           )
 
