@@ -1,5 +1,5 @@
 import 'package:e_learning_app/core/constant/images.dart';
-import 'package:e_learning_app/src/features/notification/widgets/model/notification_model.dart';
+import 'package:e_learning_app/src/features/notification/Student_notification/widgets/model/notification_model.dart';
 import 'package:riverpod/riverpod.dart';
 
 final notificationProvider = StateNotifierProvider<NotificationNotifier, List<NotificationItem>>((ref) {
