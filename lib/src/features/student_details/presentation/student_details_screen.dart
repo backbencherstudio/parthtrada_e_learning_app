@@ -1,8 +1,9 @@
-import 'package:e_learning_app/core/constant/images.dart';
-import 'package:e_learning_app/core/utils/common_widget.dart';
-import 'package:e_learning_app/src/features/profile/sub_feature/widgets/widget_List.dart';
+import 'package:e_learning_app/src/features/student_details/presentation/widgets/bottom_sheet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'widgets/header_widgets.dart';
+import 'widgets/professional_bio.dart';
+import 'widgets/qna_section.dart';
 
 class StudentDetailsScreen extends StatelessWidget {
   const StudentDetailsScreen({super.key});
@@ -11,63 +12,37 @@ class StudentDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(left: 24.w, right: 24.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 67.h),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(left: 24.w, right: 24.w),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 30.h,
+                  children: [
+                    SizedBox(height: 37.h),
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(child: SizedBox()),
-                        Expanded(child: SizedBox()),
+                    HeaderWidget(textStyle: textStyle),
 
-                        Center(
-                          child: Image.asset(
-                            AppImages.maiya,
-                            height: 140.h,
-                            width: 140.w,
-                          ),
-                        ),
-                        Expanded(child: SizedBox()),
+                    ProfessionalBio(textStyle: textStyle),
 
-                        Flexible(
-                          child: CommonWidget.notificationWidget(context),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20.h),
-                  Text(
-                    "Jenny Wilson",
-                    style: textStyle.titleSmall!.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xffffffff),
-                    ),
-                  ),
-                  Text(
-                    "Student at Dhaka University",
-                    style: textStyle.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xffA5A5AB),
-                    ),
-                  ),
-                ],
+                    QNASection(textStyle: textStyle),
+
+                    SizedBox(height: 30.h),
+                  ],
+                ),
               ),
-
-            ],
+            ),
           ),
-        ),
+          BottomSheetWidget(textStyle: textStyle),
+        ],
       ),
     );
   }
 }
+
+
