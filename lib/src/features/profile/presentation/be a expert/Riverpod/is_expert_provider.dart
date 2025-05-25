@@ -7,8 +7,11 @@ final isExpertProvider = StateNotifierProvider<ExpertNotifier, bool>(
 );
 
 class ExpertNotifier extends StateNotifier<bool>{
-  ExpertNotifier():super(true);
+  ExpertNotifier():super(false);
   void setExpert(bool value){
     state = value;
+  }
+  void toggle(){
+    state =!state;
   }
 }

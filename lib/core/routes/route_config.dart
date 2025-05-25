@@ -26,7 +26,7 @@ import '../../src/features/message/presentation/message_screen/message_screen.da
 
 class RouteConfig {
   GoRouter goRouter = GoRouter(
-     initialLocation: RouteName.studentDetailsScreen,
+     initialLocation: RouteName.onboarding,
 
 
     routes: [

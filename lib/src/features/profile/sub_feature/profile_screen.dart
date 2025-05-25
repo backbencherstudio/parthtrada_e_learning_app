@@ -1,8 +1,8 @@
 import 'package:e_learning_app/core/constant/images.dart';
+import 'package:e_learning_app/core/utils/common_widget.dart';
+import 'package:e_learning_app/src/features/profile/sub_feature/widgets/widget_List.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'widget_List.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -13,14 +13,29 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding:  EdgeInsets.only(left: 24.w, right: 24.w),
+          padding: EdgeInsets.only(left: 24.w, right: 24.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
-              children: [
+            children: [
               SizedBox(height: 67.h),
-              Center(
-                child: Image.asset(AppImages.maiya, height: 140.h, width: 140.w),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(child: SizedBox()),
+                  Expanded(child: SizedBox()),
+
+                  Center(
+                    child: Image.asset(
+                      AppImages.maiya,
+                      height: 140.h,
+                      width: 140.w,
+                    ),
+                  ),
+                  Expanded(child: SizedBox()),
+
+                  CommonWidget.notificationWidget(context),
+                ],
               ),
               SizedBox(height: 20.h),
               Text(
@@ -37,7 +52,7 @@ class ProfileScreen extends StatelessWidget {
                   color: Color(0xffA5A5AB),
                 ),
               ),
-              SizedBox(height: 20.h,),
+              SizedBox(height: 20.h),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -48,9 +63,9 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 18.h,),
-            ...callContainerGeneral(context),
-              SizedBox(height: 28.h,),
+              SizedBox(height: 18.h),
+              ...callContainerGeneral(context),
+              SizedBox(height: 28.h),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -61,15 +76,13 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 18.h,),
-            ...callContainerPreferences(context),
-              SizedBox(height: 18.h,),
+              SizedBox(height: 18.h),
+              ...callContainerPreferences(context),
+              SizedBox(height: 18.h),
             ],
           ),
         ),
       ),
-    );                 
+    );
   }
 }
-
-
