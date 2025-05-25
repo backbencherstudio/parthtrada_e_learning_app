@@ -4,7 +4,9 @@ import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:e_learning_app/core/routes/route_name.dart';
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
+import 'package:e_learning_app/src/features/parents/riverpod/parentsScreen_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
@@ -37,12 +39,20 @@ class AuthenticationScreen extends StatelessWidget{
               
               SizedBox(
                 width: double.infinity,
-                child: CommonWidget.primaryButton(
-                    context: context,
-                    onPressed: ()=>context.go(RouteName.parentScreen),
-                    text: "Log In With Linkedin",
-                  textStyle: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)
+                child: Consumer(
+                  builder: (_,ref, _) {
+                    return CommonWidget.primaryButton(
+                        context: context,
+                        onPressed: () {
+                          ref.read(parentsScreenProvider.notifier).onSelectedIndex(0);
+                          context.go(RouteName.parentScreen);
 
+                        },
+                        text: "Log In With Linkedin",
+                      textStyle: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)
+
+                    );
+                  }
                 ),
               )
               

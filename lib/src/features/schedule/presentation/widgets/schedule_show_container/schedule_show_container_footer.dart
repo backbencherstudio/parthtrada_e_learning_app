@@ -7,7 +7,6 @@ import '../../../../../../core/utils/common_widget.dart';
 import '../../../model/meeting_model.dart';
 import '../add_review_bottom_sheet/add_review_bottom_sheet.dart';
 
-
 class ScheduleShowContainerFooter extends StatelessWidget {
   final MeetingScheduleModel meetingScheduleModel;
 
@@ -19,11 +18,12 @@ class ScheduleShowContainerFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final buttonTextStyle = textTheme.bodySmall?.copyWith(
+    final buttonTextStyle = textTheme.bodyMedium?.copyWith(
       fontWeight: FontWeight.w800,
     );
 
-    return meetingScheduleModel.status != "canceled" && meetingScheduleModel.status != "no response"
+    return meetingScheduleModel.status != "canceled" &&
+            meetingScheduleModel.status != "no response"
         ? Column(
           spacing: 12.h,
           children: [
@@ -88,7 +88,9 @@ class ScheduleShowContainerFooter extends StatelessWidget {
                       child: CommonWidget.primaryButton(
                         backgroundColor: Color(0xffFF7F48),
                         context: context,
-                        onPressed: () async {await addReviewBottomSheet(context: context);},
+                        onPressed: () async {
+                          await addReviewBottomSheet(context: context);
+                        },
                         text: "Add Review",
                         textStyle: buttonTextStyle,
                       ),
@@ -107,14 +109,14 @@ class ScheduleShowContainerFooter extends StatelessWidget {
                 ),
           ],
         )
-        :
-
-    Column(
+        : Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 12.h,
           children: [
             Text(
-             meetingScheduleModel.status == "no response" ? "No Response" : "Cancelled The Meeting",
+              meetingScheduleModel.status == "no response"
+                  ? "No Response"
+                  : "Cancelled The Meeting",
               style: textTheme.bodyMedium?.copyWith(
                 color: AppColors.error,
                 fontWeight: FontWeight.w600,

@@ -197,7 +197,7 @@ void timeDateSelectionBottomSheet(BuildContext context) {
                                   color: AppColors.primary,
                                   text: "Done",
                                   onTap: () {
-                                    ref.watch(isExpertProvider.notifier).toggle();
+                                    ref.read(isExpertProvider.notifier).toggle();
                                     Navigator.pop(context);
                                   },
                                 ),
