@@ -1,5 +1,6 @@
 import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
+import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/Riverpod/is_expert_provider.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/Riverpod/time_selection_provider.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/main%20bottomsheets/session_details_bottomSheet.dart';
 import 'package:flutter/material.dart';
@@ -188,14 +189,20 @@ void timeDateSelectionBottomSheet(BuildContext context) {
                             ),
                           ),
                           SizedBox(width: 8.w),
-                          Expanded(
-                            child: Mybutton(
-                              color: AppColors.primary,
-                              text: "Done",
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                            ),
+                          Consumer(
+                            builder: (context,ref,_) {
+                              
+                              return Expanded(
+                                child: Mybutton(
+                                  color: AppColors.primary,
+                                  text: "Done",
+                                  onTap: () {
+                                    ref.watch(isExpertProvider.notifier).toggle();
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              );
+                            }
                           ),
                         ],
                       ),

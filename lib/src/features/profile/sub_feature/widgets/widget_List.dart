@@ -24,10 +24,12 @@ List<Widget> callContainerGeneral(BuildContext context) {
       builder: (context, ref, _) {
         final isExpert = ref.watch(isExpertProvider);
         return ProfileContainer(
-          title: "Be A Expert",
+          title: isExpert ?  "Be A Expert" :"Be A Student" ,
           icon: AppIcons.userAdd,
           onTap: () {
-            ref.read(isExpertProvider.notifier).setExpert(true);
+            // ref.read(isExpertProvider.notifier).toggle();
+
+            // // ref.read(isExpertProvider.notifier).setExpert(true);
             debugPrint("$isExpert");
             showBeExpertBottomSheet(context);
           },
