@@ -13,7 +13,7 @@ class NotificationNotifier extends StateNotifier<List<NotificationItem>> {
     NotificationItem(
       title: 'Sarah Chen',
       description: 'Accepted your consultation request for June 13th at 3 PM.',
-      img: AppImages.women, // replace with actual asset path
+      img: AppImages.women, 
     ),
     NotificationItem(
       title: 'Dr. Mark',

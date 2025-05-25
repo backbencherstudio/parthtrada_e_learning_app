@@ -1,7 +1,9 @@
 import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:e_learning_app/core/routes/route_name.dart';
 import 'package:e_learning_app/core/utils/utils.dart';
+import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/Riverpod/is_expert_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -43,21 +45,27 @@ class CommonWidget {
     );
   }
 
-  static Container notificationWidget(BuildContext context) {
-    return Container(
-      height: 48.h,
-      width: 48.w,
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 11.h),
-      decoration: BoxDecoration(
-        color: AppColors.secondaryButtonBgColor,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: GestureDetector(
-        onTap: () {
-          context.push(RouteName.globalNotificationScreen);
-        },
-        child: SvgPicture.asset(AppIcons.notificationIcon),
-      ),
+  static Widget notificationWidget(BuildContext context) {
+    return Consumer(
+      builder: (context,ref,_) {
+        final isExpert = ref.watch(isExpertProvider);
+        return Container(
+          height: 48.h,
+          width: 48.w,
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 11.h),
+          decoration: BoxDecoration(
+            color: AppColors.secondaryButtonBgColor,
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: GestureDetector(
+            onTap: () {
+              isExpert? context.push(RouteName.expertNotificationScreen):
+              context.push(RouteName.globalNotificationScreen);
+            },
+            child: SvgPicture.asset(AppIcons.notificationIcon),
+          ),
+        );
+      }
     );
   }
 
