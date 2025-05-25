@@ -40,7 +40,7 @@ static const String circleTikMarkFill = "${AssetPath.icon}/circle_tik_mark_fill.
 
 static const String arrowLeft = "${AssetPath.icon}/arrow_left.svg";
 static const String arrowRight = "${AssetPath.icon}/arrow_right.svg";
-
+static const String locationPin = "${AssetPath.icon}/location_pin.svg";
 }
 
   // profile
