@@ -25,22 +25,20 @@ List<Widget> callContainerGeneral(BuildContext context) {
       builder: (context, ref, _) {
         final isExpert = ref.watch(isExpertProvider);
         return ProfileContainer(
-          title: isExpert ?  "Be A Student" :"Be A Expert" ,
+          title: isExpert ? "Be A Student" : "Be A Expert",
           icon: AppIcons.userAdd,
           onTap: () async {
             // ref.read(isExpertProvider.notifier).toggle();
 
             // // ref.read(isExpertProvider.notifier).setExpert(true);
             debugPrint("$isExpert");
-            if(!isExpert){
-             await showBeExpertBottomSheet(context);
+            if (!isExpert) {
+              await showBeExpertBottomSheet(context);
             }
-            if(isExpert){
+            if (isExpert) {
               ref.read(isExpertProvider.notifier).toggle();
               context.go(RouteName.splash);
             }
-
-
           },
         );
       },
@@ -107,9 +105,13 @@ List<Widget> callContainerPreferences(BuildContext context) {
         context.push(RouteName.helpAndSupport);
       },
     ),
-    ProfileContainer(title: "Logout", icon: AppIcons.logout, onTap: () {
-      showLogoutDialog(context);
-    }),
+    ProfileContainer(
+      title: "Logout",
+      icon: AppIcons.logout,
+      onTap: () {
+        showLogoutDialog(context);
+      },
+    ),
   ];
   return profilePreferenceList;
 }

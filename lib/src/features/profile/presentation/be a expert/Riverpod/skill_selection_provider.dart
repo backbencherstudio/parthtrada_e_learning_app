@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final skillSelectionProvider =
     StateNotifierProvider<SkillSelectionNotifier, Set<String>>(
-  (ref) => SkillSelectionNotifier(),
-);
+      (ref) => SkillSelectionNotifier(),
+    );
 
 class SkillSelectionNotifier extends StateNotifier<Set<String>> {
   SkillSelectionNotifier() : super({});
@@ -15,7 +15,8 @@ class SkillSelectionNotifier extends StateNotifier<Set<String>> {
       state = {...state, skill};
     }
   }
-   void remove(String skill) {
+
+  void remove(String skill) {
     state = {...state}..remove(skill);
   }
 

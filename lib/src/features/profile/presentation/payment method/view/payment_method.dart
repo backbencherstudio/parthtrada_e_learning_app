@@ -40,7 +40,7 @@ class PaymentMethodScreen extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.only(left: 24.w, right: 24.w),
         child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Divider(
               thickness: 1,
@@ -69,15 +69,20 @@ class PaymentMethodScreen extends StatelessWidget {
                 ],
               ),
             ),
-           SizedBox(height: 8.h,),
-            TextFormField( decoration: InputDecoration(hintText: "________", suffixIcon: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SvgPicture.asset(AppIcons.scanner),
-            )),),
-            SizedBox(height:14.h),
-          //given name
+            SizedBox(height: 8.h),
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: "________",
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SvgPicture.asset(AppIcons.scanner),
+                ),
+              ),
+            ),
+            SizedBox(height: 14.h),
 
-              RichText(
+            //given name
+            RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
@@ -97,13 +102,14 @@ class PaymentMethodScreen extends StatelessWidget {
                 ],
               ),
             ),
-           SizedBox(height: 8.h,),
-            TextFormField( decoration: InputDecoration(hintText: "Jenny Wilson", )
-             ),
-               SizedBox(height:14.h),
-          //Surname 
+            SizedBox(height: 8.h),
+            TextFormField(
+              decoration: InputDecoration(hintText: "Jenny Wilson"),
+            ),
+            SizedBox(height: 14.h),
 
-              RichText(
+            //Surname
+            RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
@@ -123,13 +129,14 @@ class PaymentMethodScreen extends StatelessWidget {
                 ],
               ),
             ),
-           SizedBox(height: 8.h,),
-           TextFormField( decoration: InputDecoration(hintText: "wilson@09gail.com", )
-             ),
-              //Expire in  
-               SizedBox(height:14.h),
+            SizedBox(height: 8.h),
+            TextFormField(
+              decoration: InputDecoration(hintText: "wilson@09gail.com"),
+            ),
+            //Expire in
+            SizedBox(height: 14.h),
 
-              RichText(
+            RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
@@ -149,14 +156,13 @@ class PaymentMethodScreen extends StatelessWidget {
                 ],
               ),
             ),
-           SizedBox(height: 8.h,),
-           TextFormField( decoration: InputDecoration(hintText: "MM/YY", )
-             ),
+            SizedBox(height: 8.h),
+            TextFormField(decoration: InputDecoration(hintText: "MM/YY")),
 
-             //CVV/CSC *
-                            SizedBox(height:14.h),
+            //CVV/CSC *
+            SizedBox(height: 14.h),
 
-              RichText(
+            RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
@@ -176,15 +182,17 @@ class PaymentMethodScreen extends StatelessWidget {
                 ],
               ),
             ),
-           SizedBox(height: 8.h,),
-           TextFormField( decoration: InputDecoration(hintText: "________", ),
+            SizedBox(height: 8.h),
+            TextFormField(decoration: InputDecoration(hintText: "________")),
 
-           
-             ),
+            SizedBox(height: 50.h),
 
-             SizedBox(height: 50.h,),
-
-             Mybutton(color: AppColors.primary, text: "Save", onTap: (){}, width: 327.w,)
+            Mybutton(
+              color: AppColors.primary,
+              text: "Save",
+              onTap: () {},
+              width: 327.w,
+            ),
           ],
         ),
       ),

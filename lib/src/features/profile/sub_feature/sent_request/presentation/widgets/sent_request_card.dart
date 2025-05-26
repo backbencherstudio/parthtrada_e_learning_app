@@ -6,10 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../../../../core/theme/theme_part/app_colors.dart';
 
 class SentRequestCard extends StatelessWidget {
-  const SentRequestCard({
-    super.key,
-    required this.textTheme,
-  });
+  const SentRequestCard({super.key, required this.textTheme});
 
   final TextTheme textTheme;
 
@@ -50,9 +47,7 @@ class SentRequestCard extends StatelessWidget {
           SizedBox(height: 16.h),
           Text(
             'David Kim',
-            style: textTheme.titleLarge!.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 5.h),
           Text(

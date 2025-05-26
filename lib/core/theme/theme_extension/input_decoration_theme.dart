@@ -5,9 +5,10 @@ import '../theme_part/app_colors.dart';
 
 class AppInputDecorationTheme {
   static InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
-    hintStyle: TextStyle(color: Color(0xff777980),
-    fontSize:16.sp,
-    fontWeight: FontWeight.w400
+    hintStyle: TextStyle(
+      color: Color(0xff777980),
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w400,
     ),
     filled: true,
     fillColor: AppColors.fillColor,

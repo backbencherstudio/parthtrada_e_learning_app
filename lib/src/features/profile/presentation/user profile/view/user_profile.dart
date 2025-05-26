@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../sub_feature/user profile/widget/custom_button.dart';
 import '../../../sub_feature/user profile/widget/headers.dart';
 
-
 class UserProfile extends StatelessWidget {
   const UserProfile({super.key});
 
@@ -98,16 +97,22 @@ class UserProfile extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Mybutton(color: Color(0xff2B2C31), text: "Discard", onTap: () {
-                    Navigator.pop(context);
-                  },),
-                  SizedBox(width: 8.w,),
-                  Mybutton(color:AppColors.primary , text: "Save", onTap: () {
-                    
-                  },)
+                  Mybutton(
+                    color: Color(0xff2B2C31),
+                    text: "Discard",
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  SizedBox(width: 8.w),
+                  Mybutton(
+                    color: AppColors.primary,
+                    text: "Save",
+                    onTap: () {},
+                  ),
                 ],
               ),
-              SizedBox(height: 100.h,)
+              SizedBox(height: 100.h),
             ],
           ),
         ),

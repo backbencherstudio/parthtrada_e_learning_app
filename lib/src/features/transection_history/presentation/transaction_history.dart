@@ -23,10 +23,10 @@ class TransactionHistory extends StatelessWidget {
             itemCount: 10,
             itemBuilder: (context, index) {
               bool isRefunded = false;
-              if(index%2==0){
+              if (index % 2 == 0) {
                 isRefunded = true;
               }
-              return TransactionHistoryCard(isRefunded: isRefunded,);
+              return TransactionHistoryCard(isRefunded: isRefunded);
             },
           ),
         ),
@@ -34,4 +34,3 @@ class TransactionHistory extends StatelessWidget {
     );
   }
 }
-

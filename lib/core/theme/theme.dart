@@ -18,7 +18,6 @@ class AppTheme {
     textTheme: AppTextTheme.darkTextTheme,
     colorScheme: AppColors.darkColorScheme,
     timePickerTheme: CustomTimePickerTheme.timePickerTheme,
-    datePickerTheme:CustomDatePickerTheme.datePickerTheme,
+    datePickerTheme: CustomDatePickerTheme.datePickerTheme,
   );
-
 }

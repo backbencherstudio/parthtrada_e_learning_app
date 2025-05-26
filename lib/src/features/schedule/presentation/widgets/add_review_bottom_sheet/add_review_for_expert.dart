@@ -105,15 +105,17 @@ class _AddReviewForExpertState extends State<AddReviewForExpert> {
           child: Row(
             spacing: 10.w,
             children: [
-              Expanded(child: CommonWidget.primaryButton(
+              Expanded(
+                child: CommonWidget.primaryButton(
                   context: context,
-                  onPressed: ()=> context.pop(),
+                  onPressed: () => context.pop(),
                   text: "Cancel",
                   backgroundColor: AppColors.secondary,
-                textStyle: textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
+                  textStyle: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),),
+              ),
 
               Expanded(
                 child: Consumer(

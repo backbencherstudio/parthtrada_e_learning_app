@@ -47,7 +47,7 @@ class CommonWidget {
 
   static Widget notificationWidget(BuildContext context) {
     return Consumer(
-      builder: (context,ref,_) {
+      builder: (context, ref, _) {
         final isExpert = ref.watch(isExpertProvider);
         return Container(
           height: 48.h,
@@ -59,13 +59,14 @@ class CommonWidget {
           ),
           child: GestureDetector(
             onTap: () {
-              isExpert? context.push(RouteName.expertNotificationScreen):
-              context.push(RouteName.globalNotificationScreen);
+              isExpert
+                  ? context.push(RouteName.expertNotificationScreen)
+                  : context.push(RouteName.globalNotificationScreen);
             },
             child: SvgPicture.asset(AppIcons.notificationIcon),
           ),
         );
-      }
+      },
     );
   }
 
@@ -77,13 +78,12 @@ class CommonWidget {
     Color? foregroundColor,
     TextStyle? textStyle,
     EdgeInsets? padding,
-  }){
-
-
+  }) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor ?? AppColors.primary,
-        padding: padding ?? EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+        padding:
+            padding ?? EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
       ),
       onPressed: onPressed,
       child: Text(

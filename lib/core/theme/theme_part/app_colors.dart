@@ -22,7 +22,6 @@ class AppColors {
   static Color surface = Color(0xff252525);
   static const Color onSurface = Color(0xffA5A5AB);
 
-
   static const Color mainIconColor = Color(0xffFFFFFF);
   static const Color textColor = Color(0xffFFFFFF);
   static const Color onBoardingSecondaryTextColor = Color(0xffD2D2D5);
@@ -32,5 +31,4 @@ class AppColors {
   static const Color secondaryStrokeColor = Color(0xff2B2C31);
   static const Color refundedColor = Color(0xffFF7F48);
   static const Color dividerColor = Color(0xff5F5F5F);
-
 }

@@ -9,4 +9,3 @@ class NotificationItem {
     required this.img,
   });
 }
- 

@@ -1,4 +1,4 @@
-class AssetPath{
+class AssetPath {
   /// Icons Path
   static const String icon = "assets/icons";
 

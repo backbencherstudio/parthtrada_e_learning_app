@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
 
-class SplashScreen extends StatefulWidget{
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
@@ -14,8 +14,6 @@ class SplashScreen extends StatefulWidget{
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -31,23 +29,21 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child:
-        Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           spacing: 10.h,
           children: [
-            Image.asset(AppIcons.pngLogo,width: 100.w,height: 100.h,),
-            Text("TrueNote",style: Theme.of(context).textTheme.headlineSmall,),
-            SizedBox(height: 170.h,),
-
+            Image.asset(AppIcons.pngLogo, width: 100.w, height: 100.h),
+            Text("TrueNote", style: Theme.of(context).textTheme.headlineSmall),
+            SizedBox(height: 170.h),
 
             /// Progressing Indicator
             NutsActivityIndicator(
               activeColor: AppColors.primary,
-              inactiveColor: Colors.white ,
+              inactiveColor: Colors.white,
               tickCount: 12,
               relativeWidth: 0.7,
-              radius: 18 ,
+              radius: 18,
               startRatio: 0.6,
               animationDuration: Duration(milliseconds: 1000),
             ),

@@ -21,13 +21,13 @@ class ExpertNotificationScreen extends StatelessWidget {
             SizedBox(height: 45.h),
             Row(
               children: [
-             GestureDetector(
-               onTap: () {
-                 Navigator.pop(context);
-               },
-               child: SvgPicture.asset(AppIcons.backlongArrow),
-             ),
-        SizedBox(width: 12.w,),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: SvgPicture.asset(AppIcons.backlongArrow),
+                ),
+                SizedBox(width: 12.w),
                 Text(
                   "Notifications",
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
@@ -38,36 +38,33 @@ class ExpertNotificationScreen extends StatelessWidget {
                 ),
               ],
             ),
-        
-            SizedBox(height: 8.h),
-        
-           Expanded(
-             child: SizedBox(
-               height: MediaQuery.of(context).size.height, 
-               child: Consumer(
-                 builder: (context, ref, _) {
-                   final call = ref.watch(expertNotiProvider);
-                   return ListView.builder(
-                     itemCount: call.length,
-                     itemBuilder: (context, index) {
-                       final tile = call[index];
-                       return Padding(
-              padding:  EdgeInsets.only(bottom: 12.h),
-              child: NotificationContainer(
-                title: tile.title,
-                discription: tile.discription,
-                isRefund: tile.isRefund,
-              ),
-                       );
-                     },
-                   );
-                 },
-               ),
-             ),
-           ),
 
-         
-          
+            SizedBox(height: 8.h),
+
+            Expanded(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Consumer(
+                  builder: (context, ref, _) {
+                    final call = ref.watch(expertNotiProvider);
+                    return ListView.builder(
+                      itemCount: call.length,
+                      itemBuilder: (context, index) {
+                        final tile = call[index];
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: 12.h),
+                          child: NotificationContainer(
+                            title: tile.title,
+                            discription: tile.discription,
+                            isRefund: tile.isRefund,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),

@@ -39,7 +39,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 "Get career advice from verified professionals -one-on-one.",
             imagePath: AppImages.onboardingImageOne,
             tabController: _tabController,
-             buttonText: "Next",
+            buttonText: "Next",
           ),
 
           OnboardingPageWidget(
@@ -53,8 +53,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
           OnboardingPageWidget(
             heading: "Achieve More, Faster",
-            bodyText:
-                "Book sessions, learn new skills, and reach your goals.",
+            bodyText: "Book sessions, learn new skills, and reach your goals.",
             imagePath: AppImages.onboardingImageThree,
             tabController: _tabController,
             buttonText: "Get Started",

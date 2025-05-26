@@ -6,17 +6,15 @@ import '../../../../../../core/constant/icons.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../../../core/utils/utils.dart';
 
-class AppDetailsContainer extends StatelessWidget{
+class AppDetailsContainer extends StatelessWidget {
   const AppDetailsContainer({super.key});
-
 
   Widget appSuccessColumnMaker({
     required BuildContext context,
     required String iconPath,
     required String title,
     required String subTitle,
-  })
-  {
+  }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,62 +29,63 @@ class AppDetailsContainer extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return           /// App Details
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-        width: double.infinity,
-        decoration: Utils.commonBoxDecoration(),
-        child: FittedBox(
-          child: Row(
-            spacing: 18.w,
-            children: [
-              appSuccessColumnMaker(
-                context: context,
-                iconPath: AppIcons.trophyOutline,
-                title: "2K+",
-                subTitle: "Mentors",
-              ),
+    return
+    /// App Details
+    Container(
+      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+      width: double.infinity,
+      decoration: Utils.commonBoxDecoration(),
+      child: FittedBox(
+        child: Row(
+          spacing: 18.w,
+          children: [
+            appSuccessColumnMaker(
+              context: context,
+              iconPath: AppIcons.trophyOutline,
+              title: "2K+",
+              subTitle: "Mentors",
+            ),
 
-              SizedBox(
-                height: 43.h,
-                width: 2.w,
-                child: VerticalDivider(color: AppColors.dividerColor),
-              ),
+            SizedBox(
+              height: 43.h,
+              width: 2.w,
+              child: VerticalDivider(color: AppColors.dividerColor),
+            ),
 
-              appSuccessColumnMaker(
-                context: context,
-                iconPath: AppIcons.targetBoardOutline,
-                title: "100K+",
-                subTitle: "Sessions",
-              ),
+            appSuccessColumnMaker(
+              context: context,
+              iconPath: AppIcons.targetBoardOutline,
+              title: "100K+",
+              subTitle: "Sessions",
+            ),
 
-              SizedBox(
-                height: 43.h,
-                width: 2.w,
-                child: VerticalDivider(color: AppColors.dividerColor),
-              ),
-              appSuccessColumnMaker(
-                context: context,
-                iconPath: AppIcons.usersOutline,
-                title: "50K+",
-                subTitle: "Users",
-              ),
+            SizedBox(
+              height: 43.h,
+              width: 2.w,
+              child: VerticalDivider(color: AppColors.dividerColor),
+            ),
+            appSuccessColumnMaker(
+              context: context,
+              iconPath: AppIcons.usersOutline,
+              title: "50K+",
+              subTitle: "Users",
+            ),
 
-              SizedBox(
-                height: 43.h,
-                width: 2.w,
-                child: VerticalDivider(color: AppColors.dividerColor),
-              ),
+            SizedBox(
+              height: 43.h,
+              width: 2.w,
+              child: VerticalDivider(color: AppColors.dividerColor),
+            ),
 
-              appSuccessColumnMaker(
-                context: context,
-                iconPath: AppIcons.starOutline,
-                title: "4.9",
-                subTitle: "Rating",
-              ),
-            ],
-          ),
+            appSuccessColumnMaker(
+              context: context,
+              iconPath: AppIcons.starOutline,
+              title: "4.9",
+              subTitle: "Rating",
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }

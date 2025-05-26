@@ -1,5 +1,4 @@
-
-enum MeetingStatus {completed, canceled, accepted, pending}
+enum MeetingStatus { completed, canceled, accepted, pending }
 
 class MeetingScheduleModel {
   String profilePicture;

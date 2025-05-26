@@ -13,19 +13,21 @@ class BellNotification extends StatelessWidget {
         //notification page
       },
       child: Container(
-       height: 48.h,
-       width: 48.w,
+        height: 48.h,
+        width: 48.w,
         decoration: BoxDecoration(
-          borderRadius:  BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(12.r),
           color: Color(0xff191919),
         ),
-        child:Padding(
-          padding:  EdgeInsets.only(left: 8.w, right: 8.w, top: 10.h, bottom: 10.h),
-          child: SvgPicture.asset(AppIcons.bell,
-          height: 26.h,
-          width: 26.w,
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: 8.w,
+            right: 8.w,
+            top: 10.h,
+            bottom: 10.h,
           ),
-        ) ,
+          child: SvgPicture.asset(AppIcons.bell, height: 26.h, width: 26.w),
+        ),
       ),
     );
   }

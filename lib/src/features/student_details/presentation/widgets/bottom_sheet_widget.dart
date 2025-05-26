@@ -5,10 +5,7 @@ import '../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../../core/utils/common_widget.dart';
 
 class BottomSheetWidget extends StatelessWidget {
-  const BottomSheetWidget({
-    super.key,
-    required this.textStyle,
-  });
+  const BottomSheetWidget({super.key, required this.textStyle});
 
   final TextTheme textStyle;
 
@@ -35,7 +32,7 @@ class BottomSheetWidget extends StatelessWidget {
               children: <TextSpan>[
                 TextSpan(
                   text:
-                  'Wants to take your consultation on June 13th at 3 PM. For ',
+                      'Wants to take your consultation on June 13th at 3 PM. For ',
                 ),
                 TextSpan(
                   text: '30', // This is the text that will be white
@@ -51,18 +48,23 @@ class BottomSheetWidget extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: CommonWidget.primaryButton(context: context, onPressed: (){
-
-                }, text: 'Decline',backgroundColor: AppColors.secondaryStrokeColor),
+                child: CommonWidget.primaryButton(
+                  context: context,
+                  onPressed: () {},
+                  text: 'Decline',
+                  backgroundColor: AppColors.secondaryStrokeColor,
+                ),
               ),
               SizedBox(width: 10.w),
               Expanded(
-                child: CommonWidget.primaryButton(context: context, onPressed: (){
-
-                }, text: 'Accept',),
-              )
+                child: CommonWidget.primaryButton(
+                  context: context,
+                  onPressed: () {},
+                  text: 'Accept',
+                ),
+              ),
             ],
-          )
+          ),
         ],
       ),
     );

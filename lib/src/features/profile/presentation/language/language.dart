@@ -153,7 +153,7 @@ class LanguageScreen extends StatelessWidget {
                 onTap: () {},
                 width: 327.w,
               ),
-              SizedBox(height: 20.h,)
+              SizedBox(height: 20.h),
             ],
           ),
         ),

@@ -5,10 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/theme/theme_part/app_colors.dart';
 
 class ProfessionalBio extends StatelessWidget {
-  const ProfessionalBio({
-    super.key,
-    required this.textStyle,
-  });
+  const ProfessionalBio({super.key, required this.textStyle});
 
   final TextTheme textStyle;
 

@@ -21,15 +21,18 @@ class CustomCircleCheckbox extends StatelessWidget {
         width: 20.w,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-color: isChecked ? AppColors.primary : null,
+          color: isChecked ? AppColors.primary : null,
           border: Border.all(
             width: 2.w,
-color: isChecked ? AppColors.primary : const Color(0xff777980),
+            color: isChecked ? AppColors.primary : const Color(0xff777980),
           ),
         ),
-        child: isChecked
-            ? const Center(child: Icon(Icons.check, size: 16, color: Color(0xffffffff)))
-            : null,
+        child:
+            isChecked
+                ? const Center(
+                  child: Icon(Icons.check, size: 16, color: Color(0xffffffff)),
+                )
+                : null,
       ),
     );
   }

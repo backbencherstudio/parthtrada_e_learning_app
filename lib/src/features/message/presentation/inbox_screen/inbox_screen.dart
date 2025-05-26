@@ -64,7 +64,7 @@ class _InboxScreenState extends State<InboxScreen> {
                     image: widget.image,
                     name: widget.name,
                   ),
-                  Divider(color: AppColors.secondaryStrokeColor,),
+                  Divider(color: AppColors.secondaryStrokeColor),
                 ],
               ),
               Expanded(
@@ -94,4 +94,3 @@ class _InboxScreenState extends State<InboxScreen> {
     );
   }
 }
-

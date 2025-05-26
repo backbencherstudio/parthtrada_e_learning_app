@@ -1,5 +1,6 @@
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
-import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/Riverpod/skill_selection_provider.dart' show skillSelectionProvider;
+import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/Riverpod/skill_selection_provider.dart'
+    show skillSelectionProvider;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +15,7 @@ void selectSkillsBottomSheet(BuildContext context) {
     "Cloud Architecture",
     "Data Science",
     "Frontend Development",
-    "Flutter App Development", 
+    "Flutter App Development",
   ];
   showModalBottomSheet(
     context: context,
@@ -33,11 +34,10 @@ void selectSkillsBottomSheet(BuildContext context) {
               ),
             ),
             child: Padding(
-              padding:  EdgeInsets.only(left: 8.w, right: 8.w),            
+              padding: EdgeInsets.only(left: 8.w, right: 8.w),
               child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Align(
                     alignment: Alignment.centerRight,
                     child: ClipOval(
@@ -64,37 +64,44 @@ void selectSkillsBottomSheet(BuildContext context) {
                       color: Color(0xffffffff),
                     ),
                   ),
-                  SizedBox(height: 20.h,),
-                Consumer(
-  builder: (context, ref, _) {
-    final selectedSkills = ref.watch(skillSelectionProvider);
+                  SizedBox(height: 20.h),
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final selectedSkills = ref.watch(skillSelectionProvider);
 
-    return Wrap(
-      spacing: 12,
-      runSpacing: 12,
-      children: skills.map((skill) {
-        return CustomSkillCheck(
-          text: skill,
-          isSelected: selectedSkills.contains(skill),
-          onTap: () {
-            ref.read(skillSelectionProvider.notifier).toggle(skill);
-          },
-        );
-      }).toList(),
-    );
-  },
-),
+                      return Wrap(
+                        spacing: 12,
+                        runSpacing: 12,
+                        children:
+                            skills.map((skill) {
+                              return CustomSkillCheck(
+                                text: skill,
+                                isSelected: selectedSkills.contains(skill),
+                                onTap: () {
+                                  ref
+                                      .read(skillSelectionProvider.notifier)
+                                      .toggle(skill);
+                                },
+                              );
+                            }).toList(),
+                      );
+                    },
+                  ),
 
-                
-              SizedBox(height: 119.h,),
-               Center(
-                 child: Mybutton(color: AppColors.primary, text: "Done", onTap: () {
-                   Navigator.pop(context);
-                    showBeExpertBottomSheet(context);
-                 }, width: 327.w,),
-               ),
-              
-              SizedBox(height: 15.h,)
+                  SizedBox(height: 119.h),
+                  Center(
+                    child: Mybutton(
+                      color: AppColors.primary,
+                      text: "Done",
+                      onTap: () {
+                        Navigator.pop(context);
+                        showBeExpertBottomSheet(context);
+                      },
+                      width: 327.w,
+                    ),
+                  ),
+
+                  SizedBox(height: 15.h),
                 ],
               ),
             ),

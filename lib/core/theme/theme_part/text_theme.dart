@@ -5,7 +5,6 @@ import 'app_colors.dart';
 
 class AppTextTheme {
   static TextTheme darkTextTheme = TextTheme(
-
     headlineLarge: GoogleFonts.nunitoSans(
       fontSize: 32.sp,
       fontWeight: FontWeight.w800,
@@ -42,7 +41,7 @@ class AppTextTheme {
       color: AppColors.textColor,
     ),
 
-     bodyLarge: GoogleFonts.nunitoSans(
+    bodyLarge: GoogleFonts.nunitoSans(
       fontSize: 18.sp,
       fontWeight: FontWeight.w400,
       color: AppColors.textColor,
@@ -78,5 +77,4 @@ class AppTextTheme {
       fontWeight: FontWeight.w400,
     ),
   );
-
 }

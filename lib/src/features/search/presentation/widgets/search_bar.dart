@@ -7,7 +7,7 @@ import '../../../../../core/constant/padding.dart';
 import '../../../../../core/utils/utils.dart';
 import 'expert_search_bottom_sheet.dart';
 
-class ExpertSearchBar extends StatelessWidget{
+class ExpertSearchBar extends StatelessWidget {
   const ExpertSearchBar({super.key});
 
   @override
@@ -41,13 +41,13 @@ class ExpertSearchBar extends StatelessWidget{
             ),
 
             GestureDetector(
-              onTap: ()=>expertSearchBottomSheet(context: context),
+              onTap: () => expertSearchBottomSheet(context: context),
               child: Container(
                 padding: EdgeInsets.all(14.r),
                 decoration: Utils.commonBoxDecoration(),
                 child: SvgPicture.asset(AppIcons.filter),
               ),
-            )
+            ),
           ],
         ),
       ),

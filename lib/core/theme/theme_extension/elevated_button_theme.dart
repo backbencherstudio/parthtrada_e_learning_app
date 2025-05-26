@@ -9,7 +9,7 @@ class AppEvaluatedButtonThemes {
   //Light model Evaluated Button Theme
   static final evaluatedButtonTheme = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r),),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
       foregroundColor: AppColors.onPrimary,
       backgroundColor: AppColors.primary,
       textStyle: GoogleFonts.nunitoSans(

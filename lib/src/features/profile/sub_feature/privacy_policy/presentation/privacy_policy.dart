@@ -7,7 +7,6 @@ import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../riverpod/scroll_riverpod.dart';
 import 'widgets/policy_card.dart';
 
-
 class PrivacyPolicy extends ConsumerWidget {
   const PrivacyPolicy({super.key});
 
@@ -51,7 +50,7 @@ class PrivacyPolicy extends ConsumerWidget {
                             },
                           ),
                         ),
-                        SizedBox(width: 8.w,),
+                        SizedBox(width: 8.w),
                         Container(
                           height: scrollModel.scrollBarHeight,
                           width: scrollModel.scrollBarWidth,
@@ -62,8 +61,7 @@ class PrivacyPolicy extends ConsumerWidget {
                           child: Stack(
                             children: [
                               Positioned(
-                                top:
-                                scrollModel.indicatorPosition,
+                                top: scrollModel.indicatorPosition,
                                 child: Container(
                                   width: scrollModel.scrollBarWidth,
                                   height: scrollModel.indicatorHeight,

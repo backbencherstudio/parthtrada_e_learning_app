@@ -26,11 +26,10 @@ class ScheduleShowContainer extends StatelessWidget {
       builder: (_, ref, _) {
         final isExpert = ref.watch(isExpertProvider);
         return GestureDetector(
-          onTap: (){
-            if(isExpert){
+          onTap: () {
+            if (isExpert) {
               context.push(RouteName.studentDetailsScreen);
             }
-
           },
           child: Container(
             width: double.infinity,
@@ -54,7 +53,10 @@ class ScheduleShowContainer extends StatelessWidget {
                 SizedBox(height: 16.h),
 
                 /// User Name
-                Text(meetingScheduleModel.userName, style: textTheme.titleMedium),
+                Text(
+                  meetingScheduleModel.userName,
+                  style: textTheme.titleMedium,
+                ),
 
                 SizedBox(height: 4.h),
 
@@ -68,18 +70,16 @@ class ScheduleShowContainer extends StatelessWidget {
 
                 SizedBox(height: 4.h),
 
-             isExpert ? ScheduleContainerFooterForExpertRole() :
-                      ScheduleShowContainerFooter(
-                      meetingScheduleModel: meetingScheduleModel,),
-
-
-
-
+                isExpert
+                    ? ScheduleContainerFooterForExpertRole()
+                    : ScheduleShowContainerFooter(
+                      meetingScheduleModel: meetingScheduleModel,
+                    ),
               ],
             ),
           ),
         );
-      }
+      },
     );
   }
 }

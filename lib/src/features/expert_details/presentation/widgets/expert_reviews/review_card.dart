@@ -54,13 +54,26 @@ class ReviewCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 3.w),
-                    Text(review.ratings.toString(), style: textTheme.bodySmall!),
+                    Text(
+                      review.ratings.toString(),
+                      style: textTheme.bodySmall!,
+                    ),
                   ],
                 ),
-                SizedBox(height: 2.h,),
-                Text(review.reviews!, style: textTheme.bodyMedium?.copyWith(color: AppColors.secondaryTextColor),),
-                SizedBox(height: 8.h,),
-                Text("${review.eMail} - 1day ago", style: textTheme.labelMedium?.copyWith(color: Color(0xffA5A5AB)),)
+                SizedBox(height: 2.h),
+                Text(
+                  review.reviews!,
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: AppColors.secondaryTextColor,
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Text(
+                  "${review.eMail} - 1day ago",
+                  style: textTheme.labelMedium?.copyWith(
+                    color: Color(0xffA5A5AB),
+                  ),
+                ),
               ],
             ),
           ),

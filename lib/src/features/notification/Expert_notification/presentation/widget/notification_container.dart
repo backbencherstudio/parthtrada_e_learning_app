@@ -11,12 +11,13 @@ class NotificationContainer extends StatelessWidget {
   final String discription;
   final bool isRefund;
   final String? img;
-  const NotificationContainer({super.key,
-  
-  required this.title,
-  required this.discription,
-   this.img,
-  required this.isRefund
+  const NotificationContainer({
+    super.key,
+
+    required this.title,
+    required this.discription,
+    this.img,
+    required this.isRefund,
   });
 
   @override
@@ -39,14 +40,13 @@ class NotificationContainer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset( img ?? AppImages.bedi, height: 56.h, width: 56.w),
+            Image.asset(img ?? AppImages.bedi, height: 56.h, width: 56.w),
             SizedBox(height: 16.h),
             Text(
               title,
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontWeight: FontWeight.w800,
                 color: Color(0xffffffff),
-
               ),
             ),
             SizedBox(height: 4.h),
@@ -56,38 +56,34 @@ class NotificationContainer extends StatelessWidget {
                 context,
               ).textTheme.bodyMedium!.copyWith(color: Color(0xff777980)),
             ),
-       SizedBox(height: 15.h,),
-            isRefund?
-            Mybutton(
-              height: 40.h,
-                     width: double.infinity,
+            SizedBox(height: 15.h),
+            isRefund
+                ? Mybutton(
+                  height: 40.h,
+                  width: double.infinity,
                   color: AppColors.primary,
-                    text: "Mark as Refunded",
-                    onTap: () {
-
-                    },
-                  ):
-            Expanded(
-              child: Row(
-                children: [
-                  Mybutton(
-                    color: Color(0xff2B2C31),
-                    text: "Decline",
-                    onTap: () {
-                    },
+                  text: "Mark as Refunded",
+                  onTap: () {},
+                )
+                : Expanded(
+                  child: Row(
+                    children: [
+                      Mybutton(
+                        color: Color(0xff2B2C31),
+                        text: "Decline",
+                        onTap: () {},
+                      ),
+                      SizedBox(width: 8.w),
+                      Expanded(
+                        child: Mybutton(
+                          color: AppColors.primary,
+                          text: "Accept",
+                          onTap: () {},
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(width: 8.w),
-                  Expanded(
-                    child: Mybutton(
-                      color: AppColors.primary,
-                      text: "Accept",
-                      onTap: () {
-                      },
-                    ),
-                  ),
-                ] ,
-              ),
-            ),
+                ),
           ],
         ),
       ),

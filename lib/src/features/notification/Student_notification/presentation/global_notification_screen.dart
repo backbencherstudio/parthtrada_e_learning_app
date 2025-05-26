@@ -24,13 +24,13 @@ class GlobalNotificationScreen extends StatelessWidget {
               SizedBox(height: 45.h),
               Row(
                 children: [
-               GestureDetector(
-                 onTap: () {
-                   Navigator.pop(context);
-                 },
-                 child: SvgPicture.asset(AppIcons.backlongArrow),
-               ),
-          SizedBox(width: 12.w,),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: SvgPicture.asset(AppIcons.backlongArrow),
+                  ),
+                  SizedBox(width: 12.w),
                   Text(
                     "Notifications",
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
@@ -56,7 +56,7 @@ class GlobalNotificationScreen extends StatelessWidget {
                     itemCount: notifications.length,
                     itemBuilder: (context, index) {
                       final item = notifications[index];
-                            
+
                       return CustomNotificationContainer(
                         title: item.title,
                         discription: item.description,

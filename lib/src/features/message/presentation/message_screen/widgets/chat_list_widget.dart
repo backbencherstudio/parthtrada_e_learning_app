@@ -28,15 +28,11 @@ class ChatListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push(
-        RouteName.inboxScreen,
-        extra: {
-          'image': imageUrl,
-          'name': name,
-          'userId': userId,
-        },
-      ),
-
+      onTap:
+          () => context.push(
+            RouteName.inboxScreen,
+            extra: {'image': imageUrl, 'name': name, 'userId': userId},
+          ),
 
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 12.w),
