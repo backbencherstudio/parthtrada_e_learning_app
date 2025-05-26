@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import '../theme_part/app_colors.dart';
 
-class CustomTimePickerTheme{
+class CustomTimePickerTheme {
   static TimePickerThemeData timePickerTheme = TimePickerThemeData(
-    hourMinuteColor: WidgetStateColor.resolveWith((states){
-      return states.contains(WidgetState.selected) ? AppColors.primary : Colors.white;
+    hourMinuteColor: WidgetStateColor.resolveWith((states) {
+      return states.contains(WidgetState.selected)
+          ? AppColors.primary
+          : Colors.white;
     }),
     hourMinuteTextColor: WidgetStateColor.resolveWith((states) {
       return states.contains(WidgetState.selected)
@@ -24,6 +26,5 @@ class CustomTimePickerTheme{
     backgroundColor: Colors.white,
     dialHandColor: AppColors.primary,
     helpTextStyle: TextStyle(color: Colors.white),
-
   );
 }

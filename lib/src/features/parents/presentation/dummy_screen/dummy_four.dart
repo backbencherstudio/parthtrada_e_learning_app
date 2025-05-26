@@ -9,11 +9,7 @@ class DummyFour extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        title: Text("dummy 4",
-        style: TextStyle(
-          color: Color(0xff019877)
-        ),
-        ),
+        title: Text("dummy 4", style: TextStyle(color: Color(0xff019877))),
       ),
     );
   }

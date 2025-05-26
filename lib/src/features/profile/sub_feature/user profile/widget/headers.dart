@@ -17,12 +17,12 @@ class Headers extends StatelessWidget {
           onTap: () {
             Navigator.pop(context);
           },
-          child: SvgPicture.asset(AppIcons.backlongArrow)),
+          child: SvgPicture.asset(AppIcons.backlongArrow),
+        ),
         SizedBox(width: 70.w),
         Image.asset(AppImages.maiya, height: 140.h, width: 140.w),
         Spacer(),
         CommonWidget.notificationWidget(context),
-        
       ],
     );
   }

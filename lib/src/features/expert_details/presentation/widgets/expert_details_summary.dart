@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'expert_summary_container.dart';
 
-class ExpertDetailsSummary extends StatelessWidget{
+class ExpertDetailsSummary extends StatelessWidget {
   const ExpertDetailsSummary({super.key});
 
   @override
@@ -11,7 +11,6 @@ class ExpertDetailsSummary extends StatelessWidget{
     return Row(
       spacing: 10.w,
       children: [
-
         /// Total Students of the students
         Expanded(
           child: ExpertDetailsSummaryContainer(

@@ -68,7 +68,6 @@ void sessionDetailstBottomSheet(BuildContext context) {
                       hintText: "Senior Data Scientist",
                     ),
                   ),
-                
 
                   SizedBox(height: 16.h),
                   Text(

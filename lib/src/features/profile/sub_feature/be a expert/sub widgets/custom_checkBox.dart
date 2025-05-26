@@ -26,7 +26,11 @@ class CustomCheckbox extends StatelessWidget {
         child:
             value
                 ? Center(
-                  child: Icon(Icons.check, size: 12.sp, color: Color(0xff191919)),
+                  child: Icon(
+                    Icons.check,
+                    size: 12.sp,
+                    color: Color(0xff191919),
+                  ),
                 )
                 : null,
       ),

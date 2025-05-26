@@ -8,40 +8,47 @@ import 'expert_reviews/expert_ratings_summary.dart';
 import 'expert_reviews/expert_review_list.dart';
 import 'expert_sklills.dart';
 
-class ExpertDetailsBody extends StatelessWidget{
+class ExpertDetailsBody extends StatelessWidget {
   const ExpertDetailsBody({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: AppPadding.screenHorizontal,
+      padding: AppPadding.screenHorizontal,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           ExpertDetailsSummary(),
-          SizedBox(height: 30.h,),
+          SizedBox(height: 30.h),
           ExpertSkill(),
-          SizedBox(height: 30.h,),
+          SizedBox(height: 30.h),
           ExpertBio(),
-          SizedBox(height: 30.h,),
+          SizedBox(height: 30.h),
 
           /// Availability
-          Text("Availability",style: Theme.of(context).textTheme.headlineSmall,),
-          SizedBox(height: 10.h,),
-          Text("Mon - Fri : 07.00 - 16.30",style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.secondaryTextColor),),
+          Text(
+            "Availability",
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          SizedBox(height: 10.h),
+          Text(
+            "Mon - Fri : 07.00 - 16.30",
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppColors.secondaryTextColor,
+            ),
+          ),
 
-          SizedBox(height: 30.h,),
+          SizedBox(height: 30.h),
 
           /// Reviews of Expert
           ExpertRatingsSummary(),
 
-          SizedBox(height: 30.h,),
+          SizedBox(height: 30.h),
 
           ExpertReviewList(),
 
-
-          SizedBox(height: 30.h,),
+          SizedBox(height: 30.h),
         ],
       ),
     );

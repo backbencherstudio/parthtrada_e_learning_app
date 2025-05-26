@@ -4,7 +4,7 @@ import 'package:e_learning_app/src/features/expert_details/presentation/widgets/
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ExpertDetailsScreen extends StatelessWidget{
+class ExpertDetailsScreen extends StatelessWidget {
   const ExpertDetailsScreen({super.key});
 
   @override
@@ -16,7 +16,7 @@ class ExpertDetailsScreen extends StatelessWidget{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ExpertDetailsHeader(),
-            SizedBox(height: 24.h,),
+            SizedBox(height: 24.h),
             ExpertDetailsBody(),
           ],
         ),

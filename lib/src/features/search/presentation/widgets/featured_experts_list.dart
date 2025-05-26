@@ -16,127 +16,168 @@ import 'package:go_router/go_router.dart';
 import '../../../book_expert/presentation/schedule_for_book/schedule_for_book.dart';
 import '../../../profile/presentation/be a expert/Riverpod/is_expert_provider.dart';
 
-class FeaturedExpertsList extends StatelessWidget{
-   const FeaturedExpertsList({super.key});
-
-
+class FeaturedExpertsList extends StatelessWidget {
+  const FeaturedExpertsList({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding:  AppPadding.screenHorizontal,
-          child: Text("Featured Experts",style: Theme.of(context).textTheme.titleLarge,),
+          padding: AppPadding.screenHorizontal,
+          child: Text(
+            "Featured Experts",
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
         ),
-        SizedBox(height: 16.h,),
+        SizedBox(height: 16.h),
 
         SizedBox(
           height: 308.h,
           child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 10,
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
+            scrollDirection: Axis.horizontal,
+            itemCount: 10,
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
 
-              itemBuilder: (_, index){
-                return FittedBox(
-                  child: GestureDetector(
-                    onTap: ()=> context.push(RouteName.expertDetailsScreen),
-                    child: Container(
-                      width: 274.w,
+            itemBuilder: (_, index) {
+              return FittedBox(
+                child: GestureDetector(
+                  onTap: () => context.push(RouteName.expertDetailsScreen),
+                  child: Container(
+                    width: 274.w,
                     margin: EdgeInsets.only(right: 12.w),
-                    padding: EdgeInsets.symmetric(horizontal: 12.w,vertical: 16.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 16.h,
+                    ),
                     decoration: Utils.commonBoxDecoration(),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipOval(
-                            child: Image.asset(AppImages.women,width: 56.w,height: 56.w,),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipOval(
+                          child: Image.asset(
+                            AppImages.women,
+                            width: 56.w,
+                            height: 56.w,
                           ),
-                          SizedBox(height: 16.h,),
-                          Text("Sarah Chen",style: textTheme.titleLarge,maxLines: 1,overflow: TextOverflow.ellipsis,),
-                          SizedBox(height: 4.h,),
-                          Text("Senior Data Scientist at Google",
-                            style: textTheme.bodyMedium?.copyWith(color: AppColors.secondaryTextColor)
-                            ,maxLines: 1,overflow: TextOverflow.ellipsis,),
-
-                          SizedBox(height: 7.h,),
-
-                          Row(
-                            spacing: 4.w,
-                            children: [
-                              Icon(Icons.star,color: AppColors.primary,size: 20.sp,),
-                              Text("4.9"),
-                              SizedBox(width: 4.w,),
-                              Text("(127 reviews)",style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: AppColors.secondaryTextColor
-                              ),),
-                            ],
+                        ),
+                        SizedBox(height: 16.h),
+                        Text(
+                          "Sarah Chen",
+                          style: textTheme.titleLarge,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 4.h),
+                        Text(
+                          "Senior Data Scientist at Google",
+                          style: textTheme.bodyMedium?.copyWith(
+                            color: AppColors.secondaryTextColor,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
 
-                          SizedBox(height: 7.h,),
+                        SizedBox(height: 7.h),
 
-                          Row(
-                            spacing : 8.w,
-                            children: [
-                              Expanded(child: WrapItemContainer(text: "Machine Learning",)),
-                              Expanded(child: WrapItemContainer(text: "Data Science",)),
-                              WrapItemContainer(text: "+1",isRemainingItemShow: true,),
-                            ],
-                          ),
-
-                          SizedBox(height: 7.h,),
-
-                          Row(
-                            spacing: 8.w,
-                            children: [
-                              SvgPicture.asset(AppIcons.calendar,width: 20.w,height: 20.h,),
-                              Text("Next available: Mon 2pm...",style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: AppColors.secondaryTextColor
-                              ),)
-                            ],
-                          ),
-                          SizedBox(height: 12.h,),
-
-                          SizedBox(
-                            width : double.infinity,
-                            child: Consumer(
-                              builder: (_, ref, _) {
-
-                                final isExpert = ref.watch(isExpertProvider);
-
-                                debugPrint("\nIs Expert : $isExpert\n\n");
-
-                                return CommonWidget.primaryButton(
-                                  context: context,
-                                  onPressed: () async {
-                                   await scheduleForBook(context: context);
-                                  },
-                                  text: "Book \$150/hour",
-
-                                  backgroundColor: isExpert ? Color(0xff4A4C56) : null,
-                                  textStyle: textTheme.bodyMedium?.copyWith(
-                                    color: isExpert ? Color(0xffA5A5AB) : null,
-                                  )
-                                );
-                              }
+                        Row(
+                          spacing: 4.w,
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: AppColors.primary,
+                              size: 20.sp,
                             ),
-                          )
+                            Text("4.9"),
+                            SizedBox(width: 4.w),
+                            Text(
+                              "(127 reviews)",
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium?.copyWith(
+                                color: AppColors.secondaryTextColor,
+                              ),
+                            ),
+                          ],
+                        ),
 
+                        SizedBox(height: 7.h),
 
-                        ],
-                      ),
+                        Row(
+                          spacing: 8.w,
+                          children: [
+                            Expanded(
+                              child: WrapItemContainer(
+                                text: "Machine Learning",
+                              ),
+                            ),
+                            Expanded(
+                              child: WrapItemContainer(text: "Data Science"),
+                            ),
+                            WrapItemContainer(
+                              text: "+1",
+                              isRemainingItemShow: true,
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 7.h),
+
+                        Row(
+                          spacing: 8.w,
+                          children: [
+                            SvgPicture.asset(
+                              AppIcons.calendar,
+                              width: 20.w,
+                              height: 20.h,
+                            ),
+                            Text(
+                              "Next available: Mon 2pm...",
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium?.copyWith(
+                                color: AppColors.secondaryTextColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12.h),
+
+                        SizedBox(
+                          width: double.infinity,
+                          child: Consumer(
+                            builder: (_, ref, _) {
+                              final isExpert = ref.watch(isExpertProvider);
+
+                              debugPrint("\nIs Expert : $isExpert\n\n");
+
+                              return CommonWidget.primaryButton(
+                                context: context,
+                                onPressed: () async {
+                                  await scheduleForBook(context: context);
+                                },
+                                text: "Book \$150/hour",
+
+                                backgroundColor:
+                                    isExpert ? Color(0xff4A4C56) : null,
+                                textStyle: textTheme.bodyMedium?.copyWith(
+                                  color: isExpert ? Color(0xffA5A5AB) : null,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                );
-              }
+                ),
+              );
+            },
           ),
-        )
-
+        ),
       ],
     );
   }

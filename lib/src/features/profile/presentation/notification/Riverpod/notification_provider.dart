@@ -13,5 +13,5 @@ class NotificationToggleNotifier extends StateNotifier<List<bool>> {
 
 final notificationToggleProvider =
     StateNotifierProvider<NotificationToggleNotifier, List<bool>>(
-  (ref) => NotificationToggleNotifier(),
-);
+      (ref) => NotificationToggleNotifier(),
+    );

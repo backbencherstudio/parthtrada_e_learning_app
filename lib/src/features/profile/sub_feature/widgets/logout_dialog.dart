@@ -42,20 +42,23 @@ void showLogoutDialog(BuildContext context) {
                 children: [
                   CommonWidget.primaryButton(
                     backgroundColor: AppColors.secondaryStrokeColor,
-                      textStyle: textStyle.bodySmall,
-                      context: context,
-                      onPressed: (){
+                    textStyle: textStyle.bodySmall,
+                    context: context,
+                    onPressed: () {
                       context.pop();
-                      },
-                      text: 'Cancel'),
+                    },
+                    text: 'Cancel',
+                  ),
                   CommonWidget.primaryButton(
                     backgroundColor: Colors.white,
-                      textStyle: textStyle.bodySmall!.copyWith(color: Colors.black,fontWeight: FontWeight.w700),
-                      context: context,
-                      onPressed: (){
-
-                      },
-                      text: 'Log Out')
+                    textStyle: textStyle.bodySmall!.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    context: context,
+                    onPressed: () {},
+                    text: 'Log Out',
+                  ),
                 ],
               ),
             ],

@@ -8,8 +8,6 @@ import 'app_mentors_container.dart';
 class SearchFooter extends StatelessWidget {
   const SearchFooter({super.key});
 
-
-
   @override
   Widget build(BuildContext context) {
     List<String> mentorsLogoPath = [
@@ -22,7 +20,6 @@ class SearchFooter extends StatelessWidget {
       padding: AppPadding.screenHorizontal,
       child: Column(
         children: [
-
           /// App Details
           AppDetailsContainer(),
 

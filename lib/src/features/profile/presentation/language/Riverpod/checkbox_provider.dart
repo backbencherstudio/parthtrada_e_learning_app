@@ -1,4 +1,5 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart' show StateNotifier, StateNotifierProvider;
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show StateNotifier, StateNotifierProvider;
 
 class CheckboxListNotifier extends StateNotifier<List<bool>> {
   CheckboxListNotifier() : super(List.generate(8, (_) => false));
@@ -12,5 +13,5 @@ class CheckboxListNotifier extends StateNotifier<List<bool>> {
 
 final checkboxListProvider =
     StateNotifierProvider<CheckboxListNotifier, List<bool>>(
-  (ref) => CheckboxListNotifier(),
-);
+      (ref) => CheckboxListNotifier(),
+    );

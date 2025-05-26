@@ -7,13 +7,9 @@ class DummyThree extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-       centerTitle: true,
+        centerTitle: true,
         backgroundColor: Colors.transparent,
-        title: Text("dummy 3",
-        style: TextStyle(
-          color: Color(0xff019877)
-        ),
-        ),
+        title: Text("dummy 3", style: TextStyle(color: Color(0xff019877))),
       ),
     );
   }

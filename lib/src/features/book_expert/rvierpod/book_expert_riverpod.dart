@@ -51,19 +51,15 @@ class BookExpertRiverpod extends StateNotifier<BookExpertState> {
 
   Future<void> onConfirmBooking() async {
     state = state.copyWith(isConfirmLoading: true);
-    await Future.delayed(Duration(milliseconds: 200),);
+    await Future.delayed(Duration(milliseconds: 200));
 
     await Future.delayed(const Duration(seconds: 2));
-    state  = state.copyWith(isSuccessfullyBooked: true);
+    state = state.copyWith(isSuccessfullyBooked: true);
 
     state = state.copyWith(isConfirmLoading: false);
   }
 
   Future<void> onCancelBooking() async {
-    state  = state.copyWith(isSuccessfullyBooked: false);
-
+    state = state.copyWith(isSuccessfullyBooked: false);
   }
-
-
-
 }

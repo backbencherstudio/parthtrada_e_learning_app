@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:horizontal_list_calendar/horizontal_list_calendar.dart';
 import '../../../../../../core/constant/padding.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../horizontal_list_view_calendar/presentation/horizontal_list_calendar.dart';
@@ -17,6 +18,7 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
     isScrollControlled: true,
     context: context,
     builder: (_) {
+      final textTheme = Theme.of(context).textTheme;
       return Container(
         //padding: AppPadding.screenHorizontal,
         constraints: BoxConstraints(minHeight: 590.h),
@@ -33,10 +35,32 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
             children: [
               SizedBox(height: 32.h),
               HorizontalListCalendar(
+                onTap: (value) => debugPrint("\n\n${value.toString()}\n\n"),
+                headerTextStyle: Theme.of(
+                  context,
+                ).textTheme.bodyMedium!.copyWith(
+                  color: Color(0xff777980),
+                  fontWeight: FontWeight.w500,
+                ),
+                iconSize: 14,
+                moveToPreviousMonthIconBackgroundColor:
+                    AppColors.secondaryStrokeColor,
+                moveToPreviousMonthIconColor: Color(0xff979797),
+                moveToNextMonthIconBackgroundColor: AppColors.primary,
+                moveToNextMonthIconColor: Colors.white,
+                todayFillColor: AppColors.primary.withValues(alpha: 0.1),
+                todayTextStyle: textTheme.titleSmall!.copyWith(
+                  color: AppColors.primary,
+                ),
+                selectedColor: AppColors.primary,
+                selectedTextStyle: textTheme.bodyMedium!.copyWith(
+                  color: AppColors.primary,
+                ),
+                unSelectedTextStyle: textTheme.bodySmall!.copyWith(
+                  color: Colors.white,
+                ),
+
                 headerPadding: AppPadding.screenHorizontal,
-                onTap: (value) {
-                  debugPrint("\n\n${value.toString()}\n\n");
-                },
               ),
 
               SizedBox(height: 34.h),

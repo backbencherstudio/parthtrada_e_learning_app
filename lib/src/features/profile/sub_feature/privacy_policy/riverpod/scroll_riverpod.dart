@@ -29,7 +29,8 @@ class ScrollNotifier extends StateNotifier<ScrollModel> {
     final currentScroll = state.scrollController.offset;
     final scrollPercent = (currentScroll / (maxScroll == 0 ? 1 : maxScroll))
         .clamp(0.0, 1.0);
-    final indicatorPosition = scrollPercent*(state.scrollBarHeight - state.indicatorHeight);
+    final indicatorPosition =
+        scrollPercent * (state.scrollBarHeight - state.indicatorHeight);
 
     state = state.copyWith(indicatorPosition: indicatorPosition);
   }

@@ -2,9 +2,10 @@ import 'package:e_learning_app/core/constant/images.dart';
 import 'package:e_learning_app/src/features/notification/Student_notification/widgets/model/notification_model.dart';
 import 'package:riverpod/riverpod.dart';
 
-final notificationProvider = StateNotifierProvider<NotificationNotifier, List<NotificationItem>>((ref) {
-  return NotificationNotifier();
-});
+final notificationProvider =
+    StateNotifierProvider<NotificationNotifier, List<NotificationItem>>((ref) {
+      return NotificationNotifier();
+    });
 
 class NotificationNotifier extends StateNotifier<List<NotificationItem>> {
   NotificationNotifier() : super(_initialNotifications);
@@ -13,7 +14,7 @@ class NotificationNotifier extends StateNotifier<List<NotificationItem>> {
     NotificationItem(
       title: 'Sarah Chen',
       description: 'Accepted your consultation request for June 13th at 3 PM.',
-      img: AppImages.women, 
+      img: AppImages.women,
     ),
     NotificationItem(
       title: 'Dr. Mark',
@@ -25,10 +26,10 @@ class NotificationNotifier extends StateNotifier<List<NotificationItem>> {
       description: 'Your free trial ends in 2 days. Don’t forget to upgrade.',
       img: AppImages.women,
     ),
-     NotificationItem(
+    NotificationItem(
       title: 'Sarah Chen',
       description: 'Accepted your consultation request for June 13th at 3 PM.',
-      img: AppImages.women, 
+      img: AppImages.women,
     ),
     NotificationItem(
       title: 'Dr. Mark',
@@ -40,10 +41,10 @@ class NotificationNotifier extends StateNotifier<List<NotificationItem>> {
       description: 'Your free trial ends in 2 days. Don’t forget to upgrade.',
       img: AppImages.women,
     ),
-     NotificationItem(
+    NotificationItem(
       title: 'Sarah Chen',
       description: 'Accepted your consultation request for June 13th at 3 PM.',
-      img: AppImages.women, 
+      img: AppImages.women,
     ),
     NotificationItem(
       title: 'Dr. Mark',

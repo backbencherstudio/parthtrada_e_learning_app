@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class AuthenticationScreen extends StatelessWidget{
+class AuthenticationScreen extends StatelessWidget {
   const AuthenticationScreen({super.key});
 
   @override
@@ -23,41 +23,43 @@ class AuthenticationScreen extends StatelessWidget{
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(AppIcons.pngLogo,width: 100.w,height: 100.h,),
-              SizedBox(height: 10.h,),
-              Text("TrueNote",style: textTheme.headlineSmall,),
-              SizedBox(height: 135.h,),
-              Text("Log In with Linkedin",style: textTheme.headlineSmall,),
-              SizedBox(height: 16.h,),
-              Text("Securely access your account with one tap using LinkedIn.",style: textTheme.bodyMedium?.copyWith(
-                color: AppColors.secondaryTextColor,
+              Image.asset(AppIcons.pngLogo, width: 100.w, height: 100.h),
+              SizedBox(height: 10.h),
+              Text("TrueNote", style: textTheme.headlineSmall),
+              SizedBox(height: 135.h),
+              Text("Log In with Linkedin", style: textTheme.headlineSmall),
+              SizedBox(height: 16.h),
+              Text(
+                "Securely access your account with one tap using LinkedIn.",
+                style: textTheme.bodyMedium?.copyWith(
+                  color: AppColors.secondaryTextColor,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-              ),
-              
-              SizedBox(height: 48.h,),
-              
+
+              SizedBox(height: 48.h),
+
               SizedBox(
                 width: double.infinity,
                 child: Consumer(
-                  builder: (_,ref, _) {
+                  builder: (_, ref, _) {
                     return CommonWidget.primaryButton(
-                        context: context,
-                        onPressed: () {
-                          ref.read(parentsScreenProvider.notifier).onSelectedIndex(0);
-                          context.go(RouteName.parentScreen);
-
-                        },
-                        text: "Log In With Linkedin",
-                      textStyle: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)
-
+                      context: context,
+                      onPressed: () {
+                        ref
+                            .read(parentsScreenProvider.notifier)
+                            .onSelectedIndex(0);
+                        context.go(RouteName.parentScreen);
+                      },
+                      text: "Log In With Linkedin",
+                      textStyle: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     );
-                  }
+                  },
                 ),
-              )
-              
-            ]
-
+              ),
+            ],
           ),
         ),
       ),

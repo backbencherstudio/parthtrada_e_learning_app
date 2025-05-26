@@ -57,19 +57,21 @@ void timeDateSelectionBottomSheet(BuildContext context) {
                       ),
                       Text(
                         "Session Details",
-                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                            ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.headlineSmall!.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
                       ),
                       const Divider(thickness: 1, color: Color(0xff2B2C31)),
                       SizedBox(height: 16.h),
                       Text(
                         "Experience",
                         style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
                       ),
                       TextFormField(
                         decoration: const InputDecoration(hintText: "4"),
@@ -78,9 +80,9 @@ void timeDateSelectionBottomSheet(BuildContext context) {
                       Text(
                         "Available Time",
                         style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
                       ),
                       TextFormField(
                         decoration: InputDecoration(
@@ -101,7 +103,8 @@ void timeDateSelectionBottomSheet(BuildContext context) {
                         ),
                       ),
 
-                      if (availability.days.isNotEmpty || availability.times.isNotEmpty)
+                      if (availability.days.isNotEmpty ||
+                          availability.times.isNotEmpty)
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -111,32 +114,45 @@ void timeDateSelectionBottomSheet(BuildContext context) {
                             Wrap(
                               spacing: 6,
                               runSpacing: 6,
-                              children: availability.days.map((day) {
-                                return Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary,
-                                    borderRadius: BorderRadius.circular(41.r),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        day,
-                                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w600,
-                                        )
+                              children:
+                                  availability.days.map((day) {
+                                    return Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 12.w,
+                                        vertical: 6.h,
                                       ),
-                                      SizedBox(width: 4.w),
-                                      GestureDetector(
-                                        onTap: () => notifier.toggleDay(day),
-                                        child:  Icon(Icons.close, color: Colors.white, size: 16),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primary,
+                                        borderRadius: BorderRadius.circular(
+                                          41.r,
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            day,
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.bodySmall!.copyWith(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          SizedBox(width: 4.w),
+                                          GestureDetector(
+                                            onTap:
+                                                () => notifier.toggleDay(day),
+                                            child: Icon(
+                                              Icons.close,
+                                              color: Colors.white,
+                                              size: 16,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
                             ),
 
                             SizedBox(height: 12.h),
@@ -145,32 +161,45 @@ void timeDateSelectionBottomSheet(BuildContext context) {
                             Wrap(
                               spacing: 6,
                               runSpacing: 6,
-                              children: availability.times.map((time) {
-                                return Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary,
-                                    borderRadius: BorderRadius.circular(41.r),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        time,
-                                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w600,
-                                        )
+                              children:
+                                  availability.times.map((time) {
+                                    return Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 12.w,
+                                        vertical: 6.h,
                                       ),
-                                      SizedBox(width: 4.w),
-                                      GestureDetector(
-                                        onTap: () => notifier.toggleTime(time),
-                                        child: Icon(Icons.close, color: Colors.white, size: 16),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primary,
+                                        borderRadius: BorderRadius.circular(
+                                          41.r,
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            time,
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.bodySmall!.copyWith(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          SizedBox(width: 4.w),
+                                          GestureDetector(
+                                            onTap:
+                                                () => notifier.toggleTime(time),
+                                            child: Icon(
+                                              Icons.close,
+                                              color: Colors.white,
+                                              size: 16,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
                             ),
                           ],
                         ),
@@ -190,19 +219,20 @@ void timeDateSelectionBottomSheet(BuildContext context) {
                           ),
                           SizedBox(width: 8.w),
                           Consumer(
-                            builder: (context,ref,_) {
-                              
+                            builder: (context, ref, _) {
                               return Expanded(
                                 child: Mybutton(
                                   color: AppColors.primary,
                                   text: "Done",
                                   onTap: () {
-                                    ref.read(isExpertProvider.notifier).toggle();
+                                    ref
+                                        .read(isExpertProvider.notifier)
+                                        .toggle();
                                     Navigator.pop(context);
                                   },
                                 ),
                               );
-                            }
+                            },
                           ),
                         ],
                       ),

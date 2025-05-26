@@ -8,9 +8,22 @@ import '../main bottomsheets/date_time_selection_sheet.dart';
 
 void availabilityBottomSheet(BuildContext context) {
   final List<String> timeSlot = [
-    "08:00 AM", "08:30 AM", "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM",
-    "11:00 AM", "11:30 AM", "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM",
-    "05:00 PM", "05:30 PM", "06:00 PM", "06:30 PM"
+    "08:00 AM",
+    "08:30 AM",
+    "09:00 AM",
+    "09:30 AM",
+    "10:00 AM",
+    "10:30 AM",
+    "11:00 AM",
+    "11:30 AM",
+    "03:00 PM",
+    "03:30 PM",
+    "04:00 PM",
+    "04:30 PM",
+    "05:00 PM",
+    "05:30 PM",
+    "06:00 PM",
+    "06:30 PM",
   ];
 
   final List<String> days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri"];
@@ -61,88 +74,104 @@ void availabilityBottomSheet(BuildContext context) {
                       ),
                       Text(
                         "Availability",
-                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                            ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.headlineSmall!.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
                       ),
                       const Divider(thickness: 1, color: Color(0xff2B2C31)),
                       SizedBox(height: 16.h),
-                      Text("Available Days",
-                          style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              )),
+                      Text(
+                        "Available Days",
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                       SizedBox(height: 12.h),
                       Wrap(
                         spacing: 4.w,
                         runSpacing: 12.h,
-                        children: days.map((day) {
-                          final isSelected = availability.days.contains(day);
-                          return GestureDetector(
-                            onTap: () => notifier.toggleDay(day),
-                            child: Container(
-                              height: 36.h,
-                              width: 75.w,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(41.r),
-                                color: isSelected
-                                    ? AppColors.primary
-                                    : AppColors.secondaryButtonBgColor,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  day,
-                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        children:
+                            days.map((day) {
+                              final isSelected = availability.days.contains(
+                                day,
+                              );
+                              return GestureDetector(
+                                onTap: () => notifier.toggleDay(day),
+                                child: Container(
+                                  height: 36.h,
+                                  width: 75.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(41.r),
+                                    color:
+                                        isSelected
+                                            ? AppColors.primary
+                                            : AppColors.secondaryButtonBgColor,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      day,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall!.copyWith(
                                         fontSize: 12.sp,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
                                       ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
+                              );
+                            }).toList(),
                       ),
                       SizedBox(height: 16.h),
-                      Text("Available Times",
-                          style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              )),
+                      Text(
+                        "Available Times",
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                       SizedBox(height: 12.h),
-
-
 
                       Wrap(
                         spacing: 4.w,
                         runSpacing: 12.h,
-                        children: timeSlot.map((slot) {
-                          final isSelected = availability.times.contains(slot);
-                          return GestureDetector(
-                            onTap: () => notifier.toggleTime(slot),
-                            child: Container(
-                              height: 36.h,
-                              width: 75.w,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(41.r),
-                                color: isSelected
-                                    ? AppColors.primary
-                                    : AppColors.secondaryButtonBgColor,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  slot,
-                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        children:
+                            timeSlot.map((slot) {
+                              final isSelected = availability.times.contains(
+                                slot,
+                              );
+                              return GestureDetector(
+                                onTap: () => notifier.toggleTime(slot),
+                                child: Container(
+                                  height: 36.h,
+                                  width: 75.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(41.r),
+                                    color:
+                                        isSelected
+                                            ? AppColors.primary
+                                            : AppColors.secondaryButtonBgColor,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      slot,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall!.copyWith(
                                         fontSize: 12.sp,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
                                       ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
+                              );
+                            }).toList(),
                       ),
                       SizedBox(height: 15.h),
                       Row(

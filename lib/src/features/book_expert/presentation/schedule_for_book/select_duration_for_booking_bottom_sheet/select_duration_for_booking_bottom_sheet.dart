@@ -56,7 +56,6 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: RadioListTile(
-
                           value: index,
                           groupValue: bookExpertState.selectedDuration,
 
@@ -88,7 +87,9 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
                   Expanded(
                     child: CommonWidget.primaryButton(
                       padding: EdgeInsets.symmetric(vertical: 16.h),
-                      textStyle: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                      textStyle: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                       context: context,
                       onPressed: () {
                         context.pop();
@@ -103,16 +104,20 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
                       builder: (_, ref, _) {
                         return CommonWidget.primaryButton(
                           padding: EdgeInsets.symmetric(vertical: 16.h),
-                          textStyle: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                          textStyle: textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                           context: context,
                           onPressed: () {
                             context.pop();
-                            ref.read(bookExpertRiverpod.notifier).onCancelBooking();
+                            ref
+                                .read(bookExpertRiverpod.notifier)
+                                .onCancelBooking();
                             confirmBookingBottomSheet(context: context);
                           },
                           text: "Next",
                         );
-                      }
+                      },
                     ),
                   ),
                 ],

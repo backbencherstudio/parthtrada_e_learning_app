@@ -30,6 +30,8 @@ class ParentsScreenProvider extends StateNotifier<ParentScreenRiverPodModel> {
 }
 
 final parentsScreenProvider =
-    StateNotifierProvider<ParentsScreenProvider, ParentScreenRiverPodModel>((ref) {
-  return ParentsScreenProvider();
-});
+    StateNotifierProvider<ParentsScreenProvider, ParentScreenRiverPodModel>((
+      ref,
+    ) {
+      return ParentsScreenProvider();
+    });

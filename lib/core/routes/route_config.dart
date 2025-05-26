@@ -27,8 +27,7 @@ import '../../src/features/message/presentation/message_screen/message_screen.da
 
 class RouteConfig {
   GoRouter goRouter = GoRouter(
-     initialLocation: RouteName.onboarding,
-
+    initialLocation: RouteName.splash,
 
     routes: [
       GoRoute(
@@ -54,7 +53,7 @@ class RouteConfig {
           return const MaterialPage(child: SplashScreen());
         },
       ),
-  GoRoute(
+      GoRoute(
         name: RouteName.parentScreen,
         path: RouteName.parentScreen,
         pageBuilder: (context, state) {
@@ -66,7 +65,7 @@ class RouteConfig {
           );
         },
       ),
-     
+
       GoRoute(
         name: RouteName.userProfile,
         path: RouteName.userProfile,
@@ -86,7 +85,7 @@ class RouteConfig {
           );
         },
       ),
-  GoRoute(
+      GoRoute(
         name: RouteName.paymentMethodScreen,
         path: RouteName.paymentMethodScreen,
         pageBuilder: (context, state) {
@@ -94,25 +93,25 @@ class RouteConfig {
             transitionType: PageTransitionType.slideRightToLeft,
             context: context,
             state: state,
-            child: PaymentMethodScreen());}
-          ),
-
-
-
-      GoRoute(
-          name: RouteName.expertDetailsScreen,
-          path: RouteName.expertDetailsScreen,
-          pageBuilder: (context, state) {
-            return buildPageWithTransition(
-                transitionType: PageTransitionType.slideRightToLeft,
-                context: context,
-                state: state,
-                child: ExpertDetailsScreen(),);}
+            child: PaymentMethodScreen(),
+          );
+        },
       ),
 
+      GoRoute(
+        name: RouteName.expertDetailsScreen,
+        path: RouteName.expertDetailsScreen,
+        pageBuilder: (context, state) {
+          return buildPageWithTransition(
+            transitionType: PageTransitionType.slideRightToLeft,
+            context: context,
+            state: state,
+            child: ExpertDetailsScreen(),
+          );
+        },
+      ),
 
-
- GoRoute(
+      GoRoute(
         name: RouteName.globalNotificationScreen,
         path: RouteName.globalNotificationScreen,
         pageBuilder: (context, state) {
@@ -120,8 +119,10 @@ class RouteConfig {
             transitionType: PageTransitionType.slideRightToLeft,
             context: context,
             state: state,
-            child: GlobalNotificationScreen());}
-          ),
+            child: GlobalNotificationScreen(),
+          );
+        },
+      ),
 
       GoRoute(
         name: RouteName.sentRequest,
@@ -137,14 +138,14 @@ class RouteConfig {
           return const MaterialPage(child: PastCall());
         },
       ),
-       GoRoute(
+      GoRoute(
         name: RouteName.notification,
         path: RouteName.notification,
         pageBuilder: (context, state) {
           return const MaterialPage(child: NotificationScreen());
         },
       ),
-        GoRoute(
+      GoRoute(
         name: RouteName.languageScreen,
         path: RouteName.languageScreen,
         pageBuilder: (context, state) {
@@ -166,42 +167,44 @@ class RouteConfig {
         },
       ),
 
-
       GoRoute(
-          name: RouteName.authenticationScreen,
-          path: RouteName.authenticationScreen,
-          pageBuilder: (context, state) {
-            return buildPageWithTransition(
-                transitionType: PageTransitionType.slideRightToLeft,
-                context: context,
-                state: state,
-                child: AuthenticationScreen());}
-      ),
-       GoRoute(
-          name: RouteName.expertNotificationScreen,
-          path: RouteName.expertNotificationScreen,
-          pageBuilder: (context, state) {
-            return buildPageWithTransition(
-                transitionType: PageTransitionType.slideRightToLeft,
-                context: context,
-                state: state,
-                child: ExpertNotificationScreen());}
+        name: RouteName.authenticationScreen,
+        path: RouteName.authenticationScreen,
+        pageBuilder: (context, state) {
+          return buildPageWithTransition(
+            transitionType: PageTransitionType.slideRightToLeft,
+            context: context,
+            state: state,
+            child: AuthenticationScreen(),
+          );
+        },
       ),
       GoRoute(
-          name: RouteName.helpAndSupport,
-          path: RouteName.helpAndSupport,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: HelpAndSupport());
-          }
+        name: RouteName.expertNotificationScreen,
+        path: RouteName.expertNotificationScreen,
+        pageBuilder: (context, state) {
+          return buildPageWithTransition(
+            transitionType: PageTransitionType.slideRightToLeft,
+            context: context,
+            state: state,
+            child: ExpertNotificationScreen(),
+          );
+        },
       ),
       GoRoute(
-          name: RouteName.studentDetailsScreen,
-          path: RouteName.studentDetailsScreen,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: StudentDetailsScreen());
-          }
+        name: RouteName.helpAndSupport,
+        path: RouteName.helpAndSupport,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: HelpAndSupport());
+        },
       ),
-
+      GoRoute(
+        name: RouteName.studentDetailsScreen,
+        path: RouteName.studentDetailsScreen,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: StudentDetailsScreen());
+        },
+      ),
     ],
   );
 }

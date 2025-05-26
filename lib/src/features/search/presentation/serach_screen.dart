@@ -15,7 +15,6 @@ class SearchScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-
             /// Header
             CommonWidget.customAppBar(
               textTheme: Theme.of(context).textTheme,
@@ -34,15 +33,15 @@ class SearchScreen extends StatelessWidget {
             /// Featured Experts list
             FeaturedExpertsList(),
 
-            SizedBox(height: 24.h,),
+            SizedBox(height: 24.h),
 
             UserReviewList(),
 
-            SizedBox(height: 24.h,),
+            SizedBox(height: 24.h),
 
             SearchFooter(),
 
-            SizedBox(height: 24.h,),
+            SizedBox(height: 24.h),
           ],
         ),
       ),

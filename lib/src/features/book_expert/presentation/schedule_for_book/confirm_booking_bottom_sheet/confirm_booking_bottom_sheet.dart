@@ -25,7 +25,7 @@ Future<void> confirmBookingBottomSheet({required BuildContext context}) async {
       );
 
       return Container(
-        constraints: BoxConstraints(maxHeight: 585.h,minHeight: 440.h),
+        constraints: BoxConstraints(maxHeight: 585.h, minHeight: 440.h),
         padding: AppPadding.screenHorizontal,
         decoration: BoxDecoration(
           color: AppColors.screenBackgroundColor,
@@ -39,83 +39,100 @@ Future<void> confirmBookingBottomSheet({required BuildContext context}) async {
           builder: (_, ref, _) {
             final bookExpertNotifier = ref.read(bookExpertRiverpod.notifier);
             final bookExpertState = ref.watch(bookExpertRiverpod);
-            return bookExpertState.isConfirmLoading ?
-            Center(
-              child: SizedBox(
-                width: double.infinity,
-                child: Shimmer.fromColors(
-                    baseColor: AppColors.secondary,
-                    highlightColor: AppColors.screenBackgroundColor,
-                    child: ExpertBookingShimmer(),
-                ),
-              ),
-            )
-            :
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: 16.h),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: CommonWidget.closeButton(context: context),
+            return bookExpertState.isConfirmLoading
+                ? Center(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Shimmer.fromColors(
+                      baseColor: AppColors.secondary,
+                      highlightColor: AppColors.screenBackgroundColor,
+                      child: ExpertBookingShimmer(),
+                    ),
                   ),
-                  SizedBox(height: 12.h,),
-
-                  if(bookExpertState.isSuccessfullyBooked)
-                    Container(
-                      padding: EdgeInsets.all(20.r),
-                      margin: EdgeInsets.only(bottom: 12.h),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.secondaryStrokeColor,
+                )
+                : SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 16.h),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: CommonWidget.closeButton(context: context),
                       ),
-                      child: SvgPicture.asset(AppIcons.circleTikMarkFill,width: 31.w,height: 31.h,),
-                    ),
+                      SizedBox(height: 12.h),
 
+                      if (bookExpertState.isSuccessfullyBooked)
+                        Container(
+                          padding: EdgeInsets.all(20.r),
+                          margin: EdgeInsets.only(bottom: 12.h),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.secondaryStrokeColor,
+                          ),
+                          child: SvgPicture.asset(
+                            AppIcons.circleTikMarkFill,
+                            width: 31.w,
+                            height: 31.h,
+                          ),
+                        ),
 
-                  Align(
-                      alignment: bookExpertState.isSuccessfullyBooked ? Alignment.center : Alignment.centerLeft,
-                      child: Text("Confirm Booking", style: textTheme.headlineSmall),),
+                      Align(
+                        alignment:
+                            bookExpertState.isSuccessfullyBooked
+                                ? Alignment.center
+                                : Alignment.centerLeft,
+                        child: Text(
+                          "Confirm Booking",
+                          style: textTheme.headlineSmall,
+                        ),
+                      ),
 
-                  if(bookExpertState.isSuccessfullyBooked)
-                    Column(
-                      children: [
-                        SizedBox(height: 8.h),
-                        Text("Your season with Sarah Chen is Scheduled for Wed 10 am",style: textTheme.bodyMedium?.copyWith(color: AppColors.secondaryTextColor),textAlign: TextAlign.center,),
-                      ],
-                    ),
+                      if (bookExpertState.isSuccessfullyBooked)
+                        Column(
+                          children: [
+                            SizedBox(height: 8.h),
+                            Text(
+                              "Your season with Sarah Chen is Scheduled for Wed 10 am",
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: AppColors.secondaryTextColor,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
 
-                  SizedBox(height: 12.h),
+                      SizedBox(height: 12.h),
 
-                  ConfirmBookDetailsCard(),
+                      ConfirmBookDetailsCard(),
 
-                  SizedBox(height: 32.h),
+                      SizedBox(height: 32.h),
 
-                  SafeArea(
-                    child: SizedBox(
-                      width: double.infinity,
-                      child:
-                            CommonWidget.primaryButton(
+                      SafeArea(
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: CommonWidget.primaryButton(
                             padding: EdgeInsets.symmetric(vertical: 16.h),
                             textStyle: buttonTextStyle,
                             context: context,
                             onPressed: () {
-                              if(bookExpertState.isSuccessfullyBooked){
-                        context.pop();
+                              if (bookExpertState.isSuccessfullyBooked) {
+                                context.pop();
                               }
                               bookExpertNotifier.onConfirmBooking();
                             },
-                            text: bookExpertState.isSuccessfullyBooked ? "Done" : "Confirm & Pay",
-                          )
-                    ),
-                  ),
+                            text:
+                                bookExpertState.isSuccessfullyBooked
+                                    ? "Done"
+                                    : "Confirm & Pay",
+                          ),
+                        ),
+                      ),
 
-                  SizedBox(height: 28.h),
-                ],
-              ),
-            );
-          }
+                      SizedBox(height: 28.h),
+                    ],
+                  ),
+                );
+          },
         ),
       );
     },

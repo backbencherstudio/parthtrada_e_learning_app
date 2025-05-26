@@ -6,8 +6,11 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../../../../core/constant/icons.dart';
 import '../../../../../../../core/theme/theme_part/app_colors.dart';
 
-class ScheduleContainerFooterForExpertRole extends StatelessWidget{
-  const ScheduleContainerFooterForExpertRole({super.key, this.isMeetingCreated = true});
+class ScheduleContainerFooterForExpertRole extends StatelessWidget {
+  const ScheduleContainerFooterForExpertRole({
+    super.key,
+    this.isMeetingCreated = true,
+  });
 
   final bool isMeetingCreated;
 
@@ -55,7 +58,7 @@ class ScheduleContainerFooterForExpertRole extends StatelessWidget{
               ),
             ),
           ],
-        )
+        ),
       ],
     );
   }

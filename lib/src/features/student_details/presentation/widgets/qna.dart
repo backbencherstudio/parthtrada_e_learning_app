@@ -6,7 +6,9 @@ import '../../../../../core/theme/theme_part/app_colors.dart';
 class QNA extends StatelessWidget {
   const QNA({
     super.key,
-    required this.textStyle, required this.question, required this.answer,
+    required this.textStyle,
+    required this.question,
+    required this.answer,
   });
 
   final TextTheme textStyle;
@@ -17,16 +19,11 @@ class QNA extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          question,
-          style: textStyle.titleMedium,
-        ),
+        Text(question, style: textStyle.titleMedium),
         SizedBox(height: 6.h),
         Text(
           answer,
-          style: textStyle.bodySmall!.copyWith(
-            color: AppColors.onSurface,
-          ),
+          style: textStyle.bodySmall!.copyWith(color: AppColors.onSurface),
         ),
       ],
     );

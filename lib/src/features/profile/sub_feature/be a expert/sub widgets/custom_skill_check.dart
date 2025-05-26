@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,10 +8,15 @@ import 'custom_checkBox.dart';
 
 class CustomSkillCheck extends StatelessWidget {
   final String text;
-    final bool isSelected;
+  final bool isSelected;
 
   final void Function()? onTap;
-  const CustomSkillCheck({super.key, required this.text, required this.onTap, required this.isSelected});
+  const CustomSkillCheck({
+    super.key,
+    required this.text,
+    required this.onTap,
+    required this.isSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,10 @@ class CustomSkillCheck extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CustomCheckbox(value: isSelected, onChanged: (_)=> onTap?.call()),
+              CustomCheckbox(
+                value: isSelected,
+                onChanged: (_) => onTap?.call(),
+              ),
               SizedBox(width: 6.w),
               Text(
                 text,

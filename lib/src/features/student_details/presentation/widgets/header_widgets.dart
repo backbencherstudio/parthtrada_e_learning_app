@@ -23,10 +23,13 @@ class HeaderWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Flexible(child: GestureDetector(
-                onTap: ()=> context.pop(),
+              Flexible(
+                child: GestureDetector(
+                  onTap: () => context.pop(),
 
-                  child: SvgPicture.asset(AppIcons.backlongArrow))),
+                  child: SvgPicture.asset(AppIcons.backlongArrow),
+                ),
+              ),
               Expanded(child: SizedBox()),
               Expanded(child: SizedBox()),
               Expanded(child: SizedBox()),

@@ -13,15 +13,19 @@ class CustomNotificationContainer extends StatelessWidget {
     required this.title,
     required this.discription,
     required this.img,
-        required this.onClose,
-
+    required this.onClose,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.only(left: 12.w, right: 12.w, top: 16.h, bottom: 16.h),
+      padding: EdgeInsets.only(
+        left: 12.w,
+        right: 12.w,
+        top: 16.h,
+        bottom: 16.h,
+      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),
         color: const Color(0xff191919),
@@ -51,27 +55,24 @@ class CustomNotificationContainer extends StatelessWidget {
                     Expanded(
                       child: Text(
                         title,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.white,
-                            ),
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                    CommonWidget.closeButton(context: context, ontap:onClose),
+                    CommonWidget.closeButton(context: context, ontap: onClose),
                   ],
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   discription,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xff777980),
-                      ),
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xff777980),
+                  ),
                 ),
               ],
             ),

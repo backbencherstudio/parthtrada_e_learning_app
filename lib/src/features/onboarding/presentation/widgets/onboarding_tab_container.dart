@@ -31,7 +31,7 @@ class OnboardingPageWidget extends StatelessWidget {
         spacing: 16.h,
         children: [
           /// Top gap of header
-          SizedBox(height: 50.h,),
+          SizedBox(height: 50.h),
 
           /// Heading
           Text(heading, style: textTheme.headlineMedium),
@@ -47,10 +47,11 @@ class OnboardingPageWidget extends StatelessWidget {
 
           /// Body Image and button
           SizedBox(
-            width: 327.w,height: 410.h,
+            width: 327.w,
+            height: 410.h,
             child: Stack(
               children: [
-                Image.asset(imagePath,width: 327.w,height: 400.h,),
+                Image.asset(imagePath, width: 327.w, height: 400.h),
 
                 Positioned(
                   left: 30.w,
@@ -59,21 +60,22 @@ class OnboardingPageWidget extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       final int nextIndex = tabController.index + 1;
-                      if(tabController.index == tabController.length - 1){
+                      if (tabController.index == tabController.length - 1) {
                         context.go(RouteName.authenticationScreen);
-                      }
-                      else{
+                      } else {
                         tabController.animateTo(
                           nextIndex,
                           duration: Duration(milliseconds: 2000),
                           //    curve: curve
                         );
                       }
-
                     },
-                    child: Text(buttonText,style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700
-                    ),),
+                    child: Text(
+                      buttonText,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
                 ),
               ],

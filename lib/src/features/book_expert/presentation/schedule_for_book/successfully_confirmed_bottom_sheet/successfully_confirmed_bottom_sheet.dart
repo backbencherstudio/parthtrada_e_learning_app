@@ -26,7 +26,6 @@ Future<void> confirmBookingBottomSheet({required BuildContext context}) async {
             topRight: Radius.circular(32.r),
           ),
         ),
-
       );
     },
   );

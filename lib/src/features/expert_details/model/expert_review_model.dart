@@ -5,12 +5,13 @@ class ExpertReviewModel {
   String? eMail;
   String? reviews;
 
-  ExpertReviewModel(
-      {this.userName,
-        this.profilePicture,
-        this.ratings,
-        this.eMail,
-        this.reviews});
+  ExpertReviewModel({
+    this.userName,
+    this.profilePicture,
+    this.ratings,
+    this.eMail,
+    this.reviews,
+  });
 
   ExpertReviewModel.fromJson(Map<String, dynamic> json) {
     userName = json['userName'];

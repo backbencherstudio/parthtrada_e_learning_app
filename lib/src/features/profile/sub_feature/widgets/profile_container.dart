@@ -9,18 +9,19 @@ class ProfileContainer extends StatelessWidget {
   final String icon;
   final String title;
   void Function()? onTap;
-   ProfileContainer({super.key,
-  required this.icon,
-  required this.title,
-  required this.onTap
+  ProfileContainer({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.onTap,
   });
   @override
   Widget build(BuildContext context) {
-   final textStyle = Theme.of(context).textTheme;
+    final textStyle = Theme.of(context).textTheme;
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding:  EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         margin: EdgeInsets.symmetric(vertical: 8.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.r),
@@ -28,17 +29,17 @@ class ProfileContainer extends StatelessWidget {
         ),
         child: Row(
           children: [
-           SvgPicture.asset(icon),
-           SizedBox(width: 8.w,),
-           Text(title,
-           style: textStyle.titleSmall!.copyWith(
-            fontWeight: FontWeight.w600,
-            color: Color(0xffffffff)
-           ),
-         ),
-           Spacer(),
-           SvgPicture.asset(AppIcons.backIcon),
-              
+            SvgPicture.asset(icon),
+            SizedBox(width: 8.w),
+            Text(
+              title,
+              style: textStyle.titleSmall!.copyWith(
+                fontWeight: FontWeight.w600,
+                color: Color(0xffffffff),
+              ),
+            ),
+            Spacer(),
+            SvgPicture.asset(AppIcons.backIcon),
           ],
         ),
       ),

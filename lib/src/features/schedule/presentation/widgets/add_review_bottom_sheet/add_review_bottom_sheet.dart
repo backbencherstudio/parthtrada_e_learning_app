@@ -24,7 +24,6 @@ Future<void> addReviewBottomSheet({required BuildContext context}) async {
           ),
 
           child: AddReviewForExpert(),
-
         ),
       );
     },

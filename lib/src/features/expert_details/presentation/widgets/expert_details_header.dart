@@ -8,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../core/constant/images.dart';
 
-class ExpertDetailsHeader extends StatelessWidget{
+class ExpertDetailsHeader extends StatelessWidget {
   const ExpertDetailsHeader({super.key});
 
   @override
@@ -31,53 +31,72 @@ class ExpertDetailsHeader extends StatelessWidget{
                       width: 24.w,
                       child: IconButton(
                         padding: EdgeInsets.zero,
-                        onPressed: ()=>context.pop(),
-                        icon: Icon(Icons.arrow_back, color: Colors.white, size: 24.sp),
+                        onPressed: () => context.pop(),
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                          size: 24.sp,
+                        ),
                       ),
                     ),
                   ),
                 ),
 
                 ClipOval(
-                  child: Image.asset(AppImages.women,width: 140.w,height: 140.h,fit: BoxFit.cover,),
+                  child: Image.asset(
+                    AppImages.women,
+                    width: 140.w,
+                    height: 140.h,
+                    fit: BoxFit.cover,
+                  ),
                 ),
 
-                Expanded(
-                  child: SizedBox(),
-                ),
+                Expanded(child: SizedBox()),
               ],
             ),
-            SizedBox(height: 30.h,),
+            SizedBox(height: 30.h),
 
             /// Name and Rating
             Row(
-             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(child: Text("Sarah Chen",style: textTheme.headlineSmall,)),
-                Icon(Icons.star,color: AppColors.primary,size: 20.sp,),
-                SizedBox(width: 4.w,),
-                Text("4.8",style: textTheme.bodyLarge,),
+                Expanded(
+                  child: Text("Sarah Chen", style: textTheme.headlineSmall),
+                ),
+                Icon(Icons.star, color: AppColors.primary, size: 20.sp),
+                SizedBox(width: 4.w),
+                Text("4.8", style: textTheme.bodyLarge),
               ],
             ),
-            SizedBox(height: 4.h,),
+            SizedBox(height: 4.h),
 
             /// Designation
-            Text("Senior Data Scientist at Google",style: textTheme.labelMedium,),
-            SizedBox(height: 10.h,),
+            Text(
+              "Senior Data Scientist at Google",
+              style: textTheme.labelMedium,
+            ),
+            SizedBox(height: 10.h),
 
             /// Location
             Row(
               spacing: 6.w,
               children: [
-                Icon(Icons.location_on_outlined,color: Colors.white,size: 20.sp,),
-                Text("Olmstead Rd",style: textTheme.labelMedium,)
+                Icon(
+                  Icons.location_on_outlined,
+                  color: Colors.white,
+                  size: 20.sp,
+                ),
+                Text("Olmstead Rd", style: textTheme.labelMedium),
               ],
             ),
-            SizedBox(height: 10.h,),
+            SizedBox(height: 10.h),
 
             /// Message button
-            CommonWidget.primaryButton(context: context, onPressed: (){}, text: "Message")
-
+            CommonWidget.primaryButton(
+              context: context,
+              onPressed: () {},
+              text: "Message",
+            ),
           ],
         ),
       ),

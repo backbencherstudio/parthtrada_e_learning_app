@@ -4,11 +4,9 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../../../core/constant/icons.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
+
 class MessageWritingWidget extends StatelessWidget {
-  const MessageWritingWidget({
-    super.key,
-    required this.textTheme,
-  });
+  const MessageWritingWidget({super.key, required this.textTheme});
 
   final TextTheme textTheme;
 
@@ -26,8 +24,8 @@ class MessageWritingWidget extends StatelessWidget {
               fillColor: AppColors.secondary,
               filled: true,
               contentPadding: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                  vertical: 16.w
+                horizontal: 16.w,
+                vertical: 16.w,
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -47,11 +45,11 @@ class MessageWritingWidget extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(16.r),
           decoration: BoxDecoration(
-              color: AppColors.primary,
-              borderRadius: BorderRadius.circular(10.r)
+            color: AppColors.primary,
+            borderRadius: BorderRadius.circular(10.r),
           ),
           child: SvgPicture.asset(AppIcons.sendIcon),
-        )
+        ),
       ],
     );
   }

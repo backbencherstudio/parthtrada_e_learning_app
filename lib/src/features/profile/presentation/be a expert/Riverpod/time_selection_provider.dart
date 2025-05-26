@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AvailabilityNotifier extends StateNotifier<({Set<String> days, Set<String> times})> {
+class AvailabilityNotifier
+    extends StateNotifier<({Set<String> days, Set<String> times})> {
   AvailabilityNotifier() : super((days: <String>{}, times: <String>{}));
 
   void toggleDay(String day) {
@@ -20,6 +21,7 @@ class AvailabilityNotifier extends StateNotifier<({Set<String> days, Set<String>
   }
 }
 
-final availabilityProvider = StateNotifierProvider<AvailabilityNotifier, ({Set<String> days, Set<String> times})>(
-  (ref) => AvailabilityNotifier(),
-);
+final availabilityProvider = StateNotifierProvider<
+  AvailabilityNotifier,
+  ({Set<String> days, Set<String> times})
+>((ref) => AvailabilityNotifier());
