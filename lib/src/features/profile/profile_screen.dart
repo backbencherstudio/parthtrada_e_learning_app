@@ -2,13 +2,14 @@ import 'package:e_learning_app/core/constant/images.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
 import 'package:e_learning_app/src/features/profile/sub_feature/widgets/widget_List.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textStyle = Theme.of(context).textTheme;
     return Scaffold(
       body: SingleChildScrollView(
@@ -29,7 +30,7 @@ class ProfileScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(child: SizedBox()),
-                                                Expanded(child: SizedBox()),
+                        Expanded(child: SizedBox()),
 
                         Center(
                           child: Image.asset(
@@ -40,7 +41,9 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         Expanded(child: SizedBox()),
 
-                        Flexible(child: CommonWidget.notificationWidget(context)),
+                        Flexible(
+                          child: CommonWidget.notificationWidget(context),
+                        ),
                       ],
                     ),
                   ),
@@ -61,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ],
               ),
-             
+
               SizedBox(height: 20.h),
               Align(
                 alignment: Alignment.centerLeft,
