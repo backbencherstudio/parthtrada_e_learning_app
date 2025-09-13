@@ -22,7 +22,6 @@ class ExpertNotifier extends StateNotifier<AsyncValue<List<DataModel>>> {
 
     try {
       final skillsParam = skills.join(',');
-
       final url = Uri.parse('$baseUrl/experts?name=$name&skills=$skillsParam');
 
       final response = await http.get(
@@ -32,14 +31,13 @@ class ExpertNotifier extends StateNotifier<AsyncValue<List<DataModel>>> {
           'Content-Type': 'application/json',
         },
       );
+
       if (response.statusCode == 200) {
         final jsonBody = json.decode(response.body) as Map<String, dynamic>;
-
         final dataList =
             (jsonBody['data'] as List)
                 .map((e) => DataModel.fromJson(e))
                 .toList();
-
         state = AsyncValue.data(dataList);
       } else {
         state = AsyncValue.error('Failed to fetch experts', StackTrace.current);
