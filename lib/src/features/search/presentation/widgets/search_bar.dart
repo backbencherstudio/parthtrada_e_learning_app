@@ -60,6 +60,7 @@ import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:e_learning_app/core/utils/utils.dart';
 import 'package:e_learning_app/src/features/onboarding/riverpod/login_state.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/expert_search_bottom_sheet.dart';
+import 'package:e_learning_app/src/features/search/provider/expert_details_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -135,6 +136,16 @@ class _ExpertSearchBarState extends ConsumerState<ExpertSearchBar> {
                   expertSearchBottomSheet(
                     context: context,
                     authToken: authToken,
+                    onSkillsChanged: (selectedSkills) {
+                      // Update skills in parent
+                      ref
+                          .read(mExpertProvider.notifier)
+                          .fetchExperts(
+                            name: _controller.text,
+                            authToken: authToken,
+                            skills: selectedSkills,
+                          );
+                    },
                   );
                 },
                 child: Container(

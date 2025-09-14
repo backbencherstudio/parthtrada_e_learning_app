@@ -6,9 +6,11 @@ class WrapperList extends StatelessWidget {
   final List<String> contentList;
   final int? minimumShow;
   final TextStyle? textStyle;
+  final Function(String) onSkillSelected;
   const WrapperList({
     super.key,
     required this.contentList,
+    required this.onSkillSelected,
     this.minimumShow,
     this.textStyle,
   });
@@ -33,6 +35,7 @@ class WrapperList extends StatelessWidget {
         listLength,
         (index) => GestureDetector(
           onTap: () {
+            onSkillSelected(contentList[index]);
             debugPrint("\nTaped index : $index\n");
           },
           child: WrapItemContainer(

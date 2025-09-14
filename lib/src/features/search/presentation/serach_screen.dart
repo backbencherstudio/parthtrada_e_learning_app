@@ -22,6 +22,7 @@ class SearchScreen extends ConsumerStatefulWidget {
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   bool isSearching = false;
   String searchQuery = '';
+  List<String> selectedSkills = [];
   Timer? _debounce;
 
   void updateSearching(String value) {
@@ -32,14 +33,41 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
     _debounce?.cancel();
 
-    if (isSearching) {
-      _debounce = Timer(const Duration(milliseconds: 400), () {
-        final authToken = ref.watch(authTokenProvider);
-        ref
-            .read(mExpertProvider.notifier)
-            .fetchExperts(name: value, authToken: authToken);
-      });
-    }
+    // if (isSearching) {
+    //   _debounce = Timer(const Duration(milliseconds: 400), () {
+    //     final authToken = ref.watch(authTokenProvider);
+    //     ref
+    //         .read(mExpertProvider.notifier)
+    //         .fetchExperts(name: value, authToken: authToken, skills: selectedSkills);
+    //   });
+    // }
+
+    _debounce = Timer(const Duration(milliseconds: 400), () {
+      final authToken = ref.watch(authTokenProvider);
+
+      ref
+          .read(mExpertProvider.notifier)
+          .fetchExperts(
+            name: searchQuery.isEmpty ? '' : searchQuery,
+            authToken: authToken,
+            skills: selectedSkills,
+          );
+    });
+  }
+
+  void updateSkills(List<String> newSkills) {
+    setState(() {
+      selectedSkills = newSkills;
+    });
+
+    final authToken = ref.watch(authTokenProvider);
+    ref
+        .read(mExpertProvider.notifier)
+        .fetchExperts(
+          name: searchQuery,
+          authToken: authToken,
+          skills: selectedSkills,
+        );
   }
 
   @override

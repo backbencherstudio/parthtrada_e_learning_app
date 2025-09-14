@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 Future<void> expertSearchBottomSheet({
   required BuildContext context,
   required String? authToken,
+  required ValueChanged<List<String>> onSkillsChanged,
 }) async {
   return showModalBottomSheet(
     context: context,
@@ -60,7 +61,16 @@ Future<void> expertSearchBottomSheet({
 
                         SizedBox(height: 20.h),
 
-                        WrapperList(contentList: skills),
+                        WrapperList(
+                          contentList: skills,
+                          onSkillSelected: (selectedSkill) {
+                            onSkillsChanged([
+                              selectedSkill,
+                            ]); 
+                            context
+                                .pop();
+                          },
+                        ),
 
                         SizedBox(height: 32.h),
                       ],
