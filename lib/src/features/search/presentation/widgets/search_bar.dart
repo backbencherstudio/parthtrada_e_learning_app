@@ -58,21 +58,23 @@
 import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:e_learning_app/core/utils/utils.dart';
+import 'package:e_learning_app/src/features/onboarding/riverpod/login_state.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/expert_search_bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-class ExpertSearchBar extends StatefulWidget {
+class ExpertSearchBar extends ConsumerStatefulWidget {
   final ValueChanged<String> onQueryChanged;
 
   const ExpertSearchBar({super.key, required this.onQueryChanged});
 
   @override
-  State<ExpertSearchBar> createState() => _ExpertSearchBarState();
+  ConsumerState<ExpertSearchBar> createState() => _ExpertSearchBarState();
 }
 
-class _ExpertSearchBarState extends State<ExpertSearchBar> {
+class _ExpertSearchBarState extends ConsumerState<ExpertSearchBar> {
   late final TextEditingController _controller;
   late final FocusNode _focusNode;
 
@@ -128,7 +130,13 @@ class _ExpertSearchBarState extends State<ExpertSearchBar> {
               ),
 
               GestureDetector(
-                onTap: () => expertSearchBottomSheet(context: context),
+                onTap: () {
+                  final authToken = ref.watch(authTokenProvider);
+                  expertSearchBottomSheet(
+                    context: context,
+                    authToken: authToken,
+                  );
+                },
                 child: Container(
                   padding: EdgeInsets.all(14.r),
                   decoration: Utils.commonBoxDecoration(),

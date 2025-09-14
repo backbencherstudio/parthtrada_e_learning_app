@@ -6,7 +6,12 @@ class WrapperList extends StatelessWidget {
   final List<String> contentList;
   final int? minimumShow;
   final TextStyle? textStyle;
-  const WrapperList({super.key, required this.contentList, this.minimumShow,this.textStyle});
+  const WrapperList({
+    super.key,
+    required this.contentList,
+    this.minimumShow,
+    this.textStyle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +32,14 @@ class WrapperList extends StatelessWidget {
       children: List.generate(
         listLength,
         (index) => GestureDetector(
-            onTap: (){
-              debugPrint("\nTaped index : $index\n");
-            },
-            child: WrapItemContainer(
-                textStyle: textStyle,
-                text: contentList[index],
-            ),),
+          onTap: () {
+            debugPrint("\nTaped index : $index\n");
+          },
+          child: WrapItemContainer(
+            textStyle: textStyle,
+            text: contentList[index],
+          ),
+        ),
       ),
     );
   }

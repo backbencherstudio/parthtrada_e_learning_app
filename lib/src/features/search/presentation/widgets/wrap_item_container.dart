@@ -8,7 +8,12 @@ class WrapItemContainer extends StatelessWidget {
   final bool? isRemainingItemShow;
   final TextStyle? textStyle;
 
-  const WrapItemContainer({super.key, required this.text, this.isRemainingItemShow, this.textStyle});
+  const WrapItemContainer({
+    super.key,
+    required this.text,
+    this.isRemainingItemShow,
+    this.textStyle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +21,22 @@ class WrapItemContainer extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
       decoration: BoxDecoration(
         color: AppColors.primary.withValues(alpha: 0.03),
-        border: isRemainingItemShow == true ? null : Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
-        borderRadius: isRemainingItemShow == true ? null : BorderRadius.circular(30.r),
-        shape: isRemainingItemShow == true ? BoxShape.circle : BoxShape.rectangle,
+        border:
+            isRemainingItemShow == true
+                ? null
+                : Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
+        borderRadius:
+            isRemainingItemShow == true ? null : BorderRadius.circular(30.r),
+        shape:
+            isRemainingItemShow == true ? BoxShape.circle : BoxShape.rectangle,
       ),
       child: Text(
         text,
-        style: textStyle?.copyWith(color: AppColors.primary) ?? Theme.of(
-          context,
-        ).textTheme.bodyMedium?.copyWith(color: AppColors.primary),
+        style:
+            textStyle?.copyWith(color: AppColors.primary) ??
+            Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.primary),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,

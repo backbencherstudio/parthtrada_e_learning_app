@@ -1,28 +1,3 @@
-// class FetchedExperts extends ConsumerWidget {
-//   const FetchedExperts({super.key});
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     Future<Map<String, dynamic>> getExperts() async {
-//       final url = '$baseUrl/experts';
-//       final uri = Uri.parse(url);
-//       final token = ref.watch(authTokenProvider);
-
-//       final response = await http.get(
-//         uri,
-//         headers: {'Authorization': '$token'},
-//       );
-//       final parsedData = jsonDecode(response.body);
-//       // final data  = parsedData.toString();
-//       print('=========response');
-//       print(response.body.toString());
-//       print('=========response');
-//       return parsedData;
-//     }
-
-//   }
-// }
-
 import 'dart:convert';
 
 import 'package:e_learning_app/repository/linkedin_login_webview.dart';

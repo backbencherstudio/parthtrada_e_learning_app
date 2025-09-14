@@ -1,54 +1,4 @@
-// import 'package:e_learning_app/src/features/search/presentation/widgets/search_bar.dart';
-// import 'package:e_learning_app/src/features/search/presentation/widgets/search_footer/search_footer.dart';
-// import 'package:e_learning_app/src/features/search/presentation/widgets/user_review_list.dart';
-// import '../../../../core/utils/common_widget.dart';
-// import './widgets/featured_experts_list.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-// class SearchScreen extends StatelessWidget {
-//   const SearchScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SingleChildScrollView(
-//         child: Column(
-//           children: [
-
-//             /// Header
-//             CommonWidget.customAppBar(
-//               textTheme: Theme.of(context).textTheme,
-//               isNotification: false,
-//               title: "Find Experts",
-//               subtitle: "Connect with Professionals",
-//             ),
-
-//             SizedBox(height: 24.h),
-
-//             /// Search Container
-//             ExpertSearchBar(),
-
-//             SizedBox(height: 24.h),
-
-//             /// Featured Experts list
-//             FeaturedExpertsList(),
-
-//             SizedBox(height: 24.h,),
-
-//             UserReviewList(),
-
-//             SizedBox(height: 24.h,),
-
-//             SearchFooter(),
-
-//             SizedBox(height: 24.h,),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+import 'dart:async';
 
 import 'package:e_learning_app/src/features/onboarding/riverpod/login_state.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/search_bar.dart';
@@ -72,6 +22,7 @@ class SearchScreen extends ConsumerStatefulWidget {
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   bool isSearching = false;
   String searchQuery = '';
+  Timer? _debounce;
 
   void updateSearching(String value) {
     setState(() {
@@ -79,12 +30,22 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       isSearching = value.isNotEmpty;
     });
 
+    _debounce?.cancel();
+
     if (isSearching) {
-      final authToken = ref.watch(authTokenProvider);
-      ref
-          .read(mExpertProvider.notifier)
-          .fetchExperts(name: value, authToken: authToken);
+      _debounce = Timer(const Duration(milliseconds: 400), () {
+        final authToken = ref.watch(authTokenProvider);
+        ref
+            .read(mExpertProvider.notifier)
+            .fetchExperts(name: value, authToken: authToken);
+      });
     }
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
   }
 
   @override
