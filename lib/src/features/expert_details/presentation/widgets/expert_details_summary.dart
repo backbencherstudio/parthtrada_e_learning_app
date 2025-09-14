@@ -1,14 +1,18 @@
 import 'package:e_learning_app/core/constant/icons.dart';
+import 'package:e_learning_app/src/features/expert_details/model/user_specific_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'expert_summary_container.dart';
 
 class ExpertDetailsSummary extends StatelessWidget {
-  const ExpertDetailsSummary({super.key});
+  final Data? data;
+  const ExpertDetailsSummary({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
+    // final totalStudensNumber =
+    //     data?.stats?.totalStudents != 0 ? data?.stats?.totalStudents : 'N/A';
     return Row(
       spacing: 10.w,
       children: [
@@ -16,7 +20,8 @@ class ExpertDetailsSummary extends StatelessWidget {
         Expanded(
           child: ExpertDetailsSummaryContainer(
             headerText: "Students",
-            bodyText: "580+",
+            // bodyText: '${data?.expert?.totalStudents?}',
+            bodyText: '${data?.stats?.totalStudents ?? 0}+',
             svgIconAssetPath: AppIcons.userFill,
           ),
         ),
@@ -25,7 +30,7 @@ class ExpertDetailsSummary extends StatelessWidget {
         Expanded(
           child: ExpertDetailsSummaryContainer(
             headerText: "Experience",
-            bodyText: "4 yr+",
+            bodyText: "${data?.expert?.experience}yr+",
             svgIconAssetPath: AppIcons.circleTikMarkFill,
           ),
         ),

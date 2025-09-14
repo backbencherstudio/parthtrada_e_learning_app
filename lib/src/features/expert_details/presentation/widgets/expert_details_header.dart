@@ -1,18 +1,22 @@
 import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
+import 'package:e_learning_app/repository/linkedin_login_webview.dart';
+import 'package:e_learning_app/src/features/expert_details/model/user_specific_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../core/constant/images.dart';
-
 class ExpertDetailsHeader extends StatelessWidget {
-  const ExpertDetailsHeader({super.key});
+  final Data? data;
+  const ExpertDetailsHeader({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final expert = data?.expert;
+    final user = expert?.user;
+
     return Padding(
       padding: AppPadding.screenHorizontal,
       child: SafeArea(
@@ -42,12 +46,25 @@ class ExpertDetailsHeader extends StatelessWidget {
                 ),
 
                 ClipOval(
-                  child: Image.asset(
-                    AppImages.women,
-                    width: 140.w,
-                    height: 140.h,
-                    fit: BoxFit.cover,
-                  ),
+                  child:
+                      user?.image != null && user!.image!.isNotEmpty
+                          ? Image.network(
+                            '$baseUrl/uploads/${user.image!}',
+                            width: 140.w,
+                            height: 140.h,
+                            fit: BoxFit.cover,
+                          )
+                          : SizedBox(
+                            width: 140.w,
+                            height: 140.h,
+                            child: CircleAvatar(
+                              // AppImages.women, // Placeholder image
+                              // width: 140.w,
+                              // height: 140.h,
+                              // fit: BoxFit.cover,
+                              backgroundColor: Colors.white,
+                            ),
+                          ),
                 ),
 
                 Expanded(child: SizedBox()),
@@ -60,18 +77,21 @@ class ExpertDetailsHeader extends StatelessWidget {
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: Text("Sarah Chen", style: textTheme.headlineSmall),
+                  child: Text(user?.name ?? '', style: textTheme.headlineSmall),
                 ),
                 Icon(Icons.star, color: AppColors.primary, size: 20.sp),
                 SizedBox(width: 4.w),
-                Text("4.8", style: textTheme.bodyLarge),
+                Text(
+                  data?.stats?.averageRating?.toString() ?? '0.0',
+                  style: textTheme.bodyLarge,
+                ),
               ],
             ),
             SizedBox(height: 4.h),
 
             /// Designation
             Text(
-              "Senior Data Scientist at Google",
+              expert?.profession?.toString() ?? 'N/A',
               style: textTheme.labelMedium,
             ),
             SizedBox(height: 10.h),
@@ -85,7 +105,10 @@ class ExpertDetailsHeader extends StatelessWidget {
                   color: Colors.white,
                   size: 20.sp,
                 ),
-                Text("Olmstead Rd", style: textTheme.labelMedium),
+                Text(
+                  expert?.location?.toString() ?? 'N/A',
+                  style: textTheme.labelMedium,
+                ),
               ],
             ),
             SizedBox(height: 10.h),
