@@ -56,7 +56,7 @@ class ExpertDetailsBody extends StatelessWidget {
           SizedBox(height: 30.h),
 
           /// Reviews of Expert
-          ExpertRatingsSummary(),
+          ExpertRatingsSummary(data: data),
 
           SizedBox(height: 30.h),
 
