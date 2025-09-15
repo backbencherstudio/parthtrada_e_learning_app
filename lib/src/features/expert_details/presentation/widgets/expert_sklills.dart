@@ -47,7 +47,7 @@ final skillsProvider = FutureProvider.family<List<String>, String>((
 });
 
 class ExpertSkill extends ConsumerWidget {
-  ExpertSkill({super.key});
+  const ExpertSkill({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -58,7 +58,6 @@ class ExpertSkill extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text("Skills", style: Theme.of(context).textTheme.headlineSmall),
-
         skillsAsync.when(
           data: (skills) {
             return WrapperList(
@@ -66,9 +65,7 @@ class ExpertSkill extends ConsumerWidget {
               textStyle: Theme.of(
                 context,
               ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
-              onSkillSelected: (selectedSkill) {
-                print('Selected Skill: $selectedSkill');
-              },
+              onSkillSelected: (selectedSkill) {},
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),

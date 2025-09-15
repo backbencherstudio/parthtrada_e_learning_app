@@ -141,7 +141,7 @@ class User {
 class Stats {
   int? totalReviews;
   double? averageRating;
-  int totalStudents;
+  final int totalStudents;
   List<RatingDistribution>? ratingDistribution;
 
   Stats({

@@ -17,6 +17,15 @@ class ExpertDetailsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final expert = data?.expert;
+    final firstAvailableDay = data?.expert?.availableDays?.first.substring(
+      0,
+      3,
+    );
+    final lastAvailableDay = data?.expert?.availableDays?.last.substring(0, 3);
+    final firstAvailableTime =
+        data?.expert?.availableTime?.first.split(' ').first;
+    final lastAvailableTime =
+        data?.expert?.availableTime?.last.split(' ').first;
 
     return Padding(
       padding: AppPadding.screenHorizontal,
@@ -28,7 +37,7 @@ class ExpertDetailsBody extends StatelessWidget {
           SizedBox(height: 30.h),
           ExpertSkill(),
           SizedBox(height: 30.h),
-          ExpertBio(),
+          ExpertBio(expert: expert),
           SizedBox(height: 30.h),
 
           /// Availability
@@ -38,7 +47,7 @@ class ExpertDetailsBody extends StatelessWidget {
           ),
           SizedBox(height: 10.h),
           Text(
-            "Mon - Fri : 07.00 - 16.30",
+            "$firstAvailableDay - $lastAvailableDay : $firstAvailableTime - $lastAvailableTime",
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: AppColors.secondaryTextColor,
             ),

@@ -11,17 +11,21 @@ class ExpertDetailsSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final totalStudensNumber =
-    //     data?.stats?.totalStudents != 0 ? data?.stats?.totalStudents : 'N/A';
+    final totalStudensNumber = data?.stats?.totalStudents ?? 0;
+    final bodyTextPart = data?.expert?.experience ?? 'N/A';
+    final totalReviews = data?.stats?.totalReviews ?? 0;
     return Row(
       spacing: 10.w,
       children: [
-        /// Total Students of the students
         Expanded(
           child: ExpertDetailsSummaryContainer(
             headerText: "Students",
-            // bodyText: '${data?.expert?.totalStudents?}',
-            bodyText: '${data?.stats?.totalStudents ?? 0}+',
+            bodyText:
+                totalStudensNumber > 1
+                    ? '${totalStudensNumber - 1} +'
+                    : totalStudensNumber > 0
+                    ? '$totalStudensNumber'
+                    : 'N/A',
             svgIconAssetPath: AppIcons.userFill,
           ),
         ),
@@ -30,7 +34,8 @@ class ExpertDetailsSummary extends StatelessWidget {
         Expanded(
           child: ExpertDetailsSummaryContainer(
             headerText: "Experience",
-            bodyText: "${data?.expert?.experience}yr+",
+            bodyText: "$bodyTextPart yr+",
+
             svgIconAssetPath: AppIcons.circleTikMarkFill,
           ),
         ),
@@ -39,7 +44,8 @@ class ExpertDetailsSummary extends StatelessWidget {
         Expanded(
           child: ExpertDetailsSummaryContainer(
             headerText: "Reviews",
-            bodyText: "230+",
+            bodyText:
+                totalReviews > 2 ? '${totalReviews - 1}+' : '$totalReviews',
             svgIconAssetPath: AppIcons.starFill,
           ),
         ),
