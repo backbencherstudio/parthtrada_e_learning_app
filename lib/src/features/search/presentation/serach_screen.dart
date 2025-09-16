@@ -33,15 +33,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
     _debounce?.cancel();
 
-    // if (isSearching) {
-    //   _debounce = Timer(const Duration(milliseconds: 400), () {
-    //     final authToken = ref.watch(authTokenProvider);
-    //     ref
-    //         .read(mExpertProvider.notifier)
-    //         .fetchExperts(name: value, authToken: authToken, skills: selectedSkills);
-    //   });
-    // }
-
     _debounce = Timer(const Duration(milliseconds: 400), () {
       final authToken = ref.watch(authTokenProvider);
 

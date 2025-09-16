@@ -5,6 +5,7 @@ import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
 import 'package:e_learning_app/core/utils/utils.dart';
 import 'package:e_learning_app/repository/linkedin_login_webview.dart';
+import 'package:e_learning_app/src/features/expert_details/riverpod/expert_details_provider_with_id.dart';
 import 'package:e_learning_app/src/features/search/model/data_model.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/wrap_item_container.dart';
 import 'package:e_learning_app/src/features/search/provider/expert_provider.dart';
@@ -70,6 +71,7 @@ class FeaturedExpertsList extends ConsumerWidget {
                       expert,
                       textTheme,
                       isSearching,
+                      ref,
                     );
                   },
                 ),
@@ -89,6 +91,7 @@ class FeaturedExpertsList extends ConsumerWidget {
                       expert,
                       textTheme,
                       isSearching,
+                      ref,
                     );
                   },
                 ),
@@ -106,7 +109,16 @@ class FeaturedExpertsList extends ConsumerWidget {
     DataModel expert,
     TextTheme textTheme,
     bool isSearching,
+    WidgetRef ref,
   ) {
+    final data = ref.watch(expertDetailsProvider);
+    final userData = data.data?.expert;
+
+    final firstAvailableDay = userData?.availableDays?.first.substring(0, 3);
+    final lastAvailableDay = userData?.availableDays?.last.substring(0, 3);
+    final firstAvailableTime = userData?.availableTime?.first.split(' ').first;
+    final lastAvailableTime = userData?.availableTime?.last.split(' ').first;
+
     return Padding(
       padding: EdgeInsets.only(
         bottom: isSearching ? 16.h : 0,
@@ -212,9 +224,10 @@ class FeaturedExpertsList extends ConsumerWidget {
                     width: 20.w,
                     height: 20.h,
                   ),
+
                   Text(
-                    "Next available: Mon 2pm...",
-                    style: textTheme.bodyMedium?.copyWith(
+                    "$firstAvailableDay - $lastAvailableDay : $firstAvailableTime - $lastAvailableTime",
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppColors.secondaryTextColor,
                     ),
                   ),

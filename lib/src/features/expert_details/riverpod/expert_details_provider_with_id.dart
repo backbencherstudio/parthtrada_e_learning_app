@@ -24,9 +24,8 @@ class ExpertDetailsNotifier extends StateNotifier<SpecificUserDetails> {
     );
 
     try {
-      print("Making request to: $url..........");
+      // print("Making request to: $url..........");
 
-      
       final response = await http.get(
         Uri.parse(url),
         headers: {
@@ -35,17 +34,17 @@ class ExpertDetailsNotifier extends StateNotifier<SpecificUserDetails> {
         },
       );
 
-      print('status code========${response.statusCode}');
-      print('Response body: ${response.body}');
+      // print('status code========${response.statusCode}');
+      // print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = jsonDecode(response.body);
         final expertDetails = SpecificUserDetails.fromJson(jsonData);
 
-        print('printing data of user $expertDetails');
+        // print('printing data of user $expertDetails');
         state = expertDetails;
       } else {
-        print('Failed to fetch data. Status code: ${response.statusCode}');
+        // print('Failed to fetch data. Status code: ${response.statusCode}');
         state = SpecificUserDetails(
           success: false,
           message: 'Failed to fetch data. Please try again.',
@@ -53,7 +52,7 @@ class ExpertDetailsNotifier extends StateNotifier<SpecificUserDetails> {
         );
       }
     } catch (e) {
-      print('An error occurred: $e');
+      // print('An error occurred: $e');
       state = SpecificUserDetails(
         success: false,
         message: 'An error occurred: $e',
