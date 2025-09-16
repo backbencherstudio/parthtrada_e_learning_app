@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final savedToken = await LoginPreferences().loadAuthToken();
+  print(savedToken);
   bool isLoggedIn = false;
   if (savedToken != null) {
     isLoggedIn = await _isTokenValid(savedToken);
