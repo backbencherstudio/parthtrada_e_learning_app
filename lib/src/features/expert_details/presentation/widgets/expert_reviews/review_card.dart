@@ -34,7 +34,7 @@ class ReviewCard extends StatelessWidget {
                       child: Image.network('$baseUrl/uploads/${student.image}'),
                     )
                     : CircleAvatar(
-                      radius: 24.r,
+                      radius: 20.r,
                       backgroundColor: Colors.white54,
                     ),
           ),

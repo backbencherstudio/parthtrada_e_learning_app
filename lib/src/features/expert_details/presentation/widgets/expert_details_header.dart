@@ -23,7 +23,6 @@ class ExpertDetailsHeader extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Profile Picture and Back button
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -57,13 +56,7 @@ class ExpertDetailsHeader extends StatelessWidget {
                           : SizedBox(
                             width: 140.w,
                             height: 140.h,
-                            child: CircleAvatar(
-                              // AppImages.women, // Placeholder image
-                              // width: 140.w,
-                              // height: 140.h,
-                              // fit: BoxFit.cover,
-                              backgroundColor: Colors.white,
-                            ),
+                            child: CircleAvatar(backgroundColor: Colors.white),
                           ),
                 ),
 
