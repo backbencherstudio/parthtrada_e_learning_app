@@ -12,7 +12,8 @@ import 'expert_sklills.dart';
 
 class ExpertDetailsBody extends StatelessWidget {
   final Data? data;
-  const ExpertDetailsBody({super.key, required this.data});
+  final String? id;
+  const ExpertDetailsBody({super.key, required this.data, this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class ExpertDetailsBody extends StatelessWidget {
 
           SizedBox(height: 30.h),
 
-          ExpertReviewList(),
+          ExpertReviewList(id: id!),
 
           SizedBox(height: 30.h),
         ],

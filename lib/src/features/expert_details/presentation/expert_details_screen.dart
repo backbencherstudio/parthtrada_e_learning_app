@@ -41,7 +41,7 @@ class _ExpertDetailsScreenState extends ConsumerState<ExpertDetailsScreen> {
           children: [
             ExpertDetailsHeader(data: data),
             SizedBox(height: 24.h),
-            ExpertDetailsBody(data: data),
+            ExpertDetailsBody(data: data, id: widget.id),
           ],
         ),
       ),

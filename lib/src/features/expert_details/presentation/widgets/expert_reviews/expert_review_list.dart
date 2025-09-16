@@ -1,46 +1,81 @@
 import 'package:e_learning_app/src/features/expert_details/presentation/widgets/expert_reviews/review_card.dart';
+import 'package:e_learning_app/src/features/expert_details/riverpod/expert_riverpod1.dart';
+import 'package:e_learning_app/src/features/onboarding/riverpod/login_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../riverpod/expert_riverpod.dart';
+class ExpertReviewList extends ConsumerStatefulWidget {
+  final String id;
+  const ExpertReviewList({super.key, required this.id});
 
-class ExpertReviewList extends StatelessWidget{
-  const ExpertReviewList({super.key});
+  @override
+  ConsumerState<ExpertReviewList> createState() => _ExpertReviewListState();
+}
 
+class _ExpertReviewListState extends ConsumerState<ExpertReviewList> {
+  @override
+  void initState() {
+    super.initState();
+    final authToken = ref.read(authTokenProvider);
+    if (authToken != null) {
+      ref
+          .read(expertReviewListProvider.notifier)
+          .fetchReviews(page: 1, id: widget.id, token: authToken);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (_, ref, _) {
-        final expertState = ref.watch(expertRiverpod);
-        return expertState.expertReviewList == null ?
-        Center(child: CircularProgressIndicator(),) :
-        Column(
-          children: [
-            ListView.builder(
-              itemCount: !expertState.isFullReviewShow ? 3 : expertState.expertReviewList!.length,
-                padding: EdgeInsets.zero,
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index){
-                final review = expertState.expertReviewList![index];
-                return ReviewCard(
-                  review: review,
-                );
-                }
+    final reviewsState = ref.watch(expertReviewListProvider);
+    final expertReviewNotifier = ref.read(expertReviewListProvider.notifier);
+
+    if (reviewsState == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    final expertReviewList = reviewsState.items ?? [];
+
+    if (expertReviewList.isEmpty) {
+      return Center(child: Text('No reviews available.'));
+    }
+
+    return Column(
+      children: [
+        ListView.builder(
+          itemCount:
+              !expertReviewNotifier.isFullReviewShow
+                  ? 3
+                  : expertReviewList.length,
+          padding: EdgeInsets.zero,
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            if (index >= expertReviewList.length) {
+              return SizedBox.shrink();
+            }
+            final review = expertReviewList[index];
+            return ReviewCard(review: review);
+          },
+        ),
+
+        SizedBox(height: 20.h),
+
+        if (expertReviewList.length > 3)
+          TextButton(
+            onPressed: () {
+              expertReviewNotifier.showFullReview();
+            },
+            child: Text(
+              expertReviewNotifier.isFullReviewShow
+                  ? "View less reviews"
+                  : "View more reviews (${expertReviewList.length - 3})",
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
             ),
-
-            SizedBox(height: 20.h,),
-
-            if(expertState.expertReviewList!.length>3)
-            TextButton(
-              onPressed: ()=>ref.read(expertRiverpod.notifier).showFullReview(),
-              child: Text(  expertState.isFullReviewShow ? "View less reviews" :  "View more reviews (${expertState.expertReviewList!.length-3})", style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),)
-            )
-        ],
-        );
-      }
+          ),
+      ],
     );
   }
 }

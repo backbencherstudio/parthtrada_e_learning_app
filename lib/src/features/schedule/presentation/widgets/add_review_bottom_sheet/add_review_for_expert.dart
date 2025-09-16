@@ -3,12 +3,12 @@ import 'package:e_learning_app/core/constant/images.dart';
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
 import 'package:e_learning_app/src/features/expert_details/model/expert_review_model.dart';
+import 'package:e_learning_app/src/features/expert_details/riverpod/expert_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../expert_details/riverpod/expert_riverpod.dart';
 
 class AddReviewForExpert extends StatefulWidget {
   const AddReviewForExpert({super.key});
@@ -105,15 +105,17 @@ class _AddReviewForExpertState extends State<AddReviewForExpert> {
           child: Row(
             spacing: 10.w,
             children: [
-              Expanded(child: CommonWidget.primaryButton(
+              Expanded(
+                child: CommonWidget.primaryButton(
                   context: context,
-                  onPressed: ()=> context.pop(),
+                  onPressed: () => context.pop(),
                   text: "Cancel",
                   backgroundColor: AppColors.secondary,
-                textStyle: textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
+                  textStyle: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),),
+              ),
 
               Expanded(
                 child: Consumer(
