@@ -15,8 +15,6 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  bool _dataFetched = false;
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -127,7 +125,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 ),
               ),
               SizedBox(height: 18.h),
-              ...callContainerGeneral(context),
+              ...callContainerGeneral(context, ref),
               SizedBox(height: 28.h),
               Align(
                 alignment: Alignment.centerLeft,

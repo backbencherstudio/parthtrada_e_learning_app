@@ -1,15 +1,21 @@
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
+import 'package:e_learning_app/src/features/profile/model/user_profile.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/Riverpod/skill_selection_provider.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/main%20bottomsheets/session_details_bottomSheet.dart'
     show sessionDetailstBottomSheet;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../sub_feature/user profile/widget/custom_button.dart';
 import '../sub bottomsheets/select_skills_sheet.dart';
 
-void showBeExpertBottomSheet(BuildContext context) {
+void showBeExpertBottomSheet(
+  BuildContext context, [
+  UserProfile? userInformation,
+  WidgetRef? ref,
+]) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -57,7 +63,7 @@ void showBeExpertBottomSheet(BuildContext context) {
                       suffixIcon: GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
-                          selectSkillsBottomSheet(context);
+                          selectSkillsBottomSheet(context, ref);
                           //new bottomSheet
                         },
                         child: Icon(Icons.add),

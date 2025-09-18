@@ -21,24 +21,6 @@ class _UserProfileState extends ConsumerState<UserProfile> {
   late TextEditingController locationController;
   late TextEditingController descriptionController;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   final userInformation = ref.read(aboutMeNotifierProvider);
-  //   professionController = TextEditingController(
-  //     text: userInformation?.meta?.profession,
-  //   );
-  //   organizationController = TextEditingController(
-  //     text: userInformation?.meta?.organization,
-  //   );
-  //   locationController = TextEditingController(
-  //     text: userInformation?.meta?.location,
-  //   );
-  //   descriptionController = TextEditingController(
-  //     text: userInformation?.meta?.description,
-  //   );
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -186,9 +168,21 @@ class _UserProfileState extends ConsumerState<UserProfile> {
                   Mybutton(
                     color: AppColors.primary,
                     text: "Save",
+                    // onTap: () async {
+                    //   if (mounted) {
+                    //     await saveUserProfile(authToken!);
+                    //     Navigator.pop(context);
+                    //   }
+                    // },
                     onTap: () async {
-                      await saveUserProfile(authToken!);
-                      Navigator.pop(context);
+                      if (mounted) {
+                        await saveUserProfile(authToken!);
+                        Future.delayed(Duration(milliseconds: 100), () {
+                          if (mounted) {
+                            Navigator.pop(context);
+                          }
+                        });
+                      }
                     },
                   ),
                 ],

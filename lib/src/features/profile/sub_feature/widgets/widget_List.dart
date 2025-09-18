@@ -2,12 +2,16 @@
 
 import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:e_learning_app/core/routes/route_name.dart';
+import 'package:e_learning_app/repository/api/profile_api/fetch_me.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/main%20bottomsheets/be_a_expert_sheet.dart';
 import 'package:e_learning_app/src/features/profile/sub_feature/widgets/profile_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-List<Widget> callContainerGeneral(BuildContext context) {
+List<Widget> callContainerGeneral(BuildContext context, [WidgetRef? ref]) {
+  final userInformation = ref!.watch(aboutMeNotifierProvider);
+
   List<Widget> profileContainerList = [
     ProfileContainer(
       title: "Profile",
@@ -17,10 +21,13 @@ List<Widget> callContainerGeneral(BuildContext context) {
       },
     ),
     ProfileContainer(
-      title: "Be A Expert",
+      title:
+          userInformation?.activeProfile == 'STUDENT'
+              ? 'Be A Expert'
+              : 'Be A Student',
       icon: AppIcons.userAdd,
       onTap: () {
-        showBeExpertBottomSheet(context);
+        showBeExpertBottomSheet(context, userInformation, ref);
       },
     ),
     ProfileContainer(
