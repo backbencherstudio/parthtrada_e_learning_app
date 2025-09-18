@@ -1,16 +1,38 @@
-import 'package:e_learning_app/core/constant/images.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
+import 'package:e_learning_app/repository/api/profile_api/fetch_me.dart';
+import 'package:e_learning_app/repository/linkedin_login_webview.dart';
+import 'package:e_learning_app/src/features/onboarding/riverpod/login_state.dart';
 import 'package:e_learning_app/src/features/profile/sub_feature/widgets/widget_List.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ProfileScreen extends ConsumerWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final token = ref.watch(authTokenProvider);
+    if (token != null) {
+      ref.read(aboutMeNotifierProvider.notifier).fetchUserProfile(token);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
+    final userInformation = ref.watch(aboutMeNotifierProvider);
+
+    if (userInformation == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -31,14 +53,22 @@ class ProfileScreen extends ConsumerWidget {
                       children: [
                         Expanded(child: SizedBox()),
                         Expanded(child: SizedBox()),
-
-                        Center(
-                          child: Image.asset(
-                            AppImages.maiya,
-                            height: 140.h,
-                            width: 140.w,
-                          ),
+                        CircleAvatar(
+                          radius: 80,
+                          backgroundImage:
+                              userInformation.image != null &&
+                                      userInformation.image!.isNotEmpty
+                                  ? NetworkImage(
+                                    '$baseUrl/uploads/${userInformation.image}',
+                                  )
+                                  : null,
+                          child:
+                              userInformation.image == null ||
+                                      userInformation.image!.isEmpty
+                                  ? Icon(Icons.person, size: 50)
+                                  : null,
                         ),
+
                         Expanded(child: SizedBox()),
 
                         Flexible(
@@ -49,14 +79,14 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                   SizedBox(height: 20.h),
                   Text(
-                    "Jenny Wilson",
+                    userInformation.name!,
                     style: textStyle.titleSmall!.copyWith(
                       fontWeight: FontWeight.w700,
                       color: Color(0xffffffff),
                     ),
                   ),
                   Text(
-                    "Student at Dhaka University",
+                    userInformation.meta!.profession!,
                     style: textStyle.bodyMedium!.copyWith(
                       fontWeight: FontWeight.w400,
                       color: Color(0xffA5A5AB),

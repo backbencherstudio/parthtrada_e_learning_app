@@ -1,16 +1,24 @@
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
+import 'package:e_learning_app/repository/api/profile_api/fetch_me.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'widget/custom_button.dart';
 import 'widget/headers.dart';
 
-class UserProfile extends StatelessWidget {
+class UserProfile extends ConsumerStatefulWidget {
   const UserProfile({super.key});
 
   @override
+  ConsumerState<UserProfile> createState() => _UserProfileState();
+}
+
+class _UserProfileState extends ConsumerState<UserProfile> {
+  @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
+    final userInformation = ref.watch(aboutMeNotifierProvider);
 
     return Scaffold(
       body: Padding(
@@ -19,7 +27,7 @@ class UserProfile extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 48.h),
-              Headers(),
+              Headers(userInformation: userInformation),
               SizedBox(height: 24.h),
               Text(
                 "Jenny Wilson",
@@ -97,16 +105,22 @@ class UserProfile extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Mybutton(color: Color(0xff2B2C31), text: "Discard", onTap: () {
-                    Navigator.pop(context);
-                  },),
-                  SizedBox(width: 8.w,),
-                  Mybutton(color:AppColors.primary , text: "Save", onTap: () {
-                    
-                  },)
+                  Mybutton(
+                    color: Color(0xff2B2C31),
+                    text: "Discard",
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  SizedBox(width: 8.w),
+                  Mybutton(
+                    color: AppColors.primary,
+                    text: "Save",
+                    onTap: () {},
+                  ),
                 ],
               ),
-              SizedBox(height: 100.h,)
+              SizedBox(height: 100.h),
             ],
           ),
         ),

@@ -9,11 +9,11 @@ class UserProfile {
   final String? email;
   final String? lastLogin;
   final String? image;
-  final String? activeProfile; // Either "EXPERT" or "STUDENT"
+  final String? activeProfile;
   final String? timezone;
   final String? createdAt;
   final String? updatedAt;
-  final ProfileMeta? meta; // Expert or Student specific fields
+  final ProfileMeta? meta;
 
   UserProfile({
     this.id,
@@ -32,16 +32,11 @@ class UserProfile {
   factory UserProfile.fromJson(Map<String, dynamic> json) {
     ProfileMeta? meta;
 
-    // Determine if the profile is Expert or Student based on the `activeProfile` field
     if (json['meta'] != null) {
       if (json['activeProfile'] == 'EXPERT') {
-        meta = ExpertMeta.fromJson(
-          json['meta'],
-        ); // Deserialize Expert-specific data
+        meta = ExpertMeta.fromJson(json['meta']);
       } else if (json['activeProfile'] == 'STUDENT') {
-        meta = StudentMeta.fromJson(
-          json['meta'],
-        ); // Deserialize Student-specific data
+        meta = StudentMeta.fromJson(json['meta']);
       }
     }
 
@@ -56,7 +51,7 @@ class UserProfile {
       timezone: json['timezone'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
-      meta: meta, // Assign either ExpertMeta or StudentMeta
+      meta: meta,
     );
   }
 
@@ -72,8 +67,7 @@ class UserProfile {
       'timezone': timezone,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
-      'meta':
-          meta?.toJson(), // Serialize the meta (Expert or Student-specific fields)
+      'meta': meta?.toJson(),
     };
   }
 }

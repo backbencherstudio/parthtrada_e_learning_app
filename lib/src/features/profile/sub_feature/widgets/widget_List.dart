@@ -13,7 +13,6 @@ List<Widget> callContainerGeneral(BuildContext context) {
       title: "Profile",
       icon: AppIcons.userAcc,
       onTap: () {
-        debugPrint("tap hoitase");
         context.push(RouteName.userProfile);
       },
     ),
