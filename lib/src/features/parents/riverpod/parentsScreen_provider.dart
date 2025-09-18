@@ -8,7 +8,8 @@ import '../../schedule/presentation/schedule_screen.dart';
 import '../../search/presentation/serach_screen.dart';
 
 class ParentsScreenProvider extends StateNotifier<ParentScreenRiverPodModel> {
-  ParentsScreenProvider() : super(const ParentScreenRiverPodModel());
+  ParentsScreenProvider()
+    : super(const ParentScreenRiverPodModel(selectedIndex: 0));
 
   final List<Widget> _pageList = [
     SearchScreen(),

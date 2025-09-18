@@ -1,5 +1,6 @@
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/repository/api/profile_api/fetch_me.dart';
+import 'package:e_learning_app/src/features/onboarding/riverpod/login_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,20 +16,67 @@ class UserProfile extends ConsumerStatefulWidget {
 }
 
 class _UserProfileState extends ConsumerState<UserProfile> {
+  late TextEditingController professionController;
+  late TextEditingController organizationController;
+  late TextEditingController locationController;
+  late TextEditingController descriptionController;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   final userInformation = ref.read(aboutMeNotifierProvider);
+  //   professionController = TextEditingController(
+  //     text: userInformation?.meta?.profession,
+  //   );
+  //   organizationController = TextEditingController(
+  //     text: userInformation?.meta?.organization,
+  //   );
+  //   locationController = TextEditingController(
+  //     text: userInformation?.meta?.location,
+  //   );
+  //   descriptionController = TextEditingController(
+  //     text: userInformation?.meta?.description,
+  //   );
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    professionController = TextEditingController();
+    organizationController = TextEditingController();
+    locationController = TextEditingController();
+    descriptionController = TextEditingController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final userInformation = ref.watch(aboutMeNotifierProvider);
+
+    professionController.text = userInformation?.meta?.profession ?? '';
+    organizationController.text = userInformation?.meta?.organization ?? '';
+    locationController.text = userInformation?.meta?.location ?? '';
+    descriptionController.text = userInformation?.meta?.description ?? '';
+  }
+
+  @override
+  void dispose() {
+    professionController.dispose();
+    organizationController.dispose();
+    locationController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
     final userInformation = ref.watch(aboutMeNotifierProvider);
+    final authToken = ref.watch(authTokenProvider);
 
-    // late TextEditingController professionController;
-    // late TextEditingController organizationController;
-    // late TextEditingController locationController;
-    // late TextEditingController descriptionController;
-
-    // @override
-    // void dispose() {
-
-    // }
+    if (userInformation == null) {
+      return Center(child: CircularProgressIndicator());
+    }
 
     return Scaffold(
       body: Padding(
@@ -40,14 +88,16 @@ class _UserProfileState extends ConsumerState<UserProfile> {
               Headers(userInformation: userInformation),
               SizedBox(height: 24.h),
               Text(
-                userInformation!.name!,
+                // userInformation!.name!,
+                userInformation.name ?? "No Name Available",
                 style: textStyle.titleSmall!.copyWith(
                   fontWeight: FontWeight.w700,
                   color: Color(0xffffffff),
                 ),
               ),
               Text(
-                userInformation.meta!.profession!,
+                // userInformation.meta!.profession!,
+                userInformation.meta?.profession ?? "No Profession Available",
                 style: textStyle.bodyMedium!.copyWith(
                   fontWeight: FontWeight.w400,
                   color: Color(0xffA5A5AB),
@@ -64,7 +114,10 @@ class _UserProfileState extends ConsumerState<UserProfile> {
                 ),
               ),
               SizedBox(height: 8.h),
-              TextFormField(decoration: InputDecoration(hintText: "student")),
+              TextFormField(
+                controller: professionController,
+                decoration: InputDecoration(hintText: "student"),
+              ),
               SizedBox(height: 14.h),
               Align(
                 alignment: Alignment.centerLeft,
@@ -76,7 +129,10 @@ class _UserProfileState extends ConsumerState<UserProfile> {
                 ),
               ),
               SizedBox(height: 8.h),
-              TextFormField(decoration: InputDecoration(hintText: "Tesla")),
+              TextFormField(
+                controller: organizationController,
+                decoration: InputDecoration(hintText: "Tesla"),
+              ),
 
               SizedBox(height: 14.h),
               Align(
@@ -89,7 +145,10 @@ class _UserProfileState extends ConsumerState<UserProfile> {
                 ),
               ),
               SizedBox(height: 8.h),
-              TextFormField(decoration: InputDecoration(hintText: "USA")),
+              TextFormField(
+                controller: locationController,
+                decoration: InputDecoration(hintText: "USA"),
+              ),
               SizedBox(height: 14.h),
               Align(
                 alignment: Alignment.centerLeft,
@@ -106,6 +165,7 @@ class _UserProfileState extends ConsumerState<UserProfile> {
                 width: 326.w,
                 height: 127.h,
                 child: TextFormField(
+                  controller: descriptionController,
                   expands: false,
                   maxLines: 5,
                   minLines: 3,
@@ -126,7 +186,10 @@ class _UserProfileState extends ConsumerState<UserProfile> {
                   Mybutton(
                     color: AppColors.primary,
                     text: "Save",
-                    onTap: () {},
+                    onTap: () async {
+                      await saveUserProfile(authToken!);
+                      Navigator.pop(context);
+                    },
                   ),
                 ],
               ),
@@ -136,5 +199,17 @@ class _UserProfileState extends ConsumerState<UserProfile> {
         ),
       ),
     );
+  }
+
+  Future<void> saveUserProfile(String token) async {
+    final updatedProfileData = {
+      'profession': professionController.text,
+      'organization': organizationController.text,
+      'location': locationController.text,
+      'description': descriptionController.text,
+    };
+    await ref
+        .read(aboutMeNotifierProvider.notifier)
+        .updateUserProfile(updatedProfileData, token);
   }
 }

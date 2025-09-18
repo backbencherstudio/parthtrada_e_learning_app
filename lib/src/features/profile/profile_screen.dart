@@ -15,14 +15,31 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+  bool _dataFetched = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final token = ref.watch(authTokenProvider);
-    if (token != null) {
-      ref.read(aboutMeNotifierProvider.notifier).fetchUserProfile(token);
-    }
+
+    Future.delayed(Duration(milliseconds: 100), () {
+      final token = ref.watch(authTokenProvider);
+      if (token != null) {
+        ref.read(aboutMeNotifierProvider.notifier).fetchUserProfile(token);
+      }
+    });
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   if (!_dataFetched) {
+  //     final token = ref.watch(authTokenProvider);
+  //     if (token != null) {
+  //       ref.read(aboutMeNotifierProvider.notifier).fetchUserProfile(token);
+  //       _dataFetched = true;
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +96,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   ),
                   SizedBox(height: 20.h),
                   Text(
-                    userInformation.name!,
+                    // userInformation.name!,
+                    userInformation.name ?? "No Name Available",
                     style: textStyle.titleSmall!.copyWith(
                       fontWeight: FontWeight.w700,
                       color: Color(0xffffffff),
                     ),
                   ),
                   Text(
-                    userInformation.meta!.profession!,
+                    // userInformation.meta!.profession!,
+                    userInformation.meta?.profession ??
+                        "No Profession Available",
                     style: textStyle.bodyMedium!.copyWith(
                       fontWeight: FontWeight.w400,
                       color: Color(0xffA5A5AB),
