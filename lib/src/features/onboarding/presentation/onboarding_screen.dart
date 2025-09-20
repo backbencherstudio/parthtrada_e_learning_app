@@ -1,6 +1,6 @@
 import 'package:e_learning_app/src/features/onboarding/presentation/widgets/onboarding_tab_container.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 import '../../../../core/constant/images.dart';
 
