@@ -26,19 +26,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       }
     });
   }
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   if (!_dataFetched) {
-  //     final token = ref.watch(authTokenProvider);
-  //     if (token != null) {
-  //       ref.read(aboutMeNotifierProvider.notifier).fetchUserProfile(token);
-  //       _dataFetched = true;
-  //     }
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
