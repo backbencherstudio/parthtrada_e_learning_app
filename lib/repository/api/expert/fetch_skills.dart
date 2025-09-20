@@ -9,7 +9,8 @@ final skillsProvider = StateNotifierProvider<SkillsNotifier, SkillsModel?>(
 );
 
 class SkillsNotifier extends StateNotifier<SkillsModel?> {
-  SkillsNotifier() : super(SkillsModel(success: false, data: [], selectedSkills: {}));
+  SkillsNotifier()
+    : super(SkillsModel(success: false, data: [], selectedSkills: {}));
 
   Set<String> selectedSkills = {};
 
@@ -22,7 +23,7 @@ class SkillsNotifier extends StateNotifier<SkillsModel?> {
         url,
         headers: {
           'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', //
         },
       );
 
@@ -34,7 +35,12 @@ class SkillsNotifier extends StateNotifier<SkillsModel?> {
         throw Exception('Failed to fetch skills');
       }
     } catch (e) {
-      state = SkillsModel(success: false, message: 'Error: $e', data: [], selectedSkills: {});
+      state = SkillsModel(
+        success: false,
+        message: 'Error: $e',
+        data: [],
+        selectedSkills: {},
+      );
     }
   }
 
