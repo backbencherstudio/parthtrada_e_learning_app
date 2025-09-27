@@ -1,90 +1,114 @@
-import 'package:e_learning_app/core/constant/images.dart';
-import 'package:e_learning_app/core/constant/padding.dart';
-import 'package:e_learning_app/core/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../core/constant/images.dart';
+import '../../../../../core/services/api_services/api_end_points.dart';
+import '../../provider/expert_review_provider.dart';
 
-class UserReviewList extends StatelessWidget{
+class UserReviewList extends ConsumerWidget {
   const UserReviewList({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 16.h,
-      children: [
-        Padding(
-          padding: AppPadding.screenHorizontal,
-          child: Text("What People Say",style: Theme.of(context).textTheme.titleLarge,),
-        ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final reviewsAsync = ref.watch(expertReviewProvider);
 
-        SizedBox(
-          height: 176.h,
-          child: ListView.builder(
-              itemCount: 5,
-              padding: AppPadding.screenHorizontal,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index){
+    return reviewsAsync.when(
+      data: (reviews) {
+        if (reviews.data == null || reviews.data!.isEmpty) {
+          return const Center(child: Text("No Reviews Found"));
+        }
 
-                return FittedBox(
-                  child: Container(
-                    width: 274.w,
-                    margin: EdgeInsets.only(right: 12.w),
-                    padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 12.h),
-                    decoration: Utils.commonBoxDecoration(),
-                    child: Column(
-                      children: [
-                        /// Header
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          spacing : 12.w,
-                          children: [
-                            ClipOval(
-                              child: Image.asset(AppImages.men,width: 48.w,height: 48.w,),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              spacing: 4.h,
-                              children: [
-                                Text("John Smith"),
-                                Text("CTO at Techcorp",style: Theme.of(context).textTheme.labelMedium,),
-                              ],
+        return SizedBox(
+          height: 200, // adjust height as needed
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: reviews.data!.length,
+            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            itemBuilder: (context, index) {
+              final review = reviews.data![index];
+              final student = review.student;
+
+              return Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Container(
+                  width: 250, // width of each card
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          ClipOval(
+                            child:
+                            review.student?.image != null
+                                ? Image.network(
+                              '${ApiEndPoints.baseUrl}/uploads/${review.student?.image}',
+                              width: 56.w,
+                              height: 56.w,
+                              fit: BoxFit.cover,
                             )
-                          ],
-                        ),
-
-                        SizedBox(height: 12.h,),
-
-                        Text("\"The Al matching was spot-on! Found the perfect expert for our ML project in minutes.\"",
-                        maxLines: 2,
+                                : CircleAvatar(
+                              radius: 28.w,
+                              backgroundColor: Colors.white,
+                              child: Icon(
+                                Icons.person,
+                                color: Colors.grey,
+                                size: 28.w,
+                              ),
+                            ),
+                          ),
+                          // CircleAvatar(
+                          //   radius: 24,
+                          //   backgroundImage: review.student?.image != null
+                          //       ? NetworkImage(student!.image!)
+                          //       : const NetworkImage(review.student?.image)
+                          //   as ImageProvider,
+                          // ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              student?.name ?? "Anonymous",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Expanded(
+                        child: Text(
+                          review.description ?? "",
+                          maxLines: 3,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                            fontStyle: FontStyle.italic
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: List.generate(
+                          5,
+                              (i) => Icon(
+                            i < (review.rating ?? 0).round()
+                                ? Icons.star
+                                : Icons.star_border,
+                            color: Colors.amber,
+                            size: 16,
                           ),
                         ),
-
-                        SizedBox(height: 12.h,),
-
-                        Row(
-                          children: List.generate(
-                            5,
-                                (index) => Icon(
-                             Icons.star, // Use filled stars for the rating value
-                              color: Colors.yellow,
-                              size: 16.sp,
-                            ),
-                          )..add(SizedBox(width: 4.w))..add(Text("4.9")),
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                );
-              }
+                ),
+              );
+            },
           ),
-        )
-      ],
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stack) => Center(child: Text("Error: $err")),
     );
   }
 }

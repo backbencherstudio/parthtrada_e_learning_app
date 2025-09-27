@@ -12,12 +12,10 @@ class ExpartDetailModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> result = {};
+    final result = <String, dynamic>{};
     result['success'] = success;
     result['message'] = message;
-    if (data != null) {
-      result['data'] = data!.toJson();
-    }
+    if (data != null) result['data'] = data!.toJson();
     return result;
   }
 }
@@ -34,7 +32,7 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> result = {};
+    final result = <String, dynamic>{};
     if (expert != null) result['expert'] = expert!.toJson();
     if (stats != null) result['stats'] = stats!.toJson();
     return result;
@@ -48,7 +46,7 @@ class Expert {
   String? location;
   String? description;
   String? experience;
-  int? hourlyRate;
+  double? hourlyRate;
   List<String>? skills;
   List<String>? availableDays;
   List<String>? availableTime;
@@ -75,22 +73,29 @@ class Expert {
     location = json['location'];
     description = json['description'];
     experience = json['experience'];
-    hourlyRate = json['hourlyRate'];
 
-    /// Safe cast: যদি null হয় তাহলে খালি লিস্ট দিব
+    // Safe numeric parsing for hourlyRate
+    if (json['hourlyRate'] != null) {
+      final val = json['hourlyRate'];
+      hourlyRate =
+          val is String
+              ? double.tryParse(val)
+              : (val is num ? val.toDouble() : null);
+    }
+
     skills = (json['skills'] as List?)?.map((e) => e.toString()).toList() ?? [];
     availableDays =
         (json['availableDays'] as List?)?.map((e) => e.toString()).toList() ??
-            [];
+        [];
     availableTime =
         (json['availableTime'] as List?)?.map((e) => e.toString()).toList() ??
-            [];
+        [];
 
     user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> result = {};
+    final result = <String, dynamic>{};
     result['id'] = id;
     result['profession'] = profession;
     result['organization'] = organization;
@@ -111,7 +116,7 @@ class User {
   String? name;
   String? email;
   String? image;
-  dynamic studentProfile; // যেকোনো টাইপ ডেটা হলে crash করবে না
+  dynamic studentProfile;
 
   User({this.id, this.name, this.email, this.image, this.studentProfile});
 
@@ -119,12 +124,12 @@ class User {
     id = json['id'];
     name = json['name'];
     email = json['email'];
-    image = json['image']; // Safe as String or null
+    image = json['image'];
     studentProfile = json['studentProfile'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> result = {};
+    final result = <String, dynamic>{};
     result['id'] = id;
     result['name'] = name;
     result['email'] = email;
@@ -140,14 +145,26 @@ class Stats {
   List<RatingDistribution>? ratingDistribution;
   int? totalStudents;
 
-  Stats({this.totalReviews, this.averageRating, this.ratingDistribution, this.totalStudents});
+  Stats({
+    this.totalReviews,
+    this.averageRating,
+    this.ratingDistribution,
+    this.totalStudents,
+  });
 
   Stats.fromJson(Map<String, dynamic> json) {
-    totalReviews = json['totalReviews'];
+    // Safe parsing for int fields
+    if (json['totalReviews'] != null) {
+      final val = json['totalReviews'];
+      totalReviews = val is String ? int.tryParse(val) : (val as int?);
+    }
 
-    /// Convert int or string to double safely
     if (json['averageRating'] != null) {
-      averageRating = (json['averageRating'] as num).toDouble();
+      final val = json['averageRating'];
+      averageRating =
+          val is String
+              ? double.tryParse(val)
+              : (val is num ? val.toDouble() : null);
     }
 
     if (json['ratingDistribution'] != null) {
@@ -156,11 +173,15 @@ class Stats {
         ratingDistribution!.add(RatingDistribution.fromJson(v));
       });
     }
-    totalStudents = json['totalStudents'];
+
+    if (json['totalStudents'] != null) {
+      final val = json['totalStudents'];
+      totalStudents = val is String ? int.tryParse(val) : (val as int?);
+    }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> result = {};
+    final result = <String, dynamic>{};
     result['totalReviews'] = totalReviews;
     result['averageRating'] = averageRating;
     if (ratingDistribution != null) {
@@ -180,13 +201,21 @@ class RatingDistribution {
   RatingDistribution({this.rating, this.count, this.percentage});
 
   RatingDistribution.fromJson(Map<String, dynamic> json) {
-    rating = json['rating'];
-    count = json['count'];
+    if (json['rating'] != null) {
+      final val = json['rating'];
+      rating = val is String ? int.tryParse(val) : (val as int?);
+    }
+
+    if (json['count'] != null) {
+      final val = json['count'];
+      count = val is String ? int.tryParse(val) : (val as int?);
+    }
+
     percentage = json['percentage'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> result = {};
+    final result = <String, dynamic>{};
     result['rating'] = rating;
     result['count'] = count;
     result['percentage'] = percentage;
