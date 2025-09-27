@@ -206,7 +206,7 @@ class RouteConfig {
   RouteConfig({required bool isLoggedIn}) {
     goRouter = GoRouter(
       initialLocation:
-          isLoggedIn ? RouteName.parentScreen : RouteName.parentScreen,
+          isLoggedIn ? RouteName.parentScreen : RouteName.authenticationScreen,
 
       routes: [
         GoRoute(

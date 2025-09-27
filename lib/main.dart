@@ -1,5 +1,6 @@
 import 'package:e_learning_app/core/constant/default_screen_size.dart';
 import 'package:e_learning_app/core/routes/route_config.dart';
+import 'package:e_learning_app/core/services/api_services/api_end_points.dart';
 import 'package:e_learning_app/core/theme/theme.dart';
 import 'package:e_learning_app/repository/linkedin_login_webview.dart';
 import 'package:e_learning_app/repository/login_preferences.dart';
@@ -12,6 +13,10 @@ import 'package:http/http.dart' as http;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  //Test token for dev------------------->>>
+  await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZnJtdTM2YjAwMDB2Y3dnMnlza3JzMm4iLCJlbWFpbCI6ImFkbWluQG9ib3Rvcm9uaWthLmNvbSIsIm5hbWUiOiJBbmlrIEhvc3NhaW4iLCJhY3RpdmVQcm9maWxlIjoiQURNSU4iLCJpYXQiOjE3NTg5NTIwMzQsImV4cCI6MTc1OTU1NjgzNH0.c6pgWBu4Hu9VPRjoOjpnIC0QbOiEos1E9RSGrg7VP2k");
+
   final savedToken = await LoginPreferences().loadAuthToken();
   bool isLoggedIn = false;
   if (savedToken != null) {
@@ -43,7 +48,7 @@ Future<bool> _isTokenValid(String token) async {
   final url = 'profile/me';
   try {
     final response = await http.get(
-      Uri.parse("$baseUrl/profile/me"),
+      Uri.parse("${ApiEndPoints.baseUrl}/profile/me"),
       headers: {"Authorization": "Bearer $token"},
     );
 
