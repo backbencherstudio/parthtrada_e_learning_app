@@ -1,6 +1,7 @@
 import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:e_learning_app/core/routes/route_name.dart';
+import 'package:e_learning_app/core/services/api_services/api_end_points.dart';
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
 import 'package:e_learning_app/core/utils/utils.dart';
@@ -72,7 +73,7 @@ class FeaturedExpertsList extends ConsumerWidget {
                                   expert.user?.image != null &&
                                           expert.user!.image!.isNotEmpty
                                       ? Image.network(
-                                        '$baseUrl/uploads/${expert.user!.image!}',
+                                        '${ApiEndPoints.baseUrl}/uploads/${expert.user!.image!}',
                                         width: 56.w,
                                         height: 56.w,
                                         fit: BoxFit.cover,

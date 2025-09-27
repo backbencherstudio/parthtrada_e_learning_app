@@ -1,106 +1,56 @@
 import 'package:dio/dio.dart';
-import 'package:e_learning_app/repository/linkedin_login_webview.dart' as ApiEndpoints;
-import 'package:flutter/cupertino.dart';
+
+import '../../network/network.dart';
 
 
-class ApiServices {
-  static final Dio _dio = Dio();
+class ApiService {
+  final Dio _dio = Network().dio;
 
-  /// GET request
-  static Future<dynamic> getRequest({
-    required String endpoints,
-    Map<String, String>? headers,
-  }) async {
+  Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) async {
     try {
-      final response = await _dio.get(
-        '${ApiEndpoints.baseUrl}/$endpoints',
-        options: Options(headers: headers),
-      );
-      debugPrint("\nGET Request Successful: ${response.data}\n");
-      return response.data;
-    } on DioException catch (e) {
-      debugPrint("\nGET Request Failed: ${e.response?.statusCode} - ${e.response?.data}\n");
-      return null;
-    } catch (error) {
-      debugPrint("\nError in GET Request: $error\n");
-      return null;
+      return await _dio.get(path, queryParameters: queryParameters);
+    } catch (e) {
+      rethrow;
     }
   }
 
-  /// POST request
-  static Future<dynamic> postRequest({
-    required String endpoints,
-    required Map<String, dynamic> body,
-    Map<String, String>? headers,
-  }) async {
+  Future<Response> post(
+      String path, {
+        Map<String, dynamic>? data,
+        FormData? formData,
+        Options? options,
+      }) async {
     try {
-      final response = await _dio.post(
-        '${ApiEndpoints.baseUrl}/$endpoints',
-        data: body,
-        options: Options(headers: headers ?? {"Content-Type": "application/json"}),
-      );
-      debugPrint("\nPOST Request Successful: ${response.data}\n");
-      return response.data;
-    } on DioException catch (e) {
-      debugPrint("\nPOST Request Failed: ${e.response?.statusCode} - ${e.response?.data}\n");
-      return null;
-    } catch (error) {
-      debugPrint("\nError in POST Request: $error\n");
-      return null;
+      if (formData != null) {
+        return await _dio.post(path, data: formData, options: options);
+      }
+      return await _dio.post(path, data: data, options: options);
+    } catch (e) {
+      rethrow;
     }
   }
 
-  /// PUT request
-  static Future<dynamic> putRequest({
-    required String endpoints,
-    required Map<String, dynamic> body,
-    Map<String, String>? headers,
-  }) async {
+  Future<Response> put(String path, {Map<String, dynamic>? data}) async {
     try {
-      final response = await _dio.put(
-        '${ApiEndpoints.baseUrl}/$endpoints',
-        data: body,
-        options: Options(headers: headers ?? {"Content-Type": "application/json"}),
-      );
-      debugPrint("\nPUT Request Successful: ${response.data}\n");
-      return response.data;
-    } on DioException catch (e) {
-      debugPrint("\nPUT Request Failed: ${e.response?.statusCode} - ${e.response?.data}\n");
-      return null;
-    } catch (error) {
-      debugPrint("\nError in PUT Request: $error\n");
-      return null;
+      return await _dio.put(path, data: data);
+    } catch (e) {
+      rethrow;
     }
   }
 
-  /// PATCH request
-  static Future<dynamic> patchRequest({
-    required String endpoints,
-    required FormData formData,
-    Map<String, String>? headers,
-  }) async {
+  Future<Response> delete(String path, {Map<String, dynamic>? data}) async {
     try {
-      final response = await _dio.patch(
-        '${ApiEndpoints.baseUrl}/$endpoints',
-        data: formData,
-        options: Options(
-          headers: headers ?? {"Content-Type": "multipart/form-data"},
-        ),
-      );
+      return await _dio.delete(path, data: data);
+    } catch (e) {
+      rethrow;
+    }
+  }
 
-      debugPrint("\n✅ PATCH Request Successful");
-      debugPrint("Status: ${response.statusCode}");
-      debugPrint("Data: ${response.data}");
-
-      return response.data;
-    } on DioException catch (e) {
-      debugPrint("\n❌ PATCH Request Failed");
-      debugPrint("Status: ${e.response?.statusCode}");
-      debugPrint("Error Data: ${e.response?.data}");
-      return null;
-    } catch (error) {
-      debugPrint("\n❌ Error in PATCH Request: $error\n");
-      return null;
+  Future<Response> patch(String path, {Map<String, dynamic>? data}) async {
+    try {
+      return await _dio.patch(path, data: data);
+    } catch (e) {
+      rethrow;
     }
   }
 
