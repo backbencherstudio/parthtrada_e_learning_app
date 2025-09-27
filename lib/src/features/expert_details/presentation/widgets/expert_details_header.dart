@@ -1,4 +1,5 @@
 import 'package:e_learning_app/core/constant/padding.dart';
+import 'package:e_learning_app/core/services/api_services/api_end_points.dart';
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,7 @@ class ExpertDetailsHeader extends StatelessWidget {
                 child:
                     imageUrl != null && imageUrl!.isNotEmpty
                         ? Image.network(
-                          '$baseUrl/uploads/${imageUrl}',
+                          '${ApiEndPoints.baseUrl}/uploads/${imageUrl}',
                           width: 56.w,
                           height: 56.w,
                           fit: BoxFit.cover,

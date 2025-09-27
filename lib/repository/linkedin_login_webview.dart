@@ -1,7 +1,8 @@
+import 'package:e_learning_app/core/services/api_services/api_end_points.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-const String baseUrl = 'https://parthtrada.obotoronika.com';
+
 
 class LinkedInLoginWebView extends StatefulWidget {
   const LinkedInLoginWebView({super.key});
@@ -15,7 +16,7 @@ class _LinkedInLoginWebViewState extends State<LinkedInLoginWebView> {
   var loadingPercentage = 0;
 
   final String clientId = "77xs883ujqitwg";
-  final String redirectUri = "$baseUrl/auth/linkedin/callback";
+  final String redirectUri = "${ApiEndPoints.baseUrl}/auth/linkedin/callback";
   final String scope = "openid email profile";
 
   @override
