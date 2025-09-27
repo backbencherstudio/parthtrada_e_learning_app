@@ -37,7 +37,7 @@ class Data {
   String? timezone;
   String? createdAt;
   String? updatedAt;
-  String? meta;
+  Meta? meta;
 
   Data({
     this.id,
@@ -65,7 +65,7 @@ class Data {
       timezone: json['timezone'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
-      meta: json['meta'],
+      meta: json['meta'] != null ? Meta.fromJson(json['meta']) : null,
     );
   }
 
@@ -81,7 +81,47 @@ class Data {
       'timezone': timezone,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
-      'meta': meta,
+      'meta': meta?.toJson(),
+    };
+  }
+}
+
+class Meta {
+  String? id;
+  String? profession;
+  String? organization;
+  String? location;
+  String? description;
+  String? userId;
+
+  Meta({
+    this.id,
+    this.profession,
+    this.organization,
+    this.location,
+    this.description,
+    this.userId,
+  });
+
+  factory Meta.fromJson(Map<String, dynamic> json) {
+    return Meta(
+      id: json['id'],
+      profession: json['profession'],
+      organization: json['organization'],
+      location: json['location'],
+      description: json['description'],
+      userId: json['userId'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'profession': profession,
+      'organization': organization,
+      'location': location,
+      'description': description,
+      'userId': userId,
     };
   }
 }
