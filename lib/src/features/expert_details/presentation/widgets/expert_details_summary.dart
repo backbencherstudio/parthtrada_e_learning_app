@@ -1,27 +1,25 @@
+// expert_details_summary.dart
 import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import '../../model/expert_detail_model.dart';
 import 'expert_summary_container.dart';
 
 class ExpertDetailsSummary extends StatelessWidget {
-  const ExpertDetailsSummary({super.key});
+  final Stats? stats;
+  const ExpertDetailsSummary({super.key, this.stats});
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      spacing: 10.w,
       children: [
-        /// Total Students of the students
         Expanded(
           child: ExpertDetailsSummaryContainer(
             headerText: "Students",
-            bodyText: "580+",
+            bodyText: "${stats?.totalStudents ?? 0}+",
             svgIconAssetPath: AppIcons.userFill,
           ),
         ),
-
-        /// Total Experience
         Expanded(
           child: ExpertDetailsSummaryContainer(
             headerText: "Experience",
@@ -29,12 +27,10 @@ class ExpertDetailsSummary extends StatelessWidget {
             svgIconAssetPath: AppIcons.circleTikMarkFill,
           ),
         ),
-
-        /// Total Reviews
         Expanded(
           child: ExpertDetailsSummaryContainer(
             headerText: "Reviews",
-            bodyText: "230+",
+            bodyText: "${stats?.totalReviews ?? 0}+",
             svgIconAssetPath: AppIcons.starFill,
           ),
         ),

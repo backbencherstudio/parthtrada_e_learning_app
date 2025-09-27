@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../../../core/constant/logos.dart';
 import '../../../../../../core/utils/utils.dart';
 
-class AppMentorsShow extends StatelessWidget{
+class AppMentorsShow extends StatelessWidget {
   const AppMentorsShow({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       width: double.infinity,
       decoration: Utils.commonBoxDecoration(),
@@ -29,7 +28,6 @@ class AppMentorsShow extends StatelessWidget{
                 //  ...mentorsLogoPath.map((logoPath) => Image.asset(logoPath,),),
               ],
             ),
-
             Text(
               "and many more",
               style: Theme.of(context).textTheme.labelMedium,
