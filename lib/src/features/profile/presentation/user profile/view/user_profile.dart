@@ -1,7 +1,9 @@
+import 'package:e_learning_app/core/routes/route_name.dart';
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../data/viewmodels/profile_viewmodel.dart';
 import '../../../sub_feature/user profile/widget/custom_button.dart';
@@ -193,13 +195,23 @@ class _UserProfileState extends ConsumerState<UserProfile> {
                   ),
                   SizedBox(width: 8.w),
                   Mybutton(
+
                     color: AppColors.primary,
-                    text: "Save",
+                    text: profileState.isUpdateProfileLoading ? "Updating..." : "Save",
                     onTap: () async {
-                      // Placeholder for save functionality
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Save functionality not implemented")),
-                      );
+
+                     bool isUpdate = await ref.read(profileViewmodel.notifier).updateProfileInfo(_professionController.text, _organizationController.text, _locationController.text, _bioController.text);
+
+                     if(isUpdate)
+                       {
+                         Navigator.pop(context);
+                        // context.pushNamed(RouteName.profileScreen);
+                       }
+                      //
+                      // // Placeholder for save functionality
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //   const SnackBar(content: Text("Save functionality not implemented")),
+                      // );
                     },
                   ),
                 ],
