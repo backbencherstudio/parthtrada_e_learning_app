@@ -8,17 +8,28 @@ class ProfileState {
   final String profileErrorMessage;
   final ProfileResponseData profileResponseData;
 
+  final bool isUpdateProfileLoading;
+  final bool isUpdateProfileSuccess;
+  final String updateProfileErrorMessage;
+
   ProfileState({
     required this.isProfileLoding,
     required this.isProfileSuccess,
     required this.profileErrorMessage,
     required this.profileResponseData,
+
+    required this.isUpdateProfileLoading,
+    required this.isUpdateProfileSuccess,
+    required this.updateProfileErrorMessage,
   });
 
   ProfileState.initial()
     : isProfileLoding = false,
       isProfileSuccess = false,
       profileResponseData = ProfileResponseData(),
+      isUpdateProfileSuccess = false,
+      isUpdateProfileLoading = false,
+      updateProfileErrorMessage = '',
       profileErrorMessage = '';
 
   ProfileState copyWith({
@@ -26,12 +37,22 @@ class ProfileState {
     bool? isProfileSuccess,
     String? profileErrorMessage,
     ProfileResponseData? profileResponseData,
+
+    bool? isUpdateProfileLoading,
+    bool? isUpdateProfileSuccess,
+    String? updateProfileErrorMessage,
   }) {
     return ProfileState(
       isProfileLoding: isProfileLoding ?? this.isProfileLoding,
       isProfileSuccess: isProfileSuccess ?? this.isProfileSuccess,
       profileErrorMessage: profileErrorMessage ?? this.profileErrorMessage,
       profileResponseData: profileResponseData ?? this.profileResponseData,
+      isUpdateProfileLoading:
+          isUpdateProfileLoading ?? this.isUpdateProfileLoading,
+      isUpdateProfileSuccess:
+          isUpdateProfileSuccess ?? this.isUpdateProfileSuccess,
+      updateProfileErrorMessage:
+          updateProfileErrorMessage ?? this.updateProfileErrorMessage,
     );
   }
 }
@@ -66,7 +87,54 @@ class ProfileProvider extends StateNotifier<ProfileState> {
       );
     }
   }
+
+  Future<bool> updateProfileInfo(
+    String profession,
+    String organization,
+    String location,
+    String description,
+  ) async {
+    state = state.copyWith(
+      isUpdateProfileLoading: true,
+      isUpdateProfileSuccess: false,
+      updateProfileErrorMessage: '',
+    );
+
+    try {
+      final isProfileUpdated = await _profileRepository.updateProfile(
+        profession,
+        organization,
+        location,
+        description,
+      );
+
+      if (isProfileUpdated) {
+        state = state.copyWith(
+          isUpdateProfileLoading: false,
+          isUpdateProfileSuccess: true,
+          updateProfileErrorMessage: '',
+        );
+        return true;
+      } else {
+        state = state.copyWith(
+          isUpdateProfileLoading: false,
+          isUpdateProfileSuccess: false,
+          updateProfileErrorMessage: 'Failed to update profile. Try Again!',
+        );
+        return false;
+      }
+    } catch (e) {
+      state = state.copyWith(
+        isUpdateProfileLoading: false,
+        isUpdateProfileSuccess: false,
+        updateProfileErrorMessage: 'Failed to update profile. Try Again!',
+      );
+      return false;
+    }
+  }
 }
+
+
 
 final profileViewmodel = StateNotifierProvider<ProfileProvider, ProfileState>(
   (ref) => ProfileProvider(),
