@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
@@ -22,6 +23,15 @@ void main() async {
   if (savedToken != null) {
     isLoggedIn = await _isTokenValid(savedToken);
   }
+
+  Stripe.publishableKey =
+  "pk_test_51S8u6SIwqhaYg1GGcOCIlR7izXj81DtVFXHLHDq1JO1lPi5YGqQaLYXNCE90w3my8cGka3sS9TINU56cuXCml30600FtdXhYAf";
+
+  // Stripe.merchantIdentifier = "merchant.com.yourapp";
+  //
+  // await Stripe.instance.applySettings();
+
+
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
