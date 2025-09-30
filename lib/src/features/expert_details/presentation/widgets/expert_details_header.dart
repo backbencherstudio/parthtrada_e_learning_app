@@ -12,6 +12,7 @@ class ExpertDetailsHeader extends StatelessWidget {
   final String name;
   final String rating;
   final String profession;
+  final String organization;
   final String location;
   final String? imageUrl;
 
@@ -21,7 +22,7 @@ class ExpertDetailsHeader extends StatelessWidget {
     required this.rating,
     required this.profession,
     required this.location,
-    this.imageUrl,
+    this.imageUrl, required this.organization,
   });
 
   @override
@@ -54,7 +55,7 @@ class ExpertDetailsHeader extends StatelessWidget {
                 child:
                     imageUrl != null && imageUrl!.isNotEmpty
                         ? Image.network(
-                          '${ApiEndPoints.baseUrl}/uploads/${imageUrl}',
+                          '${ApiEndPoints.baseUrl}/uploads/$imageUrl',
                           width: 56.w,
                           height: 56.w,
                           fit: BoxFit.cover,
@@ -81,8 +82,8 @@ class ExpertDetailsHeader extends StatelessWidget {
             ),
             SizedBox(height: 4.h),
 
-            /// Profession
-            Text(profession, style: textTheme.labelMedium),
+            /// Profession, organization
+            Text('$profession, $organization', style: textTheme.labelLarge),
             SizedBox(height: 10.h),
 
             /// Location
