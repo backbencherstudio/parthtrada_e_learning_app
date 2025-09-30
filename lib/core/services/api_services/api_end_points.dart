@@ -5,4 +5,5 @@ class ApiEndPoints {
   static String expertDetail(String expertId) => '$baseUrl/experts/$expertId';
   static String expertReview= '$baseUrl/experts/reviews';
   static const String updateProfile = '/profile/me/update';
+  static const String beExpert = '/auth/be-expert';
 }
