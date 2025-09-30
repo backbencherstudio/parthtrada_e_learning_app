@@ -1,44 +1,19 @@
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/wrapper_list.dart';
+import 'package:e_learning_app/src/features/search/provider/skill_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 Future<void> expertSearchBottomSheet({required BuildContext context}) async {
-  final List<String> filterItems = [
-    "Machine Learning",
-    "System Design",
-    "Cloud Architecture",
-    "Data Science",
-    "Frontend Development",
-    "Cloud Architecture",
-    "Data Science",
-    "Backend Development",
-    "Machine Learning",
-    "System Design",
-    "Software Engineering",
-    "Mobile App Development",
-    "Flutter App Development",
-    "Cross Platform App Development",
-    "Cross Platform App Development",
-    "Machine Learning",
-    "System Design",
-    "Cross Platform App Development",
-    "Cross Platform App Development",
-    "Cloud Architecture",
-    "Data Science",
-    "Cross Platform App Development",
-    "Cross Platform App Development",
-    "Cross Platform App Development",
-  ];
 
   return showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     useSafeArea: false,
     backgroundColor: Colors.transparent,
-    barrierColor: Color(0xff0F0F0F).withValues(alpha: 0.7),
-
+    barrierColor: Color(0xff0F0F0F).withOpacity(0.7),
     builder: (context) {
       return Container(
         height: 530.h,
@@ -56,7 +31,7 @@ Future<void> expertSearchBottomSheet({required BuildContext context}) async {
             children: [
               SizedBox(height: 32.h),
 
-              /// Header
+              // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -70,8 +45,28 @@ Future<void> expertSearchBottomSheet({required BuildContext context}) async {
 
               SizedBox(height: 20.h),
 
-              WrapperList(contentList: filterItems),
-
+              Consumer(
+                builder: (_, ref, __) {
+                  final skillData = ref.watch(skillProvider);
+                  return skillData.when(
+                    data: (data) {
+                      debugPrint("Data fetched successfully: ${data.data.length}");
+                      if (data.data.isEmpty) {
+                        return Center(child: Text("No skills available"));
+                      }
+                      return WrapperList(contentList: data.data);
+                    },
+                    loading: () {
+                      debugPrint("Loading...");
+                      return Center(child: CircularProgressIndicator());
+                    },
+                    error: (error, stackTrace) {
+                      debugPrint("Error: $error");
+                      return Center(child: Text('Error: $error'));
+                    },
+                  );
+                },
+              ),
               SizedBox(height: 32.h),
             ],
           ),
@@ -80,3 +75,5 @@ Future<void> expertSearchBottomSheet({required BuildContext context}) async {
     },
   );
 }
+
+

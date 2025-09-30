@@ -15,6 +15,8 @@ class ExpertDetailsBody extends StatelessWidget {
   final List<String> availableDays;
   final List<String> availableTime;
   final Stats? stats;
+  final String experience;
+  final String expertId;
 
   const ExpertDetailsBody({
     super.key,
@@ -22,7 +24,7 @@ class ExpertDetailsBody extends StatelessWidget {
     required this.skills,
     required this.availableDays,
     required this.availableTime,
-    this.stats,
+    this.stats, required this.experience, required this.expertId,
   });
 
   @override
@@ -37,7 +39,7 @@ class ExpertDetailsBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ExpertDetailsSummary(stats: stats),
+          ExpertDetailsSummary(stats: stats, experience: experience,),
           SizedBox(height: 30.h),
 
           ExpertSkill(skills: skills),
@@ -63,7 +65,7 @@ class ExpertDetailsBody extends StatelessWidget {
           /// Reviews Section
           ExpertRatingsSummary(stats: stats),
           SizedBox(height: 30.h),
-          const ExpertReviewList(),
+          ExpertReviewList(expertId: expertId,),
           SizedBox(height: 30.h),
         ],
       ),

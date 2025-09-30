@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../expert_details/model/temp/temp_expert_review_model.dart';
 import '../../../../expert_details/riverpod/expert_riverpod.dart';
 
 class AddReviewForExpert extends StatefulWidget {
@@ -62,22 +63,23 @@ class _AddReviewForExpertState extends State<AddReviewForExpert> {
             5,
             (index) => Consumer(
               builder: (_, ref, _) {
-                final expertState = ref.watch(expertRiverpod);
-                final expertNotifier = ref.read(expertRiverpod.notifier);
-                return GestureDetector(
-                  onTap: () => expertNotifier.onRating(ratings: index + 1),
-                  child: SvgPicture.asset(
-                    AppIcons.starOutline,
-                    width: 30.w,
-                    height: 30.w,
-                    colorFilter: ColorFilter.mode(
-                      index + 1 <= expertState.starRating
-                          ? AppColors.primary
-                          : Colors.white,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                );
+                //final expertState = ref.watch(expertRiverpod);
+                //final expertNotifier = ref.read(expertRiverpod.notifier);
+                // return GestureDetector(
+                //   onTap: () => expertNotifier.onRating(ratings: index + 1),
+                //   child: SvgPicture.asset(
+                //     AppIcons.starOutline,
+                //     width: 30.w,
+                //     height: 30.w,
+                //     colorFilter: ColorFilter.mode(
+                //       index + 1 <= expertState.starRating
+                //           ? AppColors.primary
+                //           : Colors.white,
+                //       BlendMode.srcIn,
+                //     ),
+                //   ),
+                // );
+                return SizedBox(); /// todo solve this when add reviews api is ready
               },
             ),
           ),
@@ -118,21 +120,22 @@ class _AddReviewForExpertState extends State<AddReviewForExpert> {
               Expanded(
                 child: Consumer(
                   builder: (_, ref, _) {
-                    final expertNotifier = ref.read(expertRiverpod.notifier);
-                    final expertState = ref.watch(expertRiverpod);
+                    //final expertNotifier = ref.read(expertRiverpod.notifier);
+                    //final expertState = ref.watch(expertRiverpod(''));
                     return CommonWidget.primaryButton(
                       context: context,
                       onPressed: () {
                         if (_reviewTextEditingController.text.isNotEmpty) {
-                          expertNotifier.addReviews(
-                            userReview: ExpertReviewModel(
-                              userName: "Olivia Rhye",
-                              eMail: "Olivi****@gmail.com",
-                              profilePicture: AppImages.women,
-                              ratings: expertState.starRating,
-                              reviews: _reviewTextEditingController.text,
-                            ),
-                          );
+                          // expertNotifier.addReviews(
+                          //   userReview: TempExpertReviewModel(
+                          //     userName: "Olivia Rhye",
+                          //     eMail: "Olivi****@gmail.com",
+                          //     profilePicture: AppImages.women,
+                          //     ratings: expertState.starRating,
+                          //     reviews: _reviewTextEditingController.text,
+                          //   ),
+                          // );
+                          /// todo solve this when add reviews api is ready
                           context.pop();
                         }
                       },
