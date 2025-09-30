@@ -7,7 +7,8 @@ import 'expert_summary_container.dart';
 
 class ExpertDetailsSummary extends StatelessWidget {
   final Stats? stats;
-  const ExpertDetailsSummary({super.key, this.stats});
+  final String experience;
+  const ExpertDetailsSummary({super.key, this.stats, required this.experience});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class ExpertDetailsSummary extends StatelessWidget {
         Expanded(
           child: ExpertDetailsSummaryContainer(
             headerText: "Experience",
-            bodyText: "4 yr+",
+            bodyText: "$experience yr+",
             svgIconAssetPath: AppIcons.circleTikMarkFill,
           ),
         ),

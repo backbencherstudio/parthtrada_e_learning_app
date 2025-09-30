@@ -151,24 +151,24 @@ class FeaturedExpertsList extends ConsumerWidget {
 
                             SizedBox(height: 7.h),
 
-                            Row(
-                              spacing: 8.w,
-                              children: [
-                                SvgPicture.asset(
-                                  AppIcons.calendar,
-                                  width: 20.w,
-                                  height: 20.h,
-                                ),
-                                Text(
-                                  "Next available: Mon 2pm...",
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.bodyMedium?.copyWith(
-                                    color: AppColors.secondaryTextColor,
-                                  ),
-                                ),
-                              ],
-                            ),
+                            // Row(
+                            //   spacing: 8.w,
+                            //   children: [
+                            //     SvgPicture.asset(
+                            //       AppIcons.calendar,
+                            //       width: 20.w,
+                            //       height: 20.h,
+                            //     ),
+                            //     Text(
+                            //       "Next available: Mon 2pm...",
+                            //       style: Theme.of(
+                            //         context,
+                            //       ).textTheme.bodyMedium?.copyWith(
+                            //         color: AppColors.secondaryTextColor,
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
                             SizedBox(height: 12.h),
 
                             SizedBox(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -7,11 +8,11 @@ import '../../../../../core/constant/padding.dart';
 import '../../../../../core/utils/utils.dart';
 import 'expert_search_bottom_sheet.dart';
 
-class ExpertSearchBar extends StatelessWidget{
+class ExpertSearchBar extends ConsumerWidget{
   const ExpertSearchBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: AppPadding.screenHorizontal,
       child: SizedBox(

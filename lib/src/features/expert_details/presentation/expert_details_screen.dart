@@ -33,6 +33,7 @@ class ExpertDetailsScreen extends ConsumerWidget {
                   profession: expert.profession ?? "N/A",
                   location: expert.location ?? "Unknown",
                   imageUrl: expert.user?.image,
+                  organization: expert.organization ?? "",
                 ),
 
                 SizedBox(height: 24.h),
@@ -43,6 +44,8 @@ class ExpertDetailsScreen extends ConsumerWidget {
                   availableDays: expert.availableDays ?? [],
                   availableTime: expert.availableTime ?? [],
                   stats: expertDetail.data?.stats,
+                  experience: expertDetail.data?.expert?.experience.toString() ?? '0',
+                  expertId: id,
                 ),
               ],
             ),
