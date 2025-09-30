@@ -9,28 +9,30 @@ class ExpertModel {
   ExpertModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     message = json['message'];
+
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
+
     pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
+        ? Pagination.fromJson(json['pagination'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    final map = <String, dynamic>{};
+    map['success'] = success;
+    map['message'] = message;
+    if (data != null) {
+      map['data'] = data!.map((v) => v.toJson()).toList();
     }
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    if (pagination != null) {
+      map['pagination'] = pagination!.toJson();
     }
-    return data;
+    return map;
   }
 }
 
@@ -41,7 +43,7 @@ class Data {
   String? location;
   String? description;
   String? experience;
-  int? hourlyRate;
+  double? hourlyRate; // Changed to double to handle decimal values
   List<String>? skills;
   List<String>? availableDays;
   List<String>? availableTime;
@@ -51,22 +53,23 @@ class Data {
   User? user;
   Rating? rating;
 
-  Data(
-      {this.id,
-        this.profession,
-        this.organization,
-        this.location,
-        this.description,
-        this.experience,
-        this.hourlyRate,
-        this.skills,
-        this.availableDays,
-        this.availableTime,
-        this.stripeAccountId,
-        this.isOnboardCompleted,
-        this.userId,
-        this.user,
-        this.rating});
+  Data({
+    this.id,
+    this.profession,
+    this.organization,
+    this.location,
+    this.description,
+    this.experience,
+    this.hourlyRate,
+    this.skills,
+    this.availableDays,
+    this.availableTime,
+    this.stripeAccountId,
+    this.isOnboardCompleted,
+    this.userId,
+    this.user,
+    this.rating,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -75,40 +78,43 @@ class Data {
     location = json['location'];
     description = json['description'];
     experience = json['experience'];
-    hourlyRate = json['hourlyRate'];
-    skills = json['skills'].cast<String>();
-    availableDays = json['availableDays'].cast<String>();
-    availableTime = json['availableTime'].cast<String>();
+
+    // Safely parse numeric field
+    hourlyRate = json['hourlyRate'] != null
+        ? (json['hourlyRate'] as num).toDouble()
+        : null;
+
+    skills = json['skills'] != null ? List<String>.from(json['skills']) : null;
+    availableDays =
+    json['availableDays'] != null ? List<String>.from(json['availableDays']) : null;
+    availableTime =
+    json['availableTime'] != null ? List<String>.from(json['availableTime']) : null;
+
     stripeAccountId = json['stripeAccountId'];
     isOnboardCompleted = json['isOnboardCompleted'];
     userId = json['userId'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
-    rating =
-    json['rating'] != null ? new Rating.fromJson(json['rating']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
+    rating = json['rating'] != null ? Rating.fromJson(json['rating']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['profession'] = this.profession;
-    data['organization'] = this.organization;
-    data['location'] = this.location;
-    data['description'] = this.description;
-    data['experience'] = this.experience;
-    data['hourlyRate'] = this.hourlyRate;
-    data['skills'] = this.skills;
-    data['availableDays'] = this.availableDays;
-    data['availableTime'] = this.availableTime;
-    data['stripeAccountId'] = this.stripeAccountId;
-    data['isOnboardCompleted'] = this.isOnboardCompleted;
-    data['userId'] = this.userId;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
-    }
-    if (this.rating != null) {
-      data['rating'] = this.rating!.toJson();
-    }
-    return data;
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    map['profession'] = profession;
+    map['organization'] = organization;
+    map['location'] = location;
+    map['description'] = description;
+    map['experience'] = experience;
+    map['hourlyRate'] = hourlyRate;
+    map['skills'] = skills;
+    map['availableDays'] = availableDays;
+    map['availableTime'] = availableTime;
+    map['stripeAccountId'] = stripeAccountId;
+    map['isOnboardCompleted'] = isOnboardCompleted;
+    map['userId'] = userId;
+    if (user != null) map['user'] = user!.toJson();
+    if (rating != null) map['rating'] = rating!.toJson();
+    return map;
   }
 }
 
@@ -126,30 +132,30 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['image'] = this.image;
-    return data;
+    final map = <String, dynamic>{};
+    map['name'] = name;
+    map['email'] = email;
+    map['image'] = image;
+    return map;
   }
 }
 
 class Rating {
-  int? avg;
+  double? avg; // Changed to double
   int? total;
 
   Rating({this.avg, this.total});
 
   Rating.fromJson(Map<String, dynamic> json) {
-    avg = json['avg'];
-    total = json['total'];
+    avg = json['avg'] != null ? (json['avg'] as num).toDouble() : null;
+    total = json['total'] != null ? (json['total'] as num).toInt() : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['avg'] = this.avg;
-    data['total'] = this.total;
-    return data;
+    final map = <String, dynamic>{};
+    map['avg'] = avg;
+    map['total'] = total;
+    return map;
   }
 }
 
@@ -161,13 +167,14 @@ class Pagination {
   bool? hasNextPage;
   bool? hasPrevPage;
 
-  Pagination(
-      {this.total,
-        this.page,
-        this.perPage,
-        this.totalPages,
-        this.hasNextPage,
-        this.hasPrevPage});
+  Pagination({
+    this.total,
+    this.page,
+    this.perPage,
+    this.totalPages,
+    this.hasNextPage,
+    this.hasPrevPage,
+  });
 
   Pagination.fromJson(Map<String, dynamic> json) {
     total = json['total'];
@@ -179,13 +186,13 @@ class Pagination {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total'] = this.total;
-    data['page'] = this.page;
-    data['perPage'] = this.perPage;
-    data['totalPages'] = this.totalPages;
-    data['hasNextPage'] = this.hasNextPage;
-    data['hasPrevPage'] = this.hasPrevPage;
-    return data;
+    final map = <String, dynamic>{};
+    map['total'] = total;
+    map['page'] = page;
+    map['perPage'] = perPage;
+    map['totalPages'] = totalPages;
+    map['hasNextPage'] = hasNextPage;
+    map['hasPrevPage'] = hasPrevPage;
+    return map;
   }
 }

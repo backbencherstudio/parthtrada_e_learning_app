@@ -3,6 +3,7 @@ class ApiEndPoints {
   static const String profileInfo = '/profile/me';
   static const String expertList = '$baseUrl/experts';
   static String expertDetail(String expertId) => '$baseUrl/experts/$expertId';
+  static String expertReview= '$baseUrl/experts/reviews';
   static const String updateProfile = '/profile/me/update';
   static const String beExpert = '/auth/be-expert';
 }
