@@ -35,7 +35,10 @@ class SearchScreen extends StatelessWidget {
 
             SizedBox(height: 24.h),
 
-            UserReviewList(),
+            Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 20),
+              child: UserReviewList(),
+            ),
 
             SizedBox(height: 24.h),
 

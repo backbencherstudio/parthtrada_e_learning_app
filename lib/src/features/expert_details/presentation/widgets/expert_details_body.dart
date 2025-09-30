@@ -37,13 +37,13 @@ class ExpertDetailsBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           ExpertDetailsSummary(stats: stats),
+          ExpertDetailsSummary(stats: stats),
           SizedBox(height: 30.h),
 
-           ExpertSkill(skills: skills),
+          ExpertSkill(skills: skills),
           SizedBox(height: 30.h),
 
-           ExpertBio(description: description),
+          ExpertBio(description: description),
           SizedBox(height: 30.h),
 
           /// Availability
@@ -61,7 +61,7 @@ class ExpertDetailsBody extends StatelessWidget {
           SizedBox(height: 30.h),
 
           /// Reviews Section
-            ExpertRatingsSummary(stats: stats),
+          ExpertRatingsSummary(stats: stats),
           SizedBox(height: 30.h),
           const ExpertReviewList(),
           SizedBox(height: 30.h),
