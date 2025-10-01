@@ -10,4 +10,5 @@ class ApiEndPoints {
   static const String updateProfile = '/profile/me/update';
   static const String beExpert = '/auth/be-expert';
   static const String conversation = '/conversations';
+  static String getMessages(String conversationId, String page, String perPage ) => '$baseUrl/conversations/messages/$conversationId?page=$page&perPage=$perPage';
 }

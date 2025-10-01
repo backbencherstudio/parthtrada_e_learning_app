@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/constant/padding.dart';
 import '../../../../../core/theme/theme_part/app_colors.dart';
-import '../../../../data/chat/message_list.dart';
 import '../../model/message_model.dart';
+import '../../riverpod/conversation_viewmodel.dart';
 import 'widgets/inbox_screen_header_widgets.dart';
 import 'widgets/message_card_widget.dart';
 import 'widgets/message_writing_widget.dart';
 
-class InboxScreen extends StatefulWidget {
+class InboxScreen extends ConsumerStatefulWidget {
   const InboxScreen({
     super.key,
     required this.image,
@@ -22,23 +23,29 @@ class InboxScreen extends StatefulWidget {
   final String userId;
 
   @override
-  State<InboxScreen> createState() => _InboxScreenState();
+  ConsumerState<InboxScreen> createState() => _InboxScreenState();
 }
 
-class _InboxScreenState extends State<InboxScreen> {
+class _InboxScreenState extends ConsumerState<InboxScreen> {
   final ScrollController _scrollController = ScrollController();
-  late final List<MessageModel> chatMessages;
 
   @override
   void initState() {
     super.initState();
-    chatMessages =
-        messages
-            .map((e) => MessageModel.fromJson(e))
-            .where((msg) => msg.userId == widget.userId || msg.isMe)
-            .toList();
+    // Fetch messages from ViewModel when screen is opened
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(conversationViewModelProvider.notifier)
+          .fetchMessages(widget.userId, "1", "20");
+    });
+  }
 
-    // Scroll to bottom after build
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final state = ref.watch(conversationViewModelProvider);
+
+    // Auto scroll after messages load
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
         _scrollController.jumpTo(
@@ -46,11 +53,6 @@ class _InboxScreenState extends State<InboxScreen> {
         );
       }
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       body: SafeArea(
@@ -58,34 +60,41 @@ class _InboxScreenState extends State<InboxScreen> {
           padding: AppPadding.screenHorizontal,
           child: Column(
             children: [
+              /// Header
               Column(
                 children: [
                   InboxScreenHeaderWidget(
                     image: widget.image,
                     name: widget.name,
                   ),
-                  Divider(color: AppColors.secondaryStrokeColor,),
+                  Divider(color: AppColors.secondaryStrokeColor),
                 ],
               ),
-              Expanded(
-                child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: chatMessages.length,
-                  itemBuilder: (_, index) {
-                    final msg = chatMessages[index];
-                    final isMe = msg.isMe;
 
+              /// Messages
+              Expanded(
+                child: state.isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : state.error != null
+                    ? Center(child: Text(state.error!))
+                    : ListView.builder(
+                  controller: _scrollController,
+                  itemCount: state.messages?.data?.length ?? 0,
+                  itemBuilder: (_, index) {
+                    final Data msg = state.messages!.data![index];
                     return MessageCardWidget(
-                      isMe: isMe,
+                      isMe: msg.me ?? false,
                       widget: widget,
                       msg: msg,
                       textTheme: textTheme,
-                      chatMessages: chatMessages,
+                      chatMessages: state.messages!.data!,
                       index: index,
                     );
                   },
                 ),
               ),
+
+              /// Message input
               MessageWritingWidget(textTheme: textTheme),
             ],
           ),
@@ -94,4 +103,3 @@ class _InboxScreenState extends State<InboxScreen> {
     );
   }
 }
-
