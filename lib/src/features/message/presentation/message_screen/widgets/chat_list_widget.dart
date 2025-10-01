@@ -36,50 +36,91 @@ class ChatListWidget extends StatelessWidget {
           'userId': userId,
         },
       ),
-
-
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 12.w),
         margin: EdgeInsets.only(bottom: 12.h),
+        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
         decoration: BoxDecoration(
           color: AppColors.secondary,
           borderRadius: BorderRadius.circular(12.r),
         ),
-        child: ListTile(
-          leading: CircleAvatar(
-            radius: 24.r,
-            backgroundColor: AppColors.primary,
-            backgroundImage: NetworkImage(imageUrl),
-          ),
-          title: Text(name, style: textTheme.titleMedium),
-          subtitle: Text(
-            lastMessage,
-            style: unreadCount > 0 ? textTheme.bodySmall : textTheme.labelLarge,
-            overflow: TextOverflow.ellipsis,
-          ),
-          trailing: Column(
-            children: [
-              Text(time, style: textTheme.labelLarge),
-              SizedBox(height: 4.h),
-              unreadCount > 0
-                  ? ClipOval(
-                    child: Container(
-                      height: 24.h,
-                      width: 24.w,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            /// Avatar with fallback
+            CircleAvatar(
+              radius: 26.r,
+              backgroundColor: AppColors.primary.withOpacity(0.2),
+              backgroundImage: imageUrl.isNotEmpty
+                  ? NetworkImage(imageUrl)
+                  : null,
+              child: imageUrl.isEmpty
+                  ? Icon(Icons.person, color: AppColors.primary, size: 24.sp)
+                  : null,
+            ),
+            SizedBox(width: 12.w),
+
+            /// Name + Last Message
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    lastMessage,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: unreadCount > 0
+                          ? AppColors.primary
+                          : AppColors.onSecondary.withOpacity(0.7),
+                      fontWeight: unreadCount > 0 ? FontWeight.w600 : FontWeight.w400,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(width: 8.w),
+
+            /// Time + Unread badge
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  time,
+                  style: textTheme.labelSmall?.copyWith(
+                    color: AppColors.onSecondary.withOpacity(0.6),
+                    fontSize: 10.sp,
+                  ),
+                ),
+                SizedBox(height: 6.h),
+                if (unreadCount > 0)
+                  Container(
+                    padding: EdgeInsets.all(6.r),
+                    decoration: BoxDecoration(
                       color: AppColors.primary,
-                      child: Center(
-                        child: Text(
-                          unreadCount.toString(),
-                          style: textTheme.bodySmall!.copyWith(
-                            color: AppColors.onPrimary,
-                          ),
-                        ),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      unreadCount.toString(),
+                      style: textTheme.bodySmall?.copyWith(
+                        color: AppColors.onPrimary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10.sp,
                       ),
                     ),
-                  )
-                  : SizedBox.shrink(),
-            ],
-          ),
+                  ),
+              ],
+            ),
+          ],
         ),
       ),
     );

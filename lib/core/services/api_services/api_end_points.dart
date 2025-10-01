@@ -8,4 +8,5 @@ class ApiEndPoints {
   static String expertReview= '$baseUrl/experts/reviews';
   static const String updateProfile = '/profile/me/update';
   static const String beExpert = '/auth/be-expert';
+  static const String conversation = '/conversations';
 }
