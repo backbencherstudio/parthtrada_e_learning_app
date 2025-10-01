@@ -9,19 +9,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //Test token for dev------------------->>>
-  await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzIxM2E5YzAwMDB2Y2lzb2dzN295NGEiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2VAZ21haWwuY29tIiwibmFtZSI6IkFzaWYgUmV6YW4iLCJhY3RpdmVQcm9maWxlIjoiU1RVREVOVCIsImlhdCI6MTc1ODk2MjkyNCwiZXhwIjoxNzU5NTY3NzI0fQ.fcrvvv6EV7SpH7G3OWh9qzHtuDSHVwe-k33-zynofCw");
+  await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzIxM2E5YzAwMDB2Y2lzb2dzN295NGEiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2VAZ21haWwuY29tIiwibmFtZSI6IkFzaWYgUmV6YW4iLCJhY3RpdmVQcm9maWxlIjoiRVhQRVJUIiwiaWF0IjoxNzU5Mjk5NTU0LCJleHAiOjE3NTk5MDQzNTR9.AIzA5dN1EeQd9gVdhfZLGIw7hXz1RHj4M5MWfGOv8aU");
 
   final savedToken = await LoginPreferences().loadAuthToken();
   bool isLoggedIn = false;
   if (savedToken != null) {
     isLoggedIn = await _isTokenValid(savedToken);
   }
+
+  Stripe.publishableKey =
+  "pk_test_51S8u6SIwqhaYg1GGcOCIlR7izXj81DtVFXHLHDq1JO1lPi5YGqQaLYXNCE90w3my8cGka3sS9TINU56cuXCml30600FtdXhYAf";
+
+  // Stripe.merchantIdentifier = "merchant.com.yourapp";
+  //
+  // await Stripe.instance.applySettings();
+
+
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 

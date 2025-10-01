@@ -1,0 +1,30 @@
+import 'package:dio/dio.dart';
+import 'package:e_learning_app/core/services/api_services/api_end_points.dart';
+import 'package:e_learning_app/core/services/api_services/api_services.dart';
+import 'package:e_learning_app/src/features/message/model/conversation_model.dart';
+
+class ConversationRepository {
+  final ApiService _apiService = ApiService();
+
+  Future<ConversationModel> getConversation() async {
+    try {
+      final Response response = await _apiService.get(ApiEndPoints.conversation);
+
+      if (response.statusCode == 200) {
+        return ConversationModel.fromJson(response.data);
+      } else {
+        return ConversationModel(
+          success: false,
+          message: "Error: ${response.statusCode}",
+          data: [],
+        );
+      }
+    } catch (e) {
+      return ConversationModel(
+        success: false,
+        message: "Exception: $e",
+        data: [],
+      );
+    }
+  }
+}
