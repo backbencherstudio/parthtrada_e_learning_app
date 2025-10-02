@@ -43,10 +43,10 @@ class HorizontalListCalendarBody extends ConsumerWidget {
       controller: horizontalListCalendarNotifier.calendarScrollController,
       itemBuilder: (_, index) {
         final date = horizontalListCalendarNotifier.daysInMonth[index];
-        bool isToday =
-            date.day == DateTime.now().day &&
-                date.month == DateTime.now().month &&
-                date.year == DateTime.now().year;
+        // bool isToday =
+        //     date.day == DateTime.now().day &&
+        //         date.month == DateTime.now().month &&
+        //         date.year == DateTime.now().year;
         bool isSelectedDay = date == horizontalListCalendarState.selectedDate;
         return GestureDetector(
           onTap: () {
@@ -62,14 +62,15 @@ class HorizontalListCalendarBody extends ConsumerWidget {
             padding: EdgeInsets.all(10.r),
             decoration: BoxDecoration(
               color:
-              isToday
+              isSelectedDay
                   ? AppColors.primary.withOpacity(0.1)
                   : Colors.transparent,
               border: Border.all(
                 color:
-                isToday && isSelectedDay
-                    ? Colors.transparent
-                    : isSelectedDay
+                // isToday && isSelectedDay
+                isSelectedDay
+                    // ? Colors.transparent
+                    // : isSelectedDay
                     ? AppColors.primary
                     : Colors.transparent,
               ),
@@ -82,7 +83,7 @@ class HorizontalListCalendarBody extends ConsumerWidget {
                   style: textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                     color:
-                    isToday ? AppColors.primary : const Color(0xffD2D2D5),
+                    isSelectedDay ? AppColors.primary : const Color(0xffD2D2D5),
                   ),
                 ),
                 SizedBox(height: 2.h),
@@ -92,7 +93,7 @@ class HorizontalListCalendarBody extends ConsumerWidget {
                     textAlign: TextAlign.center,
                     style: textTheme.bodySmall?.copyWith(
                       color:
-                      isToday
+                      isSelectedDay
                           ? AppColors.primary
                           : AppColors.secondaryTextColor,
                     ),

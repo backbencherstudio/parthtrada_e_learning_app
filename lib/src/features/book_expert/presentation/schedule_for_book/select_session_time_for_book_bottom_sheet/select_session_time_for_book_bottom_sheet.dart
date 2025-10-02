@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import '../../../../../../core/constant/padding.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../horizontal_list_view_calendar/presentation/horizontal_list_calendar.dart';
 import '../../../rvierpod/book_expert_riverpod.dart';
+import '../../../rvierpod/session_provider.dart';
 import '../answer_session_details_for_book/answer_session_details_for_book_bottomsheet.dart';
 import 'session_grid_view.dart';
 
-Future<void> selectSessionTimeForBook({required BuildContext context, required List<String> availableTime, required List<String> availableDays}) async {
+Future<void> selectSessionTimeForBook({required BuildContext context, required List<String> availableTime, required List<String> availableDays, required WidgetRef ref}) async {
   await showModalBottomSheet(
     backgroundColor: Colors.transparent,
     useSafeArea: false,
@@ -36,7 +38,9 @@ Future<void> selectSessionTimeForBook({required BuildContext context, required L
                 headerPadding: AppPadding.screenHorizontal,
                 availableDays: availableDays,
                 onTap: (value) {
-                  debugPrint("\n\n${value.toString()}\n\n");
+                  final formattedDate = DateFormat('yyyy-MM-dd').format(value);
+                  final sessionDataNotifier = ref.read(sessionDataProvider.notifier);
+                  sessionDataNotifier.setDate(formattedDate);
                 },
               ),
 
@@ -103,16 +107,50 @@ Future<void> selectSessionTimeForBook({required BuildContext context, required L
                         ),
                       ),
                       Expanded(
-                        child: CommonWidget.primaryButton(
-                          padding: EdgeInsets.symmetric(vertical: 16.h),
-                          context: context,
-                          onPressed: () async {
-                            context.pop();
-                            await answerSessionDetailsForBook(context: context, availableTime: availableTime);
+                        child: Consumer(
+                          builder: (context, ref, _) {
+                            final sessionData = ref.watch(sessionDataProvider);
+                            final hasSelectedDate = sessionData.date.isNotEmpty;
+                            final hasSelectedTime = sessionData.time.isNotEmpty;
+
+                            return CommonWidget.primaryButton(
+                              padding: EdgeInsets.symmetric(vertical: 16.h),
+                              context: context,
+                              onPressed: () async {
+                                debugPrint("Next button pressed");
+                                debugPrint("Date: ${sessionData.date}, Time: ${sessionData.time}");
+
+                                if (!hasSelectedDate || !hasSelectedTime) {
+                                  debugPrint("Date or Time not selected");
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Please select both date and time."),
+                                      backgroundColor: Colors.redAccent,
+                                    ),
+                                  );
+                                  return;
+                                }
+
+                                context.pop();
+                                await answerSessionDetailsForBook(
+                                  context: context,
+                                  availableTime: availableTime,
+                                  ref: ref,
+                                  sessionDataNotifier: ref.read(sessionDataProvider.notifier),
+                                );
+                              },
+                              text: "Next",
+                              backgroundColor: hasSelectedDate && hasSelectedTime
+                                  ? AppColors.primary
+                                  : AppColors.secondaryStrokeColor,
+                              textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: hasSelectedDate && hasSelectedTime
+                                    ? Colors.white
+                                    : Colors.grey,
+                              ),
+                            );
                           },
-                          text: "Next",
-                          textStyle: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w700),
                         ),
                       ),
                     ],

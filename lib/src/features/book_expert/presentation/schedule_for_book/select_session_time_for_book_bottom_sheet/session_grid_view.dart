@@ -2,10 +2,11 @@ import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
-import '../../../rvierpod/book_expert_riverpod.dart';
+import '../../../rvierpod/session_provider.dart';
 
-class SessionGridView extends StatelessWidget {
+class SessionGridView extends ConsumerWidget {
   final String heading;
   final List<String> sessions;
   final bool isMorningShift;
@@ -20,8 +21,22 @@ class SessionGridView extends StatelessWidget {
     required this.stateNotifier,
   });
 
+  String convertTo24HourFormat(String time12h) {
+    try {
+      final cleaned = time12h.replaceAll(RegExp(r'\s+'), '').trim();
+      if (cleaned.isEmpty) return '';
+
+      final inputFormat = DateFormat("hh:mma");
+      final outputFormat = DateFormat('HH:mm');
+      final dateTime = inputFormat.parse(cleaned);
+      return outputFormat.format(dateTime);
+    } catch (e) {
+      debugPrint('Error parsing time "$time12h": $e');
+      return time12h;
+    }
+  }
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,9 +49,7 @@ class SessionGridView extends StatelessWidget {
             ? Padding(
               padding: EdgeInsets.symmetric(vertical: 20.h),
               child: Center(
-                child: Text(
-                  'No available sessions found for this Slot',
-                ),
+                child: Text('No available sessions found for this Slot'),
               ),
             )
             : GridView.builder(
@@ -54,11 +67,17 @@ class SessionGridView extends StatelessWidget {
                 final session = sessions[index];
                 return GestureDetector(
                   onTap: () {
-                    debugPrint("\nIs morning shift : $isMorningShift\n");
+                    // debugPrint("\nIs morning shift : $isMorningShift\n");
                     stateNotifier.onSelectSessionTime(
                       index: index,
                       isMorningShift: isMorningShift,
                     );
+                    final sessionDataNotifier = ref.read(
+                      sessionDataProvider.notifier,
+                    );
+
+                    final convertedTime = convertTo24HourFormat(session);
+                    sessionDataNotifier.setTime(convertedTime);
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(
@@ -68,7 +87,8 @@ class SessionGridView extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(32.r),
                       color:
-                          state.isMorningShift == isMorningShift &&
+                          state.selectedSessionTime != null &&
+                                  state.isMorningShift == isMorningShift &&
                                   state.selectedSessionTime == index
                               ? AppColors.primary
                               : AppColors.secondary,
