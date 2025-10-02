@@ -1,9 +1,7 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 
 import '../../../sub_feature/user profile/widget/custom_button.dart';
 import '../viewmodel/payment_method_notifier_provider.dart';
@@ -34,13 +32,21 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
   }
 
   bool get _isValid {
-    // Basic validation for card details
     final cardNumber = _cardNumberController.text.replaceAll(' ', '');
     final expiry = _expiryController.text;
     final cvc = _cvcController.text;
 
+    // Additional validation for expiry (MM/YY format)
+    final expiryParts = expiry.split('/');
+    final isExpiryValid = expiryParts.length == 2 &&
+        expiryParts[0].length == 2 &&
+        expiryParts[1].length == 2 &&
+        int.tryParse(expiryParts[0]) != null &&
+        int.tryParse(expiryParts[0])! >= 1 &&
+        int.tryParse(expiryParts[0])! <= 12;
+
     return cardNumber.length >= 15 &&
-        expiry.length == 5 &&
+        isExpiryValid &&
         cvc.length >= 3 &&
         _nameController.text.isNotEmpty &&
         _emailController.text.isNotEmpty;
@@ -50,7 +56,8 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
   String? _formatExpiry(String value) {
     value = value.replaceAll(RegExp(r'[^0-9]'), '');
     if (value.length > 2) {
-      value = '${value.substring(0, 2)}/${value.substring(2, min(value.length, 4))}';
+      value =
+      '${value.substring(0, 2)}/${value.substring(2, min(value.length, 4))}';
     }
     return value;
   }
@@ -84,7 +91,7 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
               .copyWith(fontWeight: FontWeight.w700),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -102,34 +109,30 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
             // Name field
             TextFormField(
               controller: _nameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Name",
                 border: OutlineInputBorder(),
               ),
-              onChanged: (value) {
-                print("Name input: $value");
-              },
+              onChanged: (_) => setState(() {}), // Update UI on input change
             ),
             SizedBox(height: 16.h),
 
             // Email field
             TextFormField(
               controller: _emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Email",
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.emailAddress,
-              onChanged: (value) {
-                print("Email input: $value");
-              },
+              onChanged: (_) => setState(() {}), // Update UI on input change
             ),
             SizedBox(height: 16.h),
 
             // Card Number field
             TextFormField(
               controller: _cardNumberController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Card Number",
                 border: OutlineInputBorder(),
               ),
@@ -140,35 +143,37 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
                 if (formatted != value) {
                   _cardNumberController.value = TextEditingValue(
                     text: formatted ?? value,
-                    selection: TextSelection.collapsed(offset: formatted?.length ?? value.length),
+                    selection: TextSelection.collapsed(
+                        offset: formatted?.length ?? value.length),
                   );
                 }
-                print("Card number: $value");
+                setState(() {}); // Update UI on input change
               },
             ),
             SizedBox(height: 16.h),
 
-            // Expiry and CVC fields (in a row)
+            // Expiry + CVC fields in row
             Row(
               children: [
                 Expanded(
                   child: TextFormField(
                     controller: _expiryController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "MM/YY",
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.number,
-                    maxLength: 5, // MM/YY format
+                    maxLength: 5,
                     onChanged: (value) {
                       final formatted = _formatExpiry(value);
                       if (formatted != value) {
                         _expiryController.value = TextEditingValue(
                           text: formatted ?? value,
-                          selection: TextSelection.collapsed(offset: formatted?.length ?? value.length),
+                          selection: TextSelection.collapsed(
+                              offset: formatted?.length ?? value.length),
                         );
                       }
-                      print("Expiry: $value");
+                      setState(() {}); // Update UI on input change
                     },
                   ),
                 ),
@@ -176,15 +181,13 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
                 Expanded(
                   child: TextFormField(
                     controller: _cvcController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "CVC",
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.number,
-                    maxLength: 4, // CVC is typically 3-4 digits
-                    onChanged: (value) {
-                      print("CVC: $value");
-                    },
+                    maxLength: 4,
+                    onChanged: (_) => setState(() {}), // Update UI on input change
                   ),
                 ),
               ],
@@ -192,9 +195,10 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
             SizedBox(height: 24.h),
 
             // Loading indicator
-            if (state.isLoading) const Center(child: CircularProgressIndicator()),
+            if (state.isLoading)
+              const Center(child: CircularProgressIndicator()),
 
-            // Message display
+            // Message (success/error)
             if (state.message != null)
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 12.h),
@@ -212,29 +216,23 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
             // Save button
             Mybutton(
               color: Colors.blue,
-              text: "Save Card",
+              text: state.isLoading ? "Saving..." : "Save Card",
               width: double.infinity,
-              onTap: !_isValid
+              onTap: (!_isValid || state.isLoading)
                   ? null
-                  : () async {
-                final cardNumber = _cardNumberController.text.replaceAll(' ', '');
+                  : () {
+                final cardNumber =
+                _cardNumberController.text.replaceAll(' ', '');
                 final expiry = _expiryController.text.split('/');
                 final expiryMonth = expiry[0];
                 final expiryYear = expiry.length > 1 ? expiry[1] : '';
                 final cvc = _cvcController.text;
 
-                print("Saving card: $cardNumber, $expiryMonth/$expiryYear, $cvc");
-
-                await notifier.addCard(
-                  cardDetails: CardFieldInputDetails(
-                    number: cardNumber,
-                    expiryMonth: int.tryParse(expiryMonth) ?? 0,
-                    expiryYear: int.tryParse(expiryYear) ?? 0,
-                    cvc: cvc,
-                    complete: _isValid,
-                  ),
-                  name: _nameController.text,
-                  email: _emailController.text,
+                notifier.addNewCard(
+                  cardNumber: cardNumber,
+                  expMonth: expiryMonth,
+                  expYear: expiryYear,
+                  cvc: cvc,
                 );
               },
             ),
