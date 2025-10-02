@@ -51,6 +51,7 @@ dependencies:
   webview_flutter: ^4.13.0
   shared_preferences: ^2.5.3
   dio: ^5.9.0
+  flutter_stripe: ^12.0.2
 
 flutter_launcher_icons:
   android: "launcher_icon"
@@ -89,6 +90,7 @@ flutter:
     - assets/images/
     - assets/images/onboarding/
     - assets/images/search/
+    - assets/images/profile/
     - assets/bottomNavbar_icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see

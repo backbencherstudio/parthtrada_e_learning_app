@@ -19,87 +19,123 @@ class MessageCardWidget extends StatelessWidget {
 
   final bool isMe;
   final InboxScreen widget;
-  final MessageModel msg;
+  final Data msg; // single message
   final TextTheme textTheme;
-  final List<MessageModel> chatMessages;
+  final List<Data> chatMessages;
   final int index;
 
   @override
   Widget build(BuildContext context) {
+    final String? imageUrl = isMe ? msg.sender?.image : msg.sender?.image;
+    final String displayName =
+    isMe ? (msg.sender?.name ?? "Me") : (msg.sender?.name ?? widget.name);
+
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Column(
         crossAxisAlignment:
-            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
-          ///for message & profile image
           Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              /// Receiver avatar
               if (!isMe)
-                CircleAvatar(
-                  radius: 12.r,
-                  backgroundImage: NetworkImage(widget.image),
+                _buildAvatar(imageUrl ?? ""),
+
+              /// Message bubble
+              Flexible(
+                child: Column(
+                  crossAxisAlignment:
+                  isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    /// Name above message
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                      child: Text(
+                        displayName,
+                        style: textTheme.labelSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                    ),
+
+                    /// Bubble
+                    Container(
+                      constraints: BoxConstraints(
+                        maxWidth: 260.w,
+                        minWidth: ScreenUtil.defaultSize.width * 0.25,
+                      ),
+                      margin: EdgeInsets.symmetric(
+                        vertical: 4.h,
+                        horizontal: 10.w,
+                      ),
+                      padding: EdgeInsets.all(12.r),
+                      decoration: BoxDecoration(
+                        color: isMe
+                            ? AppColors.primary
+                            : Colors.grey.shade200, // lighter for received
+                        borderRadius: isMe
+                            ? BorderRadius.only(
+                          bottomLeft: Radius.circular(16.r),
+                          bottomRight: Radius.circular(16.r),
+                          topLeft: Radius.circular(16.r),
+                        )
+                            : BorderRadius.only(
+                          bottomLeft: Radius.circular(16.r),
+                          bottomRight: Radius.circular(16.r),
+                          topRight: Radius.circular(16.r),
+                        ),
+                      ),
+                      child: Text(
+                        msg.content ?? "",
+                        style: textTheme.bodySmall?.copyWith(
+                          color: isMe ? Colors.white : Colors.black87,
+                        ),
+                      ),
+                    ),
+
+                    /// Time
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                      child: Text(
+                        msg.createdAt ?? "",
+                        style: textTheme.labelSmall?.copyWith(
+                          color: Colors.grey,
+                          fontSize: 10.sp,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              Column(
-                crossAxisAlignment:
-                    isMe ? CrossAxisAlignment.start : CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    constraints: BoxConstraints(
-                      maxWidth: 260.w,
-                      minWidth: ScreenUtil.defaultSize.width * 0.25,
-                    ),
-                    margin: EdgeInsets.symmetric(
-                      vertical: 4.h,
-                      horizontal: 10.w,
-                    ),
-                    padding: EdgeInsets.all(12.r),
-                    decoration: BoxDecoration(
-                      color:
-                          isMe
-                              ? AppColors.primary
-                              : AppColors.secondaryButtonBgColor,
-                      borderRadius:
-                          isMe
-                              ? BorderRadius.only(
-                                bottomLeft: Radius.circular(16.r),
-                                bottomRight: Radius.circular(16.r),
-                                topLeft: Radius.circular(16.r),
-                              )
-                              : BorderRadius.only(
-                                bottomLeft: Radius.circular(16.r),
-                                bottomRight: Radius.circular(16.r),
-                                topRight: Radius.circular(16.r),
-                              ),
-                    ),
-                    child: Column(
-                      children: [Text(msg.message, style: textTheme.bodySmall)],
-                    ),
-                  ),
-                  Padding(
-                    padding: AppPadding.screenHorizontal,
-                    child: Text(msg.time, style: textTheme.labelSmall),
-                  ),
-                ],
               ),
-              if (isMe)
-                CircleAvatar(
-                  radius: 12.r,
-                  backgroundImage: NetworkImage(
-                    'https://randomuser.me/api/portraits/men/10.jpg',
-                  ),
-                ),
+
+              /// Sender avatar (me)
+              if (isMe) _buildAvatar(imageUrl ?? ""),
             ],
           ),
-          SizedBox(height: 13.w),
 
-          ///if last message gap 50.h
+          SizedBox(height: 13.h),
+
+          /// Gap after last message
           if (index == chatMessages.length - 1) SizedBox(height: 50.h),
         ],
       ),
+    );
+  }
+
+  /// Avatar widget with fallback handling
+  Widget _buildAvatar(String imageUrl) {
+    return CircleAvatar(
+      radius: 26.r,
+      backgroundColor: AppColors.primary.withOpacity(0.2),
+      backgroundImage: imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
+      child: imageUrl.isEmpty
+          ? Icon(Icons.person, color: AppColors.primary, size: 24.sp)
+          : null,
     );
   }
 }
