@@ -26,6 +26,7 @@ class RouteName{
   static const String languageScreen ="/LanguageScreen";
 
   static const String expertDetailsScreen ="/expertDetailsScreen";
+  static const String expertSearchScreen ="/expertSearchScreen";
 
   static const String globalNotificationScreen = "/GlobalNotificationScreen";
 

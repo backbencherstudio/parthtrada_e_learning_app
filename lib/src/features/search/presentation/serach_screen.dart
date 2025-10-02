@@ -1,6 +1,8 @@
+import 'package:e_learning_app/core/routes/route_name.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/search_bar.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/search_footer/search_footer.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/user_review_list.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/utils/common_widget.dart';
 import './widgets/featured_experts_list.dart';
 import 'package:flutter/material.dart';
@@ -26,12 +28,19 @@ class SearchScreen extends StatelessWidget {
             SizedBox(height: 24.h),
 
             /// Search Container
-            ExpertSearchBar(),
+            ExpertSearchBar(
+              readOnly: true,
+              onTap: () => context.push(
+                RouteName.expertSearchScreen,
+              ),
+            ),
 
             SizedBox(height: 24.h),
 
             /// Featured Experts list
-            FeaturedExpertsList(),
+            FeaturedExpertsList(
+              isVerticalList: false,
+            ),
 
             SizedBox(height: 24.h),
 

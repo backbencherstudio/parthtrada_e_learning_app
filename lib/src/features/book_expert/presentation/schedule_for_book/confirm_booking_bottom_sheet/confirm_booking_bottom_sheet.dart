@@ -12,7 +12,7 @@ import '../../../rvierpod/book_expert_riverpod.dart';
 import 'confirm_book_details_card.dart';
 import 'expert_booking_shimmer.dart';
 
-Future<void> confirmBookingBottomSheet({required BuildContext context}) async {
+Future<void> confirmBookingBottomSheet({required BuildContext context, required List<String> availableTime,}) async {
   await showModalBottomSheet(
     backgroundColor: Colors.transparent,
     useSafeArea: false,
@@ -37,8 +37,8 @@ Future<void> confirmBookingBottomSheet({required BuildContext context}) async {
 
         child: Consumer(
           builder: (_, ref, _) {
-            final bookExpertNotifier = ref.read(bookExpertRiverpod.notifier);
-            final bookExpertState = ref.watch(bookExpertRiverpod);
+            final bookExpertNotifier = ref.read(bookExpertRiverpod(availableTime).notifier);
+            final bookExpertState = ref.watch(bookExpertRiverpod(availableTime));
             return bookExpertState.isConfirmLoading ?
             Center(
               child: SizedBox(
