@@ -221,6 +221,9 @@ class RouteConfig {
               image: args['image'] ?? '',
               name: args['name'] ?? '',
               userId: args['userId'] ?? '',
+              recipientId: args['recipientId'] ?? '',
+              recipientRole: args['recipientRole'] ?? '',
+
             );
           },
         ),

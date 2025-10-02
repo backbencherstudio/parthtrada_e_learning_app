@@ -16,11 +16,15 @@ class InboxScreen extends ConsumerStatefulWidget {
     required this.image,
     required this.name,
     required this.userId,
+    required this.recipientId,
+    required this.recipientRole,
   });
 
   final String image;
   final String name;
   final String userId;
+  final String recipientId;
+  final String recipientRole;
 
   @override
   ConsumerState<InboxScreen> createState() => _InboxScreenState();
@@ -36,7 +40,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .read(conversationViewModelProvider.notifier)
-          .fetchMessages(widget.userId, "1", "20");
+          .fetchMessages(widget.userId, "1", "100");
     });
   }
 

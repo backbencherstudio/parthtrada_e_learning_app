@@ -81,6 +81,9 @@ class MessageScreen extends ConsumerWidget {
                           time: Utils.formatDateTimeFromIso(convo.updatedAt.toString()) ?? "",
                           unreadCount: unreadCount,
                           userId: convo.id ?? "",
+                          recipientRole: convo.recipientRole ?? '',
+                          recipientId: convo.recipientId ?? '',
+
                         );
                       },
                     ),
