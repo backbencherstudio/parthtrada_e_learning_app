@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../select_duration_for_booking_bottom_sheet/select_duration_for_booking_bottom_sheet.dart';
 
-Future<void> answerSessionDetailsForBook({required BuildContext context}) async {
+Future<void> answerSessionDetailsForBook({required BuildContext context, required List<String> availableTime,}) async {
   await showModalBottomSheet(
     backgroundColor: Colors.transparent,
     useSafeArea: false,
@@ -94,7 +94,7 @@ Future<void> answerSessionDetailsForBook({required BuildContext context}) async 
                               context: context,
                               onPressed: () async {
                                 context.pop();
-                               await selectSessionTimeForBook(context: context);
+                               await selectSessionTimeForBook(context: context, availableTime: availableTime);
                               },
                               text: "Next",
                               ),

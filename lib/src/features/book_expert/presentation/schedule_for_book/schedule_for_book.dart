@@ -6,6 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../horizontal_list_view_calendar/presentation/horizontal_list_calendar.dart';
 
-Future<void> scheduleForBook({required BuildContext context}) async {
-  await selectSessionTimeForBook(context: context);
+Future<void> scheduleForBook({required BuildContext context, required List<String> availableTime, required List<String> availableDays}) async {
+  await selectSessionTimeForBook(context: context, availableTime: availableTime, availableDays: availableDays);
 }

@@ -10,7 +10,8 @@ import '../../riverpod/horizontal_list_calendar_riverpod.dart';
 
 class HorizontalListCalendarHeader extends ConsumerWidget{
   final EdgeInsets? headerPadding;
-  const HorizontalListCalendarHeader({super.key, this.headerPadding});
+  final List<String> availableDays;
+  const HorizontalListCalendarHeader({super.key, this.headerPadding, required this.availableDays});
 
   Widget _buildArrowButton({
     required VoidCallback onTap,
@@ -30,8 +31,8 @@ class HorizontalListCalendarHeader extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final horizontalListCalendarState = ref.watch(horizontalListCalendarRiverpodProvider);
-    final horizontalListCalendarNotifier = ref.watch(horizontalListCalendarRiverpodProvider.notifier);
+    final horizontalListCalendarState = ref.watch(horizontalListCalendarRiverpodProvider(availableDays));
+    final horizontalListCalendarNotifier = ref.watch(horizontalListCalendarRiverpodProvider(availableDays).notifier);
     final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: headerPadding ?? EdgeInsets.zero,

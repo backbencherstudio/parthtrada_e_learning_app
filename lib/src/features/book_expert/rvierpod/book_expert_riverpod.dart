@@ -1,13 +1,20 @@
 import 'package:e_learning_app/src/features/book_expert/rvierpod/book_expert_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final bookExpertRiverpod =
-    StateNotifierProvider<BookExpertRiverpod, BookExpertState>(
-      (ref) => BookExpertRiverpod(),
-    );
+final bookExpertRiverpod = StateNotifierProvider.family<BookExpertRiverpod, BookExpertState, List<String>>(
+      (ref, availableTime) => BookExpertRiverpod(availableTime: availableTime),
+);
 
 class BookExpertRiverpod extends StateNotifier<BookExpertState> {
-  BookExpertRiverpod() : super(BookExpertState());
+  BookExpertRiverpod({required List<String> availableTime}) : super(BookExpertState()) {
+    morningSessionTimeList = availableTime
+        .where((time) => time.toUpperCase().contains('AM'))
+        .toList();
+
+    afternoonSessionTimeList = availableTime
+        .where((time) => time.toUpperCase().contains('PM'))
+        .toList();
+  }
 
   final List<String> sessionDurationList = [
     "15 min",
@@ -16,31 +23,12 @@ class BookExpertRiverpod extends StateNotifier<BookExpertState> {
     "1 Hour",
   ];
 
+  late final List<String> morningSessionTimeList;
+  late final List<String> afternoonSessionTimeList;
+
   void onSelectDurationTile({required int index}) {
     state = state.copyWith(selectedDuration: index);
   }
-
-  final List<String> morningSessionTimeList = [
-    "08:00 AM",
-    "08:30 AM",
-    "09:00 AM",
-    "09:30 AM",
-    "10:00 AM",
-    "10:30 AM",
-    "11:00 AM",
-    "11:30 AM",
-  ];
-
-  final List<String> afternoonSessionTimeList = [
-    "03:00 AM",
-    "03:30 AM",
-    "04:00 AM",
-    "04:30 AM",
-    "05:00 AM",
-    "05:30 AM",
-    "06:00 AM",
-    "06:30 AM",
-  ];
 
   void onSelectSessionTime({required int index, required bool isMorningShift}) {
     state = state.copyWith(
@@ -51,19 +39,15 @@ class BookExpertRiverpod extends StateNotifier<BookExpertState> {
 
   Future<void> onConfirmBooking() async {
     state = state.copyWith(isConfirmLoading: true);
-    await Future.delayed(Duration(milliseconds: 200),);
+    await Future.delayed(Duration(milliseconds: 200));
 
     await Future.delayed(const Duration(seconds: 2));
-    state  = state.copyWith(isSuccessfullyBooked: true);
+    state = state.copyWith(isSuccessfullyBooked: true);
 
     state = state.copyWith(isConfirmLoading: false);
   }
 
   Future<void> onCancelBooking() async {
-    state  = state.copyWith(isSuccessfullyBooked: false);
-
+    state = state.copyWith(isSuccessfullyBooked: false);
   }
-
-
-
 }

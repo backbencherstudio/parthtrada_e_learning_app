@@ -6,9 +6,11 @@ import '../../../../../core/utils/common_widget.dart';
 import '../../../book_expert/presentation/schedule_for_book/schedule_for_book.dart';
 
 class ExpertDetailsBottomBookButton extends StatelessWidget{
-  const ExpertDetailsBottomBookButton({super.key, required this.hourlyRate});
+  const ExpertDetailsBottomBookButton({super.key, required this.hourlyRate, required this.availableTime, required this.availableDays});
 
   final String hourlyRate;
+  final List<String> availableTime;
+  final List<String> availableDays;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class ExpertDetailsBottomBookButton extends StatelessWidget{
               context: context,
               onPressed: (){
                 debugPrint("\nExpert\n");
-                scheduleForBook(context: context);
+                scheduleForBook(context: context, availableTime: availableTime, availableDays: availableDays);
               },
               text: "Book \$$hourlyRate/hour"),
         ),
