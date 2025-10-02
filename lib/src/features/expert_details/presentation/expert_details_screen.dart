@@ -8,13 +8,14 @@ import '../riverpod/expert_details_provider.dart';
 
 class ExpertDetailsScreen extends ConsumerWidget {
   final String id;
-  const ExpertDetailsScreen({super.key, required this.id});
+  final String hourlyRate;
+  const ExpertDetailsScreen({super.key, required this.id, required this.hourlyRate});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final expertDetailAsync = ref.watch(expertDetailProvider(id));
 
     return Scaffold(
-      bottomNavigationBar: const ExpertDetailsBottomBookButton(),
+      bottomNavigationBar: ExpertDetailsBottomBookButton(hourlyRate: hourlyRate,),
       body: expertDetailAsync.when(
         data: (expertDetail) {
           final expert = expertDetail.data?.expert;
