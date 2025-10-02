@@ -88,16 +88,22 @@ class UserReviewList extends ConsumerWidget {
                       ),
                       const SizedBox(height: 8),
                       Row(
-                        children: List.generate(
-                          5,
-                              (i) => Icon(
-                            i < (review.rating ?? 0).round()
-                                ? Icons.star
-                                : Icons.star_border,
-                            color: Colors.amber,
-                            size: 16,
+                        children: [
+                          Row(
+                            children: List.generate(
+                              5,
+                                  (i) => Icon(
+                                i < (review.rating ?? 0).round()
+                                    ? Icons.star
+                                    : Icons.star_border,
+                                color: Colors.amber,
+                                size: 16,
+                              ),
+                            ),
                           ),
-                        ),
+                          SizedBox(width: 12.w,),
+                          Text(review.rating.toString(), style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.amber, fontSize: 16.sp, fontWeight: FontWeight.w800))
+                        ],
                       ),
                     ],
                   ),

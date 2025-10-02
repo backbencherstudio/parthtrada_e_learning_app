@@ -81,6 +81,8 @@ class FeaturedExpertsList extends ConsumerWidget {
                         extra: {
                           'id': expert.id,
                           'hourlyRate': expert.hourlyRate,
+                          'availableTime': expert.availableTime,
+                          'availableDays': expert.availableDays,
                         },
                       );
                     },
@@ -96,8 +98,7 @@ class FeaturedExpertsList extends ConsumerWidget {
                         children: [
                           ClipOval(
                             child:
-                                expert.user?.image != null &&
-                                        expert.user!.image!.isNotEmpty
+                                expert.user?.image != null && expert.user!.image!.isNotEmpty
                                     ? Image.network(
                                       '${ApiEndPoints.baseUrl}/uploads/${expert.user!.image!}',
                                       width: 56.w,
@@ -181,7 +182,7 @@ class FeaturedExpertsList extends ConsumerWidget {
                             child: CommonWidget.primaryButton(
                               context: context,
                               onPressed: () async {
-                                await scheduleForBook(context: context);
+                                await scheduleForBook(context: context, availableTime: expert.availableTime ?? [], availableDays: expert.availableDays ?? []);
                               },
                               text: "Book \$${expert.hourlyRate}/hour",
                             ),

@@ -285,12 +285,14 @@ class RouteConfig {
             final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
             final String expertId = extra['id'];
             final double expertHourlyRate = extra['hourlyRate'];
+            final List<String> availableTime = extra['availableTime'];
+            final List<String> availableDays = extra['availableDays'];
 
             return buildPageWithTransition(
               transitionType: PageTransitionType.slideRightToLeft,
               context: context,
               state: state,
-              child: ExpertDetailsScreen(id: expertId, hourlyRate: expertHourlyRate.toString()),
+              child: ExpertDetailsScreen(id: expertId, hourlyRate: expertHourlyRate.toString(), availableTime: availableTime, availableDays: availableDays,),
             );
           },
         ),
@@ -299,11 +301,13 @@ class RouteConfig {
           name: RouteName.expertSearchScreen,
           path: RouteName.expertSearchScreen,
           pageBuilder: (context, state) {
+            final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
+            final List<String> availableTime = extra['availableTime'];
             return buildPageWithTransition(
               transitionType: PageTransitionType.slideRightToLeft,
               context: context,
               state: state,
-              child: ExpertSearchScreen(),
+              child: ExpertSearchScreen(availableTime: availableTime,),
             );
           },
         ),

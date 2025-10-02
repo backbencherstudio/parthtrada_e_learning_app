@@ -4,24 +4,32 @@ import 'package:e_learning_app/src/features/expert_details/presentation/widgets/
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../book_expert/rvierpod/book_expert_riverpod.dart';
 import '../riverpod/expert_details_provider.dart';
 
 class ExpertDetailsScreen extends ConsumerWidget {
   final String id;
   final String hourlyRate;
-  const ExpertDetailsScreen({super.key, required this.id, required this.hourlyRate});
+  final List<String> availableTime;
+  final List<String> availableDays;
+  const ExpertDetailsScreen({super.key, required this.id, required this.hourlyRate, required this.availableTime, required this.availableDays});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final expertDetailAsync = ref.watch(expertDetailProvider(id));
 
     return Scaffold(
-      bottomNavigationBar: ExpertDetailsBottomBookButton(hourlyRate: hourlyRate,),
+      bottomNavigationBar: ExpertDetailsBottomBookButton(hourlyRate: hourlyRate, availableTime: availableTime, availableDays: availableDays,),
       body: expertDetailAsync.when(
         data: (expertDetail) {
           final expert = expertDetail.data?.expert;
           if (expert == null) {
             return const Center(child: Text("Expert details not found"));
           }
+          final bookingController = ref.watch(
+            bookExpertRiverpod(
+              expertDetail.data?.expert?.availableTime ?? [],
+            ),
+          );
 
           return SingleChildScrollView(
             child: Column(

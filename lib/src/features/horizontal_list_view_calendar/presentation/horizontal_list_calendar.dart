@@ -7,7 +7,8 @@ class HorizontalListCalendar extends StatelessWidget{
   final Function(DateTime time) onTap;
   final EdgeInsets? headerPadding;
   final EdgeInsets? bodyPadding;
-  const HorizontalListCalendar({super.key, required this.onTap, this.headerPadding, this.bodyPadding});
+  final List<String> availableDays;
+  const HorizontalListCalendar({super.key, required this.onTap, this.headerPadding, this.bodyPadding, required this.availableDays});
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +16,11 @@ class HorizontalListCalendar extends StatelessWidget{
       spacing: 24.h,
       children: [
         /// Header of the calendar
-        HorizontalListCalendarHeader(headerPadding: headerPadding,),
+        HorizontalListCalendarHeader(headerPadding: headerPadding, availableDays: availableDays, ),
 
         SizedBox(
           height: 70.h,
-          child: HorizontalListCalendarBody(onTap: onTap,),
+          child: HorizontalListCalendarBody(onTap: onTap, availableDays: availableDays,),
         )
 
       ],

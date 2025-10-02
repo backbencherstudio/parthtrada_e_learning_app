@@ -8,7 +8,9 @@ import '../../../../../core/utils/common_widget.dart';
 import 'featured_experts_list.dart';
 
 class ExpertSearchScreen extends StatelessWidget {
-  const ExpertSearchScreen({super.key});
+  const ExpertSearchScreen({super.key, required this.availableTime});
+
+  final List<String> availableTime;
 
   @override
   Widget build(BuildContext context) {

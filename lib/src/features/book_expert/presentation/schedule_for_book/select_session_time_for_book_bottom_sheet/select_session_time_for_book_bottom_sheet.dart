@@ -10,7 +10,7 @@ import '../../../rvierpod/book_expert_riverpod.dart';
 import '../answer_session_details_for_book/answer_session_details_for_book_bottomsheet.dart';
 import 'session_grid_view.dart';
 
-Future<void> selectSessionTimeForBook({required BuildContext context}) async {
+Future<void> selectSessionTimeForBook({required BuildContext context, required List<String> availableTime, required List<String> availableDays}) async {
   await showModalBottomSheet(
     backgroundColor: Colors.transparent,
     useSafeArea: false,
@@ -34,6 +34,7 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
               SizedBox(height: 32.h),
               HorizontalListCalendar(
                 headerPadding: AppPadding.screenHorizontal,
+                availableDays: availableDays,
                 onTap: (value) {
                   debugPrint("\n\n${value.toString()}\n\n");
                 },
@@ -44,9 +45,9 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
                 padding: AppPadding.screenHorizontal,
                 child: Consumer(
                   builder: (_, ref, _) {
-                    final bookExpertState = ref.watch(bookExpertRiverpod);
+                    final bookExpertState = ref.watch(bookExpertRiverpod(availableTime));
                     final bookExpertNotifier = ref.watch(
-                      bookExpertRiverpod.notifier,
+                      bookExpertRiverpod(availableTime).notifier,
                     );
                     return SessionGridView(
                       isMorningShift: true,
@@ -64,9 +65,9 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
                 padding: AppPadding.screenHorizontal,
                 child: Consumer(
                   builder: (_, ref, _) {
-                    final bookExpertState = ref.watch(bookExpertRiverpod);
+                    final bookExpertState = ref.watch(bookExpertRiverpod(availableTime));
                     final bookExpertNotifier = ref.watch(
-                      bookExpertRiverpod.notifier,
+                      bookExpertRiverpod(availableTime).notifier,
                     );
                     return SessionGridView(
                       state: bookExpertState,
@@ -107,7 +108,7 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
                           context: context,
                           onPressed: () async {
                             context.pop();
-                            await answerSessionDetailsForBook(context: context);
+                            await answerSessionDetailsForBook(context: context, availableTime: availableTime);
                           },
                           text: "Next",
                           textStyle: Theme.of(context).textTheme.titleMedium

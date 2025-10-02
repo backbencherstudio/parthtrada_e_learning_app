@@ -9,7 +9,7 @@ import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../rvierpod/book_expert_riverpod.dart';
 import '../confirm_booking_bottom_sheet/confirm_booking_bottom_sheet.dart';
 
-Future<void> selectSessionTimeForBook({required BuildContext context}) async {
+Future<void> selectSessionTimeForBook({required BuildContext context, required List<String> availableTime,}) async {
   await showModalBottomSheet(
     backgroundColor: Colors.transparent,
     useSafeArea: false,
@@ -37,9 +37,9 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
             Expanded(
               child: Consumer(
                 builder: (_, ref, _) {
-                  final bookExpertState = ref.watch(bookExpertRiverpod);
+                  final bookExpertState = ref.watch(bookExpertRiverpod(availableTime));
                   final bookExpertNotifier = ref.watch(
-                    bookExpertRiverpod.notifier,
+                    bookExpertRiverpod(availableTime).notifier,
                   );
                   return ListView.builder(
                     itemCount: bookExpertNotifier.sessionDurationList.length,
@@ -107,8 +107,8 @@ Future<void> selectSessionTimeForBook({required BuildContext context}) async {
                           context: context,
                           onPressed: () {
                             context.pop();
-                            ref.read(bookExpertRiverpod.notifier).onCancelBooking();
-                            confirmBookingBottomSheet(context: context);
+                            ref.read(bookExpertRiverpod(availableTime).notifier).onCancelBooking();
+                            confirmBookingBottomSheet(context: context, availableTime: availableTime);
                           },
                           text: "Next",
                         );
