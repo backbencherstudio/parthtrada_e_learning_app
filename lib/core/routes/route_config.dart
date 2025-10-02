@@ -305,13 +305,11 @@ class RouteConfig {
           name: RouteName.expertSearchScreen,
           path: RouteName.expertSearchScreen,
           pageBuilder: (context, state) {
-            final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
-            final List<String> availableTime = extra['availableTime'];
             return buildPageWithTransition(
               transitionType: PageTransitionType.slideRightToLeft,
               context: context,
               state: state,
-              child: ExpertSearchScreen(availableTime: availableTime,),
+              child: ExpertSearchScreen(),
             );
           },
         ),

@@ -2,17 +2,21 @@ import 'package:e_learning_app/core/routes/route_name.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/search_bar.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/search_footer/search_footer.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/user_review_list.dart';
+import 'package:e_learning_app/src/features/search/provider/expert_search_query_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/utils/common_widget.dart';
+import '../provider/expert_provider.dart';
 import './widgets/featured_experts_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends ConsumerWidget {
   const SearchScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final availableDays = ref.watch(availableDaysProvider);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -32,6 +36,9 @@ class SearchScreen extends StatelessWidget {
               readOnly: true,
               onTap: () => context.push(
                 RouteName.expertSearchScreen,
+                extra: {
+                  'availableDays': availableDays,
+                }
               ),
             ),
 
