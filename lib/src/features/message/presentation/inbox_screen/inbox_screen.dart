@@ -41,7 +41,17 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
       ref
           .read(conversationViewModelProvider.notifier)
           .fetchMessages(widget.userId, "1", "100");
+      ref
+          .read(conversationViewModelProvider.notifier)
+          .initializeMessageService(widget.userId);
     });
+  }
+
+  @override
+  void dispose() {
+    ref.read(conversationViewModelProvider.notifier).disposeMessageService();
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -98,8 +108,23 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                 ),
               ),
 
+              /// Typing Indicator
+              if (state.typingUserId != null)
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                  child: Text(
+                    '${state.typingUserId} is typing...',
+                    style: textTheme.bodySmall!.copyWith(color: Colors.grey),
+                  ),
+                ),
+
               /// Message input
-              MessageWritingWidget(textTheme: textTheme),
+              MessageWritingWidget(
+                textTheme: textTheme,
+                userId: widget.userId,
+                recipientId: widget.recipientId,
+                recipientRole: widget.recipientRole,
+              ),
             ],
           ),
         ),

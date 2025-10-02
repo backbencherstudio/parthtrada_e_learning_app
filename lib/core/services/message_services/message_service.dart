@@ -1,98 +1,106 @@
+import 'package:flutter/cupertino.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import '../../../src/features/message/model/conversation_model.dart';
+
+import '../../../src/features/message/model/message_model.dart';
 
 class MessageService {
-  late IO.Socket socket;
-  final String serverUrl;
+  IO.Socket? _socket;
+  final String socketUrl = 'https://parthtrada.obotoronika.com';
+  final void Function(Data message) onMessageReceived;
   final void Function(String userId) onTyping;
   final void Function(String userId) onStopTyping;
-  final void Function(Data message) onNewMessage;
 
   MessageService({
-    required this.serverUrl,
+    required this.onMessageReceived,
     required this.onTyping,
     required this.onStopTyping,
-    required this.onNewMessage,
-  }) {
-    // Initialize Socket.IO connection
-    socket = IO.io(serverUrl, <String, dynamic>{
-      'transports': ['websocket'],
-      'autoConnect': false,
-    });
+  });
 
-    // Connect to server
-    socket.connect();
+  void connect(String userId) {
+    try {
+      _socket = IO.io(socketUrl, <String, dynamic>{
+        'transports': ['websocket'],
+        'autoConnect': false,
+        'query': {'userId': userId},
+      });
 
-    // Handle Socket.IO events
-    socket.onConnect((_) {
-      print('Connected to Socket.IO server');
-    });
+      _socket!.connect();
 
-    socket.onDisconnect((_) {
-      print('Disconnected from Socket.IO server');
-    });
+      _socket!.onConnect((_) {
+        print('Socket.IO connected');
+        _socket!.emit('join', userId);
+      });
 
-    // Listen for typing event
-    socket.on('typing', (data) {
-      if (data is Map<String, dynamic> && data['userId'] != null) {
+      // Listen for raw messages (no specific event)
+      _socket!.on('message', (data) {
+        final messageData = Data.fromJson(data);
+        onMessageReceived(messageData);
+      });
+
+      _socket!.on('typing', (data) {
         onTyping(data['userId']);
-      }
-    });
+      });
 
-    // Listen for stop-typing event
-    socket.on('stop-typing', (data) {
-      if (data is Map<String, dynamic> && data['userId'] != null) {
+      _socket!.on('stop-typing', (data) {
         onStopTyping(data['userId']);
-      }
-    });
+      });
 
-    // Listen for new-message event
-    socket.on('new-message', (data) {
-      if (data is Map<String, dynamic>) {
-        final message = Data.fromJson(data);
-        onNewMessage(message);
-      }
-    });
+      _socket!.onError((error) {
+        print('Socket.IO error: $error');
+      });
+
+      _socket!.onDisconnect((_) {
+        print('Socket.IO connection closed');
+      });
+    } catch (e) {
+      print('Failed to connect to Socket.IO: $e');
+    }
   }
 
-  // Join a user session
-  void join(String userId) {
-    socket.emit('join', userId);
-  }
-
-  // Join a conversation
-  void joinConversation(String conversationId) {
-    socket.emit('join-conversation', conversationId);
-  }
-
-  // Send a message
   void sendMessage({
-    required String conversationId,
-    required String senderId,
+    required String recipientId,
+    required String recipientRole,
     required String content,
-    required String name,
   }) {
-    socket.emit('new-message', {
-      'conversationId': conversationId,
-      'senderId': senderId,
-      'content': content,
-      'sender': {'name': name},
-    });
+    if (_socket != null && _socket!.connected) {
+      final message = {
+        'recipientId': recipientId,
+        'recipientRole': recipientRole,
+        'content': content,
+      };
+      debugPrint("messages: $message");
+
+      _socket!.emit('new-message', message);
+      // Create a Data object for the sent message to add to the MessageModel
+      final sentMessage = Data(
+        recipientId: recipientId,
+        recipientRole: recipientRole,
+        content: content,
+        me: true, // Mark as sent by the user
+        createdAt: DateTime.now().toIso8601String(),
+      );
+      onMessageReceived(sentMessage);
+    }
   }
 
-  // Emit typing event
-  void emitTyping(String conversationId, String userId) {
-    socket.emit('typing', {'conversationId': conversationId, 'userId': userId});
+  void emitTyping(String userId) {
+    if (_socket != null && _socket!.connected) {
+      _socket!.emit('typing', {
+        'userId': userId,
+      });
+    }
   }
 
-  // Emit stop-typing event
-  void emitStopTyping(String conversationId, String userId) {
-    socket.emit('stop-typing', {'conversationId': conversationId, 'userId': userId});
+  void emitStopTyping(String userId) {
+    if (_socket != null && _socket!.connected) {
+      _socket!.emit('stop-typing', {
+        'userId': userId,
+      });
+    }
   }
 
-  // Dispose of socket connection
-  void dispose() {
-    socket.disconnect();
-    socket.dispose();
+  void disconnect() {
+    _socket?.disconnect();
+    _socket?.dispose();
   }
 }
