@@ -15,6 +15,8 @@ class ChatListWidget extends StatelessWidget {
     required this.time,
     required this.unreadCount,
     required this.userId,
+    required this.recipientRole,
+    required this.recipientId,
   });
 
   final TextTheme textTheme;
@@ -24,6 +26,8 @@ class ChatListWidget extends StatelessWidget {
   final String lastMessage;
   final String time;
   final int unreadCount;
+  final String recipientId;
+  final String recipientRole;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +38,10 @@ class ChatListWidget extends StatelessWidget {
           'image': imageUrl,
           'name': name,
           'userId': userId,
+          'recipientId' : recipientId,
+          'recipientRole' : recipientRole,
+
+
         },
       ),
       child: Container(
