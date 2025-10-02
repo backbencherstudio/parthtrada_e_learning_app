@@ -52,6 +52,7 @@ class _MessageWritingWidgetState extends ConsumerState<MessageWritingWidget> {
         recipientId: widget.recipientId,
         recipientRole: widget.recipientRole,
         content: content,
+        context: context, // Pass BuildContext to sendMessage
       );
       _controller.clear();
       ref.read(conversationViewModelProvider.notifier).emitStopTyping(widget.userId);

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/services/message_services/message_service.dart';
 import '../model/conversation_model.dart' hide Data;
@@ -39,28 +39,44 @@ class ConversationState {
 
 class ConversationViewModel extends StateNotifier<ConversationState> {
   final ConversationRepository _repository;
+  final ScrollController scrollController;
   MessageService? _messageService;
 
-  ConversationViewModel(this._repository) : super(ConversationState()) {
+  ConversationViewModel(this._repository, this.scrollController)
+      : super(ConversationState()) {
     fetchConversation();
   }
 
-  void initializeMessageService(String userId) {
+  void initializeMessageService(String userId, BuildContext context) {
     _messageService = MessageService(
       onMessageReceived: (Data message) {
-        final currentMessages = state.messages?.data ?? [];
-        state = state.copyWith(
-          messages: MessageModel(
-            success: true,
-            data: [...currentMessages, message],
-          ),
-        );
+        if (context.mounted) {
+          final currentMessages = state.messages?.data ?? [];
+          state = state.copyWith(
+            messages: MessageModel(
+              success: true,
+              data: List.from(currentMessages)..add(message),
+            ),
+          );
+          // Smoothly scroll to bottom
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (scrollController.hasClients) {
+              scrollController.animateTo(
+                scrollController.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOut,
+              );
+            }
+          });
+        }
       },
       onTyping: (String userId) {
-        state = state.copyWith(typingUserId: userId);
+        if (context.mounted) {
+          state = state.copyWith(typingUserId: userId);
+        }
       },
       onStopTyping: (String userId) {
-        if (state.typingUserId == userId) {
+        if (context.mounted && state.typingUserId == userId) {
           state = state.copyWith(typingUserId: null);
         }
       },
@@ -70,27 +86,46 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
 
   void disposeMessageService() {
     _messageService?.disconnect();
+    scrollController.dispose();
   }
 
-  void sendMessage({
+  Future<void> sendMessage({
     required String recipientId,
     required String recipientRole,
     required String content,
-  }) {
+    required BuildContext context,
+  }) async {
     try {
-
       debugPrint("message set: ${recipientId} - $recipientRole - $content");
-
       _messageService?.sendMessage(
         recipientId: recipientId,
         recipientRole: recipientRole,
         content: content,
       );
-    } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: "Failed to send message",
+
+      final success = await _repository.postMessages(
+        recipientId,
+        recipientRole,
+        content,
       );
+
+      if (success && context.mounted && scrollController.hasClients) {
+        // Smoothly scroll to bottom after sending
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          scrollController.animateTo(
+            scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        });
+      }
+    } catch (e) {
+      if (context.mounted) {
+        state = state.copyWith(
+          isLoading: false,
+          error: "Failed to send message",
+        );
+      }
     }
   }
 
@@ -102,7 +137,7 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
     _messageService?.emitStopTyping(userId);
   }
 
-  /// fetch all conversations
+  /// Fetch all conversations
   Future<void> fetchConversation() async {
     try {
       state = state.copyWith(isLoading: true, error: null);
@@ -121,22 +156,36 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
     }
   }
 
-  /// fetch messages of a given conversation
-  Future<void> fetchMessages(String conversationId, String page, String perPage) async {
+  /// Fetch messages of a given conversation
+  Future<void> fetchMessages(String conversationId, String page, String perPage, {required BuildContext context}) async {
     try {
       state = state.copyWith(isLoading: true, error: null);
       final result = await _repository.getMessages(conversationId, page, perPage);
 
-      state = state.copyWith(
-        isLoading: false,
-        messages: result,
-        error: (result.success == false) ? result.message : null,
-      );
+      if (context.mounted) {
+        state = state.copyWith(
+          isLoading: false,
+          messages: result,
+          error: (result.success == false) ? result.message : null,
+        );
+        // Scroll to bottom after initial load
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (scrollController.hasClients) {
+            scrollController.animateTo(
+              scrollController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
+          }
+        });
+      }
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: "Failed to load messages",
-      );
+      if (context.mounted) {
+        state = state.copyWith(
+          isLoading: false,
+          error: "Failed to load messages",
+        );
+      }
     }
   }
 }
@@ -147,5 +196,8 @@ final conversationRepositoryProvider = Provider<ConversationRepository>((ref) {
 
 final conversationViewModelProvider =
 StateNotifierProvider<ConversationViewModel, ConversationState>((ref) {
-  return ConversationViewModel(ref.read(conversationRepositoryProvider));
+  return ConversationViewModel(
+    ref.read(conversationRepositoryProvider),
+    ScrollController(),
+  );
 });
