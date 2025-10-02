@@ -13,6 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../book_expert/presentation/schedule_for_book/schedule_for_book.dart';
+import '../../../book_expert/rvierpod/session_provider.dart';
 import '../../provider/selected_skill_provider.dart';
 
 class FeaturedExpertsList extends ConsumerWidget {
@@ -80,6 +81,7 @@ class FeaturedExpertsList extends ConsumerWidget {
                         RouteName.expertDetailsScreen,
                         extra: {
                           'id': expert.id,
+                          'userId': expert.userId,
                           'hourlyRate': expert.hourlyRate,
                           'availableTime': expert.availableTime,
                           'availableDays': expert.availableDays,
@@ -182,7 +184,10 @@ class FeaturedExpertsList extends ConsumerWidget {
                             child: CommonWidget.primaryButton(
                               context: context,
                               onPressed: () async {
-                                await scheduleForBook(context: context, availableTime: expert.availableTime ?? [], availableDays: expert.availableDays ?? []);
+                                final sessionDataNotifier = ref.read(sessionDataProvider.notifier);
+                                sessionDataNotifier.setExpertId(expert.userId ?? '');
+                                sessionDataNotifier.setExpertName(expert.user?.name ?? '');
+                                await scheduleForBook(ref: ref, context: context, availableTime: expert.availableTime ?? [], availableDays: expert.availableDays ?? []);
                               },
                               text: "Book \$${expert.hourlyRate}/hour",
                             ),

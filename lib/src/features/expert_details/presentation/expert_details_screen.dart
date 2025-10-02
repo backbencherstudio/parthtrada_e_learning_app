@@ -9,16 +9,29 @@ import '../riverpod/expert_details_provider.dart';
 
 class ExpertDetailsScreen extends ConsumerWidget {
   final String id;
+  final String userId;
   final String hourlyRate;
   final List<String> availableTime;
   final List<String> availableDays;
-  const ExpertDetailsScreen({super.key, required this.id, required this.hourlyRate, required this.availableTime, required this.availableDays});
+  const ExpertDetailsScreen({
+    super.key,
+    required this.id,
+    required this.userId,
+    required this.hourlyRate,
+    required this.availableTime,
+    required this.availableDays,
+  });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final expertDetailAsync = ref.watch(expertDetailProvider(id));
 
     return Scaffold(
-      bottomNavigationBar: ExpertDetailsBottomBookButton(hourlyRate: hourlyRate, availableTime: availableTime, availableDays: availableDays,),
+      bottomNavigationBar: ExpertDetailsBottomBookButton(
+        userId: userId,
+        hourlyRate: hourlyRate,
+        availableTime: availableTime,
+        availableDays: availableDays,
+      ),
       body: expertDetailAsync.when(
         data: (expertDetail) {
           final expert = expertDetail.data?.expert;
@@ -26,9 +39,7 @@ class ExpertDetailsScreen extends ConsumerWidget {
             return const Center(child: Text("Expert details not found"));
           }
           final bookingController = ref.watch(
-            bookExpertRiverpod(
-              expertDetail.data?.expert?.availableTime ?? [],
-            ),
+            bookExpertRiverpod(expertDetail.data?.expert?.availableTime ?? []),
           );
 
           return SingleChildScrollView(
@@ -53,7 +64,8 @@ class ExpertDetailsScreen extends ConsumerWidget {
                   availableDays: expert.availableDays ?? [],
                   availableTime: expert.availableTime ?? [],
                   stats: expertDetail.data?.stats,
-                  experience: expertDetail.data?.expert?.experience.toString() ?? '0',
+                  experience:
+                      expertDetail.data?.expert?.experience.toString() ?? '0',
                   expertId: id,
                 ),
               ],

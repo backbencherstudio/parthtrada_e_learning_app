@@ -17,7 +17,7 @@ class HorizontalListCalendarRiverpod extends StateNotifier<HorizontalListCalenda
 
   void setCurrentDate() {
     final currentDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-    state = state.copyWith(currentDate: currentDate, selectedDate: currentDate);
+    state = state.copyWith(currentDate: currentDate, selectedDate: null);
   }
 
   final ScrollController calendarScrollController = ScrollController();

@@ -7,9 +7,13 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../rvierpod/book_expert_riverpod.dart';
+import '../../../rvierpod/session_provider.dart'; // ✅ Import session provider
 import '../confirm_booking_bottom_sheet/confirm_booking_bottom_sheet.dart';
 
-Future<void> selectSessionTimeForBook({required BuildContext context, required List<String> availableTime,}) async {
+Future<void> selectSessionTimeForBook({
+  required BuildContext context,
+  required List<String> availableTime,
+}) async {
   await showModalBottomSheet(
     backgroundColor: Colors.transparent,
     useSafeArea: false,
@@ -34,18 +38,24 @@ Future<void> selectSessionTimeForBook({required BuildContext context, required L
             SizedBox(height: 32.h),
             Text("Session Duration", style: textTheme.headlineSmall),
             SizedBox(height: 12.h),
+
+            /// Duration selection list
             Expanded(
               child: Consumer(
-                builder: (_, ref, _) {
-                  final bookExpertState = ref.watch(bookExpertRiverpod(availableTime));
+                builder: (_, ref, __) {
+                  final bookExpertState = ref.watch(
+                    bookExpertRiverpod(availableTime),
+                  );
                   final bookExpertNotifier = ref.watch(
                     bookExpertRiverpod(availableTime).notifier,
                   );
+
                   return ListView.builder(
                     itemCount: bookExpertNotifier.sessionDurationList.length,
                     itemBuilder: (_, index) {
                       final sessionDuration =
                           bookExpertNotifier.sessionDurationList[index];
+
                       return Container(
                         margin: EdgeInsets.only(bottom: 8.h),
                         decoration: BoxDecoration(
@@ -56,16 +66,13 @@ Future<void> selectSessionTimeForBook({required BuildContext context, required L
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: RadioListTile(
-
                           value: index,
                           groupValue: bookExpertState.selectedDuration,
-
                           onChanged: (value) {
                             bookExpertNotifier.onSelectDurationTile(
                               index: index,
                             );
                           },
-
                           title: Text(
                             sessionDuration,
                             style: textTheme.bodyMedium,
@@ -81,14 +88,16 @@ Future<void> selectSessionTimeForBook({required BuildContext context, required L
 
             SizedBox(height: 32.h),
 
+            /// Buttons
             SafeArea(
               child: Row(
-                spacing: 10.w,
                 children: [
                   Expanded(
                     child: CommonWidget.primaryButton(
                       padding: EdgeInsets.symmetric(vertical: 16.h),
-                      textStyle: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                      textStyle: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                       context: context,
                       onPressed: () {
                         context.pop();
@@ -98,21 +107,66 @@ Future<void> selectSessionTimeForBook({required BuildContext context, required L
                     ),
                   ),
 
+                  SizedBox(width: 10.w),
+
                   Expanded(
-                    child: Consumer(
-                      builder: (_, ref, _) {
-                        return CommonWidget.primaryButton(
-                          padding: EdgeInsets.symmetric(vertical: 16.h),
-                          textStyle: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-                          context: context,
-                          onPressed: () {
-                            context.pop();
-                            ref.read(bookExpertRiverpod(availableTime).notifier).onCancelBooking();
-                            confirmBookingBottomSheet(context: context, availableTime: availableTime);
+                    child: Builder(
+                      builder: (safeContext) {
+                        return Consumer(
+                          builder: (_, ref, __) {
+                            return CommonWidget.primaryButton(
+                              padding: EdgeInsets.symmetric(vertical: 16.h),
+                              textStyle: textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                              context: safeContext,
+                              onPressed: () {
+                                final bookExpertNotifier = ref.read(
+                                  bookExpertRiverpod(availableTime).notifier,
+                                );
+                                final selectedIndex =
+                                    ref
+                                        .read(bookExpertRiverpod(availableTime))
+                                        .selectedDuration;
+                                final selectedDurationStr =
+                                    bookExpertNotifier
+                                        .sessionDurationList[selectedIndex];
+
+                                int durationInMinutes;
+                                if (selectedDurationStr.toLowerCase().contains(
+                                  "hour",
+                                )) {
+                                  durationInMinutes = 60;
+                                } else {
+                                  durationInMinutes =
+                                      int.tryParse(
+                                        selectedDurationStr.replaceAll(
+                                          RegExp(r'[^0-9]'),
+                                          '',
+                                        ),
+                                      ) ??
+                                      0;
+                                }
+
+                                ref
+                                    .read(sessionDataProvider.notifier)
+                                    .setSessionDuration(durationInMinutes);
+
+                                bookExpertNotifier.onCancelBooking();
+
+                                Future.microtask(() {
+                                  Navigator.of(safeContext).pop();
+                                  confirmBookingBottomSheet(
+                                    context: safeContext,
+                                    availableTime: availableTime,
+                                  );
+                                });
+                              },
+                              text: "Next",
+                            );
                           },
-                          text: "Next",
                         );
-                      }
+                      },
                     ),
                   ),
                 ],
