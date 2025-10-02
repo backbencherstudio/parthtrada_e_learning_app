@@ -31,26 +31,24 @@ class InboxScreen extends ConsumerStatefulWidget {
 }
 
 class _InboxScreenState extends ConsumerState<InboxScreen> {
-  final ScrollController _scrollController = ScrollController();
-
   @override
   void initState() {
     super.initState();
-    // Fetch messages from ViewModel when screen is opened
+    // Fetch messages and initialize message service after frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .read(conversationViewModelProvider.notifier)
-          .fetchMessages(widget.userId, "1", "100");
+          .fetchMessages(widget.userId, "1", "100", context: context);
       ref
           .read(conversationViewModelProvider.notifier)
-          .initializeMessageService(widget.userId);
+          .initializeMessageService(widget.userId, context);
     });
   }
 
   @override
   void dispose() {
     ref.read(conversationViewModelProvider.notifier).disposeMessageService();
-    _scrollController.dispose();
+    // ScrollController is now managed by ViewModel, no need to dispose here
     super.dispose();
   }
 
@@ -58,15 +56,8 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final state = ref.watch(conversationViewModelProvider);
-
-    // Auto scroll after messages load
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.jumpTo(
-          _scrollController.position.maxScrollExtent + 100.h,
-        );
-      }
-    });
+    // Use ScrollController from ViewModel
+    final scrollController = ref.read(conversationViewModelProvider.notifier).scrollController;
 
     return Scaffold(
       body: SafeArea(
@@ -92,11 +83,13 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                     : state.error != null
                     ? Center(child: Text(state.error!))
                     : ListView.builder(
-                  controller: _scrollController,
+                  key: const ValueKey('message_list'),
+                  controller: scrollController,
                   itemCount: state.messages?.data?.length ?? 0,
                   itemBuilder: (_, index) {
                     final Data msg = state.messages!.data![index];
                     return MessageCardWidget(
+                      key: ValueKey(msg.id),
                       isMe: msg.me ?? false,
                       widget: widget,
                       msg: msg,
