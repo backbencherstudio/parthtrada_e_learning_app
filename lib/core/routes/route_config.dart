@@ -189,6 +189,7 @@ import 'package:e_learning_app/src/features/profile/presentation/language/langua
 import 'package:e_learning_app/src/features/profile/presentation/notification/view/notification.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/view/payment_method.dart';
 import 'package:e_learning_app/src/features/profile/presentation/user%20profile/view/user_profile.dart';
+import 'package:e_learning_app/src/features/search/presentation/widgets/expert_search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -281,13 +282,28 @@ class RouteConfig {
           name: RouteName.expertDetailsScreen,
           path: RouteName.expertDetailsScreen,
           pageBuilder: (context, state) {
-            final expertId = state.extra as String;
+            final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
+            final String expertId = extra['id'];
+            final double expertHourlyRate = extra['hourlyRate'];
 
             return buildPageWithTransition(
               transitionType: PageTransitionType.slideRightToLeft,
               context: context,
               state: state,
-              child: ExpertDetailsScreen(id: expertId),
+              child: ExpertDetailsScreen(id: expertId, hourlyRate: expertHourlyRate.toString()),
+            );
+          },
+        ),
+
+        GoRoute(
+          name: RouteName.expertSearchScreen,
+          path: RouteName.expertSearchScreen,
+          pageBuilder: (context, state) {
+            return buildPageWithTransition(
+              transitionType: PageTransitionType.slideRightToLeft,
+              context: context,
+              state: state,
+              child: ExpertSearchScreen(),
             );
           },
         ),
