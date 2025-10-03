@@ -3,6 +3,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../../../repository/login_preferences.dart';
 import '../../../src/features/message/model/message_model.dart';
+import '../local_storage_services/user_id_storage.dart';
 
 class MessageService {
   IO.Socket? _socket;
@@ -17,9 +18,11 @@ class MessageService {
     required this.onStopTyping,
   });
 
-  Future<void> connect(String userId) async {
+  Future<void> connect() async {
 
-    userId = "cmg213a9c0000vcisogs7oy4a";
+    final userId = await UserIdStorage().getUserId();
+
+    debugPrint("userid for socket connection: $userId");
 
     try {
       _socket = IO.io(socketUrl, <String, dynamic>{
