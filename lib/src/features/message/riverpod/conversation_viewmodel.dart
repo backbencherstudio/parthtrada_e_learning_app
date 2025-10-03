@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/services/local_storage_services/user_id_storage.dart';
 import '../../../../core/services/message_services/message_service.dart';
 import '../model/conversation_model.dart' hide Data;
 import '../model/message_model.dart';
@@ -47,7 +48,8 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
     fetchConversation();
   }
 
-  void initializeMessageService(String userId, BuildContext context) {
+  void initializeMessageService(BuildContext context) {
+
     _messageService = MessageService(
       onMessageReceived: (Data message) {
         if (context.mounted) {
@@ -81,8 +83,10 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
         }
       },
     );
-    _messageService!.connect(userId);
+    _messageService!.connect();
   }
+
+
 
   void disposeMessageService() {
     _messageService?.disconnect();
@@ -102,14 +106,14 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
         recipientRole: recipientRole,
         content: content,
       );
+      //
+      // final success = await _repository.postMessages(
+      //   recipientId,
+      //   recipientRole,
+      //   content,
+      // );
 
-      final success = await _repository.postMessages(
-        recipientId,
-        recipientRole,
-        content,
-      );
-
-      if (success && context.mounted && scrollController.hasClients) {
+      if (context.mounted && scrollController.hasClients) {
         // Smoothly scroll to bottom after sending
         WidgetsBinding.instance.addPostFrameCallback((_) {
           scrollController.animateTo(

@@ -59,12 +59,15 @@ class ConversationRepository {
 
   Future<bool> postMessages(
       String recipientId, String recipientRole, String content) async {
+
+    debugPrint("recepient id: $recipientId");
+
     try {
       final Response response = await _apiService.post(
         ApiEndPoints.postMesssage,
         data: {
           'recipientId': recipientId,
-          'recipientRole': recipientRole,
+        //  'recipientRole': recipientRole,
           'content': content,
         },
       );

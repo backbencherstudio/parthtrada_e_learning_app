@@ -1,3 +1,4 @@
+import 'package:e_learning_app/core/services/local_storage_services/user_id_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,7 +42,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
           .fetchMessages(widget.userId, "1", "100", context: context);
       ref
           .read(conversationViewModelProvider.notifier)
-          .initializeMessageService(widget.userId, context);
+          .initializeMessageService(context);
     });
   }
 
