@@ -288,6 +288,7 @@ class RouteConfig {
             final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
             final String expertId = extra['id'];
             final String userId = extra['userId'];
+            final String userName = extra['userName'];
             final double expertHourlyRate = extra['hourlyRate'];
             final List<String> availableTime = extra['availableTime'];
             final List<String> availableDays = extra['availableDays'];
@@ -296,7 +297,7 @@ class RouteConfig {
               transitionType: PageTransitionType.slideRightToLeft,
               context: context,
               state: state,
-              child: ExpertDetailsScreen(id: expertId, userId: userId, hourlyRate: expertHourlyRate.toString(), availableTime: availableTime, availableDays: availableDays,),
+              child: ExpertDetailsScreen(userName: userName, id: expertId, userId: userId, hourlyRate: expertHourlyRate.toString(), availableTime: availableTime, availableDays: availableDays,),
             );
           },
         ),

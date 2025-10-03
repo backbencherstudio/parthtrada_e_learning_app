@@ -1,16 +1,20 @@
+import 'package:e_learning_app/src/features/book_expert/model/session_model.dart';
+import 'package:e_learning_app/src/features/book_expert/rvierpod/session_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 
-class ConfirmBookDetailsCard extends StatelessWidget{
+class ConfirmBookDetailsCard extends ConsumerWidget{
   const ConfirmBookDetailsCard({super.key});
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
-    return   Container(
+    final bookingData = ref.watch(sessionDataProvider);
+    return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),
@@ -28,7 +32,7 @@ class ConfirmBookDetailsCard extends StatelessWidget{
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Expert:",style: textTheme.bodyMedium?.copyWith(color: AppColors.secondaryTextColor),),
-              Text("Sarah Chen",style: textTheme.bodyMedium,),
+              Text(bookingData.expertName, style: textTheme.bodyMedium,),
             ],
           ),
 
@@ -37,7 +41,7 @@ class ConfirmBookDetailsCard extends StatelessWidget{
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Time:",style: textTheme.bodyMedium?.copyWith(color: AppColors.secondaryTextColor),),
-              Text("Wed 10am",style: textTheme.bodyMedium,),
+              Text("${bookingData.date}, ${bookingData.time}",style: textTheme.bodyMedium,),
             ],
           ),
 
@@ -46,7 +50,7 @@ class ConfirmBookDetailsCard extends StatelessWidget{
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Session Fee",style: textTheme.bodyMedium?.copyWith(color: AppColors.secondaryTextColor),),
-              Text("\$150/hour",style: textTheme.bodyMedium,),
+              Text("\$${bookingData.hourlyRate}/hour",style: textTheme.bodyMedium,),
             ],
           ),
 
@@ -55,7 +59,7 @@ class ConfirmBookDetailsCard extends StatelessWidget{
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Duration:",style: textTheme.bodyMedium?.copyWith(color: AppColors.secondaryTextColor),),
-              Text("30 min",style: textTheme.bodyMedium,),
+              Text("${bookingData.sessionDuration} min",style: textTheme.bodyMedium,),
             ],
           ),
 
@@ -66,11 +70,19 @@ class ConfirmBookDetailsCard extends StatelessWidget{
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Total Payment:",style: textTheme.bodyMedium?.copyWith(color: AppColors.secondaryTextColor),),
-              Text("\$75",style: textTheme.bodyMedium,),
+              Text("\$${getTotalPayment(bookingData)}",style: textTheme.bodyMedium,),
             ],
           ),
         ],
       ),
     );
   }
+
+  double getTotalPayment(SessionModel bookingData) {
+    final rateString = bookingData.hourlyRate;
+    final hourlyRate = double.tryParse(rateString ?? '') ?? 0.0;
+
+    return hourlyRate * (bookingData.sessionDuration / 60);
+  }
+
 }
