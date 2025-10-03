@@ -154,7 +154,7 @@ Future<void> selectSessionTimeForBook({
 
                                 bookExpertNotifier.onCancelBooking();
 
-                                Future.microtask(() {
+                                WidgetsBinding.instance.addPostFrameCallback((_) {
                                   Navigator.of(safeContext).pop();
                                   confirmBookingBottomSheet(
                                     context: safeContext,

@@ -13,8 +13,14 @@ class SessionDataNotifier extends StateNotifier<SessionModel> {
           sessionDuration: 0,
           sessionDetails: '',
           currency: '',
+          hourlyRate: ''
         ),
       );
+
+  void setHourlyRate(String hourlyRate) {
+    state = state.copyWith(hourlyRate: hourlyRate);
+    debugPrint(state.hourlyRate);
+  }
 
   void setExpertId(String expertId) {
     state = state.copyWith(expertId: expertId);

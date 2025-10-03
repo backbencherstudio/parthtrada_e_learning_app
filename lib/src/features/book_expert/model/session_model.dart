@@ -6,6 +6,7 @@ class SessionModel {
   final int sessionDuration;
   final String sessionDetails;
   final String? currency;
+  final String? hourlyRate;
 
   SessionModel({
     required this.expertId,
@@ -15,6 +16,7 @@ class SessionModel {
     required this.sessionDuration,
     required this.sessionDetails,
     this.currency = 'usd',
+    this.hourlyRate,
   });
 
   SessionModel copyWith({
@@ -25,6 +27,7 @@ class SessionModel {
     int? sessionDuration,
     String? sessionDetails,
     String? currency,
+    String? hourlyRate
   }) {
     return SessionModel(
       expertId: expertId ?? this.expertId,
@@ -34,6 +37,7 @@ class SessionModel {
       sessionDuration: sessionDuration ?? this.sessionDuration,
       sessionDetails: sessionDetails ?? this.sessionDetails,
       currency: currency ?? this.currency,
+      hourlyRate: hourlyRate ?? this.hourlyRate,
     );
   }
 }

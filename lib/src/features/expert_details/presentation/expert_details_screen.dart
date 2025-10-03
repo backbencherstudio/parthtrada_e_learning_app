@@ -9,6 +9,7 @@ import '../riverpod/expert_details_provider.dart';
 
 class ExpertDetailsScreen extends ConsumerWidget {
   final String id;
+  final String userName;
   final String userId;
   final String hourlyRate;
   final List<String> availableTime;
@@ -16,6 +17,7 @@ class ExpertDetailsScreen extends ConsumerWidget {
   const ExpertDetailsScreen({
     super.key,
     required this.id,
+    required this.userName,
     required this.userId,
     required this.hourlyRate,
     required this.availableTime,
@@ -27,6 +29,7 @@ class ExpertDetailsScreen extends ConsumerWidget {
 
     return Scaffold(
       bottomNavigationBar: ExpertDetailsBottomBookButton(
+        username: userName,
         userId: userId,
         hourlyRate: hourlyRate,
         availableTime: availableTime,
