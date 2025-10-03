@@ -12,6 +12,7 @@ class ApiEndPoints {
   static const String conversation = '/conversations';
   static String getMessages(String conversationId, String page, String perPage ) => '$baseUrl/conversations/messages/$conversationId?page=$page&perPage=$perPage';
   static String postMesssage = '/conversations/messages';
+  static String addCard = '/payments/add-card';
   static String bookExpert = '$baseUrl/bookings';
   static String getScheduleMeetings(int page, int limit) => '$baseUrl/bookings?page=$page&perPage=$limit';
 }
