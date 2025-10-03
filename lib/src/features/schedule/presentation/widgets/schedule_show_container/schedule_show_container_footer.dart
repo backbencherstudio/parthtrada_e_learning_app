@@ -1,15 +1,16 @@
+import 'package:e_learning_app/src/features/schedule/model/schedule_meeting_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import '../../../../../../core/constant/icons.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../../../core/utils/common_widget.dart';
-import '../../../model/meeting_model.dart';
 import '../add_review_bottom_sheet/add_review_bottom_sheet.dart';
 
 
 class ScheduleShowContainerFooter extends StatelessWidget {
-  final MeetingScheduleModel meetingScheduleModel;
+  final Booking meetingScheduleModel;
 
   const ScheduleShowContainerFooter({
     super.key,
@@ -32,15 +33,15 @@ class ScheduleShowContainerFooter extends StatelessWidget {
               children: [
                 SvgPicture.asset(AppIcons.calendar),
                 Text(
-                  meetingScheduleModel.scheduleDate,
+                  DateFormat('yyyy-MM-dd, HH:mm').format(DateTime.parse(meetingScheduleModel.date.toString())),
                   style: textTheme.bodyMedium?.copyWith(
                     color: AppColors.secondaryTextColor,
                   ),
                 ),
                 Spacer(),
-                if (meetingScheduleModel.status == "completed")
+                if (meetingScheduleModel.status == "COMPLETED")
                   Text(
-                    "30 Min",
+                    "${meetingScheduleModel.sessionDuration} Min",
                     style: textTheme.labelMedium?.copyWith(
                       color: Color(0xffD2D2D5),
                     ),
@@ -48,7 +49,7 @@ class ScheduleShowContainerFooter extends StatelessWidget {
               ],
             ),
 
-            meetingScheduleModel.status != "completed"
+            meetingScheduleModel.status != "COMPLETED"
                 ? Row(
                   spacing: 8.w,
                   children: [
@@ -64,12 +65,12 @@ class ScheduleShowContainerFooter extends StatelessWidget {
                     Expanded(
                       child: CommonWidget.primaryButton(
                         backgroundColor:
-                            meetingScheduleModel.status == "pending"
+                            meetingScheduleModel.status == "PENDING"
                                 ? Color(0xff4A4C56)
                                 : AppColors.primary,
                         textStyle: buttonTextStyle?.copyWith(
                           color:
-                              meetingScheduleModel.status == "pending"
+                              meetingScheduleModel.status == "PENDING"
                                   ? Color(0xffA5A5AB)
                                   : Colors.white,
                         ),

@@ -6,8 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../../core/theme/theme_part/app_colors.dart';
+import '../../../../../../repository/api/expert/expert_booking.dart';
 import '../../../rvierpod/book_expert_riverpod.dart';
-import '../../../rvierpod/session_provider.dart'; // ✅ Import session provider
+import '../../../rvierpod/booking_response_provider.dart';
+import '../../../rvierpod/session_provider.dart';
 import '../confirm_booking_bottom_sheet/confirm_booking_bottom_sheet.dart';
 
 Future<void> selectSessionTimeForBook({
@@ -54,15 +56,14 @@ Future<void> selectSessionTimeForBook({
                     itemCount: bookExpertNotifier.sessionDurationList.length,
                     itemBuilder: (_, index) {
                       final sessionDuration =
-                          bookExpertNotifier.sessionDurationList[index];
+                      bookExpertNotifier.sessionDurationList[index];
 
                       return Container(
                         margin: EdgeInsets.only(bottom: 8.h),
                         decoration: BoxDecoration(
-                          color:
-                              index == bookExpertState.selectedDuration
-                                  ? AppColors.primary
-                                  : AppColors.surface,
+                          color: index == bookExpertState.selectedDuration
+                              ? AppColors.primary
+                              : AppColors.surface,
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: RadioListTile(
@@ -106,63 +107,120 @@ Future<void> selectSessionTimeForBook({
                       backgroundColor: AppColors.secondaryStrokeColor,
                     ),
                   ),
-
                   SizedBox(width: 10.w),
-
                   Expanded(
                     child: Builder(
                       builder: (safeContext) {
+                        final isLoading = ValueNotifier<bool>(false);
+
                         return Consumer(
                           builder: (_, ref, __) {
-                            return CommonWidget.primaryButton(
-                              padding: EdgeInsets.symmetric(vertical: 16.h),
-                              textStyle: textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                              ),
-                              context: safeContext,
-                              onPressed: () {
-                                final bookExpertNotifier = ref.read(
-                                  bookExpertRiverpod(availableTime).notifier,
+                            return ValueListenableBuilder<bool>(
+                              valueListenable: isLoading,
+                              builder: (context, loading, child) {
+                                print('ValueListenableBuilder rebuilt, loading: $loading');
+
+                                return ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.symmetric(vertical: 16.h),
+                                    textStyle: textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    backgroundColor: AppColors.primary,
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                    ),
+                                  ),
+                                  onPressed: loading
+                                      ? null
+                                      : () async {
+                                    print('Next button pressed');
+                                    isLoading.value = true;
+                                    try {
+                                      final bookExpertNotifier = ref.read(bookExpertRiverpod(availableTime).notifier);
+                                      final selectedIndex = ref.read(bookExpertRiverpod(availableTime)).selectedDuration;
+                                      final selectedDurationStr = bookExpertNotifier.sessionDurationList[selectedIndex];
+
+                                      print('Selected index: $selectedIndex, duration: $selectedDurationStr'); // Debug
+
+                                      int durationInMinutes;
+                                      if (selectedDurationStr.toLowerCase().contains("hour")) {
+                                        durationInMinutes = 60;
+                                      } else {
+                                        durationInMinutes = int.tryParse(selectedDurationStr.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
+                                      }
+
+                                      print('Duration in minutes: $durationInMinutes'); // Debug
+
+                                      ref.read(sessionDataProvider.notifier).setSessionDuration(durationInMinutes);
+
+                                      print('Calling onCancelBooking'); // Debug
+                                      bookExpertNotifier.onCancelBooking();
+
+                                      print('Calling onConfirmBooking'); // Debug
+                                      await bookExpertNotifier.onConfirmBooking();
+                                      final sessionData = ref.read(sessionDataProvider);
+
+                                      print('Session data: $sessionData'); // Debug
+
+                                      print('Fetching booking response'); // Debug
+                                      final res = await ref.read(bookingResponseProvider(sessionData).future);
+
+                                      print('Booking response: success=${res.success}, message=${res.message}'); // Debug
+
+                                      if (res.success == true) {
+                                        if (safeContext.mounted && Navigator.of(safeContext).canPop()) {
+                                          print('Popping bottom sheet'); // Debug
+                                          Navigator.of(safeContext).pop();
+                                        }
+
+                                        await Future.delayed(const Duration(milliseconds: 200));
+                                        if (safeContext.mounted) {
+                                          print('Showing confirmBookingBottomSheet'); // Debug
+                                          confirmBookingBottomSheet(
+                                            context: safeContext,
+                                            availableTime: availableTime,
+                                          );
+                                        } else {
+                                          print('safeContext not mounted for bottom sheet'); // Debug
+                                        }
+                                      } else {
+                                        if (safeContext.mounted) {
+                                          print('Showing error SnackBar'); // Debug
+                                          ScaffoldMessenger.of(safeContext).showSnackBar(
+                                            SnackBar(
+                                              content: Text("Booking failed: ${res.message ?? 'Please try again.'}"),
+                                            ),
+                                          );
+                                        } else {
+                                          print('safeContext not mounted for error SnackBar'); // Debug
+                                        }
+                                      }
+                                    } catch (e, stackTrace) {
+                                      print('Error occurred: $e'); // Debug
+                                      print('Stack trace: $stackTrace'); // Debug
+                                      if (safeContext.mounted) {
+                                        ScaffoldMessenger.of(safeContext).showSnackBar(
+                                          SnackBar(content: Text("Error: $e")),
+                                        );
+                                      } else {
+                                        print('safeContext not mounted for error SnackBar'); // Debug
+                                      }
+                                    } finally {
+                                      print('Setting isLoading to false'); // Debug
+                                      isLoading.value = false; // Stop loading
+                                    }
+                                  },
+                                  child: Text(
+                                    loading ? "Booking..." : "Next",
+                                    style: textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white, // Adjust as needed
+                                    ),
+                                  ),
                                 );
-                                final selectedIndex =
-                                    ref
-                                        .read(bookExpertRiverpod(availableTime))
-                                        .selectedDuration;
-                                final selectedDurationStr =
-                                    bookExpertNotifier
-                                        .sessionDurationList[selectedIndex];
-
-                                int durationInMinutes;
-                                if (selectedDurationStr.toLowerCase().contains(
-                                  "hour",
-                                )) {
-                                  durationInMinutes = 60;
-                                } else {
-                                  durationInMinutes =
-                                      int.tryParse(
-                                        selectedDurationStr.replaceAll(
-                                          RegExp(r'[^0-9]'),
-                                          '',
-                                        ),
-                                      ) ??
-                                      0;
-                                }
-
-                                ref
-                                    .read(sessionDataProvider.notifier)
-                                    .setSessionDuration(durationInMinutes);
-
-                                bookExpertNotifier.onCancelBooking();
-
-                                WidgetsBinding.instance.addPostFrameCallback((_) {
-                                  Navigator.of(safeContext).pop();
-                                  confirmBookingBottomSheet(
-                                    context: safeContext,
-                                    availableTime: availableTime,
-                                  );
-                                });
                               },
-                              text: "Next",
                             );
                           },
                         );
@@ -172,7 +230,6 @@ Future<void> selectSessionTimeForBook({
                 ],
               ),
             ),
-
             SizedBox(height: 28.h),
           ],
         ),

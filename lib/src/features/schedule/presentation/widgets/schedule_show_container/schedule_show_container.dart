@@ -1,14 +1,30 @@
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/core/utils/utils.dart';
-import 'package:e_learning_app/src/features/schedule/model/meeting_model.dart';
+import 'package:e_learning_app/src/features/book_expert/model/booking_response.dart';
+import 'package:e_learning_app/src/features/schedule/model/schedule_meeting_model.dart';
 import 'package:e_learning_app/src/features/schedule/presentation/widgets/schedule_show_container/schedule_show_container_footer.dart';
+import 'package:e_learning_app/src/features/search/model/expert_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ScheduleShowContainer extends StatelessWidget {
-  final MeetingScheduleModel meetingScheduleModel;
+import '../../../../expert_details/riverpod/expert_details_provider.dart';
 
-  const ScheduleShowContainer({super.key, required this.meetingScheduleModel});
+class ScheduleShowContainer extends StatelessWidget {
+  final Booking meetingScheduleModel;
+  final String expertName;
+  final String expertProfession;
+  final String expertOrganization;
+  final String expertImage;
+
+  const ScheduleShowContainer({
+    super.key,
+    required this.meetingScheduleModel,
+    required this.expertName,
+    required this.expertProfession,
+    required this.expertOrganization,
+    required this.expertImage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,24 +44,32 @@ class ScheduleShowContainer extends StatelessWidget {
         children: [
           /// Profile Picture
           ClipOval(
-            child: Image.asset(
-              meetingScheduleModel.profilePicture,
-              width: 55.w,
+            child: Container(
               height: 55.w,
-              fit: BoxFit.cover,
+              width: 55.w,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white54,
+              ),
+              child: Image.asset(
+                'assets/images/search/women.png',
+                width: 55.w,
+                height: 55.w,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
 
           SizedBox(height: 16.h),
 
           /// User Name
-          Text(meetingScheduleModel.userName, style: textTheme.titleMedium),
+          Text(expertName, style: textTheme.titleMedium),
 
           SizedBox(height: 4.h),
 
           /// Designation
           Text(
-            meetingScheduleModel.designation,
+            '$expertProfession, $expertOrganization',
             style: textTheme.bodyMedium?.copyWith(
               color: AppColors.secondaryTextColor,
             ),

@@ -21,6 +21,9 @@ class BookExpertRiverpod extends StateNotifier<BookExpertState> {
     "30 min",
     "45 min",
     "1 Hour",
+    "1.5 Hour",
+    "2 Hour",
+    "3 Hour",
   ];
 
   late final List<String> morningSessionTimeList;
