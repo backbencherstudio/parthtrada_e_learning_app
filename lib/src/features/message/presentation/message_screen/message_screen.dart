@@ -82,7 +82,7 @@ class MessageScreen extends ConsumerWidget {
                           unreadCount: unreadCount,
                           userId: convo.id ?? "",
                           recipientRole: convo.recipientRole ?? '',
-                          recipientId: convo.recipientId ?? '',
+                          recipientId: convo.senderId ?? '',
 
                         );
                       },

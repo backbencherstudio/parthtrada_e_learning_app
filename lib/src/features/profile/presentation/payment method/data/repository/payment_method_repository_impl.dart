@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
@@ -46,10 +47,17 @@ class PaymentMethodRepositoryImpl implements PaymentMethodRepository {
         final errorData = jsonDecode(response.body);
         throw Exception(
             "Failed to create payment method: ${errorData['error']['message'] ?? 'Unknown error'}");
+
       }
     } catch (e) {
-      throw Exception("Error in addPaymentMethod: $e");
+      if (e is DioException) {
+        final errorMessage = e.response?.data["error"]?["message"] ?? "Something went wrong";
+        throw Exception(errorMessage);
+      } else {
+        throw Exception("Something went wrong");
+      }
     }
+
   }
 
   @override
@@ -60,7 +68,7 @@ class PaymentMethodRepositoryImpl implements PaymentMethodRepository {
     try {
       final response = await _apiService.post(
         ApiEndPoints.addCard,
-        data: {'token': token},
+        data: {"token": token},
       );
 
       if (response.data != null && response.data['success'] == true) {
@@ -69,7 +77,14 @@ class PaymentMethodRepositoryImpl implements PaymentMethodRepository {
         throw Exception("Failed to add card to backend");
       }
     } catch (e) {
-      throw Exception('Error in addCard: $e');
+      if (e is DioException) {
+        debugPrint("Error Response: ${e.response?.data['success']}");
+        if(e.response?.data['success']==false)
+          {
+            return false;
+          }
+      }
+      throw Exception('Error in addCard');
     }
   }
 }

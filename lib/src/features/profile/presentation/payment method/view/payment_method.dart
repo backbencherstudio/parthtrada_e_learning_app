@@ -194,24 +194,6 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
             ),
             SizedBox(height: 24.h),
 
-            // Loading indicator
-            if (state.isLoading)
-              const Center(child: CircularProgressIndicator()),
-
-            // Message (success/error)
-            if (state.message != null)
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 12.h),
-                child: Text(
-                  state.message!,
-                  style: TextStyle(
-                    color: state.message!.contains("success")
-                        ? Colors.green
-                        : Colors.red,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
 
             // Save button
             Mybutton(
@@ -236,6 +218,35 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
                 );
               },
             ),
+
+
+            // Loading indicator
+            if (state.isLoading)
+              const Center(child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: CircularProgressIndicator(),
+              )),
+
+            // Message (success/error)
+            if (state.message != null)
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 12.h),
+                child: Center(
+                  child: Text(
+                    state.message!,
+                    style: TextStyle(
+                      color: state.message!.contains("success")
+                          ? Colors.green
+                          : Colors.red,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+
+
+
+
           ],
         ),
       ),
