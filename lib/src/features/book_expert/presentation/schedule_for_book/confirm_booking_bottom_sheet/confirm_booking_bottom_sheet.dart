@@ -32,6 +32,7 @@ Future<void> confirmBookingBottomSheet({
 
       return Consumer(
         builder: (context, ref, _) {
+          final sessionData = ref.read(sessionDataProvider);
           final bookExpertNotifier =
           ref.read(bookExpertRiverpod(availableTime).notifier);
           final bookExpertState =
@@ -98,7 +99,7 @@ Future<void> confirmBookingBottomSheet({
                       children: [
                         SizedBox(height: 8.h),
                         Text(
-                          "Your session with Sarah Chen is scheduled for Wed 10 am",
+                          "Your session with ${sessionData.expertName} is scheduled",
                           style: textTheme.bodyMedium?.copyWith(
                             color: AppColors.secondaryTextColor,
                           ),
@@ -121,29 +122,30 @@ Future<void> confirmBookingBottomSheet({
                             ? "Done"
                             : "Confirm & Pay",
                         onPressed: () async {
-                          final sessionData = ref.read(sessionDataProvider);
-                          final sessionDataNotifier = ref.read(sessionDataProvider.notifier);
-                          await bookExpertNotifier.onConfirmBooking();
-                          final res = await ExpertBooking().bookExpert(sessionData);
-                          if (res) {
-                            await Future.delayed(Duration(seconds: 5));
 
+                          if (bookExpertState.isSuccessfullyBooked) {
+                            Navigator.pop(context);
+                            return;
+                          } else {
+                            // final sessionDataNotifier = ref.read(sessionDataProvider.notifier);
+                            await bookExpertNotifier.onConfirmBooking();
+                            debugPrint("Confirm Booking");
                             if (Navigator.of(bottomSheetContext).canPop()) {
-                              Navigator.of(bottomSheetContext).pop();
+                              Navigator.pop(context);
                             }
 
-                            sessionDataNotifier.setSessionData(
-                              SessionModel(
-                                expertId: '',
-                                expertName: '',
-                                hourlyRate: '',
-                                date: '',
-                                time: '',
-                                currency: '',
-                                sessionDuration: 0,
-                                sessionDetails: '',
-                              ),
-                            );
+                            // sessionDataNotifier.setSessionData(
+                            //   SessionModel(
+                            //     expertId: '',
+                            //     expertName: '',
+                            //     hourlyRate: '',
+                            //     date: '',
+                            //     time: '',
+                            //     currency: '',
+                            //     sessionDuration: 0,
+                            //     sessionDetails: '',
+                            //   ),
+                            // );
                           }
                         },
                       ),

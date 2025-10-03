@@ -69,6 +69,7 @@ class CommonWidget {
     Color? foregroundColor,
     TextStyle? textStyle,
     EdgeInsets? padding,
+    Widget? child,
   }){
 
 

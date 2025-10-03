@@ -25,7 +25,7 @@ class ExpertDetailsScreen extends ConsumerWidget {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final expertDetailAsync = ref.watch(expertDetailProvider(id));
+    final expertDetailAsync = ref.watch(expertDetailProvider(userId));
 
     return Scaffold(
       bottomNavigationBar: ExpertDetailsBottomBookButton(
@@ -67,17 +67,15 @@ class ExpertDetailsScreen extends ConsumerWidget {
                   availableDays: expert.availableDays ?? [],
                   availableTime: expert.availableTime ?? [],
                   stats: expertDetail.data?.stats,
-                  experience:
-                      expertDetail.data?.expert?.experience.toString() ?? '0',
-                  expertId: id,
+                  experience: expertDetail.data?.expert?.experience.toString() ?? '0',
+                  expertId: userId,
                 ),
               ],
             ),
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error:
-            (err, stack) => Center(child: Text("Failed to load details: $err")),
+        error: (err, stack) => Center(child: Text("Failed to load details: $err")),
       ),
     );
   }

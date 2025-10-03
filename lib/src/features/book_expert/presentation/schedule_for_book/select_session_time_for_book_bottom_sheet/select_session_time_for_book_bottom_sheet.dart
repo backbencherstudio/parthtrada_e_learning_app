@@ -90,22 +90,21 @@ Future<void> selectSessionTimeForBook({required BuildContext context, required L
                 padding: AppPadding.screenHorizontal,
                 child: SafeArea(
                   child: Row(
-                    spacing: 10.w,
                     children: [
-                      Expanded(
-                        child: CommonWidget.primaryButton(
-                          padding: EdgeInsets.symmetric(vertical: 16.h),
-                          backgroundColor: AppColors.secondaryStrokeColor,
-                          context: context,
-                          onPressed: () {
-                            context.pop();
-                          },
-                          text: "Cancel",
-
-                          textStyle: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w700),
-                        ),
-                      ),
+                      // Expanded(
+                      //   child: CommonWidget.primaryButton(
+                      //     padding: EdgeInsets.symmetric(vertical: 16.h),
+                      //     backgroundColor: AppColors.secondaryStrokeColor,
+                      //     context: context,
+                      //     onPressed: () {
+                      //       context.pop();
+                      //     },
+                      //     text: "Cancel",
+                      //
+                      //     textStyle: Theme.of(context).textTheme.titleMedium
+                      //         ?.copyWith(fontWeight: FontWeight.w700),
+                      //   ),
+                      // ),
                       Expanded(
                         child: Consumer(
                           builder: (context, ref, _) {

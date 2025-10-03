@@ -76,19 +76,19 @@ Future<void> answerSessionDetailsForBook({
                         SafeArea(
                           child: Row(
                             children: [
-                              Expanded(
-                                child: CommonWidget.primaryButton(
-                                  padding: EdgeInsets.symmetric(vertical: 16.h),
-                                  textStyle: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-                                  context: context,
-                                  onPressed: () {
-                                    context.pop();
-                                  },
-                                  text: "Cancel",
-                                  backgroundColor: AppColors.secondaryStrokeColor,
-                                ),
-                              ),
-                              SizedBox(width: 10.w),
+                              // Expanded(
+                              //   child: CommonWidget.primaryButton(
+                              //     padding: EdgeInsets.symmetric(vertical: 16.h),
+                              //     textStyle: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                              //     context: context,
+                              //     onPressed: () {
+                              //       context.pop();
+                              //     },
+                              //     text: "Cancel",
+                              //     backgroundColor: AppColors.secondaryStrokeColor,
+                              //   ),
+                              // ),
+                              // SizedBox(width: 10.w),
                               Expanded(
                                 child: CommonWidget.primaryButton(
                                   padding: EdgeInsets.symmetric(vertical: 16.h),

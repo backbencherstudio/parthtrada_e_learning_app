@@ -2,7 +2,8 @@ import 'package:e_learning_app/core/constant/images.dart';
 import 'package:e_learning_app/src/features/schedule/riverpod/schedule_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../model/meeting_model.dart';
+import '../../../../repository/api/schedule/schedule_meeting_list.dart';
+import '../../book_expert/model/booking_response.dart';
 
 final scheduleProvider = StateNotifierProvider<ScheduleRiverpod, ScheduleState>((ref) => ScheduleRiverpod());
 
@@ -58,9 +59,7 @@ class ScheduleRiverpod extends StateNotifier<ScheduleState> {
 
 
   Future<void> fetchMeetingList() async {
-    final meetingList = dummyMeetingSchedule.map((meeting)=>MeetingScheduleModel.fromJson(meeting)).toList();
+    final meetingList = await ScheduleMeetingList().getScheduleMeetings();
     state = state.copyWith(meetingList: meetingList);
   }
-
-
 }

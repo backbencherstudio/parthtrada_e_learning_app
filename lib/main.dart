@@ -16,7 +16,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //Test token for dev------------------->>>
-  await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzIxM2E5YzAwMDB2Y2lzb2dzN295NGEiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2VAZ21haWwuY29tIiwibmFtZSI6IkFzaWYgUmV6YW4iLCJhY3RpdmVQcm9maWxlIjoiRVhQRVJUIiwiaWF0IjoxNzU5Mjk5NTU0LCJleHAiOjE3NTk5MDQzNTR9.AIzA5dN1EeQd9gVdhfZLGIw7hXz1RHj4M5MWfGOv8aU");
+  await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzkxZm96NTAwMDd2Y3Q4OXJicm9jN3kiLCJlbWFpbCI6InNtcmF3bmFrMDAzQGdtYWlsLmNvbSIsIm5hbWUiOiJSYXduYWsiLCJhY3RpdmVQcm9maWxlIjoiU1RVREVOVCIsImlhdCI6MTc1OTQ2ODA5MiwiZXhwIjoxNzYwMDcyODkyfQ.nXCqX-XhalM9LuXl0t3qUERxGfl6fQPcpbkK2vSKo44");
 
   final savedToken = await LoginPreferences().loadAuthToken();
   bool isLoggedIn = false;

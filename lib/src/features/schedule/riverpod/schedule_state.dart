@@ -1,11 +1,11 @@
-import '../model/meeting_model.dart';
+import 'package:e_learning_app/src/features/schedule/model/schedule_meeting_model.dart';
 
-class ScheduleState{
-  List<MeetingScheduleModel>? meetingList;
+class ScheduleState {
+  ScheduleMeetingModel? meetingList;
+
   ScheduleState({this.meetingList});
-  ScheduleState copyWith({List<MeetingScheduleModel>? meetingList}){
-    return ScheduleState(
-      meetingList: meetingList ?? this.meetingList
-    );
+
+  ScheduleState copyWith({ScheduleMeetingModel? meetingList}) {
+    return ScheduleState(meetingList: meetingList ?? this.meetingList);
   }
 }
