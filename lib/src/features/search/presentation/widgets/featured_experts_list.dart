@@ -81,6 +81,7 @@ class FeaturedExpertsList extends ConsumerWidget {
                         RouteName.expertDetailsScreen,
                         extra: {
                           'id': expert.id,
+                          'userName': expert.user?.name,
                           'userId': expert.userId,
                           'hourlyRate': expert.hourlyRate,
                           'availableTime': expert.availableTime,
@@ -187,6 +188,7 @@ class FeaturedExpertsList extends ConsumerWidget {
                                 final sessionDataNotifier = ref.read(sessionDataProvider.notifier);
                                 sessionDataNotifier.setExpertId(expert.userId ?? '');
                                 sessionDataNotifier.setExpertName(expert.user?.name ?? '');
+                                sessionDataNotifier.setHourlyRate(expert.hourlyRate.toString());
                                 await scheduleForBook(ref: ref, context: context, availableTime: expert.availableTime ?? [], availableDays: expert.availableDays ?? []);
                               },
                               text: "Book \$${expert.hourlyRate}/hour",

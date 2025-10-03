@@ -8,9 +8,10 @@ import '../../../book_expert/presentation/schedule_for_book/schedule_for_book.da
 import '../../../book_expert/rvierpod/session_provider.dart';
 
 class ExpertDetailsBottomBookButton extends ConsumerWidget{
-  const ExpertDetailsBottomBookButton({super.key, required this.userId, required this.hourlyRate, required this.availableTime, required this.availableDays});
+  const ExpertDetailsBottomBookButton({super.key, required this.username, required this.userId, required this.hourlyRate, required this.availableTime, required this.availableDays});
 
   final String userId;
+  final String username;
   final String hourlyRate;
   final List<String> availableTime;
   final List<String> availableDays;
@@ -32,6 +33,8 @@ class ExpertDetailsBottomBookButton extends ConsumerWidget{
                 debugPrint("\nExpert\n");
                 final sessionDataNotifier = ref.read(sessionDataProvider.notifier);
                 sessionDataNotifier.setExpertId(userId);
+                sessionDataNotifier.setExpertName(username);
+                sessionDataNotifier.setHourlyRate(hourlyRate);
                 scheduleForBook(ref: ref, context: context, availableTime: availableTime, availableDays: availableDays);
               },
               text: "Book \$$hourlyRate/hour"),

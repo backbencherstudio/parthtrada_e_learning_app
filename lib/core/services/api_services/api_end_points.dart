@@ -13,4 +13,5 @@ class ApiEndPoints {
   static String getMessages(String conversationId, String page, String perPage ) => '$baseUrl/conversations/messages/$conversationId?page=$page&perPage=$perPage';
   static String postMesssage = '/conversations/messages';
   static String addCard = '/payments/add-card';
+  static String bookExpert = '$baseUrl/bookings';
 }
