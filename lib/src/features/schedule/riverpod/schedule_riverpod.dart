@@ -62,6 +62,12 @@ class ScheduleRiverpod extends StateNotifier<ScheduleState> {
     }
   }
 
+  Future<void> refreshMeetings() async {
+    _currentPage = 1;
+    state = state.copyWith(meetings: []);
+    await fetchMeetingList();
+  }
+
   void removeMeeting(String id) {
     final updated = state.meetings.where((m) => m.id != id).toList();
     state = state.copyWith(meetings: updated);
