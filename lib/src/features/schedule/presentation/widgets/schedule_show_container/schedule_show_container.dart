@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../core/services/api_services/api_end_points.dart';
 import '../../../../expert_details/riverpod/expert_details_provider.dart';
 
 class ScheduleShowContainer extends StatelessWidget {
@@ -44,18 +45,21 @@ class ScheduleShowContainer extends StatelessWidget {
         children: [
           /// Profile Picture
           ClipOval(
-            child: Container(
-              height: 55.w,
-              width: 55.w,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white54,
-              ),
-              child: Image.asset(
-                'assets/images/search/women.png',
-                width: 55.w,
-                height: 55.w,
-                fit: BoxFit.cover,
+            child:
+            expertImage != null && expertImage.isNotEmpty
+                ? Image.network(
+              '${ApiEndPoints.baseUrl}/uploads/$expertImage',
+              width: 56.w,
+              height: 56.w,
+              fit: BoxFit.cover,
+            )
+                : CircleAvatar(
+              radius: 28.w,
+              backgroundColor: Colors.white,
+              child: Icon(
+                Icons.person,
+                color: Colors.grey,
+                size: 28.w,
               ),
             ),
           ),
@@ -74,12 +78,13 @@ class ScheduleShowContainer extends StatelessWidget {
               color: AppColors.secondaryTextColor,
             ),
           ),
-
           SizedBox(height: 4.h),
 
           ScheduleShowContainerFooter(
             meetingScheduleModel: meetingScheduleModel,
           ),
+
+          SizedBox(height: 4.h),
         ],
       ),
     );

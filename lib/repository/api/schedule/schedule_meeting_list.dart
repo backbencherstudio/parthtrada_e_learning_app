@@ -1,21 +1,25 @@
 import 'dart:convert';
-import 'package:e_learning_app/core/services/api_services/api_end_points.dart';
-import 'package:e_learning_app/src/features/schedule/model/schedule_meeting_model.dart';
-import 'package:e_learning_app/src/features/search/model/expert_model.dart';
-import 'package:e_learning_app/src/features/search/model/home_stat_model.dart';
-import 'package:e_learning_app/src/features/search/model/skill_model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../core/services/api_services/api_end_points.dart';
+import '../../../core/services/local_storage_services/user_type_storage.dart';
+import '../../../src/features/schedule/model/expert_schedule_model.dart';
+import '../../../src/features/schedule/model/schedule_meeting_model.dart';
 import '../../login_preferences.dart';
 
 class ScheduleMeetingList {
-  Future<ScheduleMeetingModel?> getScheduleMeetings() async {
-    final url = Uri.parse(ApiEndPoints.getScheduleMeetings(1, 10));
-
+  Future<ScheduleMeetingModel?> getScheduleMeetings({
+    required int page,
+    int limit = 10,
+  }) async {
+    final UserTypeStorage _userTypeStorage = UserTypeStorage();
+    final role = await _userTypeStorage.getUserType();
+    final url = Uri.parse(role == 'EXPERT' ? ApiEndPoints.getScheduleMeetingsForExperts(page, limit) : ApiEndPoints.getScheduleMeetingsForStudents(page, limit));
     final token = await LoginPreferences().loadAuthToken();
 
-    if (token == null || token == '' ) {
+    if (token == null || token == '') {
       debugPrint('======= token is null =======');
       return null;
     }
@@ -24,12 +28,12 @@ class ScheduleMeetingList {
       url,
       headers: {'Authorization': 'Bearer $token'},
     );
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonData = jsonDecode(response.body);
-      debugPrint('=======${ScheduleMeetingModel.fromJson(jsonData).message}=======');
       return ScheduleMeetingModel.fromJson(jsonData);
     } else {
-      throw Exception('Failed to fetch skills: ${response.statusCode}');
+      throw Exception('Failed to fetch schedule: ${response.statusCode}');
     }
   }
 }
