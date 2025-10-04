@@ -1,65 +1,64 @@
-import 'package:e_learning_app/core/constant/images.dart';
 import 'package:e_learning_app/src/features/schedule/riverpod/schedule_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../../repository/api/schedule/schedule_meeting_list.dart';
-import '../../book_expert/model/booking_response.dart';
 
-final scheduleProvider = StateNotifierProvider<ScheduleRiverpod, ScheduleState>((ref) => ScheduleRiverpod());
+final scheduleProvider = StateNotifierProvider<ScheduleRiverpod, ScheduleState>(
+      (ref) => ScheduleRiverpod(),
+);
 
 class ScheduleRiverpod extends StateNotifier<ScheduleState> {
-  ScheduleRiverpod() : super( ScheduleState()){
+  ScheduleRiverpod() : super(ScheduleState()) {
     fetchMeetingList();
   }
 
-  final List<Map<String, dynamic>> dummyMeetingSchedule = [
-    {
-      "profilePicture": AppImages.women,
-      "userName": "Sarah Chen",
-      "designation": "Senior Data Scientist at Google",
-      "scheduleDate": "June 1 Monday 02:00 PM",
-      "status": "pending"
-    },
-    {
-      "profilePicture": AppImages.men,
-      "userName": "Nahidul Islam Shakin",
-      "designation": "Senior Software Engineer at Apple",
-      "scheduleDate": "June 1 Monday 02:00 PM",
-      "status": "accepted"
-    },
-    {
-      "profilePicture": AppImages.men,
-      "userName": "Nahidul Islam",
-      "designation": "Senior Software Engineer at Google",
-      "scheduleDate": "June 1 Monday 02:00 PM",
-      "status": "canceled"
-    },
-    {
-      "profilePicture":AppImages.men,
-      "userName": "Md. Shakin",
-      "designation": "Senior Software Engineer at Meta",
-      "scheduleDate": "June 1 Monday 02:00 PM",
-      "status": "completed"
-    },
-    {
-      "profilePicture":AppImages.men,
-      "userName": "Md. Shakin",
-      "designation": "Senior Software Engineer at Meta",
-      "scheduleDate": "June 1 Monday 02:00 PM",
-      "status": "no response"
-    },
-    {
-      "profilePicture":AppImages.men,
-      "userName": "Md. Shakin",
-      "designation": "Senior Software Engineer at Meta",
-      "scheduleDate": "June 1 Monday 02:00 PM",
-      "status": "completed"
-    }
-  ];
-
+  int _currentPage = 1;
+  final int _limit = 10;
 
   Future<void> fetchMeetingList() async {
-    final meetingList = await ScheduleMeetingList().getScheduleMeetings();
-    state = state.copyWith(meetingList: meetingList);
+    state = state.copyWith(isLoading: true);
+
+    try {
+      final result = await ScheduleMeetingList().getScheduleMeetings(
+        page: _currentPage,
+        limit: _limit,
+      );
+
+      if (result != null) {
+        state = state.copyWith(
+          meetings: result.data,
+          pagination: result.pagination,
+          isLoading: false,
+        );
+      }
+    } catch (e) {
+      state = state.copyWith(isLoading: false);
+      rethrow;
+    }
+  }
+
+  Future<void> loadMoreMeetings() async {
+    if (state.pagination?.hasNextPage != true || state.isLoadingMore) return;
+
+    state = state.copyWith(isLoadingMore: true);
+    _currentPage++;
+
+    try {
+      final result = await ScheduleMeetingList().getScheduleMeetings(
+        page: _currentPage,
+        limit: _limit,
+      );
+
+      if (result != null) {
+        state = state.copyWith(
+          meetings: [...state.meetings, ...result.data],
+          pagination: result.pagination,
+          isLoadingMore: false,
+        );
+      }
+    } catch (e) {
+      _currentPage--;
+      state = state.copyWith(isLoadingMore: false);
+      rethrow;
+    }
   }
 }

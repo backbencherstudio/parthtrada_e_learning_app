@@ -39,6 +39,7 @@ class Booking {
   String sessionDetails;
   int sessionDuration;
   String status;
+  String? refundReason;   // ✅ added
   String? answer1;
   String? answer2;
   String? answer3;
@@ -46,6 +47,7 @@ class Booking {
   DateTime updatedAt;
   String? review;
   bool shouldReview;
+  bool shouldRefund;      // ✅ added
 
   Booking({
     required this.id,
@@ -58,6 +60,7 @@ class Booking {
     required this.sessionDetails,
     required this.sessionDuration,
     required this.status,
+    this.refundReason,     // ✅ added
     this.answer1,
     this.answer2,
     this.answer3,
@@ -65,6 +68,7 @@ class Booking {
     required this.updatedAt,
     this.review,
     required this.shouldReview,
+    required this.shouldRefund,  // ✅ added
   });
 
   factory Booking.fromJson(Map<String, dynamic> json) {
@@ -79,13 +83,15 @@ class Booking {
       sessionDetails: json['sessionDetails'],
       sessionDuration: json['sessionDuration'],
       status: json['status'],
+      refundReason: json['refund_reason'],        // ✅ added
       answer1: json['answer1'],
       answer2: json['answer2'],
       answer3: json['answer3'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
       review: json['review'],
-      shouldReview: json['should_review'],
+      shouldReview: json['should_review'] ?? false,
+      shouldRefund: json['should_refund'] ?? false, // ✅ added
     );
   }
 
@@ -100,6 +106,7 @@ class Booking {
     'sessionDetails': sessionDetails,
     'sessionDuration': sessionDuration,
     'status': status,
+    'refund_reason': refundReason,        // ✅ added
     'answer1': answer1,
     'answer2': answer2,
     'answer3': answer3,
@@ -107,6 +114,7 @@ class Booking {
     'updatedAt': updatedAt.toIso8601String(),
     'review': review,
     'should_review': shouldReview,
+    'should_refund': shouldRefund,       // ✅ added
   };
 }
 
