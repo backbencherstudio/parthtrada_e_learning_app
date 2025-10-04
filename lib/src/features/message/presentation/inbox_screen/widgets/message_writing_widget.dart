@@ -14,13 +14,13 @@ class MessageWritingWidget extends ConsumerStatefulWidget {
     required this.textTheme,
     required this.userId,
     required this.recipientId,
-    required this.recipientRole,
+    //required this.recipientRole,
   });
 
   final TextTheme textTheme;
   final String userId;
   final String recipientId;
-  final String recipientRole;
+  //final String recipientRole;
 
   @override
   ConsumerState<MessageWritingWidget> createState() => _MessageWritingWidgetState();
@@ -50,7 +50,7 @@ class _MessageWritingWidgetState extends ConsumerState<MessageWritingWidget> {
     if (content.isNotEmpty) {
       ref.read(conversationViewModelProvider.notifier).sendMessage(
         recipientId: widget.recipientId,
-        recipientRole: widget.recipientRole,
+        //recipientRole: widget.recipientRole,
         content: content,
         context: context, // Pass BuildContext to sendMessage
       );

@@ -57,6 +57,7 @@ class ExpertDetailsScreen extends ConsumerWidget {
                   location: expert.location ?? "Unknown",
                   imageUrl: expert.user?.image,
                   organization: expert.organization ?? "",
+                  recipientId: expert.user?.id ?? '',
                 ),
 
                 SizedBox(height: 24.h),

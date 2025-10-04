@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/routes/route_name.dart';
+import '../../../../../core/services/local_storage_services/user_id_storage.dart';
 import '../../../../../repository/linkedin_login_webview.dart';
 
 class ExpertDetailsHeader extends StatelessWidget {
@@ -15,6 +17,7 @@ class ExpertDetailsHeader extends StatelessWidget {
   final String organization;
   final String location;
   final String? imageUrl;
+  final String? recipientId;
 
   const ExpertDetailsHeader({
     super.key,
@@ -22,6 +25,7 @@ class ExpertDetailsHeader extends StatelessWidget {
     required this.rating,
     required this.profession,
     required this.location,
+    required this.recipientId,
     this.imageUrl, required this.organization,
   });
 
@@ -103,7 +107,25 @@ class ExpertDetailsHeader extends StatelessWidget {
             /// Message button
             CommonWidget.primaryButton(
               context: context,
-              onPressed: () {},
+              onPressed: () async {
+
+                final userId = await UserIdStorage().getUserId();
+
+                context.push(
+                  RouteName.inboxScreen,
+                  extra: {
+                    'image': imageUrl ?? '',
+                    'name': name ?? '',
+                    'userId': userId ?? '',
+                    'recipientId': recipientId ?? '',
+                  },
+                );
+
+
+
+
+
+              },
               text: "Message",
             ),
           ],

@@ -1,22 +1,28 @@
+import 'dart:convert';
+
 import 'package:e_learning_app/core/constant/default_screen_size.dart';
 import 'package:e_learning_app/core/routes/route_config.dart';
 import 'package:e_learning_app/core/services/api_services/api_end_points.dart';
+import 'package:e_learning_app/core/services/local_storage_services/user_id_storage.dart';
+import 'package:e_learning_app/core/services/local_storage_services/user_type_storage.dart';
 import 'package:e_learning_app/core/theme/theme.dart';
-import 'package:e_learning_app/repository/linkedin_login_webview.dart';
 import 'package:e_learning_app/repository/login_preferences.dart';
 import 'package:e_learning_app/src/features/onboarding/riverpod/login_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
+
+import 'core/services/message_services/message_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //Test token for dev------------------->>>
-  await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzkxZm96NTAwMDd2Y3Q4OXJicm9jN3kiLCJlbWFpbCI6InNtcmF3bmFrMDAzQGdtYWlsLmNvbSIsIm5hbWUiOiJSYXduYWsiLCJhY3RpdmVQcm9maWxlIjoiU1RVREVOVCIsImlhdCI6MTc1OTQ2ODA5MiwiZXhwIjoxNzYwMDcyODkyfQ.nXCqX-XhalM9LuXl0t3qUERxGfl6fQPcpbkK2vSKo44");
+ // await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzdmeHIxdjAwMDB2YzF3MDN1N3Qyc2siLCJlbWFpbCI6ImV4cGVydC5idXR0ZXJmbHkxQGdtYWlsLmNvbSIsIm5hbWUiOiJBa2FzaCBILiIsImFjdGl2ZVByb2ZpbGUiOiJFWFBFUlQiLCJpYXQiOjE3NTk0ODI5NTEsImV4cCI6MTc2MDA4Nzc1MX0.Pp-pyIJpgH6dxjo9s5wwA3L5Nfw4Rqrfu8F205w9D8o"); // expert.butterfly1@gmail.com
+  //await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzIxM2E5YzAwMDB2Y2lzb2dzN295NGEiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2VAZ21haWwuY29tIiwibmFtZSI6IkFzaWYgUmV6YW4iLCJhY3RpdmVQcm9maWxlIjoiRVhQRVJUIiwiaWF0IjoxNzU5NDg0NTI4LCJleHAiOjE3NjAwODkzMjh9.ufqjUWbt6LwjuKwiG6OkxBkWfq95ufGULBElFQNoVbM"); // asifrezan.office@gmail.com
+  await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzFuaWx5bjAwMDF2Yzk0bHRwMHl4ZnQiLCJlbWFpbCI6ImV4cGVydDEyM0BvYm90b3JvbmlrYS5jb20iLCJuYW1lIjoiQW5payBIb3NzYWluIiwiYWN0aXZlUHJvZmlsZSI6IkVYUEVSVCIsImlhdCI6MTc1OTU1NzQ4NCwiZXhwIjoxNzYwMTYyMjg0fQ.kdafemLgHmCMTtqM6NoPwwJ2OdYUvAJNI0ai5YB1SlM");
 
   final savedToken = await LoginPreferences().loadAuthToken();
   bool isLoggedIn = false;
@@ -24,8 +30,9 @@ void main() async {
     isLoggedIn = await _isTokenValid(savedToken);
   }
 
-  Stripe.publishableKey =
-  "pk_test_51S8u6SIwqhaYg1GGcOCIlR7izXj81DtVFXHLHDq1JO1lPi5YGqQaLYXNCE90w3my8cGka3sS9TINU56cuXCml30600FtdXhYAf";
+
+  // Stripe.publishableKey =
+  // "pk_test_51S8u6SIwqhaYg1GGcOCIlR7izXj81DtVFXHLHDq1JO1lPi5YGqQaLYXNCE90w3my8cGka3sS9TINU56cuXCml30600FtdXhYAf";
 
   // Stripe.merchantIdentifier = "merchant.com.yourapp";
   //
@@ -63,6 +70,15 @@ Future<bool> _isTokenValid(String token) async {
     );
 
     if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final String id = data['data']['id'];
+      final String role = data['data']['activeProfile'];
+      debugPrint("get profile info: $id");
+      debugPrint("get profile role: $role");
+
+      UserIdStorage().saveUserId(id.toString());
+      UserTypeStorage().saveUserType(role);
+
       return true;
     }
   } catch (_) {

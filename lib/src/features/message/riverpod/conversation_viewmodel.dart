@@ -95,15 +95,15 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
 
   Future<void> sendMessage({
     required String recipientId,
-    required String recipientRole,
+    //required String recipientRole,
     required String content,
     required BuildContext context,
   }) async {
     try {
-      debugPrint("message set: ${recipientId} - $recipientRole - $content");
+      debugPrint("message set: ${recipientId}  - $content");
       _messageService?.sendMessage(
         recipientId: recipientId,
-        recipientRole: recipientRole,
+       // recipientRole: recipientRole,
         content: content,
       );
       //

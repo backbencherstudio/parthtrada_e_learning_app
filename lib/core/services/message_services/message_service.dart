@@ -68,17 +68,20 @@ class MessageService {
     }
   }
 
-  void sendMessage({
+  Future<void> sendMessage({
     required String recipientId,
-    required String recipientRole,
+    // required String recipientRole,
     required String content,
-  }) {
+  }) async {
     if (_socket != null && _socket!.connected) {
+
+      final userId = await UserIdStorage().getUserId();
+
       final message = {
         'recipientId': recipientId,
-        'recipientRole': recipientRole,
+       // 'recipientRole': recipientRole,
         'content': content,
-        'user_id': 'cmg213a9c0000vcisogs7oy4a',
+        'user_id': userId,
       };
       debugPrint("messages: $message");
 
@@ -86,7 +89,7 @@ class MessageService {
       // Create a Data object for the sent message to add to the MessageModel
       final sentMessage = Data(
         recipientId: recipientId,
-        recipientRole: recipientRole,
+        //recipientRole: recipientRole,
         content: content,
         me: true, // Mark as sent by the user
         createdAt: DateTime.now().toIso8601String(),
