@@ -7,11 +7,12 @@ import 'package:intl/intl.dart';
 import '../../../../../../core/constant/icons.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../../../core/utils/common_widget.dart';
+import '../../../riverpod/add_review_provider.dart';
 import '../../../riverpod/cancel_meeting_provider.dart';
 import '../../../riverpod/schedule_riverpod.dart';
 import '../add_review_bottom_sheet/add_review_bottom_sheet.dart';
 
-class ScheduleShowContainerFooter extends StatelessWidget {
+class ScheduleShowContainerFooter extends ConsumerWidget {
   final Booking meetingScheduleModel;
 
   const ScheduleShowContainerFooter({
@@ -20,11 +21,13 @@ class ScheduleShowContainerFooter extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     final buttonTextStyle = textTheme.bodySmall?.copyWith(
       fontWeight: FontWeight.w800,
     );
+
+    final reviewState = ref.watch(addReviewProvider);
 
     return Column(
       spacing: 12.h,
@@ -133,6 +136,8 @@ class ScheduleShowContainerFooter extends StatelessWidget {
                     backgroundColor: Color(0xffFF7F48),
                     context: context,
                     onPressed: () async {
+                      ref.read(addReviewProvider.notifier).state =
+                          reviewState.copyWith(bookingId: meetingScheduleModel.id);
                       await addReviewBottomSheet(context: context);
                     },
                     text: "Add Review",

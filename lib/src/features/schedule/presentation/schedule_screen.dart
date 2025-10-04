@@ -1,127 +1,139 @@
-import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:e_learning_app/src/features/schedule/presentation/widgets/schedule_show_container/schedule_show_container.dart';
-import 'package:e_learning_app/src/features/schedule/presentation/widgets/schedule_show_container/schedule_show_container_footer.dart';
-import 'package:e_learning_app/src/features/schedule/riverpod/schedule_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../core/constant/padding.dart';
 import '../../../../core/utils/common_widget.dart';
 import '../../expert_details/riverpod/expert_details_provider.dart';
+import '../riverpod/schedule_riverpod.dart';
 
-class ScheduleScreen extends StatelessWidget {
+class ScheduleScreen extends ConsumerStatefulWidget {
   const ScheduleScreen({super.key});
 
   @override
+  ConsumerState<ScheduleScreen> createState() => _ScheduleScreenState();
+}
+
+class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_loadMoreData);
+  }
+
+  void _loadMoreData() {
+    final state = ref.read(scheduleProvider);
+    if (!state.isLoadingMore && state.pagination?.hasNextPage == true) {
+      if (_scrollController.position.extentAfter < 300) {
+        ref.read(scheduleProvider.notifier).loadMoreMeetings();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final scheduleState = ref.watch(scheduleProvider);
+    final meetings = scheduleState.meetings;
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            CommonWidget.customAppBar(
-              textTheme: Theme.of(context).textTheme,
-              isNotification: false,
-              title: "Your Schedule",
-              subtitle: "Your overall sessions",
-            ),
-            SizedBox(height: 24.h),
-
-            Padding(
+      body: Column(
+        children: [
+          CommonWidget.customAppBar(
+            textTheme: Theme.of(context).textTheme,
+            isNotification: false,
+            title: "Your Schedule",
+            subtitle: "Your overall sessions",
+          ),
+          Expanded(
+            child: Padding(
               padding: AppPadding.screenHorizontal,
-              child: Consumer(
-                builder: (context, ref, _) {
-                  final scheduleState = ref.watch(scheduleProvider);
-                  final meetings = scheduleState.meetings;
+              child: Column(
+                children: [
+                  scheduleState.isLoading && meetings.isEmpty
+                      ? Expanded(
+                        child: const Center(child: CircularProgressIndicator()),
+                      )
+                      : Expanded(
+                        child: RefreshIndicator(
+                          onRefresh: () async {
+                            await ref
+                                .read(scheduleProvider.notifier)
+                                .refreshMeetings();
+                          },
+                          child: Consumer(
+                            builder: (context, ref, _) {
+                              final expertStates =
+                                  meetings
+                                      .map(
+                                        (meeting) => ref.watch(
+                                          expertDetailProvider(
+                                            meeting.expertId,
+                                          ),
+                                        ),
+                                      )
+                                      .toList();
 
-                  if (meetings.isEmpty) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(width: double.infinity, height: MediaQuery.of(context).size.height * 0.3,),
-                        const Center(child: Text("No meetings found.")),
-                      ],
-                    );
-                  }
+                              final isAnyLoading = expertStates.any(
+                                (state) => state.isLoading,
+                              );
 
-                  final expertStates =
-                  meetings.map((meeting) {
-                    return ref.watch(
-                      expertDetailProvider(meeting.expertId),
-                    );
-                  }).toList();
+                              if (isAnyLoading) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
 
-                  final isAnyLoading = expertStates.any(
-                        (state) => state.isLoading,
-                  );
+                              final hasError = expertStates.any(
+                                (state) => state.hasError,
+                              );
+                              if (hasError) {
+                                return const Center(
+                                  child: Text("Error loading expert data"),
+                                );
+                              }
 
-                  if (isAnyLoading) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(width: double.infinity, height: MediaQuery.of(context).size.height * 0.3,),
-                        const Center(child: CircularProgressIndicator()),
-                      ],
-                    );
-                  }
+                              return ListView.builder(
+                                controller: _scrollController,
+                                itemCount: meetings.length,
+                                padding: EdgeInsets.only(bottom: 24.h),
+                                itemBuilder: (context, index) {
+                                  final meeting = meetings[index];
+                                  final expert =
+                                      expertStates[index].asData!.value;
 
-                  final hasError = expertStates.any((state) => state.hasError);
-                  if (hasError) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(width: double.infinity, height: MediaQuery.of(context).size.height * 0.3,),
-                        const Center(
-                          child: Text("Error loading Schedule data."),
-                        ),
-                      ],
-                    );
-                  }
-
-                  return Column(
-                    children: [
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: meetings.length,
-                        padding: EdgeInsets.only(bottom: 24.h),
-                        itemBuilder: (_, index) {
-                          final meeting = meetings[index];
-                          final expert = expertStates[index].asData!.value;
-
-                          return ScheduleShowContainer(
-                            expertName: expert.data?.expert?.user?.name ?? "",
-                            expertImage: expert.data?.expert?.user?.image ?? "",
-                            expertOrganization: expert.data?.expert?.organization ?? "",
-                            expertProfession: expert.data?.expert?.profession ?? "",
-                            meetingScheduleModel: meeting,
-                          );
-                        },
-                      ),
-
-                      if (scheduleState.isLoadingMore)
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          child: Center(child: CircularProgressIndicator()),
-                        )
-                      else if (scheduleState.pagination?.hasNextPage == true)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 24),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              ref.read(scheduleProvider.notifier).loadMoreMeetings();
+                                  return ScheduleShowContainer(
+                                    expertName:
+                                        expert.data?.expert?.user?.name ?? "",
+                                    expertImage:
+                                        expert.data?.expert?.user?.image ?? "",
+                                    expertOrganization:
+                                        expert.data?.expert?.organization ?? "",
+                                    expertProfession:
+                                        expert.data?.expert?.profession ?? "",
+                                    meetingScheduleModel: meeting,
+                                  );
+                                },
+                              );
                             },
-                            child: const Text('Load More'),
                           ),
                         ),
-                    ],
-                  );
-                },
+                      ),
+                  if (scheduleState.isLoadingMore)
+                    const LinearProgressIndicator(),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
