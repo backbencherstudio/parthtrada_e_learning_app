@@ -12,6 +12,8 @@ class ConversationState {
   final MessageModel? messages;
   final String? error;
   final String? typingUserId;
+  final bool isLoadingConversation;
+  final String? errorMessageConversation;
 
   ConversationState({
     this.isLoading = false,
@@ -19,6 +21,8 @@ class ConversationState {
     this.messages,
     this.error,
     this.typingUserId,
+    this.isLoadingConversation = false,
+    this.errorMessageConversation
   });
 
   ConversationState copyWith({
@@ -27,6 +31,9 @@ class ConversationState {
     MessageModel? messages,
     String? error,
     String? typingUserId,
+    bool? isLoadingConversation,
+    String? errorMessageConversation,
+
   }) {
     return ConversationState(
       isLoading: isLoading ?? this.isLoading,
@@ -34,6 +41,8 @@ class ConversationState {
       messages: messages ?? this.messages,
       error: error ?? this.error,
       typingUserId: typingUserId ?? this.typingUserId,
+      isLoadingConversation: isLoadingConversation ?? this.isLoadingConversation,
+      errorMessageConversation: errorMessageConversation ?? this.errorMessageConversation
     );
   }
 }
@@ -52,6 +61,10 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
 
     _messageService = MessageService(
       onMessageReceived: (Data message) {
+
+        debugPrint("Message Received in viewmodel:  $message");
+        fetchConversation();
+
         if (context.mounted) {
           final currentMessages = state.messages?.data ?? [];
           state = state.copyWith(
@@ -60,6 +73,8 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
               data: List.from(currentMessages)..add(message),
             ),
           );
+
+
           // Smoothly scroll to bottom
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (scrollController.hasClients) {
@@ -144,21 +159,22 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
   /// Fetch all conversations
   Future<void> fetchConversation() async {
     try {
-      state = state.copyWith(isLoading: true, error: null);
+      state = state.copyWith(isLoadingConversation: true, errorMessageConversation: null);
       final result = await _repository.getConversation();
 
       state = state.copyWith(
-        isLoading: false,
+        isLoadingConversation: false,
         conversation: result,
-        error: (result.success == false) ? result.message : null,
+        errorMessageConversation: (result.success == false) ? result.message : null,
       );
     } catch (e) {
       state = state.copyWith(
-        isLoading: false,
-        error: "Failed to load conversation",
+        isLoadingConversation: false,
+        errorMessageConversation: "Failed to load conversation",
       );
     }
   }
+
 
   /// Fetch messages of a given conversation
   Future<void> fetchMessages(String conversationId, String page, String perPage, {required BuildContext context}) async {

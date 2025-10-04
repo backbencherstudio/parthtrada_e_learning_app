@@ -32,15 +32,15 @@ class MessageScreen extends ConsumerWidget {
               child: Builder(
                 builder: (_) {
                   /// 1. Loading state
-                  if (state.isLoading) {
+                  if (state.isLoadingConversation) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  /// 2. Error state
-                  if (state.error != null) {
+                  /// 2. errorMessageConversation state
+                  if (state.errorMessageConversation != null) {
                     return Center(
                       child: Text(
-                        "Error: ${state.error}",
+                        "errorMessageConversation: ${state.errorMessageConversation}",
                         style: textTheme.bodyMedium?.copyWith(color: Colors.red),
                       ),
                     );
