@@ -4,6 +4,7 @@ import 'package:e_learning_app/core/constant/default_screen_size.dart';
 import 'package:e_learning_app/core/routes/route_config.dart';
 import 'package:e_learning_app/core/services/api_services/api_end_points.dart';
 import 'package:e_learning_app/core/services/local_storage_services/user_id_storage.dart';
+import 'package:e_learning_app/core/services/local_storage_services/user_type_storage.dart';
 import 'package:e_learning_app/core/theme/theme.dart';
 import 'package:e_learning_app/repository/login_preferences.dart';
 import 'package:e_learning_app/src/features/onboarding/riverpod/login_state.dart';
@@ -71,8 +72,12 @@ Future<bool> _isTokenValid(String token) async {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final String id = data['data']['id'];
+      final String role = data['data']['activeProfile'];
       debugPrint("get profile info: $id");
+      debugPrint("get profile role: $role");
+
       UserIdStorage().saveUserId(id.toString());
+      UserTypeStorage().saveUserType(role);
 
       return true;
     }
