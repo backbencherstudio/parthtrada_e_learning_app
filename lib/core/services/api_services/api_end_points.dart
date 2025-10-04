@@ -14,6 +14,7 @@ class ApiEndPoints {
   static String postMesssage = '/conversations/messages';
   static String addCard = '/payments/add-card';
   static String bookExpert = '$baseUrl/bookings';
-  static String getScheduleMeetings(int page, int limit) => '$baseUrl/bookings?page=$page&perPage=$limit';
+  static String getScheduleMeetingsForStudents(int page, int limit) => '$baseUrl/bookings?page=$page&perPage=$limit';
+  static String getScheduleMeetingsForExperts(int page, int limit) => '$baseUrl/bookings/schedule/expert?page=$page&perPage=$limit';
   static String cancelScheduleMeetings(String scheduleId) => '$baseUrl/bookings/cancel/$scheduleId';
 }

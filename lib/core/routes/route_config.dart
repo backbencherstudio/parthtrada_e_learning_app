@@ -223,7 +223,7 @@ class RouteConfig {
               name: args['name'] ?? '',
               userId: args['userId'] ?? '',
               recipientId: args['recipientId'] ?? '',
-              recipientRole: args['recipientRole'] ?? '',
+              //recipientRole: args['recipientRole'] ?? '',
 
             );
           },

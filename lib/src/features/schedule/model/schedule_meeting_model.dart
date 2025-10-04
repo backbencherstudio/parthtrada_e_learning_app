@@ -2,31 +2,32 @@ class ScheduleMeetingModel {
   bool success;
   String message;
   List<Booking> data;
-  Pagination pagination;
+  Pagination? pagination;
 
   ScheduleMeetingModel({
     required this.success,
     required this.message,
     required this.data,
-    required this.pagination,
+    this.pagination,
   });
 
   factory ScheduleMeetingModel.fromJson(Map<String, dynamic> json) {
     return ScheduleMeetingModel(
-      success: json['success'],
-      message: json['message'],
-      data: List<Booking>.from(json['data'].map((x) => Booking.fromJson(x))),
-      pagination: Pagination.fromJson(json['pagination']),
+      success: json['success'] ?? false,
+      message: json['message'] ?? '',
+      data: json['data'] == null
+          ? []
+          : (json['data'] is List
+          ? List<Booking>.from(
+          json['data'].map((x) => Booking.fromJson(x as Map<String, dynamic>)))
+          : [Booking.fromJson(json['data'] as Map<String, dynamic>)]),
+      pagination: json['pagination'] != null
+          ? Pagination.fromJson(json['pagination'] as Map<String, dynamic>)
+          : null,
     );
   }
-
-  Map<String, dynamic> toJson() => {
-    'success': success,
-    'message': message,
-    'data': List<dynamic>.from(data.map((x) => x.toJson())),
-    'pagination': pagination.toJson(),
-  };
 }
+
 
 class Booking {
   String id;
@@ -39,15 +40,15 @@ class Booking {
   String sessionDetails;
   int sessionDuration;
   String status;
-  String? refundReason;   // ✅ added
+  String? refundReason;
   String? answer1;
   String? answer2;
   String? answer3;
   DateTime createdAt;
   DateTime updatedAt;
   String? review;
-  bool shouldReview;
-  bool shouldRefund;      // ✅ added
+  bool? shouldReview;
+  bool? shouldRefund;
 
   Booking({
     required this.id,
@@ -60,40 +61,41 @@ class Booking {
     required this.sessionDetails,
     required this.sessionDuration,
     required this.status,
-    this.refundReason,     // ✅ added
+    this.refundReason,
     this.answer1,
     this.answer2,
     this.answer3,
     required this.createdAt,
     required this.updatedAt,
     this.review,
-    required this.shouldReview,
-    required this.shouldRefund,  // ✅ added
+    this.shouldReview,
+    this.shouldRefund,
   });
 
   factory Booking.fromJson(Map<String, dynamic> json) {
     return Booking(
-      id: json['id'],
-      studentId: json['studentId'],
-      expertId: json['expertId'],
-      date: DateTime.parse(json['date']),
-      expertDateTime: DateTime.parse(json['expertDateTime']),
-      studentDateTime: DateTime.parse(json['studentDateTime']),
-      meetingLink: json['meetingLink'],
-      sessionDetails: json['sessionDetails'],
-      sessionDuration: json['sessionDuration'],
-      status: json['status'],
-      refundReason: json['refund_reason'],        // ✅ added
+      id: json['id'] ?? '',
+      studentId: json['studentId'] ?? '',
+      expertId: json['expertId'] ?? '',
+      date: DateTime.parse(json['date'] ?? DateTime.now().toIso8601String()),
+      expertDateTime: DateTime.parse(json['expertDateTime'] ?? DateTime.now().toIso8601String()),
+      studentDateTime: DateTime.parse(json['studentDateTime'] ?? DateTime.now().toIso8601String()),
+      meetingLink: json['meetingLink'] ?? '',
+      sessionDetails: json['sessionDetails'] ?? '',
+      sessionDuration: json['sessionDuration'] ?? 0,
+      status: json['status'] ?? '',
+      refundReason: json['refund_reason'],
       answer1: json['answer1'],
       answer2: json['answer2'],
       answer3: json['answer3'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-      review: json['review'],
-      shouldReview: json['should_review'] ?? false,
-      shouldRefund: json['should_refund'] ?? false, // ✅ added
+      createdAt: DateTime.parse(json['createdAt'] ?? DateTime.now().toIso8601String()),
+      updatedAt: DateTime.parse(json['updatedAt'] ?? DateTime.now().toIso8601String()),
+      review: json['review'] ?? null,
+      shouldReview: json['should_review'] ?? null,
+      shouldRefund: json['should_refund'] ?? null,
     );
   }
+
 
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -106,7 +108,7 @@ class Booking {
     'sessionDetails': sessionDetails,
     'sessionDuration': sessionDuration,
     'status': status,
-    'refund_reason': refundReason,        // ✅ added
+    'refund_reason': refundReason,
     'answer1': answer1,
     'answer2': answer2,
     'answer3': answer3,
@@ -114,25 +116,25 @@ class Booking {
     'updatedAt': updatedAt.toIso8601String(),
     'review': review,
     'should_review': shouldReview,
-    'should_refund': shouldRefund,       // ✅ added
+    'should_refund': shouldRefund,
   };
 }
 
 class Pagination {
-  int total;
-  int page;
-  int perPage;
-  int totalPages;
-  bool hasNextPage;
-  bool hasPrevPage;
+  int? total;
+  int? page;
+  int? perPage;
+  int? totalPages;
+  bool? hasNextPage;
+  bool? hasPrevPage;
 
   Pagination({
-    required this.total,
-    required this.page,
-    required this.perPage,
-    required this.totalPages,
-    required this.hasNextPage,
-    required this.hasPrevPage,
+    this.total,
+    this.page,
+    this.perPage,
+    this.totalPages,
+    this.hasNextPage,
+    this.hasPrevPage,
   });
 
   factory Pagination.fromJson(Map<String, dynamic> json) {

@@ -42,7 +42,7 @@ class ExpertDetailsBody extends StatelessWidget {
           ExpertDetailsSummary(stats: stats, experience: experience,),
           SizedBox(height: 30.h),
 
-          ExpertSkill(skills: skills),
+         ExpertSkill(skills: skills),
           SizedBox(height: 30.h),
 
           ExpertBio(description: description),

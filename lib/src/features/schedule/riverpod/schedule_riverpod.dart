@@ -50,7 +50,7 @@ class ScheduleRiverpod extends StateNotifier<ScheduleState> {
 
       if (result != null) {
         state = state.copyWith(
-          meetings: [...state.meetings, ...result.data],
+          meetings: [...state.meetings, ...?result.data],
           pagination: result.pagination,
           isLoadingMore: false,
         );
@@ -60,5 +60,10 @@ class ScheduleRiverpod extends StateNotifier<ScheduleState> {
       state = state.copyWith(isLoadingMore: false);
       rethrow;
     }
+  }
+
+  void removeMeeting(String id) {
+    final updated = state.meetings.where((m) => m.id != id).toList();
+    state = state.copyWith(meetings: updated);
   }
 }

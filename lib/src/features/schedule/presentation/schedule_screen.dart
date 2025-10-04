@@ -67,8 +67,15 @@ class ScheduleScreen extends StatelessWidget {
 
                   final hasError = expertStates.any((state) => state.hasError);
                   if (hasError) {
-                    return const Center(
-                      child: Text("Error loading expert data."),
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(width: double.infinity, height: MediaQuery.of(context).size.height * 0.3,),
+                        const Center(
+                          child: Text("Error loading Schedule data."),
+                        ),
+                      ],
                     );
                   }
 
