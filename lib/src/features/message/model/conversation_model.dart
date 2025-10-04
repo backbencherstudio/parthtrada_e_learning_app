@@ -11,15 +11,15 @@ class ConversationModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -39,17 +39,18 @@ class Data {
   Sender? recipient;
   List<Messages>? messages;
 
-  Data(
-      {this.id,
-        this.senderId,
-        this.recipientId,
-        this.senderRole,
-        this.recipientRole,
-        this.createdAt,
-        this.updatedAt,
-        this.sender,
-        this.recipient,
-        this.messages});
+  Data({
+    this.id,
+    this.senderId,
+    this.recipientId,
+    this.senderRole,
+    this.recipientRole,
+    this.createdAt,
+    this.updatedAt,
+    this.sender,
+    this.recipient,
+    this.messages,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -59,36 +60,33 @@ class Data {
     recipientRole = json['recipientRole'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    sender =
-    json['sender'] != null ? new Sender.fromJson(json['sender']) : null;
-    recipient = json['recipient'] != null
-        ? new Sender.fromJson(json['recipient'])
-        : null;
+    sender = json['sender'] != null ? Sender.fromJson(json['sender']) : null;
+    recipient = json['recipient'] != null ? Sender.fromJson(json['recipient']) : null;
     if (json['messages'] != null) {
       messages = <Messages>[];
       json['messages'].forEach((v) {
-        messages!.add(new Messages.fromJson(v));
+        messages!.add(Messages.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['senderId'] = this.senderId;
-    data['recipientId'] = this.recipientId;
-    data['senderRole'] = this.senderRole;
-    data['recipientRole'] = this.recipientRole;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    if (this.sender != null) {
-      data['sender'] = this.sender!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['senderId'] = senderId;
+    data['recipientId'] = recipientId;
+    data['senderRole'] = senderRole;
+    data['recipientRole'] = recipientRole;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    if (sender != null) {
+      data['sender'] = sender!.toJson();
     }
-    if (this.recipient != null) {
-      data['recipient'] = this.recipient!.toJson();
+    if (recipient != null) {
+      data['recipient'] = recipient!.toJson();
     }
-    if (this.messages != null) {
-      data['messages'] = this.messages!.map((v) => v.toJson()).toList();
+    if (messages != null) {
+      data['messages'] = messages!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -97,7 +95,7 @@ class Data {
 class Sender {
   String? id;
   String? name;
-  Null? image;
+  String? image; // Changed from Null? to String? to handle image URL/path properly
 
   Sender({this.id, this.name, this.image});
 
@@ -108,10 +106,10 @@ class Sender {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['image'] = this.image;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['image'] = image;
     return data;
   }
 }
@@ -127,16 +125,17 @@ class Messages {
   bool? readMessage;
   String? createdAt;
 
-  Messages(
-      {this.id,
-        this.conversationId,
-        this.senderId,
-        this.recipientId,
-        this.senderRole,
-        this.recipientRole,
-        this.content,
-        this.readMessage,
-        this.createdAt});
+  Messages({
+    this.id,
+    this.conversationId,
+    this.senderId,
+    this.recipientId,
+    this.senderRole,
+    this.recipientRole,
+    this.content,
+    this.readMessage,
+    this.createdAt,
+  });
 
   Messages.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -151,16 +150,16 @@ class Messages {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['conversationId'] = this.conversationId;
-    data['senderId'] = this.senderId;
-    data['recipientId'] = this.recipientId;
-    data['senderRole'] = this.senderRole;
-    data['recipientRole'] = this.recipientRole;
-    data['content'] = this.content;
-    data['read_message'] = this.readMessage;
-    data['createdAt'] = this.createdAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['conversationId'] = conversationId;
+    data['senderId'] = senderId;
+    data['recipientId'] = recipientId;
+    data['senderRole'] = senderRole;
+    data['recipientRole'] = recipientRole;
+    data['content'] = content;
+    data['read_message'] = readMessage;
+    data['createdAt'] = createdAt;
     return data;
   }
 }

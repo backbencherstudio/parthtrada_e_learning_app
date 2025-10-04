@@ -7,6 +7,8 @@ import 'package:e_learning_app/core/services/local_storage_services/user_id_stor
 import 'package:e_learning_app/core/services/local_storage_services/user_type_storage.dart';
 import 'package:e_learning_app/core/theme/theme.dart';
 import 'package:e_learning_app/repository/login_preferences.dart';
+import 'package:e_learning_app/src/features/message/model/message_model.dart';
+
 import 'package:e_learning_app/src/features/onboarding/riverpod/login_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +24,8 @@ void main() async {
   //Test token for dev------------------->>>
  // await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzdmeHIxdjAwMDB2YzF3MDN1N3Qyc2siLCJlbWFpbCI6ImV4cGVydC5idXR0ZXJmbHkxQGdtYWlsLmNvbSIsIm5hbWUiOiJBa2FzaCBILiIsImFjdGl2ZVByb2ZpbGUiOiJFWFBFUlQiLCJpYXQiOjE3NTk0ODI5NTEsImV4cCI6MTc2MDA4Nzc1MX0.Pp-pyIJpgH6dxjo9s5wwA3L5Nfw4Rqrfu8F205w9D8o"); // expert.butterfly1@gmail.com
   //await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzIxM2E5YzAwMDB2Y2lzb2dzN295NGEiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2VAZ21haWwuY29tIiwibmFtZSI6IkFzaWYgUmV6YW4iLCJhY3RpdmVQcm9maWxlIjoiRVhQRVJUIiwiaWF0IjoxNzU5NDg0NTI4LCJleHAiOjE3NjAwODkzMjh9.ufqjUWbt6LwjuKwiG6OkxBkWfq95ufGULBElFQNoVbM"); // asifrezan.office@gmail.com
-  await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzFuaWx5bjAwMDF2Yzk0bHRwMHl4ZnQiLCJlbWFpbCI6ImV4cGVydDEyM0BvYm90b3JvbmlrYS5jb20iLCJuYW1lIjoiQW5payBIb3NzYWluIiwiYWN0aXZlUHJvZmlsZSI6IkVYUEVSVCIsImlhdCI6MTc1OTU1NzQ4NCwiZXhwIjoxNzYwMTYyMjg0fQ.kdafemLgHmCMTtqM6NoPwwJ2OdYUvAJNI0ai5YB1SlM");
+  //await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzFuaWx5bjAwMDF2Yzk0bHRwMHl4ZnQiLCJlbWFpbCI6ImV4cGVydDEyM0BvYm90b3JvbmlrYS5jb20iLCJuYW1lIjoiQW5payBIb3NzYWluIiwiYWN0aXZlUHJvZmlsZSI6IkVYUEVSVCIsImlhdCI6MTc1OTU1NzQ4NCwiZXhwIjoxNzYwMTYyMjg0fQ.kdafemLgHmCMTtqM6NoPwwJ2OdYUvAJNI0ai5YB1SlM"); // Anik hossain
+  await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2MwaGdwZDAwMGN2Y3Y4dnowaGFtMDAiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2UyQGdtYWlsLmNvbSIsIm5hbWUiOiJBc2lmIiwiYWN0aXZlUHJvZmlsZSI6IlNUVURFTlQiLCJpYXQiOjE3NTk1NjY1MzcsImV4cCI6MTc2MDE3MTMzN30.xOg1SUdoL0InSvXhy19kfsXOzLHWLtbxwYQ-zN5hAXw");
 
   final savedToken = await LoginPreferences().loadAuthToken();
   bool isLoggedIn = false;
@@ -38,6 +41,24 @@ void main() async {
   //
   // await Stripe.instance.applySettings();
 
+
+  // Initialize MessageService and connect to socket
+  // final messageService = MessageService(
+  //   onMessageReceived: (Data message) {
+  //     debugPrint('Message received: ${message.content}');
+  //
+  //   },
+  //   onTyping: (String userId) {
+  //     debugPrint('$userId is typing');
+  //
+  //   },
+  //   onStopTyping: (String userId) {
+  //     debugPrint('$userId stopped typing');
+  //
+  //   },
+  // );
+  //
+  // await messageService.connect();
 
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
