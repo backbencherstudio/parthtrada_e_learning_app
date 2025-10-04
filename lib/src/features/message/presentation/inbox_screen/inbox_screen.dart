@@ -18,14 +18,14 @@ class InboxScreen extends ConsumerStatefulWidget {
     required this.name,
     required this.userId,
     required this.recipientId,
-    required this.recipientRole,
+    // required this.recipientRole,
   });
 
   final String image;
   final String name;
   final String userId;
   final String recipientId;
-  final String recipientRole;
+  //final String recipientRole;
 
   @override
   ConsumerState<InboxScreen> createState() => _InboxScreenState();
@@ -117,7 +117,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                 textTheme: textTheme,
                 userId: widget.userId,
                 recipientId: widget.recipientId,
-                recipientRole: widget.recipientRole,
+               // recipientRole: widget.recipientRole,
               ),
             ],
           ),
