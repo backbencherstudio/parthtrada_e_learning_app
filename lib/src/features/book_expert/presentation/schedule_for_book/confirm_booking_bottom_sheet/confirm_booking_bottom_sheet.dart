@@ -12,6 +12,7 @@ import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../../../repository/api/expert/expert_booking.dart';
 import '../../../model/session_model.dart';
 import '../../../rvierpod/book_expert_riverpod.dart';
+import '../../dialogs/all_card_dialog.dart';
 import 'confirm_book_details_card.dart';
 import 'expert_booking_shimmer.dart';
 
@@ -133,6 +134,8 @@ Future<void> confirmBookingBottomSheet({
                             if (Navigator.of(bottomSheetContext).canPop()) {
                               Navigator.pop(context);
                             }
+
+                            AllCardDialog().showAllCardDialog(context);
 
                             // sessionDataNotifier.setSessionData(
                             //   SessionModel(

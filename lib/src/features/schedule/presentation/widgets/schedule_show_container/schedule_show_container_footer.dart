@@ -60,7 +60,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                         child: CommonWidget.primaryButton(
                           textStyle: buttonTextStyle,
                           context: context,
-                          onPressed: () {},
+                          onPressed: () {}, // todo nothing
                           text: "Completed",
                           backgroundColor: Color(0xff2B2C31),
                         ),
@@ -72,7 +72,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                       backgroundColor: AppColors.primary,
                       textStyle: buttonTextStyle?.copyWith(color: Colors.white),
                       context: context,
-                      onPressed: () {},
+                      onPressed: () {}, // todo create the link by hitting accept from expert
                       text: "Create Link",
                     ),
                   ),
@@ -226,7 +226,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                               : Colors.white,
                     ),
                     context: context,
-                    onPressed: () {},
+                    onPressed: () {}, // todo copy link to clipboard
                     text: "Copy Link",
                   ),
                 ),
@@ -255,7 +255,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                 width: double.infinity,
                 child: CommonWidget.primaryButton(
                   context: context,
-                  onPressed: () {
+                  onPressed: () { // todo refund
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text("Refund Button Called"),
@@ -316,7 +316,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                 child: CommonWidget.primaryButton(
                   backgroundColor: Color(0xff2B2C31),
                   context: context,
-                  onPressed: () {},
+                  onPressed: () {}, // todo view summary
                   text: "View Summary",
                   textStyle: buttonTextStyle,
                 ),
