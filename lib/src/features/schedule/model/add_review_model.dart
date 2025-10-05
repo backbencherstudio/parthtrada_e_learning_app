@@ -21,14 +21,6 @@ class AddReviewModel {
     );
   }
 
-  factory AddReviewModel.fromJson(Map<String, dynamic> json) {
-    return AddReviewModel(
-      description: json['description'],
-      rating: json['rating'],
-      bookingId: json['bookingId'],
-    );
-  }
-
   Map<String, dynamic> toJson() {
     return {
       'description': description,

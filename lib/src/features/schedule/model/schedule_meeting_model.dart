@@ -15,19 +15,23 @@ class ScheduleMeetingModel {
     return ScheduleMeetingModel(
       success: json['success'] ?? false,
       message: json['message'] ?? '',
-      data: json['data'] == null
-          ? []
-          : (json['data'] is List
-          ? List<Booking>.from(
-          json['data'].map((x) => Booking.fromJson(x as Map<String, dynamic>)))
-          : [Booking.fromJson(json['data'] as Map<String, dynamic>)]),
-      pagination: json['pagination'] != null
-          ? Pagination.fromJson(json['pagination'] as Map<String, dynamic>)
-          : null,
+      data:
+          json['data'] == null
+              ? []
+              : (json['data'] is List
+                  ? List<Booking>.from(
+                    json['data'].map(
+                      (x) => Booking.fromJson(x as Map<String, dynamic>),
+                    ),
+                  )
+                  : [Booking.fromJson(json['data'] as Map<String, dynamic>)]),
+      pagination:
+          json['pagination'] != null
+              ? Pagination.fromJson(json['pagination'] as Map<String, dynamic>)
+              : null,
     );
   }
 }
-
 
 class Booking {
   String id;
@@ -46,7 +50,7 @@ class Booking {
   String? answer3;
   DateTime createdAt;
   DateTime updatedAt;
-  String? review;
+  Review? review;
   bool? shouldReview;
   bool? shouldRefund;
 
@@ -78,8 +82,12 @@ class Booking {
       studentId: json['studentId'] ?? '',
       expertId: json['expertId'] ?? '',
       date: DateTime.parse(json['date'] ?? DateTime.now().toIso8601String()),
-      expertDateTime: DateTime.parse(json['expertDateTime'] ?? DateTime.now().toIso8601String()),
-      studentDateTime: DateTime.parse(json['studentDateTime'] ?? DateTime.now().toIso8601String()),
+      expertDateTime: DateTime.parse(
+        json['expertDateTime'] ?? DateTime.now().toIso8601String(),
+      ),
+      studentDateTime: DateTime.parse(
+        json['studentDateTime'] ?? DateTime.now().toIso8601String(),
+      ),
       meetingLink: json['meetingLink'] ?? '',
       sessionDetails: json['sessionDetails'] ?? '',
       sessionDuration: json['sessionDuration'] ?? 0,
@@ -88,14 +96,17 @@ class Booking {
       answer1: json['answer1'],
       answer2: json['answer2'],
       answer3: json['answer3'],
-      createdAt: DateTime.parse(json['createdAt'] ?? DateTime.now().toIso8601String()),
-      updatedAt: DateTime.parse(json['updatedAt'] ?? DateTime.now().toIso8601String()),
-      review: json['review'] ?? null,
+      createdAt: DateTime.parse(
+        json['createdAt'] ?? DateTime.now().toIso8601String(),
+      ),
+      updatedAt: DateTime.parse(
+        json['updatedAt'] ?? DateTime.now().toIso8601String(),
+      ),
+      review: json['review'] != null ? Review.fromJson(json['review']) : null,
       shouldReview: json['should_review'] ?? null,
       shouldRefund: json['should_refund'] ?? null,
     );
   }
-
 
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -118,6 +129,16 @@ class Booking {
     'should_review': shouldReview,
     'should_refund': shouldRefund,
   };
+}
+
+class Review {
+  final String? id;
+
+  Review({this.id});
+
+  factory Review.fromJson(Map<String, dynamic> json) {
+    return Review(id: json['id']);
+  }
 }
 
 class Pagination {
