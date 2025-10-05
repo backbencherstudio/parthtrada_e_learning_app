@@ -1,5 +1,6 @@
 import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
+import 'package:e_learning_app/src/features/book_expert/presentation/schedule_for_book/confirm_booking_bottom_sheet/confirm_and_pay_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +10,7 @@ import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../../../repository/api/expert/expert_booking.dart';
 import '../../../rvierpod/book_expert_riverpod.dart';
 import '../../../rvierpod/booking_response_provider.dart';
+import '../../../rvierpod/payment_provider.dart';
 import '../../../rvierpod/session_provider.dart';
 import '../confirm_booking_bottom_sheet/confirm_booking_bottom_sheet.dart';
 
@@ -135,14 +137,14 @@ Future<void> selectSessionTimeForBook({
                                   onPressed: loading
                                       ? null
                                       : () async {
-                                    print('Next button pressed');
+                                    debugPrint('Next button pressed');
                                     isLoading.value = true;
                                     try {
                                       final bookExpertNotifier = ref.read(bookExpertRiverpod(availableTime).notifier);
                                       final selectedIndex = ref.read(bookExpertRiverpod(availableTime)).selectedDuration;
                                       final selectedDurationStr = bookExpertNotifier.sessionDurationList[selectedIndex];
 
-                                      print('Selected index: $selectedIndex, duration: $selectedDurationStr'); // Debug
+                                      debugPrint('Selected index: $selectedIndex, duration: $selectedDurationStr'); // Debug
 
                                       int durationInMinutes;
                                       if (selectedDurationStr.toLowerCase().contains("hour")) {
@@ -151,72 +153,63 @@ Future<void> selectSessionTimeForBook({
                                         durationInMinutes = int.tryParse(selectedDurationStr.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
                                       }
 
-                                      print('Duration in minutes: $durationInMinutes'); // Debug
-
                                       ref.read(sessionDataProvider.notifier).setSessionDuration(durationInMinutes);
 
-                                      print('Calling onCancelBooking'); // Debug
                                       bookExpertNotifier.onCancelBooking();
 
-                                      print('Calling onConfirmBooking'); // Debug
                                       await bookExpertNotifier.onConfirmBooking();
                                       final sessionData = ref.read(sessionDataProvider);
 
-                                      print('Session data: $sessionData'); // Debug
-
-                                      print('Fetching booking response'); // Debug
                                       final res = await ref.read(bookingResponseProvider(sessionData).future);
 
-                                      print('Booking response: success=${res.success}, message=${res.message}'); // Debug
+                                      debugPrint('Booking response: success=${res.success}, message=${res.message}');
 
                                       if (res.success == true) {
                                         if (safeContext.mounted && Navigator.of(safeContext).canPop()) {
-                                          print('Popping bottom sheet'); // Debug
                                           Navigator.of(safeContext).pop();
                                         }
 
+                                        debugPrint(res.data.paymentIntentId);
+                                        ref.read(paymentIntentIdProvider.notifier).state = res.data.paymentIntentId;
+
                                         await Future.delayed(const Duration(milliseconds: 200));
                                         if (safeContext.mounted) {
-                                          print('Showing confirmBookingBottomSheet'); // Debug
-                                          confirmBookingBottomSheet(
+                                          confirmAndPayBottomSheet(
                                             context: safeContext,
                                             availableTime: availableTime,
                                           );
                                         } else {
-                                          print('safeContext not mounted for bottom sheet'); // Debug
+                                          debugPrint('safeContext not mounted for bottom sheet');
                                         }
                                       } else {
                                         if (safeContext.mounted) {
-                                          print('Showing error SnackBar'); // Debug
                                           ScaffoldMessenger.of(safeContext).showSnackBar(
                                             SnackBar(
                                               content: Text("Booking failed: ${res.message ?? 'Please try again.'}"),
                                             ),
                                           );
                                         } else {
-                                          print('safeContext not mounted for error SnackBar'); // Debug
+                                          debugPrint('safeContext not mounted for error SnackBar');
                                         }
                                       }
                                     } catch (e, stackTrace) {
-                                      print('Error occurred: $e'); // Debug
-                                      print('Stack trace: $stackTrace'); // Debug
                                       if (safeContext.mounted) {
                                         ScaffoldMessenger.of(safeContext).showSnackBar(
                                           SnackBar(content: Text("Error: $e")),
                                         );
                                       } else {
-                                        print('safeContext not mounted for error SnackBar'); // Debug
+                                        debugPrint('safeContext not mounted for error SnackBar');
                                       }
                                     } finally {
-                                      print('Setting isLoading to false'); // Debug
-                                      isLoading.value = false; // Stop loading
+                                      debugPrint('Setting isLoading to false');
+                                      isLoading.value = false;
                                     }
                                   },
                                   child: Text(
                                     loading ? "Booking..." : "Next",
                                     style: textTheme.titleMedium?.copyWith(
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white, // Adjust as needed
+                                      color: Colors.white,
                                     ),
                                   ),
                                 );

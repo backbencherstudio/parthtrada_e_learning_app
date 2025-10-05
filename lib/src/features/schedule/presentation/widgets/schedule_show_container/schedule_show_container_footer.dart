@@ -216,12 +216,12 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                 Expanded(
                   child: CommonWidget.primaryButton(
                     backgroundColor:
-                        meetingScheduleModel.status == "UPCOMING"
+                        meetingScheduleModel.status == "PENDING"
                             ? Color(0xff4A4C56)
                             : AppColors.primary,
                     textStyle: buttonTextStyle?.copyWith(
                       color:
-                          meetingScheduleModel.status == "UPCOMING"
+                          meetingScheduleModel.status == "PENDING"
                               ? Color(0xffA5A5AB)
                               : Colors.white,
                     ),

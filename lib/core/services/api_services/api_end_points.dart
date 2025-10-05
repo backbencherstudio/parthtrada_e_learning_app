@@ -20,4 +20,6 @@ class ApiEndPoints {
   static String getSendRequests(int page, int limit) => '$baseUrl/bookings/request?page=$page&perPage=$limit';
   static String cancelScheduleMeetings(String scheduleId) => '$baseUrl/bookings/cancel/$scheduleId';
   static String addReview = '$baseUrl/reviews';
+  static String getCards = '$baseUrl/payments/cards';
+  static String confirmPayment = '$baseUrl/payments/confirm-payment';
 }
