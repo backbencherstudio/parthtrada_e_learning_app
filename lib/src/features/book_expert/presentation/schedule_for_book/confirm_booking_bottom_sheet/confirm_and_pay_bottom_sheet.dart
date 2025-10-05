@@ -12,11 +12,10 @@ import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../../../repository/api/expert/expert_booking.dart';
 import '../../../model/session_model.dart';
 import '../../../rvierpod/book_expert_riverpod.dart';
-import '../payment_bottom_sheet.dart';
 import 'confirm_book_details_card.dart';
 import 'expert_booking_shimmer.dart';
 
-Future<void> confirmAndPayBottomSheet({
+Future<void> confirmBookingBottomSheet({
   required BuildContext context,
   required List<String> availableTime,
 }) async {
@@ -66,12 +65,47 @@ Future<void> confirmAndPayBottomSheet({
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(height: 16.h),
-                          Text(
-                            "Your session with ${sessionData.expertName} is scheduled",
-                            style: textTheme.bodyMedium?.copyWith(
-                              color: AppColors.secondaryTextColor,
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: CommonWidget.closeButton(
+                              context: bottomSheetContext,
                             ),
-                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 12.h),
+                          Container(
+                            padding: EdgeInsets.all(20.r),
+                            margin: EdgeInsets.only(bottom: 12.h),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.secondaryStrokeColor,
+                            ),
+                            child: SvgPicture.asset(
+                              AppIcons.circleTikMarkFill,
+                              width: 31.w,
+                              height: 31.h,
+                            ),
+                          ),
+                          Align(
+                            alignment:
+                                bookExpertState.isSuccessfullyBooked
+                                    ? Alignment.center
+                                    : Alignment.centerLeft,
+                            child: Text(
+                              "Confirm Booking",
+                              style: textTheme.headlineSmall,
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              SizedBox(height: 8.h),
+                              Text(
+                                "Your session with ${sessionData.expertName} is scheduled",
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: AppColors.secondaryTextColor,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
                           SizedBox(height: 12.h),
                           ConfirmBookDetailsCard(),
@@ -83,21 +117,9 @@ Future<void> confirmAndPayBottomSheet({
                                 padding: EdgeInsets.symmetric(vertical: 16.h),
                                 textStyle: buttonTextStyle,
                                 context: bottomSheetContext,
-                                text: "Confirm & Pay",
-                                onPressed: () async {
-                                  await bookExpertNotifier.onConfirmBooking();
-                                  debugPrint("Confirm Booking");
-
-                                  // Close current bottom sheet
+                                text: "Done",
+                                onPressed: () {
                                   Navigator.pop(bottomSheetContext);
-
-                                  // Wait until it’s fully closed before showing new one
-                                  Future.delayed(
-                                    const Duration(milliseconds: 200),
-                                    () {
-                                      paymentBottomSheet(context: context, availableTime: []);
-                                    },
-                                  );
                                 },
                               ),
                             ),
