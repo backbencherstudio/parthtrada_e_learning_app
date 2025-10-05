@@ -52,8 +52,7 @@ class ScheduleShowContainerFooter extends StatelessWidget {
           ],
         ),
 
-        meetingScheduleModel.shouldReview == false &&
-                meetingScheduleModel.shouldRefund == false || meetingScheduleModel.shouldReview == null &&
+        meetingScheduleModel.shouldReview == false && meetingScheduleModel.shouldRefund == false || meetingScheduleModel.shouldReview == null &&
             meetingScheduleModel.shouldRefund == null
             ? Row(
               spacing: 8.w,
