@@ -18,7 +18,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch profile data when the screen loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(profileViewmodel.notifier).getProfileInfo();
     });
@@ -27,15 +26,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
-    // Watch the profileViewmodel for reactive updates
     final profileState = ref.watch(profileViewmodel);
     final profileData = profileState.profileResponseData.data;
 
     return Scaffold(
       body: profileState.isProfileLoding
-          ? Center(
-        child: CircularProgressIndicator(),
-      )
+          ? const Center(child: CircularProgressIndicator())
           : profileState.isProfileSuccess && profileData != null
           ? SingleChildScrollView(
         child: Padding(
@@ -53,8 +49,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(child: SizedBox()),
-                        Expanded(child: SizedBox()),
+                        const Expanded(child: SizedBox()),
+                        const Expanded(child: SizedBox()),
                         Center(
                           child: profileData.image != null
                               ? Image.network(
@@ -73,7 +69,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             width: 140.w,
                           ),
                         ),
-                        Expanded(child: SizedBox()),
+                        const Expanded(child: SizedBox()),
                         Flexible(
                           child: CommonWidget.notificationWidget(context),
                         ),
@@ -85,14 +81,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     profileData.name ?? "Unknown User",
                     style: textStyle.titleSmall!.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: Color(0xffffffff),
+                      color: const Color(0xffffffff),
                     ),
                   ),
                   Text(
                     profileData.email ?? "No email available",
                     style: textStyle.bodyMedium!.copyWith(
                       fontWeight: FontWeight.w400,
-                      color: Color(0xffA5A5AB),
+                      color: const Color(0xffA5A5AB),
                     ),
                   ),
                 ],
@@ -104,12 +100,29 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   "General",
                   style: textStyle.bodyMedium!.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: Color(0xffffffff),
+                    color: const Color(0xffffffff),
                   ),
                 ),
               ),
               SizedBox(height: 18.h),
-              ...callContainerGeneral(context),
+              // Use FutureBuilder for async callContainerGeneral
+              FutureBuilder<List<Widget>>(
+                future: callContainerGeneral(context),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      "Error loading general options",
+                      style: textStyle.bodyMedium!.copyWith(color: Colors.red),
+                    );
+                  } else if (snapshot.hasData) {
+                    return Column(children: snapshot.data!);
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+              ),
               SizedBox(height: 28.h),
               Align(
                 alignment: Alignment.centerLeft,
@@ -117,7 +130,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   "Preferences",
                   style: textStyle.bodyMedium!.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: Color(0xffffffff),
+                    color: const Color(0xffffffff),
                   ),
                 ),
               ),
@@ -136,14 +149,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               profileState.profileErrorMessage.isNotEmpty
                   ? profileState.profileErrorMessage
                   : "Failed to load profile",
-              style: textStyle.bodyMedium!.copyWith(
-                color: Colors.red,
-              ),
+              style: textStyle.bodyMedium!.copyWith(color: Colors.red),
             ),
             SizedBox(height: 16.h),
             ElevatedButton(
               onPressed: () => ref.read(profileViewmodel.notifier).getProfileInfo(),
-              child: Text("Retry"),
+              child: const Text("Retry"),
             ),
           ],
         ),
