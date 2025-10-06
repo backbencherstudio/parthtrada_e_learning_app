@@ -1,35 +1,31 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../core/services/api_services/api_end_points.dart';
 import '../../login_preferences.dart';
 
-class CancelSchedule {
-  Future<bool> cancelScheduleMeetings({
+class CompleteScheduleRepository {
+  Future<String?> completeScheduleMeetings({
     required String id
   }) async {
-    final url = Uri.parse(ApiEndPoints.cancelScheduleMeetings(id));
+    final url = Uri.parse(ApiEndPoints.completedScheduleMeetings(id));
     final token = await LoginPreferences().loadAuthToken();
 
     if (token == null || token == '') {
       debugPrint('======= token is null =======');
-      return false;
+      return null;
     }
 
-    final response = await http.patch(
+    final response = await http.post(
       url,
       headers: {'Authorization': 'Bearer $token'},
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonData = jsonDecode(response.body);
-      return jsonData['success'];
+      return jsonData['message'];
     } else {
-      debugPrint('Failed to cancel schedule: ${response.body}');
-      throw Exception('Failed to cancel schedule: ${response.statusCode}');
-
+      throw Exception('Failed to fetch schedule: ${response.statusCode}');
     }
   }
 }

@@ -26,7 +26,6 @@ class AcceptRejectBookingNotifier
     }
   }
 
-
   void reset() {
     state = const AsyncValue.data(null);
   }

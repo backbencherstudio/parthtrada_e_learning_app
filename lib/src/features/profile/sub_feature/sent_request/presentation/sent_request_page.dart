@@ -51,7 +51,7 @@ class _SentRequestPageState extends ConsumerState<SentRequestPage> {
 
     if (sendRequestState.error != null && sendRequests.isEmpty) {
       return Scaffold(
-        body: Center(child: Text('Error: ${sendRequestState.error}')),
+        body: Center(child: Text('No send requests found', style: textTheme.bodyLarge)),
       );
     }
 
