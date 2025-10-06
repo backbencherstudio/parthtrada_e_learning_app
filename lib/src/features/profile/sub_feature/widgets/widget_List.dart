@@ -4,11 +4,14 @@ import 'dart:core';
 
 import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:e_learning_app/core/routes/route_name.dart';
+import 'package:e_learning_app/core/services/local_storage_services/user_id_storage.dart';
 import 'package:e_learning_app/core/services/local_storage_services/user_type_storage.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/main%20bottomsheets/be_a_expert_sheet.dart';
 import 'package:e_learning_app/src/features/profile/sub_feature/widgets/profile_container.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../../../repository/login_preferences.dart';
 
 Future <List<Widget>> callContainerGeneral(BuildContext context) async {
   final userType = await UserTypeStorage().getUserType();
@@ -93,7 +96,12 @@ List<Widget> callContainerPreferencess(BuildContext context) {
         context.push(RouteName.messageScreen);
       },
     ),
-    ProfileContainer(title: "Logout", icon: AppIcons.logout, onTap: () {}),
+    ProfileContainer(title: "Logout", icon: AppIcons.logout, onTap: () async {
+      await LoginPreferences().clearAuthToken();
+      await UserTypeStorage().clearUserType();
+      await UserIdStorage().clearUserId();
+      context.pushReplacement(RouteName.authenticationScreen);
+    }),
   ];
   return profilePreferenceList;
 }
