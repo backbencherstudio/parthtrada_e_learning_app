@@ -2,7 +2,6 @@ import 'package:e_learning_app/src/features/schedule/presentation/widgets/schedu
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../core/constant/padding.dart';
 import '../../../../core/utils/common_widget.dart';
 import '../../expert_details/riverpod/expert_details_provider.dart';
@@ -27,7 +26,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   void _loadMoreData() {
     final state = ref.read(scheduleProvider);
     if (!state.isLoadingMore && state.pagination?.hasNextPage == true) {
-      if (_scrollController.position.extentAfter < 300) {
+      if (_scrollController.position.extentAfter < 100) {
         ref.read(scheduleProvider.notifier).loadMoreMeetings();
       }
     }
@@ -58,75 +57,55 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
               padding: AppPadding.screenHorizontal,
               child: Column(
                 children: [
-                  scheduleState.isLoading && meetings.isEmpty
-                      ? Expanded(
-                        child: const Center(child: CircularProgressIndicator()),
-                      )
-                      : Expanded(
-                        child: RefreshIndicator(
-                          onRefresh: () async {
-                            await ref
-                                .read(scheduleProvider.notifier)
-                                .refreshMeetings();
+                  if (scheduleState.isLoading && meetings.isEmpty)
+                    const Expanded(child: Center(child: CircularProgressIndicator())),
+
+                  if (!(scheduleState.isLoading && meetings.isEmpty))
+                    Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          await ref.read(scheduleProvider.notifier).refreshMeetings();
+                        },
+                        child: Consumer(
+                          builder: (context, ref, _) {
+                            final expertStates = meetings
+                                .map((meeting) => ref.watch(expertDetailProvider(meeting.expertId)))
+                                .toList();
+
+                            final isAnyLoading = expertStates.any((state) => state.isLoading);
+                            final isAnyError = expertStates.any((state) => state.hasError);
+
+                            if (isAnyLoading) {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+
+                            if (isAnyError) {
+                              return const Center(child: Text("Error loading expert data"));
+                            }
+
+                            return ListView.builder(
+                              controller: _scrollController,
+                              itemCount: meetings.length,
+                              padding: EdgeInsets.only(bottom: 24.h),
+                              itemBuilder: (context, index) {
+                                final meeting = meetings[index];
+                                final expert = expertStates[index].asData!.value;
+
+                                return ScheduleShowContainer(
+                                  key: ValueKey(meeting.id),
+                                  expertName: expert.data?.expert?.user?.name ?? "",
+                                  expertImage: expert.data?.expert?.user?.image ?? "",
+                                  expertOrganization: expert.data?.expert?.organization ?? "",
+                                  expertProfession: expert.data?.expert?.profession ?? "",
+                                  meetingScheduleModel: meeting,
+                                );
+                              },
+                            );
                           },
-                          child: Consumer(
-                            builder: (context, ref, _) {
-                              final expertStates =
-                                  meetings
-                                      .map(
-                                        (meeting) => ref.watch(
-                                          expertDetailProvider(
-                                            meeting.expertId,
-                                          ),
-                                        ),
-                                      )
-                                      .toList();
-
-                              final isAnyLoading = expertStates.any(
-                                (state) => state.isLoading,
-                              );
-
-                              if (isAnyLoading) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-
-                              final hasError = expertStates.any(
-                                (state) => state.hasError,
-                              );
-                              if (hasError) {
-                                return const Center(
-                                  child: Text("Error loading expert data"),
-                                );
-                              }
-
-                              return ListView.builder(
-                                controller: _scrollController,
-                                itemCount: meetings.length,
-                                padding: EdgeInsets.only(bottom: 24.h),
-                                itemBuilder: (context, index) {
-                                  final meeting = meetings[index];
-                                  final expert =
-                                      expertStates[index].asData!.value;
-
-                                  return ScheduleShowContainer(
-                                    expertName:
-                                        expert.data?.expert?.user?.name ?? "",
-                                    expertImage:
-                                        expert.data?.expert?.user?.image ?? "",
-                                    expertOrganization:
-                                        expert.data?.expert?.organization ?? "",
-                                    expertProfession:
-                                        expert.data?.expert?.profession ?? "",
-                                    meetingScheduleModel: meeting,
-                                  );
-                                },
-                              );
-                            },
-                          ),
                         ),
                       ),
+                    ),
+
                   if (scheduleState.isLoadingMore)
                     const LinearProgressIndicator(),
                 ],
