@@ -1,6 +1,7 @@
 import 'package:e_learning_app/core/services/local_storage_services/user_type_storage.dart';
 import 'package:e_learning_app/src/features/schedule/model/schedule_meeting_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -134,7 +135,29 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                       backgroundColor: AppColors.primary,
                       textStyle: buttonTextStyle?.copyWith(color: Colors.white),
                       context: context,
-                      onPressed: () {}, // todo copy link to clipboard
+                      onPressed: () async {
+                        if (meetingScheduleModel.meetingLink != null &&
+                            meetingScheduleModel.meetingLink!.trim().isNotEmpty) {
+                          await Clipboard.setData(ClipboardData(text: meetingScheduleModel.meetingLink ?? ''));
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Link Copied to Clipboard"),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                              ),
+                            );
+                          }
+                        } else {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Link Can Not be Copied!"),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                              ),
+                            );
+                          }
+                        }
+                      },
                       text: "Copy Link",
                     ),
                   ),
@@ -226,7 +249,29 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                               : Colors.white,
                     ),
                     context: context,
-                    onPressed: () {}, // todo copy link to clipboard
+                    onPressed: () async {
+                      if (meetingScheduleModel.status == "UPCOMING" && (meetingScheduleModel.meetingLink != null &&
+                          meetingScheduleModel.meetingLink!.trim().isNotEmpty)) {
+                        await Clipboard.setData(ClipboardData(text: meetingScheduleModel.meetingLink ?? ''));
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Link Copied to Clipboard"),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                            ),
+                          );
+                        }
+                      } else {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Link Can Not be Copied!"),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                            ),
+                          );
+                        }
+                      }
+                    },
                     text: "Copy Link",
                   ),
                 ),

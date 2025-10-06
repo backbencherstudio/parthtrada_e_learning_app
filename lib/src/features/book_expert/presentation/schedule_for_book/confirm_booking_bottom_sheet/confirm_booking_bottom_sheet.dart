@@ -88,10 +88,8 @@ Future<void> confirmAndPayBottomSheet({
                                   await bookExpertNotifier.onConfirmBooking();
                                   debugPrint("Confirm Booking");
 
-                                  // Close current bottom sheet
                                   Navigator.pop(bottomSheetContext);
 
-                                  // Wait until it’s fully closed before showing new one
                                   Future.delayed(
                                     const Duration(milliseconds: 200),
                                     () {
