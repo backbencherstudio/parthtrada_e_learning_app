@@ -7,26 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ProfileScreen extends ConsumerStatefulWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(profileViewmodel.notifier).getProfileInfo();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textStyle = Theme.of(context).textTheme;
     final profileState = ref.watch(profileViewmodel);
+
+    // Automatically trigger data load only if not loaded yet
+    ref.listen(profileViewmodel, (previous, next) {
+      if (previous == null && !next.isProfileLoding && !next.isProfileSuccess) {
+        ref.read(profileViewmodel.notifier).getProfileInfo();
+      }
+    });
+
     final profileData = profileState.profileResponseData.data;
 
     return Scaffold(
@@ -35,7 +30,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           : profileState.isProfileSuccess && profileData != null
           ? SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(left: 24.w, right: 24.w),
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -57,11 +52,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             profileData.image!,
                             height: 140.h,
                             width: 140.w,
-                            errorBuilder: (context, error, stackTrace) => Image.asset(
-                              AppImages.maiya,
-                              height: 140.h,
-                              width: 140.w,
-                            ),
+                            errorBuilder:
+                                (context, error, stackTrace) =>
+                                Image.asset(
+                                  AppImages.maiya,
+                                  height: 140.h,
+                                  width: 140.w,
+                                ),
                           )
                               : Image.asset(
                             AppImages.maiya,
@@ -71,7 +68,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         ),
                         const Expanded(child: SizedBox()),
                         Flexible(
-                          child: CommonWidget.notificationWidget(context),
+                          child:
+                          CommonWidget.notificationWidget(context),
                         ),
                       ],
                     ),
@@ -105,16 +103,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 ),
               ),
               SizedBox(height: 18.h),
-              // Use FutureBuilder for async callContainerGeneral
               FutureBuilder<List<Widget>>(
                 future: callContainerGeneral(context),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+                  if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
                     return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text(
                       "Error loading general options",
-                      style: textStyle.bodyMedium!.copyWith(color: Colors.red),
+                      style: textStyle.bodyMedium!
+                          .copyWith(color: Colors.red),
                     );
                   } else if (snapshot.hasData) {
                     return Column(children: snapshot.data!);
@@ -149,11 +148,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               profileState.profileErrorMessage.isNotEmpty
                   ? profileState.profileErrorMessage
                   : "Failed to load profile",
-              style: textStyle.bodyMedium!.copyWith(color: Colors.red),
+              style: textStyle.bodyMedium!
+                  .copyWith(color: Colors.red),
             ),
             SizedBox(height: 16.h),
             ElevatedButton(
-              onPressed: () => ref.read(profileViewmodel.notifier).getProfileInfo(),
+              onPressed: () => ref
+                  .read(profileViewmodel.notifier)
+                  .getProfileInfo(),
               child: const Text("Retry"),
             ),
           ],
