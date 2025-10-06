@@ -6,15 +6,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../sub_feature/user profile/widget/custom_button.dart';
 import '../viewmodel/payment_method_notifier_provider.dart';
 
-class PaymentMethodScreen extends ConsumerStatefulWidget {
-  const PaymentMethodScreen({super.key});
+class AddCardScreen extends ConsumerStatefulWidget {
+  const AddCardScreen({super.key});
 
   @override
-  ConsumerState<PaymentMethodScreen> createState() =>
-      _PaymentMethodScreenState();
+  ConsumerState<AddCardScreen> createState() =>
+      _AddCardScreenState();
 }
 
-class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
+class _AddCardScreenState extends ConsumerState<AddCardScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _cardNumberController = TextEditingController();
@@ -202,23 +202,31 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
               width: double.infinity,
               onTap: (!_isValid || state.isLoading)
                   ? null
-                  : () {
-                final cardNumber =
-                _cardNumberController.text.replaceAll(' ', '');
+                  : () async {
+                final cardNumber = _cardNumberController.text.replaceAll(' ', '');
                 final expiry = _expiryController.text.split('/');
                 final expiryMonth = expiry[0];
                 final expiryYear = expiry.length > 1 ? expiry[1] : '';
                 final cvc = _cvcController.text;
 
-                notifier.addNewCard(
+                await notifier.addNewCard(
                   cardNumber: cardNumber,
                   expMonth: expiryMonth,
                   expYear: expiryYear,
                   cvc: cvc,
                 );
+
+                // 👇 Pop back after loading finishes & success message appears
+                final newState = ref.read(paymentMethodNotifierProvider);
+                if (!newState.isLoading &&
+                    newState.message != null &&
+                    newState.message!.toLowerCase().contains("success")) {
+                  Future.delayed(const Duration(milliseconds: 800), () {
+                    if (mounted) Navigator.pop(context);
+                  });
+                }
               },
             ),
-
 
             // Loading indicator
             if (state.isLoading)
@@ -226,6 +234,7 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
                 padding: EdgeInsets.all(16.0),
                 child: CircularProgressIndicator(),
               )),
+
 
             // Message (success/error)
             if (state.message != null)
@@ -240,12 +249,10 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
                           : Colors.red,
                       fontWeight: FontWeight.w600,
                     ),
+
                   ),
                 ),
               ),
-
-
-
 
           ],
         ),
