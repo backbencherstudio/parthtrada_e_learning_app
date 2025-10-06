@@ -81,6 +81,7 @@ class CustomNotificationContainer extends StatelessWidget {
                         context: context,
                           onPressed: () async {
                             final actionUrl = item.actions[index].url;
+                            final actionMethod = item.actions[index].reqMethod; // todo:- perform with this method
                             if (actionUrl == null || actionUrl.isEmpty) return;
 
                             await ref.read(acceptRejectBookingProvider.notifier).patchBookingAction(actionUrl);
@@ -100,8 +101,7 @@ class CustomNotificationContainer extends StatelessWidget {
                                   );
                                 }
                               },
-                              loading: () {
-                              },
+                              loading: () {},
                               error: (error, _) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text("Error: $error")),

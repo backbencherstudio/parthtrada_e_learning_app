@@ -51,7 +51,7 @@ class _PastCallState extends ConsumerState<PastCall> {
 
     if (pastCallsState.error != null && pastCalls.isEmpty) {
       return Scaffold(
-        body: Center(child: Text('Error: ${pastCallsState.error}')),
+        body: Center(child: Text('No past calls found', style: textTheme.bodyLarge)),
       );
     }
 
@@ -82,7 +82,6 @@ class _PastCallState extends ConsumerState<PastCall> {
                   final pastCall = pastCalls[index];
                   return PastCallCard(pastCall: pastCall);
                 } else {
-                  // Show loading indicator at bottom while loading more
                   return const Padding(
                     padding: EdgeInsets.symmetric(vertical: 16),
                     child: Center(child: CircularProgressIndicator()),

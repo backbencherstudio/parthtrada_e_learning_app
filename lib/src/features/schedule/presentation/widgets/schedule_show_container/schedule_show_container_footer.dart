@@ -1,4 +1,3 @@
-import 'package:e_learning_app/core/services/local_storage_services/user_type_storage.dart';
 import 'package:e_learning_app/src/features/schedule/model/schedule_meeting_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,9 +8,11 @@ import 'package:intl/intl.dart';
 import '../../../../../../core/constant/icons.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../../../core/utils/common_widget.dart';
+import '../../../../notification/Riverpod/accept_reject_booking_riverpod.dart';
 import '../../../../search/provider/user_type_provider.dart';
 import '../../../riverpod/add_review_provider.dart';
 import '../../../riverpod/cancel_meeting_provider.dart';
+import '../../../riverpod/complete_meeting_provider.dart';
 import '../../../riverpod/schedule_riverpod.dart';
 import '../add_review_bottom_sheet/add_review_bottom_sheet.dart';
 
@@ -61,8 +62,39 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                         child: CommonWidget.primaryButton(
                           textStyle: buttonTextStyle,
                           context: context,
-                          onPressed: () {}, // todo nothing
-                          text: "Completed",
+                          onPressed: () async {
+                            final actionUrl = '/experts/bookings/actions/${meetingScheduleModel.id}/reject';
+
+                            if (actionUrl == null || actionUrl.isEmpty) return;
+
+                            await ref.read(acceptRejectBookingProvider.notifier).patchBookingAction(actionUrl);
+
+                            final state = ref.read(acceptRejectBookingProvider);
+
+                            state.when(
+                              data: (response) async {
+                                if (response?.success == true) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(response?.message ?? "Action successful")),
+                                  );
+                                  await ref.read(scheduleProvider.notifier).refreshMeetings();
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text("Action failed")),
+                                  );
+                                }
+                              },
+                              loading: () {},
+                              error: (error, _) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Error: $error")),
+                                );
+                              },
+                            );
+
+                            ref.read(acceptRejectBookingProvider.notifier).reset();
+                          },
+                          text: "Cancel",
                           backgroundColor: Color(0xff2B2C31),
                         ),
                       );
@@ -73,7 +105,38 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                       backgroundColor: AppColors.primary,
                       textStyle: buttonTextStyle?.copyWith(color: Colors.white),
                       context: context,
-                      onPressed: () {}, // todo create the link by hitting accept from expert
+                      onPressed: () async {
+                        final actionUrl = '/experts/bookings/actions/${meetingScheduleModel.id}/accept';
+
+                        if (actionUrl == null || actionUrl.isEmpty) return;
+
+                        await ref.read(acceptRejectBookingProvider.notifier).patchBookingAction(actionUrl);
+
+                        final state = ref.read(acceptRejectBookingProvider);
+
+                        state.when(
+                          data: (response) async {
+                            if (response?.success == true) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(response?.message ?? "Action successful")),
+                              );
+                              await ref.read(scheduleProvider.notifier).refreshMeetings();
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Action failed")),
+                              );
+                            }
+                          },
+                          loading: () {},
+                          error: (error, _) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Error: $error")),
+                            );
+                          },
+                        );
+
+                        ref.read(acceptRejectBookingProvider.notifier).reset();
+                      },
                       text: "Create Link",
                     ),
                   ),
@@ -89,42 +152,33 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                           textStyle: buttonTextStyle,
                           context: context,
                           onPressed: () async {
-                            try {
-                              final result = await ref.read(
-                                cancelScheduleProvider(
-                                  meetingScheduleModel.id.toString(),
-                                ).future,
-                              );
+                            final notifier = ref.read(completeScheduleProvider.notifier);
 
-                              if (context.mounted) {
-                                if (result) {
-                                  ref
-                                      .read(scheduleProvider.notifier)
-                                      .removeMeeting(meetingScheduleModel.id);
+                            await notifier.completeScheduleMeeting(meetingScheduleModel.id);
+
+                            final result = ref.read(completeScheduleProvider);
+
+                            result.when(
+                              data: (message) {
+                                if (message != null) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        "Meeting Cancelled Successfully",
-                                      ),
-                                    ),
+                                    SnackBar(content: Text(message)),
                                   );
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Meeting Cancel Failed"),
-                                    ),
-                                  );
+
+                                  ref.read(scheduleProvider.notifier).refreshMeetings();
                                 }
-                              }
-                            } catch (e) {
-                              if (context.mounted) {
+                              },
+                              loading: () {},
+                              error: (err, _) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Error: $e")),
+                                  SnackBar(content: Text("Error: $err")),
                                 );
-                              }
-                            }
+                              },
+                            );
+
+                            notifier.reset();
                           },
-                          text: "Cancel",
+                          text: "Completed",
                           backgroundColor: Color(0xff2B2C31),
                         ),
                       );
@@ -300,14 +354,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                 width: double.infinity,
                 child: CommonWidget.primaryButton(
                   context: context,
-                  onPressed: () { // todo refund
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Refund Button Called"),
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                      ),
-                    );
-                  },
+                  onPressed: () {}, // todo refund
                   text: "Refund",
                   textStyle: buttonTextStyle,
                   backgroundColor: AppColors.error,
