@@ -6,6 +6,7 @@ import 'package:e_learning_app/core/services/api_services/api_end_points.dart';
 import 'package:e_learning_app/core/services/local_storage_services/user_id_storage.dart';
 import 'package:e_learning_app/core/services/local_storage_services/user_type_storage.dart';
 import 'package:e_learning_app/core/theme/theme.dart';
+import 'package:e_learning_app/core/utils/utils.dart';
 import 'package:e_learning_app/repository/login_preferences.dart';
 import 'package:e_learning_app/src/features/message/model/message_model.dart';
 
@@ -23,14 +24,14 @@ void main() async {
 
   //Test token for dev------------------->>>
  // await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzdmeHIxdjAwMDB2YzF3MDN1N3Qyc2siLCJlbWFpbCI6ImV4cGVydC5idXR0ZXJmbHkxQGdtYWlsLmNvbSIsIm5hbWUiOiJBa2FzaCBILiIsImFjdGl2ZVByb2ZpbGUiOiJFWFBFUlQiLCJpYXQiOjE3NTk0ODI5NTEsImV4cCI6MTc2MDA4Nzc1MX0.Pp-pyIJpgH6dxjo9s5wwA3L5Nfw4Rqrfu8F205w9D8o"); // expert.butterfly1@gmail.com
-  await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2VweXR4NTAwMDd2Y2VzYTM5aHlxNjIiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2U1QGdtYWlsLmNvbSIsIm5hbWUiOiJBc2lmLTUuIiwiYWN0aXZlUHJvZmlsZSI6IlNUVURFTlQiLCJpYXQiOjE3NTk3MzAyNzAsImV4cCI6MTc2MDMzNTA3MH0.jrUtX-jN3NQycBIi-34FIThh_s0YC5RNPl2c3BdXyQ0"); // asifrezan.office@gmail.com
+  await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2V4ZW95MDAwMDB2Y25vZDNxdmVlbHMiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2UxNEBnbWFpbC5jb20iLCJuYW1lIjoiQXNpZi0xNC4iLCJhY3RpdmVQcm9maWxlIjoiU1RVREVOVCIsImlhdCI6MTc1OTc0Mjc2OCwiZXhwIjoxNzYwMzQ3NTY4fQ.HV-obvJBMlWjKkaG3v_Mbb3PbulMzNjIrb314qiQz0E"); // asifrezan.office@gmail.com
  // await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzFuaWx5bjAwMDF2Yzk0bHRwMHl4ZnQiLCJlbWFpbCI6ImV4cGVydDEyM0BvYm90b3JvbmlrYS5jb20iLCJuYW1lIjoiQW5payBIb3NzYWluIiwiYWN0aXZlUHJvZmlsZSI6IkVYUEVSVCIsImlhdCI6MTc1OTU1NzQ4NCwiZXhwIjoxNzYwMTYyMjg0fQ.kdafemLgHmCMTtqM6NoPwwJ2OdYUvAJNI0ai5YB1SlM"); // Anik hossain
  // await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2MwaGdwZDAwMGN2Y3Y4dnowaGFtMDAiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2UyQGdtYWlsLmNvbSIsIm5hbWUiOiJBc2lmIiwiYWN0aXZlUHJvZmlsZSI6IlNUVURFTlQiLCJpYXQiOjE3NTk1NjY1MzcsImV4cCI6MTc2MDE3MTMzN30.xOg1SUdoL0InSvXhy19kfsXOzLHWLtbxwYQ-zN5hAXw");
 
   final savedToken = await LoginPreferences().loadAuthToken();
   bool isLoggedIn = false;
   if (savedToken != null) {
-    isLoggedIn = await _isTokenValid(savedToken);
+    isLoggedIn = await Utils.isTokenValid(savedToken);
   }
 
 
@@ -82,31 +83,31 @@ void main() async {
   );
 }
 
-Future<bool> _isTokenValid(String token) async {
-  final url = 'profile/me';
-  try {
-    final response = await http.get(
-      Uri.parse("${ApiEndPoints.baseUrl}/profile/me"),
-      headers: {"Authorization": "Bearer $token"},
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final String id = data['data']['id'];
-      final String role = data['data']['activeProfile'];
-      debugPrint("get profile info: $id");
-      debugPrint("get profile role: $role");
-
-      UserIdStorage().saveUserId(id.toString());
-      UserTypeStorage().saveUserType(role);
-
-      return true;
-    }
-  } catch (_) {
-    return false;
-  }
-  return false;
-}
+// Future<bool> _isTokenValid(String token) async {
+//   final url = 'profile/me';
+//   try {
+//     final response = await http.get(
+//       Uri.parse("${ApiEndPoints.baseUrl}/profile/me"),
+//       headers: {"Authorization": "Bearer $token"},
+//     );
+//
+//     if (response.statusCode == 200) {
+//       final data = jsonDecode(response.body);
+//       final String id = data['data']['id'];
+//       final String role = data['data']['activeProfile'];
+//       debugPrint("get profile info: $id");
+//       debugPrint("get profile role: $role");
+//
+//       UserIdStorage().saveUserId(id.toString());
+//       UserTypeStorage().saveUserType(role);
+//
+//       return true;
+//     }
+//   } catch (_) {
+//     return false;
+//   }
+//   return false;
+// }
 
 class MyApp extends StatelessWidget {
   final bool isLoggedIn;
