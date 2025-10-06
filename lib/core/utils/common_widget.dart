@@ -9,8 +9,8 @@ import 'package:go_router/go_router.dart';
 import '../constant/icons.dart';
 import '../theme/theme_part/app_colors.dart';
 
-class CommonWidget {
-  static Widget customAppBar({
+class CommonWidget  {
+  static Widget customAppBar ({
     required TextTheme textTheme,
     required bool isNotification,
     required String title,

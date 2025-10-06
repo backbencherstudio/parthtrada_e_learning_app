@@ -8,17 +8,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../../../repository/api/schedule/add_review_repository.dart';
 import '../../../../expert_details/model/temp/temp_expert_review_model.dart';
 import '../../../../expert_details/riverpod/expert_riverpod.dart';
+import '../../../riverpod/add_review_provider.dart';
 
-class AddReviewForExpert extends StatefulWidget {
+class AddReviewForExpert extends ConsumerStatefulWidget {
   const AddReviewForExpert({super.key});
 
   @override
-  State<AddReviewForExpert> createState() => _AddReviewForExpertState();
+  ConsumerState<AddReviewForExpert> createState() => _AddReviewForExpertState();
 }
 
-class _AddReviewForExpertState extends State<AddReviewForExpert> {
+class _AddReviewForExpertState extends ConsumerState<AddReviewForExpert> {
   late final TextEditingController _reviewTextEditingController;
   late final FocusNode _focusNode;
 
@@ -39,6 +41,8 @@ class _AddReviewForExpertState extends State<AddReviewForExpert> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final reviewState = ref.watch(addReviewProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.end,
@@ -58,30 +62,22 @@ class _AddReviewForExpertState extends State<AddReviewForExpert> {
 
         /// Star ratings
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(
-            5,
-            (index) => Consumer(
-              builder: (_, ref, _) {
-                //final expertState = ref.watch(expertRiverpod);
-                //final expertNotifier = ref.read(expertRiverpod.notifier);
-                // return GestureDetector(
-                //   onTap: () => expertNotifier.onRating(ratings: index + 1),
-                //   child: SvgPicture.asset(
-                //     AppIcons.starOutline,
-                //     width: 30.w,
-                //     height: 30.w,
-                //     colorFilter: ColorFilter.mode(
-                //       index + 1 <= expertState.starRating
-                //           ? AppColors.primary
-                //           : Colors.white,
-                //       BlendMode.srcIn,
-                //     ),
-                //   ),
-                // );
-                return SizedBox(); /// todo solve this when add reviews api is ready
-              },
-            ),
+            5, (index) {
+              final isFilled = index < reviewState.rating;
+              return GestureDetector(
+                onTap: () {
+                  ref.read(addReviewProvider.notifier).state =
+                      reviewState.copyWith(rating: index + 1);
+                },
+                child: SvgPicture.asset(
+                  isFilled ? AppIcons.starFill : AppIcons.starOutline,
+                  width: 30.w,
+                  height: 30.w,
+                ),
+              );
+            },
           ),
         ),
 
@@ -101,42 +97,63 @@ class _AddReviewForExpertState extends State<AddReviewForExpert> {
           maxLines: 4,
           style: textTheme.bodySmall,
           decoration: InputDecoration(hintText: "Write a review"),
+          onChanged: (val) {
+            ref.read(addReviewProvider.notifier).state =
+                reviewState.copyWith(description: val);
+          },
         ),
         SizedBox(height: 18.h),
         SafeArea(
           child: Row(
             spacing: 10.w,
             children: [
-              Expanded(child: CommonWidget.primaryButton(
+              Expanded(
+                child: CommonWidget.primaryButton(
                   context: context,
-                  onPressed: ()=> context.pop(),
+                  onPressed: () => context.pop(),
                   text: "Cancel",
                   backgroundColor: AppColors.secondary,
-                textStyle: textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
+                  textStyle: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),),
+              ),
 
               Expanded(
                 child: Consumer(
                   builder: (_, ref, _) {
-                    //final expertNotifier = ref.read(expertRiverpod.notifier);
-                    //final expertState = ref.watch(expertRiverpod(''));
                     return CommonWidget.primaryButton(
                       context: context,
-                      onPressed: () {
-                        if (_reviewTextEditingController.text.isNotEmpty) {
-                          // expertNotifier.addReviews(
-                          //   userReview: TempExpertReviewModel(
-                          //     userName: "Olivia Rhye",
-                          //     eMail: "Olivi****@gmail.com",
-                          //     profilePicture: AppImages.women,
-                          //     ratings: expertState.starRating,
-                          //     reviews: _reviewTextEditingController.text,
-                          //   ),
-                          // );
-                          /// todo solve this when add reviews api is ready
-                          context.pop();
+                      onPressed: () async {
+                        final review = ref.read(addReviewProvider);
+                        if (_reviewTextEditingController.text.isEmpty || review.rating == 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Please add rating and review")),
+                          );
+                          return;
+                        }
+                        ref.read(addReviewProvider.notifier).state = review.copyWith(
+                          description: _reviewTextEditingController.text,
+                        );
+                        try {
+                          final success = await AddReviewRepository().addReview(
+                            review: ref.read(addReviewProvider),
+                          );
+
+                          if (success) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Review submitted successfully!")),
+                            );
+                            context.pop();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Failed to submit review")),
+                            );
+                          }
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Error: $e")),
+                          );
                         }
                       },
                       text: "Submit",
