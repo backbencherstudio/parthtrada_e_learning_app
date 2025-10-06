@@ -16,7 +16,7 @@ class RouteName{
 
   static const String parentScreen = "/ParentScreen";
   static const String paymentMethodScreen = "/PaymentMethodScreen";
-
+  static const String addPaymentMethod = "/addPaymentMethod";
 
   static const String sentRequest = '/sent-request';
   static const String pastCall = '/past-call';

@@ -71,12 +71,13 @@ class PaymentMethodRepositoryImpl implements PaymentMethodRepository {
         data: {"token": token},
       );
 
-      if (response.data != null && response.data['success'] == true) {
+      if (response.data != null) {
         return true;
       } else {
         throw Exception("Failed to add card to backend");
       }
     } catch (e) {
+      debugPrint("Exception in add card: $e");
       if (e is DioException) {
         debugPrint("Error Response: ${e.response?.data['success']}");
         if(e.response?.data['success']==false)
