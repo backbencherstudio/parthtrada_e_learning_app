@@ -40,7 +40,7 @@ class Booking {
   DateTime date;
   DateTime expertDateTime;
   DateTime studentDateTime;
-  String meetingLink;
+  String? meetingLink;
   String sessionDetails;
   int sessionDuration;
   String status;
@@ -61,7 +61,7 @@ class Booking {
     required this.date,
     required this.expertDateTime,
     required this.studentDateTime,
-    required this.meetingLink,
+    this.meetingLink,
     required this.sessionDetails,
     required this.sessionDuration,
     required this.status,
