@@ -123,7 +123,7 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
         ),
       ),
 
-      // 👇 Floating Action Button for "Add New Card"
+
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xFF4CAF50),
         onPressed: () => context.push(RouteName.addPaymentMethod),
