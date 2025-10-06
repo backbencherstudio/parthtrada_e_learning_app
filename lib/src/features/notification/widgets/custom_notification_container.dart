@@ -1,10 +1,13 @@
 import 'package:e_learning_app/core/utils/common_widget.dart';
 import 'package:e_learning_app/src/features/notification/data/model/notification_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/services/api_services/api_end_points.dart';
 import '../../../../core/theme/theme_part/app_colors.dart';
+import '../Riverpod/accept_reject_booking_riverpod.dart';
+import '../Riverpod/notification_provider.dart';
 
 class CustomNotificationContainer extends StatelessWidget {
   final NotificationItem item;
@@ -72,12 +75,47 @@ class CustomNotificationContainer extends StatelessWidget {
               spacing: 8.w,
               children: List.generate(item.actions.length, (index) {
                 return Expanded(
-                  child: CommonWidget.primaryButton(
-                    context: context,
-                    onPressed: () {},
-                    text: item.actions[index].text,
-                    backgroundColor: item.actions[index].bgPrimary ? AppColors.primary : Color(0xff4A4C56),
-                    textStyle: buttonTextStyle
+                  child: Consumer(
+                    builder: (_, ref, __) {
+                      return CommonWidget.primaryButton(
+                        context: context,
+                          onPressed: () async {
+                            final actionUrl = item.actions[index].url;
+                            if (actionUrl == null || actionUrl.isEmpty) return;
+
+                            await ref.read(acceptRejectBookingProvider.notifier).patchBookingAction(actionUrl);
+
+                            final state = ref.read(acceptRejectBookingProvider);
+
+                            state.when(
+                              data: (response) async {
+                                if (response?.success == true) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(response?.message ?? "Action successful")),
+                                  );
+                                  await ref.read(notificationsProvider.notifier).refreshNotifications();
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text("Action failed")),
+                                  );
+                                }
+                              },
+                              loading: () {
+                              },
+                              error: (error, _) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Error: $error")),
+                                );
+                              },
+                            );
+
+                            ref.read(acceptRejectBookingProvider.notifier).reset();
+                          },
+                        text: item.actions[index].text,
+                        backgroundColor: item.actions[index].bgPrimary ? AppColors.primary : Color(0xff4A4C56),
+                        textStyle: buttonTextStyle
+                      );
+                    }
                   ),
                 );
               }),
