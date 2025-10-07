@@ -1,4 +1,5 @@
 import 'package:e_learning_app/core/constant/icons.dart';
+import 'package:e_learning_app/core/routes/route_name.dart';
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/Riverpod/time_selection_provider.dart';
 import 'package:e_learning_app/src/features/profile/presentation/be%20a%20expert/main%20bottomsheets/session_details_bottomSheet.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import '../../../data/models/user_profile.dart';
 import '../../../sub_feature/user profile/widget/custom_button.dart';
 import '../sub bottomsheets/time_availability_sheet.dart';
@@ -86,6 +88,7 @@ class _TimeDateSelectionBottomSheetState extends ConsumerState<_TimeDateSelectio
 
     if (success) {
       Navigator.pop(context);
+      context.pushReplacement(RouteName.splash);
     } else {
       setState(() {
         errorMessage = ref.read(skillSelectionProvider.notifier).errorMessage ?? 'Failed to save profile';
