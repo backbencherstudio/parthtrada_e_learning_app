@@ -13,12 +13,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //Test token for dev------------------->>>
-  // await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzdmeHIxdjAwMDB2YzF3MDN1N3Qyc2siLCJlbWFpbCI6ImV4cGVydC5idXR0ZXJmbHkxQGdtYWlsLmNvbSIsIm5hbWUiOiJBa2FzaCBILiIsImFjdGl2ZVByb2ZpbGUiOiJFWFBFUlQiLCJpYXQiOjE3NTk0ODI5NTEsImV4cCI6MTc2MDA4Nzc1MX0.Pp-pyIJpgH6dxjo9s5wwA3L5Nfw4Rqrfu8F205w9D8o"); // expert.butterfly1@gmail.com
-  await LoginPreferences().setAuthToken(
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2V4ZW95MDAwMDB2Y25vZDNxdmVlbHMiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2UxNEBnbWFpbC5jb20iLCJuYW1lIjoiQXNpZi0xNC4iLCJhY3RpdmVQcm9maWxlIjoiU1RVREVOVCIsImlhdCI6MTc1OTc0Mjc2OCwiZXhwIjoxNzYwMzQ3NTY4fQ.HV-obvJBMlWjKkaG3v_Mbb3PbulMzNjIrb314qiQz0E",
-  ); // asifrezan.office@gmail.com
-  // await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzFuaWx5bjAwMDF2Yzk0bHRwMHl4ZnQiLCJlbWFpbCI6ImV4cGVydDEyM0BvYm90b3JvbmlrYS5jb20iLCJuYW1lIjoiQW5payBIb3NzYWluIiwiYWN0aXZlUHJvZmlsZSI6IkVYUEVSVCIsImlhdCI6MTc1OTU1NzQ4NCwiZXhwIjoxNzYwMTYyMjg0fQ.kdafemLgHmCMTtqM6NoPwwJ2OdYUvAJNI0ai5YB1SlM"); // Anik hossain
-  // await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2MwaGdwZDAwMGN2Y3Y4dnowaGFtMDAiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2UyQGdtYWlsLmNvbSIsIm5hbWUiOiJBc2lmIiwiYWN0aXZlUHJvZmlsZSI6IlNUVURFTlQiLCJpYXQiOjE3NTk1NjY1MzcsImV4cCI6MTc2MDE3MTMzN30.xOg1SUdoL0InSvXhy19kfsXOzLHWLtbxwYQ-zN5hAXw");
+   await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2c0djY2ZzAwMDF2YzRvNGZ5dGFsaGkiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2VAZ21haWwuY29tIiwibmFtZSI6IkFzaWYuIiwiYWN0aXZlUHJvZmlsZSI6IlNUVURFTlQiLCJpYXQiOjE3NTk4MTU3NTksImV4cCI6MTc2MDQyMDU1OX0.RXaAb-hKmoZlW0ThqFsihOIEsBBWiCUWVtpaDrtKwcU"); // asifrezan.office@gmail.com
+
 
   final savedToken = await LoginPreferences().loadAuthToken();
   bool isLoggedIn = false;

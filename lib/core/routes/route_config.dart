@@ -185,6 +185,7 @@ import 'package:e_learning_app/src/features/message/presentation/inbox_screen/in
 import 'package:e_learning_app/src/features/notification/global_notification_screen.dart';
 import 'package:e_learning_app/src/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:e_learning_app/src/features/parents/presentation/parents_screen.dart';
+import 'package:e_learning_app/src/features/profile/presentation/help_and_support/help_and_support_screen.dart';
 import 'package:e_learning_app/src/features/profile/presentation/language/language.dart';
 import 'package:e_learning_app/src/features/profile/presentation/notification/view/notification.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/view/add_card_screen.dart';
@@ -397,6 +398,15 @@ class RouteConfig {
             );
           },
         ),
+
+        GoRoute(
+          name: RouteName.helpAndSupportScreen,
+          path: RouteName.helpAndSupportScreen,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: HelpAndSupportScreen());
+          },
+        ),
+
       ],
     );
   }

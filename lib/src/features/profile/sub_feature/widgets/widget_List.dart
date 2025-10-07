@@ -93,7 +93,7 @@ List<Widget> callContainerPreferencess(BuildContext context) {
       title: "Help & Support",
       icon: AppIcons.frameIcon,
       onTap: () {
-        context.push(RouteName.messageScreen);
+        context.push(RouteName.helpAndSupportScreen);
       },
     ),
     ProfileContainer(title: "Logout", icon: AppIcons.logout, onTap: () async {
