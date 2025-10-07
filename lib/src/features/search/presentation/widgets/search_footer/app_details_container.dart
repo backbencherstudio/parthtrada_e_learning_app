@@ -104,7 +104,7 @@ class AppDetailsContainer extends StatelessWidget{
             },
             error: (error, stackTrace) {
               debugPrint("Error: $error");
-              return Center(child: Text('Error: $error'));
+              return Center(child: Text('Unable to fetch stats'));
             },
           );
         }

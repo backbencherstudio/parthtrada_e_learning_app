@@ -60,12 +60,12 @@ class ExpertDetailsHeader extends StatelessWidget {
                     imageUrl != null && imageUrl!.isNotEmpty
                         ? Image.network(
                           '${ApiEndPoints.baseUrl}/uploads/$imageUrl',
-                          width: 56.w,
-                          height: 56.w,
+                          width: 100.w,
+                          height: 100.w,
                           fit: BoxFit.cover,
                         )
                         : CircleAvatar(
-                          radius: 28.w,
+                          radius: 50.w,
                           backgroundColor: Colors.white,
                           child: Icon(
                             Icons.person,

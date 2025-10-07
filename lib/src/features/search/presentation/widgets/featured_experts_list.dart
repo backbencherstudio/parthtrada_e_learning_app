@@ -53,6 +53,13 @@ class FeaturedExpertsList extends ConsumerWidget {
                   return matchesSkill && matchesName;
                 }).toList();
 
+        if (filteredExperts.isEmpty) {
+          return Center(
+            child: Text(
+              "No Experts Found",
+            ),
+          );
+        }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -101,7 +108,8 @@ class FeaturedExpertsList extends ConsumerWidget {
                         children: [
                           ClipOval(
                             child:
-                                expert.user?.image != null && expert.user!.image!.isNotEmpty
+                                expert.user?.image != null &&
+                                        expert.user!.image!.isNotEmpty
                                     ? Image.network(
                                       '${ApiEndPoints.baseUrl}/uploads/${expert.user!.image!}',
                                       width: 56.w,
@@ -185,11 +193,24 @@ class FeaturedExpertsList extends ConsumerWidget {
                             child: CommonWidget.primaryButton(
                               context: context,
                               onPressed: () async {
-                                final sessionDataNotifier = ref.read(sessionDataProvider.notifier);
-                                sessionDataNotifier.setExpertId(expert.userId ?? '');
-                                sessionDataNotifier.setExpertName(expert.user?.name ?? '');
-                                sessionDataNotifier.setHourlyRate(expert.hourlyRate.toString());
-                                await scheduleForBook(ref: ref, context: context, availableTime: expert.availableTime ?? [], availableDays: expert.availableDays ?? []);
+                                final sessionDataNotifier = ref.read(
+                                  sessionDataProvider.notifier,
+                                );
+                                sessionDataNotifier.setExpertId(
+                                  expert.userId ?? '',
+                                );
+                                sessionDataNotifier.setExpertName(
+                                  expert.user?.name ?? '',
+                                );
+                                sessionDataNotifier.setHourlyRate(
+                                  expert.hourlyRate.toString(),
+                                );
+                                await scheduleForBook(
+                                  ref: ref,
+                                  context: context,
+                                  availableTime: expert.availableTime ?? [],
+                                  availableDays: expert.availableDays ?? [],
+                                );
                               },
                               text: "Book \$${expert.hourlyRate}/hour",
                             ),
@@ -215,7 +236,7 @@ class FeaturedExpertsList extends ConsumerWidget {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, _) => Center(child: Text("Error: $err")),
+      error: (err, _) => Center(child: Text("No Experts Found")),
     );
   }
 }

@@ -104,7 +104,7 @@ class CustomNotificationContainer extends StatelessWidget {
                               loading: () {},
                               error: (error, _) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Error: $error")),
+                                  SnackBar(content: Text("Error: This booking has already been processed")),
                                 );
                               },
                             );

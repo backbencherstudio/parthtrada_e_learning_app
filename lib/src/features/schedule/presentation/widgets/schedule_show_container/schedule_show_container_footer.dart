@@ -63,11 +63,14 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                           textStyle: buttonTextStyle,
                           context: context,
                           onPressed: () async {
-                            final actionUrl = '/experts/bookings/actions/${meetingScheduleModel.id}/reject';
+                            final actionUrl =
+                                '/experts/bookings/actions/${meetingScheduleModel.id}/reject';
 
                             if (actionUrl == null || actionUrl.isEmpty) return;
 
-                            await ref.read(acceptRejectBookingProvider.notifier).patchBookingAction(actionUrl);
+                            await ref
+                                .read(acceptRejectBookingProvider.notifier)
+                                .patchBookingAction(actionUrl);
 
                             final state = ref.read(acceptRejectBookingProvider);
 
@@ -75,24 +78,35 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                               data: (response) async {
                                 if (response?.success == true) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(response?.message ?? "Action successful")),
+                                    SnackBar(
+                                      content: Text(
+                                        response?.message ??
+                                            "Action successful",
+                                      ),
+                                    ),
                                   );
-                                  await ref.read(scheduleProvider.notifier).refreshMeetings();
+                                  await ref
+                                      .read(scheduleProvider.notifier)
+                                      .refreshMeetings();
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text("Action failed")),
+                                    const SnackBar(
+                                      content: Text("Action failed"),
+                                    ),
                                   );
                                 }
                               },
                               loading: () {},
                               error: (error, _) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Error: $error")),
+                                  SnackBar(content: Text("Error: This booking has already been processed")),
                                 );
                               },
                             );
 
-                            ref.read(acceptRejectBookingProvider.notifier).reset();
+                            ref
+                                .read(acceptRejectBookingProvider.notifier)
+                                .reset();
                           },
                           text: "Cancel",
                           backgroundColor: Color(0xff2B2C31),
@@ -106,7 +120,8 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                       textStyle: buttonTextStyle?.copyWith(color: Colors.white),
                       context: context,
                       onPressed: () async {
-                        final actionUrl = '/experts/bookings/actions/${meetingScheduleModel.id}/accept';
+                        final actionUrl =
+                            '/experts/bookings/actions/${meetingScheduleModel.id}/accept';
 
                         if (actionUrl == null || actionUrl.isEmpty) return;
 
@@ -118,9 +133,15 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                           data: (response) async {
                             if (response?.success == true) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(response?.message ?? "Action successful")),
+                                SnackBar(
+                                  content: Text(
+                                    response?.message ?? "Action successful",
+                                  ),
+                                ),
                               );
-                              await ref.read(scheduleProvider.notifier).refreshMeetings();
+                              await ref
+                                  .read(scheduleProvider.notifier)
+                                  .refreshMeetings();
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text("Action failed")),
@@ -130,7 +151,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                           loading: () {},
                           error: (error, _) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Error: $error")),
+                              SnackBar(content: Text("Error: This booking has already been processed")),
                             );
                           },
                         );
@@ -152,33 +173,85 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                           textStyle: buttonTextStyle,
                           context: context,
                           onPressed: () async {
-                            final notifier = ref.read(completeScheduleProvider.notifier);
+                            if (meetingScheduleModel.status == 'COMPLETED') {
+                              /// Nothing
+                              // final notifier = ref.read(
+                              //   completeScheduleProvider.notifier,
+                              // );
+                              //
+                              // await notifier.completeScheduleMeeting(
+                              //   meetingScheduleModel.id,
+                              // );
+                              //
+                              // final result = ref.read(completeScheduleProvider);
+                              //
+                              // result.when(
+                              //   data: (message) {
+                              //     if (message != null) {
+                              //       ScaffoldMessenger.of(context).showSnackBar(
+                              //         SnackBar(content: Text(message)),
+                              //       );
+                              //
+                              //       ref
+                              //       .read(scheduleProvider.notifier)
+                              //       .refreshMeetings();
+                              //     }
+                              //   },
+                              //   loading: () {},
+                              //   error: (err, _) {
+                              //     ScaffoldMessenger.of(context).showSnackBar(
+                              //       SnackBar(content: Text("Error: $err")),
+                              //     );
+                              //   },
+                              // );
+                              //
+                              // notifier.reset();
+                            } else {
+                              final actionUrl =
+                                  '/experts/bookings/actions/${meetingScheduleModel.id}/reject';
 
-                            await notifier.completeScheduleMeeting(meetingScheduleModel.id);
+                              if (actionUrl == null || actionUrl.isEmpty)
+                                return;
 
-                            final result = ref.read(completeScheduleProvider);
+                              await ref
+                                  .read(acceptRejectBookingProvider.notifier)
+                                  .patchBookingAction(actionUrl);
 
-                            result.when(
-                              data: (message) {
-                                if (message != null) {
+                              final state = ref.read(
+                                acceptRejectBookingProvider,
+                              );
+
+                              state.when(
+                                data: (response) async {
+                                  if (response?.success == true) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          response?.message ??
+                                              "Action successful",
+                                        ),
+                                      ),
+                                    );
+                                    await ref.read(scheduleProvider.notifier).refreshMeetings();
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text("Action failed"),
+                                      ),
+                                    );
+                                  }
+                                },
+                                loading: () {},
+                                error: (error, _) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(message)),
+                                    SnackBar(content: Text("Error: This booking has already been processed")),
                                   );
-
-                                  ref.read(scheduleProvider.notifier).refreshMeetings();
-                                }
-                              },
-                              loading: () {},
-                              error: (err, _) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Error: $err")),
-                                );
-                              },
-                            );
-
-                            notifier.reset();
+                                },
+                              );
+                              ref.read(acceptRejectBookingProvider.notifier).reset();
+                            }
                           },
-                          text: "Completed",
+                          text: meetingScheduleModel.status == "COMPLETED" ? "Completed" : "Cancel",
                           backgroundColor: Color(0xff2B2C31),
                         ),
                       );
@@ -191,8 +264,14 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                       context: context,
                       onPressed: () async {
                         if (meetingScheduleModel.meetingLink != null &&
-                            meetingScheduleModel.meetingLink!.trim().isNotEmpty) {
-                          await Clipboard.setData(ClipboardData(text: meetingScheduleModel.meetingLink ?? ''));
+                            meetingScheduleModel.meetingLink!
+                                .trim()
+                                .isNotEmpty) {
+                          await Clipboard.setData(
+                            ClipboardData(
+                              text: meetingScheduleModel.meetingLink ?? '',
+                            ),
+                          );
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -304,9 +383,16 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                     ),
                     context: context,
                     onPressed: () async {
-                      if (meetingScheduleModel.status == "UPCOMING" && (meetingScheduleModel.meetingLink != null &&
-                          meetingScheduleModel.meetingLink!.trim().isNotEmpty)) {
-                        await Clipboard.setData(ClipboardData(text: meetingScheduleModel.meetingLink ?? ''));
+                      if (meetingScheduleModel.status == "UPCOMING" &&
+                          (meetingScheduleModel.meetingLink != null &&
+                              meetingScheduleModel.meetingLink!
+                                  .trim()
+                                  .isNotEmpty)) {
+                        await Clipboard.setData(
+                          ClipboardData(
+                            text: meetingScheduleModel.meetingLink ?? '',
+                          ),
+                        );
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

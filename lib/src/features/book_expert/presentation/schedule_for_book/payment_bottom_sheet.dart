@@ -2,8 +2,10 @@ import 'package:e_learning_app/core/utils/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../../../core/constant/padding.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
+import '../../../../../core/routes/route_name.dart';
 import '../../rvierpod/get_card_notifier.dart';
 import '../../rvierpod/payment_provider.dart';
 import 'confirm_booking_bottom_sheet/confirm_and_pay_bottom_sheet.dart';
@@ -163,15 +165,21 @@ Future<void> paymentBottomSheet({
                     padding: EdgeInsets.symmetric(vertical: 16.h),
                     textStyle: buttonTextStyle,
                     context: bottomSheetContext,
-                    text: ref.watch(paymentNotifierProvider).isLoading
+                    text: (cardState.cardsResponse?.data.isEmpty ?? true) ? 'Add Your Card' : ref.watch(paymentNotifierProvider).isLoading
                         ? PaymentConstants.paymentProcessing
                         : PaymentConstants.paymentProceed,
-                    onPressed: () => _handlePayment(
-                      ref,
-                      bottomSheetContext,
-                      context,
-                      availableTime,
-                    ),
+                    onPressed: () {
+                      if (cardState.cardsResponse?.data.isEmpty ?? true) {
+                        context.push(RouteName.addPaymentMethod);
+                      } else {
+                        _handlePayment(
+                          ref,
+                          bottomSheetContext,
+                          context,
+                          availableTime,
+                        );
+                      }
+                    }
                   ),
                 ),
                 SizedBox(height: 28.h),
