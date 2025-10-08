@@ -23,6 +23,7 @@ class StudentRepository {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonData = jsonDecode(response.body);
+      debugPrint('=======${StudentModel.fromJson(jsonData).message}');
       return StudentModel.fromJson(jsonData);
     } else {
       throw Exception('Failed to fetch student details: ${response.statusCode}');

@@ -31,5 +31,6 @@ class RouteName{
   static const String globalNotificationScreen = "/GlobalNotificationScreen";
 
   static const String authenticationScreen = "/authenticationScreen";
+  static const String studentDetailsScreen = "/studentDetailsScreen";
 
 }

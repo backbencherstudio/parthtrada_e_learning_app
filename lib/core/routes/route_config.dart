@@ -183,6 +183,7 @@ import 'package:e_learning_app/src/features/authentication/presentation/authenti
 import 'package:e_learning_app/src/features/expert_details/presentation/expert_details_screen.dart';
 import 'package:e_learning_app/src/features/message/presentation/inbox_screen/inbox_screen.dart';
 import 'package:e_learning_app/src/features/notification/global_notification_screen.dart';
+import 'package:e_learning_app/src/features/notification/subscreen/student_details_screen/student_details_screen.dart';
 import 'package:e_learning_app/src/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:e_learning_app/src/features/parents/presentation/parents_screen.dart';
 import 'package:e_learning_app/src/features/profile/presentation/language/language.dart';
@@ -194,6 +195,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../src/features/message/presentation/message_screen/message_screen.dart';
+import '../../src/features/notification/data/model/notification_model.dart';
+import '../../src/features/notification/data/model/wrapper_model.dart';
 import '../../src/features/profile/presentation/payment method/view/payment_method_screen.dart';
 import '../../src/features/profile/sub_feature/past_call/presentation/past_call.dart';
 import '../../src/features/profile/sub_feature/privacy_policy/presentation/privacy_policy.dart';
@@ -315,6 +318,25 @@ class RouteConfig {
             );
           },
         ),
+
+        GoRoute(
+          name: RouteName.studentDetailsScreen,
+          path: RouteName.studentDetailsScreen,
+          pageBuilder: (context, state) {
+            final args = state.extra as StudentNotificationArgs;
+
+            return buildPageWithTransition(
+              transitionType: PageTransitionType.slideRightToLeft,
+              context: context,
+              state: state,
+              child: StudentDetailsScreen(
+                studentData: args.studentData,
+                notificationItem: args.notificationItem,
+              ),
+            );
+          },
+        ),
+
 
         GoRoute(
           name: RouteName.expertSearchScreen,
