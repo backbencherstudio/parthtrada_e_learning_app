@@ -60,7 +60,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                   if (scheduleState.isLoading && meetings.isEmpty)
                     const Expanded(child: Center(child: CircularProgressIndicator())),
 
-                  if (!(scheduleState.isLoading && meetings.isEmpty))
+                  if (!(scheduleState.isLoading))
                     Expanded(
                       child: RefreshIndicator(
                         onRefresh: () async {
@@ -81,6 +81,10 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
 
                             if (isAnyError) {
                               return const Center(child: Text("Error loading expert data"));
+                            }
+
+                            if (meetings.isEmpty) {
+                              return const Center(child: Text("No Schedule Found"));
                             }
 
                             return ListView.builder(

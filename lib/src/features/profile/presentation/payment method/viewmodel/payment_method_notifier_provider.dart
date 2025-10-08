@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../repository/api/expert/get_card_repository.dart';
 import '../../../../book_expert/model/get_card_data_model.dart';
@@ -83,6 +84,7 @@ class PaymentMethodNotifier extends StateNotifier<PaymentMethodState> {
         message: success ? "Card added successfully" : "Failed to add card",
       );
     } catch (e) {
+      debugPrint("Error: $e");
       state = state.copyWith(isLoading: false, message: "Error: $e");
     }
   }

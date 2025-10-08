@@ -18,7 +18,8 @@ class NotificationsResponse {
       data: (json['data'] as List<dynamic>? ?? [])
           .map((e) => NotificationItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-      pagination: Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
+      pagination:
+      Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
     );
   }
 
@@ -31,34 +32,42 @@ class NotificationsResponse {
 }
 
 class NotificationItem {
+  final String id;
   final String? img;
   final String title;
   final String description;
   final List<ActionItem> actions;
+  final Meta meta;
 
   NotificationItem({
+    required this.id,
     this.img,
     required this.title,
     required this.description,
     required this.actions,
+    required this.meta,
   });
 
   factory NotificationItem.fromJson(Map<String, dynamic> json) {
     return NotificationItem(
+      id: json['id'] ?? '',
       img: json['img'] as String?,
       title: json['title'] ?? '',
       description: json['description'] ?? '',
       actions: (json['actions'] as List<dynamic>? ?? [])
           .map((e) => ActionItem.fromJson(e as Map<String, dynamic>))
           .toList(),
+      meta: Meta.fromJson(json['meta'] ?? {}),
     );
   }
 
   Map<String, dynamic> toJson() => {
+    'id': id,
     'img': img,
     'title': title,
     'description': description,
     'actions': actions.map((e) => e.toJson()).toList(),
+    'meta': meta.toJson(),
   };
 }
 
@@ -67,12 +76,14 @@ class ActionItem {
   final String text;
   final String url;
   final String reqMethod;
+  final bool disabled;
 
   ActionItem({
     required this.bgPrimary,
     required this.text,
     required this.url,
     required this.reqMethod,
+    required this.disabled,
   });
 
   factory ActionItem.fromJson(Map<String, dynamic> json) {
@@ -81,6 +92,7 @@ class ActionItem {
       text: json['text'] ?? '',
       url: json['url'] ?? '',
       reqMethod: json['req_method'] ?? '',
+      disabled: json['disabled'] ?? false,
     );
   }
 
@@ -89,6 +101,23 @@ class ActionItem {
     'text': text,
     'url': url,
     'req_method': reqMethod,
+    'disabled': disabled,
+  };
+}
+
+class Meta {
+  final String sessionDetails;
+
+  Meta({required this.sessionDetails});
+
+  factory Meta.fromJson(Map<String, dynamic> json) {
+    return Meta(
+      sessionDetails: json['sessionDetails'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'sessionDetails': sessionDetails,
   };
 }
 

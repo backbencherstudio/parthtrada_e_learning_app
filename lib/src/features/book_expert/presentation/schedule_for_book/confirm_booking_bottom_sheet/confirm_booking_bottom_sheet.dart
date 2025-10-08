@@ -67,9 +67,11 @@ Future<void> confirmAndPayBottomSheet({
                         children: [
                           SizedBox(height: 16.h),
                           Text(
-                            "Your session with ${sessionData.expertName} is scheduled",
+                            "Confirm Booking",
                             style: textTheme.bodyMedium?.copyWith(
-                              color: AppColors.secondaryTextColor,
+                              color: AppColors.textColor,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600
                             ),
                             textAlign: TextAlign.center,
                           ),
