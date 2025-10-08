@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/theme/theme_part/app_colors.dart';
+import '../../data/model/transaction_history_response.dart';
 
 class TransactionHistoryCard extends StatelessWidget {
   final bool isRefunded;
-  const TransactionHistoryCard({super.key, required this.isRefunded});
+  final Data transaction;
+
+  const TransactionHistoryCard({
+    super.key,
+    required this.isRefunded,
+    required this.transaction,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +30,14 @@ class TransactionHistoryCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Sarah Chen',
+                transaction.name ?? 'Unknown',
                 style: textTheme.titleMedium!.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
               ),
-
               SizedBox(height: 2.h),
-
               Text(
-                '08:30pm, 05/04/25',
+                transaction.createdAt ?? 'N/A',
                 style: textTheme.labelSmall!.copyWith(
                   fontWeight: FontWeight.w400,
                 ),
@@ -49,7 +54,7 @@ class TransactionHistoryCard extends StatelessWidget {
             ],
           ),
           Text(
-            '${getBalanceIcon()} \$150',
+            '${getBalanceIcon()} \$${transaction.amount?.toString() ?? '0'}',
             style: textTheme.labelMedium!.copyWith(
               color: isRefunded ? AppColors.refundedColor : AppColors.error,
               fontWeight: FontWeight.w800,
