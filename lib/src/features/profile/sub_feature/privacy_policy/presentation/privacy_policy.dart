@@ -20,7 +20,7 @@ class PrivacyPolicy extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        title: Text('Sent Requests', style: textTheme.titleLarge),
+        title: Text('Privacy Policy', style: textTheme.titleLarge),
         backgroundColor: AppColors.screenBackgroundColor,
       ),
       body: Padding(

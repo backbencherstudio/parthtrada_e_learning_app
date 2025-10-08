@@ -32,5 +32,6 @@ class RouteName{
 
   static const String authenticationScreen = "/authenticationScreen";
   static const String studentDetailsScreen = "/studentDetailsScreen";
+  static const String helpAndSupportScreen = "/helpAndSupportScreen";
 
 }

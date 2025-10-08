@@ -25,4 +25,5 @@ class ApiEndPoints {
   static String getCards = '$baseUrl/payments/cards';
   static String confirmPayment = '$baseUrl/payments/confirm-payment';
   static String getStudentById(String sId) => '$baseUrl/students/$sId';
+  static String transactionsHistory = '/payments/transactions';
 }
