@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../core/services/api_services/api_end_points.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 
 class InboxScreenHeaderWidget extends StatelessWidget {
@@ -33,7 +34,7 @@ class InboxScreenHeaderWidget extends StatelessWidget {
         CircleAvatar(
           radius: 26.r,
           backgroundColor: AppColors.primary.withOpacity(0.2),
-          backgroundImage: image.isNotEmpty ? NetworkImage(image) : null,
+          backgroundImage: image.isNotEmpty ? NetworkImage("${ApiEndPoints.baseUrl}/uploads/$image") : null,
           child: image.isEmpty
               ? Icon(Icons.person, color: AppColors.primary, size: 24.sp)
               : null,
