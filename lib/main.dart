@@ -14,7 +14,7 @@ void main() async {
 
   //Test token for dev------------------->>>
    //await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2c0djY2ZzAwMDF2YzRvNGZ5dGFsaGkiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2VAZ21haWwuY29tIiwibmFtZSI6IkFzaWYuIiwiYWN0aXZlUHJvZmlsZSI6IlNUVURFTlQiLCJpYXQiOjE3NTk4MTU3NTksImV4cCI6MTc2MDQyMDU1OX0.RXaAb-hKmoZlW0ThqFsihOIEsBBWiCUWVtpaDrtKwcU"); // asifrezan.office@gmail.com
-   await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2c0eGJxNjAwMDN2YzRvNW15bzd5NHEiLCJlbWFpbCI6ImFsaWNlMUB0ZXN0LmNvbSIsIm5hbWUiOiJBbGljZSBTbWl0aCIsImFjdGl2ZVByb2ZpbGUiOiJTVFVERU5UIiwiaWF0IjoxNzU5OTAxNTI0LCJleHAiOjE3NjA1MDYzMjR9.3ITu15q0bbRtp-xMJhAkO8rjNky64cOGOWgJ5UKARGE");
+  // await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2c0eGJxNjAwMDN2YzRvNW15bzd5NHEiLCJlbWFpbCI6ImFsaWNlMUB0ZXN0LmNvbSIsIm5hbWUiOiJBbGljZSBTbWl0aCIsImFjdGl2ZVByb2ZpbGUiOiJTVFVERU5UIiwiaWF0IjoxNzU5OTAxNTI0LCJleHAiOjE3NjA1MDYzMjR9.3ITu15q0bbRtp-xMJhAkO8rjNky64cOGOWgJ5UKARGE");
 
 
   final savedToken = await LoginPreferences().loadAuthToken();
