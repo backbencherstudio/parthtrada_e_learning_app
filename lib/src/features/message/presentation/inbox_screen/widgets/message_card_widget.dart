@@ -2,6 +2,7 @@ import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../core/services/api_services/api_end_points.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../model/message_model.dart';
 import '../inbox_screen.dart';
@@ -132,7 +133,7 @@ class MessageCardWidget extends StatelessWidget {
     return CircleAvatar(
       radius: 26.r,
       backgroundColor: AppColors.primary.withOpacity(0.2),
-      backgroundImage: imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
+      backgroundImage: imageUrl.isNotEmpty ? NetworkImage("${ApiEndPoints.baseUrl}/uploads/$imageUrl") : null,
       child: imageUrl.isEmpty
           ? Icon(Icons.person, color: AppColors.primary, size: 24.sp)
           : null,
