@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import '../../../../../core/theme/theme_part/app_colors.dart';
 import '../../data/model/transaction_history_response.dart';
 
@@ -37,7 +38,7 @@ class TransactionHistoryCard extends StatelessWidget {
               ),
               SizedBox(height: 2.h),
               Text(
-                transaction.createdAt ?? 'N/A',
+                DateFormat('yyyy-MM-dd').format(DateTime.parse(transaction.createdAt ?? 'N/A')),
                 style: textTheme.labelSmall!.copyWith(
                   fontWeight: FontWeight.w400,
                 ),

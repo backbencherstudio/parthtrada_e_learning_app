@@ -12,20 +12,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../../core/constant/images.dart';
+import '../../../../../core/services/local_storage_services/user_type_storage.dart';
 import '../../../book_expert/presentation/schedule_for_book/schedule_for_book.dart';
 import '../../../book_expert/rvierpod/session_provider.dart';
 import '../../provider/selected_skill_provider.dart';
 
-class FeaturedExpertsList extends ConsumerWidget {
+class FeaturedExpertsList extends ConsumerStatefulWidget {
   const FeaturedExpertsList({super.key, required this.isVerticalList});
 
   final bool isVerticalList;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<FeaturedExpertsList> createState() => _FeaturedExpertsListState();
+}
+
+class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
+
+  String? userType;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      userType = await UserTypeStorage().getUserType();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final expertData = ref.watch(expertProvider);
     final selectedSkills = ref.watch(selectedSkillsProvider);
+
 
     return expertData.when(
       data: (expertModel) {
@@ -73,10 +92,10 @@ class FeaturedExpertsList extends ConsumerWidget {
             SizedBox(height: 16.h),
 
             SizedBox(
-              height: isVerticalList ? 550.h : 308.h,
+              height: widget.isVerticalList ? 550.h : 308.h,
               child: ListView.separated(
                 scrollDirection:
-                    isVerticalList ? Axis.vertical : Axis.horizontal,
+                    widget.isVerticalList ? Axis.vertical : Axis.horizontal,
                 itemCount: filteredExperts.length,
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 itemBuilder: (_, index) {
@@ -97,7 +116,7 @@ class FeaturedExpertsList extends ConsumerWidget {
                       );
                     },
                     child: Container(
-                      width: isVerticalList ? double.infinity : 274.w,
+                      width: widget.isVerticalList ? double.infinity : 274.w,
                       padding: EdgeInsets.symmetric(
                         horizontal: 12.w,
                         vertical: 16.h,
@@ -119,10 +138,11 @@ class FeaturedExpertsList extends ConsumerWidget {
                                     : CircleAvatar(
                                       radius: 28.w,
                                       backgroundColor: Colors.white,
-                                      child: Icon(
-                                        Icons.person,
-                                        color: Colors.grey,
-                                        size: 28.w,
+                                      child: Image.asset(
+                                        AppImages.maiya,
+                                        width: 32.w,
+                                        height: 32.w,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                           ),
@@ -193,26 +213,37 @@ class FeaturedExpertsList extends ConsumerWidget {
                             child: CommonWidget.primaryButton(
                               context: context,
                               onPressed: () async {
-                                final sessionDataNotifier = ref.read(
-                                  sessionDataProvider.notifier,
-                                );
-                                sessionDataNotifier.setExpertId(
-                                  expert.userId ?? '',
-                                );
-                                sessionDataNotifier.setExpertName(
-                                  expert.user?.name ?? '',
-                                );
-                                sessionDataNotifier.setHourlyRate(
-                                  expert.hourlyRate.toString(),
-                                );
-                                await scheduleForBook(
-                                  ref: ref,
-                                  context: context,
-                                  availableTime: expert.availableTime ?? [],
-                                  availableDays: expert.availableDays ?? [],
-                                );
+                                if (userType == 'EXPERT') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'You are already an expert',
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  final sessionDataNotifier = ref.read(
+                                    sessionDataProvider.notifier,
+                                  );
+                                  sessionDataNotifier.setExpertId(
+                                    expert.userId ?? '',
+                                  );
+                                  sessionDataNotifier.setExpertName(
+                                    expert.user?.name ?? '',
+                                  );
+                                  sessionDataNotifier.setHourlyRate(
+                                    expert.hourlyRate.toString(),
+                                  );
+                                  await scheduleForBook(
+                                    ref: ref,
+                                    context: context,
+                                    availableTime: expert.availableTime ?? [],
+                                    availableDays: expert.availableDays ?? [],
+                                  );
+                                }
                               },
                               text: "Book \$${expert.hourlyRate}/hour",
+                              backgroundColor: userType == 'EXPERT' ? AppColors.secondaryStrokeColor : AppColors.primary,
                             ),
                           ),
                         ],
@@ -220,14 +251,14 @@ class FeaturedExpertsList extends ConsumerWidget {
                     ),
                   );
 
-                  return isVerticalList
+                  return widget.isVerticalList
                       ? childContainer
                       : FittedBox(child: childContainer);
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return SizedBox(
-                    height: isVerticalList ? 12.h : 0.h,
-                    width: isVerticalList ? 0.w : 12.w,
+                    height: widget.isVerticalList ? 12.h : 0.h,
+                    width: widget.isVerticalList ? 0.w : 12.w,
                   );
                 },
               ),
