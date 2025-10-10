@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/services/api_services/api_end_points.dart';
+
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
@@ -49,7 +51,7 @@ class ProfileScreen extends ConsumerWidget {
                         Center(
                           child: profileData.image != null
                               ? Image.network(
-                            profileData.image!,
+                            "${ApiEndPoints.baseUrl}/uploads/${profileData.image!}",
                             height: 140.h,
                             width: 140.w,
                             errorBuilder:
