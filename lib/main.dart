@@ -3,19 +3,26 @@ import 'package:e_learning_app/core/routes/route_config.dart';
 import 'package:e_learning_app/core/theme/theme.dart';
 import 'package:e_learning_app/core/utils/utils.dart';
 import 'package:e_learning_app/repository/login_preferences.dart';
+import 'package:e_learning_app/src/features/message/riverpod/conversation_viewmodel.dart';
 import 'package:e_learning_app/src/features/onboarding/riverpod/login_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'core/services/message_services/message_service.dart';
+import 'core/services/notification_services/notification_services.dart';
+import 'src/features/message/model/message_model.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //Test token for dev------------------->>>
-   //await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2c0djY2ZzAwMDF2YzRvNGZ5dGFsaGkiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2VAZ21haWwuY29tIiwibmFtZSI6IkFzaWYuIiwiYWN0aXZlUHJvZmlsZSI6IlNUVURFTlQiLCJpYXQiOjE3NTk4MTU3NTksImV4cCI6MTc2MDQyMDU1OX0.RXaAb-hKmoZlW0ThqFsihOIEsBBWiCUWVtpaDrtKwcU"); // asifrezan.office@gmail.com
-  // await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2c0eGJxNjAwMDN2YzRvNW15bzd5NHEiLCJlbWFpbCI6ImFsaWNlMUB0ZXN0LmNvbSIsIm5hbWUiOiJBbGljZSBTbWl0aCIsImFjdGl2ZVByb2ZpbGUiOiJTVFVERU5UIiwiaWF0IjoxNzU5OTAxNTI0LCJleHAiOjE3NjA1MDYzMjR9.3ITu15q0bbRtp-xMJhAkO8rjNky64cOGOWgJ5UKARGE");
+  final notificationService = NotificationService();
+  await notificationService.init();
 
+  //Test token for dev------------------->>>
+   await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2c0eGJxNjAwMDN2YzRvNW15bzd5NHEiLCJlbWFpbCI6ImFsaWNlMUB0ZXN0LmNvbSIsIm5hbWUiOiJBbGljZSBTbWl0aCIsImFjdGl2ZVByb2ZpbGUiOiJTVFVERU5UIiwiaWF0IjoxNzYwMzI3MTU3LCJleHAiOjE3NjA5MzE5NTd9.L6psONVtjcLVeV0fB7xC2vspFmaGhS635XR-wZRWbH8"); // asifrezan.office@gmail.com
+  // await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2c0djY2ZzAwMDF2YzRvNGZ5dGFsaGkiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2VAZ21haWwuY29tIiwibmFtZSI6IkFzaWYuIiwiYWN0aXZlUHJvZmlsZSI6IlNUVURFTlQiLCJpYXQiOjE3NjAzMjk5NDIsImV4cCI6MTc2MDkzNDc0Mn0.oDs3tufichNf5bC3ReO-yb030vBaK06CfHvjknt94ao");
 
   final savedToken = await LoginPreferences().loadAuthToken();
   bool isLoggedIn = false;
@@ -23,16 +30,41 @@ void main() async {
     isLoggedIn = await Utils.isTokenValid(savedToken);
   }
 
+  final container = ProviderContainer(
+    overrides: [authTokenProvider.overrideWith((ref) => savedToken)],
+  );
+
+  // Initialize global socket connection
+  final globalMessageService = MessageService(
+    onMessageReceived: (Data message) {
+      container.read(conversationViewModelProvider.notifier).fetchConversation();
+      notificationService.showNotification(message);
+      debugPrint("Global message received: ${message.content}");
+    },
+    onTyping: (String userId) {
+      debugPrint("User typing globally: $userId");
+    },
+    onStopTyping: (String userId) {
+      debugPrint("User stopped typing globally: $userId");
+    },
+  );
+  await globalMessageService.connect();
+
+
+
+
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   await ScreenUtil.ensureScreenSize();
 
   runApp(
     ProviderScope(
-      overrides: [authTokenProvider.overrideWith((ref) => savedToken)],
+      parent: container,
+     // overrides: [authTokenProvider.overrideWith((ref) => savedToken)],
       child: MyApp(isLoggedIn: isLoggedIn),
     ),
   );
+
 
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
