@@ -1,4 +1,3 @@
-import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:e_learning_app/core/routes/route_name.dart';
 import 'package:e_learning_app/core/services/api_services/api_end_points.dart';
@@ -8,43 +7,27 @@ import 'package:e_learning_app/core/utils/utils.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/wrap_item_container.dart';
 import 'package:e_learning_app/src/features/search/provider/expert_provider.dart';
 import 'package:e_learning_app/src/features/search/provider/expert_search_query_provider.dart';
+import 'package:e_learning_app/src/features/splash/riverpod/user_role_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../core/constant/images.dart';
-import '../../../../../core/services/local_storage_services/user_type_storage.dart';
 import '../../../book_expert/presentation/schedule_for_book/schedule_for_book.dart';
 import '../../../book_expert/rvierpod/session_provider.dart';
 import '../../provider/selected_skill_provider.dart';
 
-class FeaturedExpertsList extends ConsumerStatefulWidget {
+class FeaturedExpertsList extends ConsumerWidget {
   const FeaturedExpertsList({super.key, required this.isVerticalList});
 
   final bool isVerticalList;
 
   @override
-  ConsumerState<FeaturedExpertsList> createState() => _FeaturedExpertsListState();
-}
-
-class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
-
-  String? userType;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      userType = await UserTypeStorage().getUserType();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     final expertData = ref.watch(expertProvider);
     final selectedSkills = ref.watch(selectedSkillsProvider);
-
+    final userType = ref.watch(userRoleProvider);
 
     return expertData.when(
       data: (expertModel) {
@@ -73,11 +56,7 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
                 }).toList();
 
         if (filteredExperts.isEmpty) {
-          return Center(
-            child: Text(
-              "No Experts Found",
-            ),
-          );
+          return Center(child: Text("No Experts Found"));
         }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,10 +71,10 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
             SizedBox(height: 16.h),
 
             SizedBox(
-              height: widget.isVerticalList ? 550.h : 308.h,
+              height: isVerticalList ? 550.h : 308.h,
               child: ListView.separated(
                 scrollDirection:
-                    widget.isVerticalList ? Axis.vertical : Axis.horizontal,
+                    isVerticalList ? Axis.vertical : Axis.horizontal,
                 itemCount: filteredExperts.length,
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 itemBuilder: (_, index) {
@@ -116,7 +95,7 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
                       );
                     },
                     child: Container(
-                      width: widget.isVerticalList ? double.infinity : 274.w,
+                      width: isVerticalList ? double.infinity : 274.w,
                       padding: EdgeInsets.symmetric(
                         horizontal: 12.w,
                         vertical: 16.h,
@@ -243,7 +222,10 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
                                 }
                               },
                               text: "Book \$${expert.hourlyRate}/hour",
-                              backgroundColor: userType == 'EXPERT' ? AppColors.secondaryStrokeColor : AppColors.primary,
+                              backgroundColor:
+                                  userType == 'EXPERT'
+                                      ? AppColors.secondaryStrokeColor
+                                      : AppColors.primary,
                             ),
                           ),
                         ],
@@ -251,14 +233,14 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
                     ),
                   );
 
-                  return widget.isVerticalList
+                  return isVerticalList
                       ? childContainer
                       : FittedBox(child: childContainer);
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return SizedBox(
-                    height: widget.isVerticalList ? 12.h : 0.h,
-                    width: widget.isVerticalList ? 0.w : 12.w,
+                    height: isVerticalList ? 12.h : 0.h,
+                    width: isVerticalList ? 0.w : 12.w,
                   );
                 },
               ),

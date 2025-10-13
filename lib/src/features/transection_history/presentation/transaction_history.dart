@@ -1,3 +1,4 @@
+import 'package:e_learning_app/src/features/splash/riverpod/user_role_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constant/padding.dart';
@@ -52,6 +53,9 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     final transactionState = ref.watch(transactionHistoryViewModelProvider);
+    final role = ref.watch(userRoleProvider);
+
+    debugPrint('====== Role: $role ======');
 
     return Scaffold(
       appBar: AppBar(
@@ -112,6 +116,7 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
               return TransactionHistoryCard(
                 isRefunded: isRefunded,
                 transaction: transaction,
+                isExpert: role == 'EXPERT',
               );
             },
           ),

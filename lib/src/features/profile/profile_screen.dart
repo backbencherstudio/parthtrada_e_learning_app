@@ -54,30 +54,46 @@ class ProfileScreen extends ConsumerWidget {
                                   child: Center(
                                     child:
                                         profileData.image != null
-                                            ? Image.network(
-                                              "${ApiEndPoints.baseUrl}/uploads/${profileData.image!}",
-                                              height: 120.h,
-                                              width: 120.w,
-                                              errorBuilder:
-                                                  (
-                                                    context,
-                                                    error,
-                                                    stackTrace,
-                                                  ) => Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: Image.asset(
-                                                      AppImages.maiya,
-                                                      height: 110.h,
-                                                      width: 110.w,
+                                            ? Container(
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: Image.network(
+                                                "${ApiEndPoints.baseUrl}/uploads/${profileData.image!}",
+                                                height: 120.h,
+                                                width: 120.w,
+                                                errorBuilder:
+                                                    (
+                                                      context,
+                                                      error,
+                                                      stackTrace,
+                                                    ) => Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                            8.0,
+                                                          ),
+                                                      child: Image.asset(
+                                                        AppImages.maiya,
+                                                        height: 110.h,
+                                                        width: 110.w,
+                                                      ),
                                                     ),
-                                                  ),
+                                              ),
                                             )
-                                            : Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Image.asset(
-                                                AppImages.maiya,
-                                                height: 110.h,
-                                                width: 110.w,
+                                            : ClipRRect(
+                                              borderRadius:
+                                                  BorderRadiusGeometry.circular(
+                                                    90.r,
+                                                  ),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Image.asset(
+                                                  AppImages.maiya,
+                                                  height: 110.h,
+                                                  width: 110.w,
+                                                ),
                                               ),
                                             ),
                                   ),
