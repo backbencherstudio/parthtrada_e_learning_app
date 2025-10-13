@@ -97,6 +97,9 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
           state = state.copyWith(typingUserId: null);
         }
       },
+      onNotificationReceived: (Data message) {
+
+      },
     );
     _messageService!.connect();
   }

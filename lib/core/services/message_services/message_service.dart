@@ -9,6 +9,7 @@ class MessageService {
   IO.Socket? _socket;
   final String socketUrl = 'https://parthtrada.obotoronika.com';
   final void Function(Data message) onMessageReceived;
+  final void Function(Data message) onNotificationReceived;
   final void Function(String userId) onTyping;
   final void Function(String userId) onStopTyping;
 
@@ -16,6 +17,7 @@ class MessageService {
     required this.onMessageReceived,
     required this.onTyping,
     required this.onStopTyping,
+    required this.onNotificationReceived
   });
 
   Future<void> connect() async {
@@ -48,9 +50,18 @@ class MessageService {
         onMessageReceived(messageData);
       });
 
+      // Listen for raw messages (no specific event)
+      _socket!.on('received-notification', (data) {
+        debugPrint("new notification received: $data");
+        final messageData = Data.fromJson(data);
+        onNotificationReceived(messageData);
+      });
+
+
       _socket!.on('typing', (data) {
         onTyping(data['userId']);
       });
+
 
       _socket!.on('stop-typing', (data) {
         onStopTyping(data['userId']);
