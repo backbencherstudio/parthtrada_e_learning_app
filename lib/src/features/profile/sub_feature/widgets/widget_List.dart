@@ -48,7 +48,7 @@ Future <List<Widget>> callContainerGeneral(BuildContext context) async {
       title: "Payout Method",
       icon: AppIcons.creditCard,
       onTap: () {
-        context.push(RouteName.paymentMethodScreen);
+        context.push(RouteName.payoutMethodScreen);
       },
     ),
 

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:e_learning_app/src/features/profile/presentation/payment%20method/data/models/account_status_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
@@ -88,4 +89,82 @@ class PaymentMethodRepositoryImpl implements PaymentMethodRepository {
       throw Exception('Error in addCard');
     }
   }
+
+  @override
+  Future<bool> createAccount() async {
+
+    try {
+      final response = await _apiService.post(
+        ApiEndPoints.createAccount,
+      );
+      if (response.data != null && response.data['success']==true) {
+        return true;
+      } else {
+        throw Exception("Failed to add card to backend");
+      }
+    } catch (e) {
+      debugPrint("Exception in add card: $e");
+      if (e is DioException) {
+        debugPrint("Error Response: ${e.response?.data['success']}");
+        if(e.response?.data['success']==false)
+        {
+          return false;
+        }
+      }
+      throw Exception('Error in addCard');
+    }
+  }
+
+  @override
+  Future<String> getOnbordingUrl() async {
+    try {
+      final response = await _apiService.post(
+        ApiEndPoints.onboardingLink,
+      );
+      if (response.data != null && response.data['success']==true) {
+        return response.data['url'];
+      } else {
+        throw Exception("Failed to add card to backend");
+      }
+    } catch (e) {
+      debugPrint("Exception in add card: $e");
+      if (e is DioException) {
+        debugPrint("Error Response: ${e.response?.data['success']}");
+        if(e.response?.data['success']==false)
+        {
+          throw Exception('Error in addCard');
+        }
+      }
+      throw Exception('Error in addCard');
+    }
+
+
+  }
+
+  @override
+  Future<AccountStatusResponse> getAccountStatus() async {
+    try {
+      final response = await _apiService.post(ApiEndPoints.checkAccoutStatus);
+
+      if (response.data != null) {
+        return AccountStatusResponse.fromJson(response.data);
+      } else {
+        throw Exception("Empty response from server");
+      }
+    } catch (e) {
+      debugPrint("Exception in getAccountStatus: $e");
+
+      if (e is DioException) {
+        final errorData = e.response?.data;
+        debugPrint("Error Response: $errorData");
+
+        final errorMessage = errorData?['message'] ?? 'Failed to fetch account status';
+        throw Exception(errorMessage);
+      }
+
+      throw Exception("Unexpected error occurred while fetching account status");
+    }
+  }
+
+
 }
