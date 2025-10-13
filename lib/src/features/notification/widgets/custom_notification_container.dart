@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/constant/images.dart';
 import '../../../../core/services/api_services/api_end_points.dart';
 import '../../../../core/theme/theme_part/app_colors.dart';
 import '../Riverpod/accept_reject_booking_riverpod.dart';
@@ -76,10 +77,15 @@ class CustomNotificationContainer extends ConsumerWidget {
                         fit: BoxFit.cover,
                       )
                       : CircleAvatar(
-                        radius: 28.w,
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.person, color: Colors.grey, size: 28.w),
-                      ),
+                    radius: 28.w,
+                    backgroundColor: Colors.white,
+                    child: Image.asset(
+                      AppImages.maiya,
+                      width: 32.w,
+                      height: 32.w,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
             ),
 
             SizedBox(height: 16.h),
