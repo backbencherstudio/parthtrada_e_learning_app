@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import '../../../../../core/theme/theme_part/app_colors.dart';
 import '../../data/model/transaction_history_response.dart';
 
 class TransactionHistoryCard extends StatelessWidget {
   final bool isRefunded;
   final Data transaction;
+  final bool isExpert;
 
   const TransactionHistoryCard({
     super.key,
     required this.isRefunded,
-    required this.transaction,
+    required this.transaction, required this.isExpert,
   });
 
   @override
@@ -37,7 +39,7 @@ class TransactionHistoryCard extends StatelessWidget {
               ),
               SizedBox(height: 2.h),
               Text(
-                transaction.createdAt ?? 'N/A',
+                DateFormat('yyyy-MM-dd, hh:mm a').format(DateTime.parse(transaction.createdAt ?? 'N/A')),
                 style: textTheme.labelSmall!.copyWith(
                   fontWeight: FontWeight.w400,
                 ),
@@ -56,7 +58,7 @@ class TransactionHistoryCard extends StatelessWidget {
           Text(
             '${getBalanceIcon()} \$${transaction.amount?.toString() ?? '0'}',
             style: textTheme.labelMedium!.copyWith(
-              color: isRefunded ? AppColors.refundedColor : AppColors.error,
+              color: isRefunded ? AppColors.refundedColor : isExpert ? AppColors.primary : AppColors.error,
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -66,6 +68,6 @@ class TransactionHistoryCard extends StatelessWidget {
   }
 
   String getBalanceIcon() {
-    return isRefunded ? '+' : '-';
+    return isExpert ? isRefunded ? '-' : '+' : isRefunded ? '+' : '-';
   }
 }

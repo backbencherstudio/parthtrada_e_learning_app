@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/constant/images.dart';
 import '../../../../../core/constant/padding.dart';
 import '../../../../../core/routes/route_name.dart';
 import '../../../../../core/services/api_services/api_end_points.dart';
@@ -62,14 +63,15 @@ class StudentDetailsScreen extends ConsumerWidget {
                           fit: BoxFit.cover,
                         )
                         : CircleAvatar(
-                          radius: 50.w,
-                          backgroundColor: Colors.white,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.grey,
-                            size: 28.w,
-                          ),
-                        ),
+                      radius: 50.w,
+                      backgroundColor: Colors.white,
+                      child: Image.asset(
+                        AppImages.maiya,
+                        width: 32.w,
+                        height: 32.w,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
               ),
             ),
             SizedBox(height: 30.h),
