@@ -1,6 +1,8 @@
+import 'package:e_learning_app/core/routes/route_name.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/view/webview_screen.dart' show WebViewScreen, StripeWebViewScreen;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../viewmodel/payment_method_notifier_provider.dart';
 
@@ -103,10 +105,9 @@ class _PayoutMethodScreenState extends ConsumerState<PayoutMethodScreen> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              // TODO: Implement withdraw functionality
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Withdraw functionality not implemented')),
-              );
+
+              context.pushNamed(RouteName.withdrawScreen);
+
             },
             child: const Text('Withdraw'),
           ),

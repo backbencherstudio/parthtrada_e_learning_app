@@ -200,6 +200,7 @@ import '../../src/features/message/presentation/message_screen/message_screen.da
 import '../../src/features/notification/data/model/notification_model.dart';
 import '../../src/features/notification/data/model/wrapper_model.dart';
 import '../../src/features/profile/presentation/payment method/view/payment_method_screen.dart';
+import '../../src/features/profile/presentation/payment method/view/withdraw_screen.dart';
 import '../../src/features/profile/sub_feature/past_call/presentation/past_call.dart';
 import '../../src/features/profile/sub_feature/privacy_policy/presentation/privacy_policy.dart';
 import '../../src/features/profile/sub_feature/sent_request/presentation/sent_request_page.dart';
@@ -283,6 +284,19 @@ class RouteConfig {
               context: context,
               state: state,
               child: PaymentMethodScreen(),
+            );
+          },
+        ),
+
+        GoRoute(
+          name: RouteName.withdrawScreen,
+          path: RouteName.withdrawScreen,
+          pageBuilder: (context, state) {
+            return buildPageWithTransition(
+              transitionType: PageTransitionType.fade,
+              context: context,
+              state: state,
+              child: WithdrawScreen(),
             );
           },
         ),
