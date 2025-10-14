@@ -34,6 +34,8 @@ Future <List<Widget>> callContainerGeneral(BuildContext context) async {
         showBeExpertBottomSheet(context);
       },
     ),
+
+    if( userType == "STUDENT")
     ProfileContainer(
       title: "Payment Method",
       icon: AppIcons.creditCard,
@@ -41,6 +43,17 @@ Future <List<Widget>> callContainerGeneral(BuildContext context) async {
         context.push(RouteName.paymentMethodScreen);
       },
     ),
+
+    ProfileContainer(
+      title: "Payout Method",
+      icon: AppIcons.creditCard,
+      onTap: () {
+        context.push(RouteName.payoutMethodScreen);
+      },
+    ),
+
+
+
     // ProfileContainer(
     //   title: "Notifications",
     //   icon: AppIcons.notification,

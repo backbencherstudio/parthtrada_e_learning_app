@@ -190,6 +190,7 @@ import 'package:e_learning_app/src/features/profile/presentation/help_and_suppor
 import 'package:e_learning_app/src/features/profile/presentation/language/language.dart';
 import 'package:e_learning_app/src/features/profile/presentation/notification/view/notification.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/view/add_card_screen.dart';
+import 'package:e_learning_app/src/features/profile/presentation/payment%20method/view/payout_method_screen.dart';
 import 'package:e_learning_app/src/features/profile/presentation/user%20profile/view/user_profile.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/expert_search_screen.dart';
 import 'package:flutter/material.dart';
@@ -282,6 +283,19 @@ class RouteConfig {
               context: context,
               state: state,
               child: PaymentMethodScreen(),
+            );
+          },
+        ),
+
+        GoRoute(
+          name: RouteName.payoutMethodScreen,
+          path: RouteName.payoutMethodScreen,
+          pageBuilder: (context, state) {
+            return buildPageWithTransition(
+              transitionType: PageTransitionType.slideRightToLeft,
+              context: context,
+              state: state,
+              child: PayoutMethodScreen(),
             );
           },
         ),

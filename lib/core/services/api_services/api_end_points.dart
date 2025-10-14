@@ -26,4 +26,8 @@ class ApiEndPoints {
   static String confirmPayment = '$baseUrl/payments/confirm-payment';
   static String getStudentById(String sId) => '$baseUrl/students/$sId';
   static String transactionsHistory = '/payments/transactions';
+
+  static String createAccount = '/payments/stripe/create-account';
+  static String onboardingLink = '/payments/stripe/onboarding-link';
+  static String checkAccoutStatus = '/payments/stripe/status';
 }

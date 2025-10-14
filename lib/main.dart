@@ -21,8 +21,9 @@ void main() async {
   await notificationService.init();
 
   //Test token for dev------------------->>>
-   await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2c0eGJxNjAwMDN2YzRvNW15bzd5NHEiLCJlbWFpbCI6ImFsaWNlMUB0ZXN0LmNvbSIsIm5hbWUiOiJBbGljZSBTbWl0aCIsImFjdGl2ZVByb2ZpbGUiOiJTVFVERU5UIiwiaWF0IjoxNzYwMzI3MTU3LCJleHAiOjE3NjA5MzE5NTd9.L6psONVtjcLVeV0fB7xC2vspFmaGhS635XR-wZRWbH8"); // asifrezan.office@gmail.com
-  // await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2c0djY2ZzAwMDF2YzRvNGZ5dGFsaGkiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2VAZ21haWwuY29tIiwibmFtZSI6IkFzaWYuIiwiYWN0aXZlUHJvZmlsZSI6IlNUVURFTlQiLCJpYXQiOjE3NjAzMjk5NDIsImV4cCI6MTc2MDkzNDc0Mn0.oDs3tufichNf5bC3ReO-yb030vBaK06CfHvjknt94ao");
+  // await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2c0eGJxNjAwMDN2YzRvNW15bzd5NHEiLCJlbWFpbCI6ImFsaWNlMUB0ZXN0LmNvbSIsIm5hbWUiOiJBbGljZSBTbWl0aCIsImFjdGl2ZVByb2ZpbGUiOiJTVFVERU5UIiwiaWF0IjoxNzYwMzI3MTU3LCJleHAiOjE3NjA5MzE5NTd9.L6psONVtjcLVeV0fB7xC2vspFmaGhS635XR-wZRWbH8"); // asifrezan.office@gmail.com
+   //await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ2c0djY2ZzAwMDF2YzRvNGZ5dGFsaGkiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2VAZ21haWwuY29tIiwibmFtZSI6IkFzaWYuIiwiYWN0aXZlUHJvZmlsZSI6IlNUVURFTlQiLCJpYXQiOjE3NjAzMjk5NDIsImV4cCI6MTc2MDkzNDc0Mn0.oDs3tufichNf5bC3ReO-yb030vBaK06CfHvjknt94ao");
+   await LoginPreferences().setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ3EzZTV0djAwMDB2ODcwbmtxOTdwbmkiLCJlbWFpbCI6ImFzaWZyZXphbi5vZmZpY2UyQGdtYWlsLmNvbSIsIm5hbWUiOiJBc2lmIDIiLCJhY3RpdmVQcm9maWxlIjoiRVhQRVJUIiwiaWF0IjoxNzYwNDE3OTgyLCJleHAiOjE3NjEwMjI3ODJ9.Aclh6xPPthOVfrQgXVli4jZrsi497OPh346RF0Z3TQQ");
 
   final savedToken = await LoginPreferences().loadAuthToken();
   bool isLoggedIn = false;
@@ -46,6 +47,9 @@ void main() async {
     },
     onStopTyping: (String userId) {
       debugPrint("User stopped typing globally: $userId");
+    },
+    onNotificationReceived: (Data message) {
+      notificationService.showNotification(message);
     },
   );
   await globalMessageService.connect();
