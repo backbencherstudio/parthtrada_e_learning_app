@@ -17,6 +17,7 @@ class ExpertDetailsBody extends StatelessWidget {
   final Stats? stats;
   final String experience;
   final String expertId;
+  final Availability availability;
 
   const ExpertDetailsBody({
     super.key,
@@ -24,15 +25,11 @@ class ExpertDetailsBody extends StatelessWidget {
     required this.skills,
     required this.availableDays,
     required this.availableTime,
-    this.stats, required this.experience, required this.expertId,
+    this.stats, required this.experience, required this.expertId, required this.availability,
   });
 
   @override
   Widget build(BuildContext context) {
-    final availability =
-        availableDays.isNotEmpty
-            ? "${availableDays.join(', ')} : ${availableTime.join(', ')}"
-            : "Not available";
 
     return Padding(
       padding: AppPadding.screenHorizontal,
@@ -54,12 +51,18 @@ class ExpertDetailsBody extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           SizedBox(height: 10.h),
-          Text(
-            availability,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.secondaryTextColor,
-            ),
+
+          Column(
+            children: List.generate(availability.days?.length ?? 0, (index) {
+              return Row(
+                children: [
+                  Text('${availability.days?[index]} : '),
+                  Text(availability.time?[index] ?? ''),
+                ],
+              );
+            }),
           ),
+
           SizedBox(height: 30.h),
 
           /// Reviews Section

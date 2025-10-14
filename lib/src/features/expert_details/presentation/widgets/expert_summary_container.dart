@@ -20,12 +20,15 @@ class ExpertDetailsSummaryContainer extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(right: 6.w),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+        padding: EdgeInsets.all(8.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),
           color: AppColors.secondary,
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           spacing: 6.h,
           children: [
             Text(
@@ -45,10 +48,12 @@ class ExpertDetailsSummaryContainer extends StatelessWidget {
                     BlendMode.srcIn,
                   ),
                 ),
-                Text(
-                  bodyText,
-                  style: textTheme.bodyLarge?.copyWith(
-                    color: AppColors.primary,
+                Expanded(
+                  child: Text(
+                    bodyText,
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: AppColors.primary,
+                    ),
                   ),
                 ),
               ],

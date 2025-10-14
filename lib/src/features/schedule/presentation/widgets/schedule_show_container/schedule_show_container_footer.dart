@@ -64,8 +64,8 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                           context: context,
                           onPressed: () async {
                             final actionUrl =
-                                '/experts/bookings/actions/${meetingScheduleModel.id}/reject';
-
+                                '/experts/bookings/actions/${meetingScheduleModel.id}/reject/${meetingScheduleModel.notificationId}';
+                            debugPrint('action url: $actionUrl');
                             if (actionUrl == null || actionUrl.isEmpty) return;
 
                             await ref
@@ -121,8 +121,8 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                       context: context,
                       onPressed: () async {
                         final actionUrl =
-                            '/experts/bookings/actions/${meetingScheduleModel.id}/accept';
-
+                            '/experts/bookings/actions/${meetingScheduleModel.id}/accept/${meetingScheduleModel.notificationId}';
+debugPrint('action url: $actionUrl');
                         if (actionUrl == null || actionUrl.isEmpty) return;
 
                         await ref.read(acceptRejectBookingProvider.notifier).patchBookingAction(actionUrl);
