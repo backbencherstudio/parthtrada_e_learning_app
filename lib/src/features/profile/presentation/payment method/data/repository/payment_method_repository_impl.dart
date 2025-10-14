@@ -92,35 +92,42 @@ class PaymentMethodRepositoryImpl implements PaymentMethodRepository {
 
   @override
   Future<bool> createAccount() async {
-
     try {
-      final response = await _apiService.post(
-        ApiEndPoints.createAccount,
-      );
-      if (response.data != null && response.data['success']==true) {
-        return true;
+      final response = await _apiService.post(ApiEndPoints.createAccount);
+
+      // Log the full response for debugging
+      debugPrint("createAccount response: ${response.data}");
+
+      // Check if response.data is a map and has 'success' key
+      if (response.data is Map<String, dynamic> && response.data['success'] is bool) {
+        if (response.data['success'] == true) {
+          return true;
+        } else {
+          throw Exception("Failed to create account: ${response.data['message'] ?? 'Unknown error'}");
+        }
       } else {
-        throw Exception("Failed to add card to backend");
+        throw Exception("Invalid response format: ${response.data}");
       }
-    } catch (e) {
-      debugPrint("Exception in add card: $e");
+    } catch (e, stackTrace) {
+      debugPrint("Exception in createAccount: $e\nStackTrace: $stackTrace");
       if (e is DioException) {
-        debugPrint("Error Response: ${e.response?.data['success']}");
-        if(e.response?.data['success']==false)
-        {
+        debugPrint("Error Response: ${e.response?.data}");
+        if (e.response?.data is Map<String, dynamic> && e.response?.data['success'] == false) {
           return false;
         }
       }
-      throw Exception('Error in addCard');
+      throw Exception('Error in createAccount: $e');
     }
   }
 
   @override
   Future<String> getOnbordingUrl() async {
     try {
-      final response = await _apiService.post(
+      final response = await _apiService.get(
         ApiEndPoints.onboardingLink,
       );
+      debugPrint("get url response: ${response.data}");
+
       if (response.data != null && response.data['success']==true) {
         return response.data['url'];
       } else {
