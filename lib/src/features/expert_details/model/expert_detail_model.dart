@@ -50,6 +50,7 @@ class Expert {
   List<String>? skills;
   List<String>? availableDays;
   List<String>? availableTime;
+  Availability? availability;
   User? user;
 
   Expert({
@@ -63,6 +64,7 @@ class Expert {
     this.skills,
     this.availableDays,
     this.availableTime,
+    this.availability,
     this.user,
   });
 
@@ -74,22 +76,20 @@ class Expert {
     description = json['description'];
     experience = json['experience'];
 
-    // Safe numeric parsing for hourlyRate
-    if (json['hourlyRate'] != null) {
-      final val = json['hourlyRate'];
-      hourlyRate =
-          val is String
-              ? double.tryParse(val)
-              : (val is num ? val.toDouble() : null);
-    }
+    final val = json['hourlyRate'];
+    hourlyRate = val is String
+        ? double.tryParse(val)
+        : (val is num ? val.toDouble() : null);
 
-    skills = (json['skills'] as List?)?.map((e) => e.toString()).toList() ?? [];
+    skills = (json['skills'] as List?)?.map((e) => e.toString()).toList();
     availableDays =
-        (json['availableDays'] as List?)?.map((e) => e.toString()).toList() ??
-        [];
+        (json['availableDays'] as List?)?.map((e) => e.toString()).toList();
     availableTime =
-        (json['availableTime'] as List?)?.map((e) => e.toString()).toList() ??
-        [];
+        (json['availableTime'] as List?)?.map((e) => e.toString()).toList();
+
+    availability = json['availability'] != null
+        ? Availability.fromJson(json['availability'])
+        : null;
 
     user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
@@ -106,7 +106,27 @@ class Expert {
     result['skills'] = skills;
     result['availableDays'] = availableDays;
     result['availableTime'] = availableTime;
+    if (availability != null) result['availability'] = availability!.toJson();
     if (user != null) result['user'] = user!.toJson();
+    return result;
+  }
+}
+
+class Availability {
+  List<String>? days;
+  List<String>? time;
+
+  Availability({this.days, this.time});
+
+  Availability.fromJson(Map<String, dynamic> json) {
+    days = (json['days'] as List?)?.map((e) => e.toString()).toList();
+    time = (json['time'] as List?)?.map((e) => e.toString()).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final result = <String, dynamic>{};
+    result['days'] = days;
+    result['time'] = time;
     return result;
   }
 }
@@ -153,19 +173,15 @@ class Stats {
   });
 
   Stats.fromJson(Map<String, dynamic> json) {
-    // Safe parsing for int fields
-    if (json['totalReviews'] != null) {
-      final val = json['totalReviews'];
-      totalReviews = val is String ? int.tryParse(val) : (val as int?);
-    }
+    totalReviews = json['totalReviews'] is String
+        ? int.tryParse(json['totalReviews'])
+        : json['totalReviews'];
 
-    if (json['averageRating'] != null) {
-      final val = json['averageRating'];
-      averageRating =
-          val is String
-              ? double.tryParse(val)
-              : (val is num ? val.toDouble() : null);
-    }
+    averageRating = json['averageRating'] is String
+        ? double.tryParse(json['averageRating'])
+        : (json['averageRating'] is num
+        ? (json['averageRating'] as num).toDouble()
+        : null);
 
     if (json['ratingDistribution'] != null) {
       ratingDistribution = <RatingDistribution>[];
@@ -174,10 +190,9 @@ class Stats {
       });
     }
 
-    if (json['totalStudents'] != null) {
-      final val = json['totalStudents'];
-      totalStudents = val is String ? int.tryParse(val) : (val as int?);
-    }
+    totalStudents = json['totalStudents'] is String
+        ? int.tryParse(json['totalStudents'])
+        : json['totalStudents'];
   }
 
   Map<String, dynamic> toJson() {
@@ -201,15 +216,12 @@ class RatingDistribution {
   RatingDistribution({this.rating, this.count, this.percentage});
 
   RatingDistribution.fromJson(Map<String, dynamic> json) {
-    if (json['rating'] != null) {
-      final val = json['rating'];
-      rating = val is String ? int.tryParse(val) : (val as int?);
-    }
+    rating = json['rating'] is String
+        ? int.tryParse(json['rating'])
+        : json['rating'];
 
-    if (json['count'] != null) {
-      final val = json['count'];
-      count = val is String ? int.tryParse(val) : (val as int?);
-    }
+    count =
+    json['count'] is String ? int.tryParse(json['count']) : json['count'];
 
     percentage = json['percentage'];
   }

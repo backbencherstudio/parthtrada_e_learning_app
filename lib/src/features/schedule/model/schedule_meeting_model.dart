@@ -48,6 +48,7 @@ class Booking {
   String? answer1;
   String? answer2;
   String? answer3;
+  String? notificationId;
   DateTime createdAt;
   DateTime updatedAt;
   Review? review;
@@ -69,6 +70,7 @@ class Booking {
     this.answer1,
     this.answer2,
     this.answer3,
+    this.notificationId,
     required this.createdAt,
     required this.updatedAt,
     this.review,
@@ -96,6 +98,7 @@ class Booking {
       answer1: json['answer1'],
       answer2: json['answer2'],
       answer3: json['answer3'],
+      notificationId: json['notification_id'],
       createdAt: DateTime.parse(
         json['createdAt'] ?? DateTime.now().toIso8601String(),
       ),
@@ -107,28 +110,6 @@ class Booking {
       shouldRefund: json['should_refund'] ?? null,
     );
   }
-
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'studentId': studentId,
-    'expertId': expertId,
-    'date': date.toIso8601String(),
-    'expertDateTime': expertDateTime.toIso8601String(),
-    'studentDateTime': studentDateTime.toIso8601String(),
-    'meetingLink': meetingLink,
-    'sessionDetails': sessionDetails,
-    'sessionDuration': sessionDuration,
-    'status': status,
-    'refund_reason': refundReason,
-    'answer1': answer1,
-    'answer2': answer2,
-    'answer3': answer3,
-    'createdAt': createdAt.toIso8601String(),
-    'updatedAt': updatedAt.toIso8601String(),
-    'review': review,
-    'should_review': shouldReview,
-    'should_refund': shouldRefund,
-  };
 }
 
 class Review {
