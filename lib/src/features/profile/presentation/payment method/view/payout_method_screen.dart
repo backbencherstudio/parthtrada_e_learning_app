@@ -20,7 +20,16 @@ class _PayoutMethodScreenState extends ConsumerState<PayoutMethodScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Payout Method'),
+        centerTitle: true,
+        backgroundColor: Colors.black45,
+        title: const Text(
+          'Payout Method',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: Center(
         child: paymentState.isLoadingAccountStatus

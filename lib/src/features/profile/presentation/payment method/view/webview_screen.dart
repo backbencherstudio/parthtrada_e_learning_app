@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class StripeWebViewScreen extends StatefulWidget {
+import '../viewmodel/payment_method_notifier_provider.dart';
+
+class StripeWebViewScreen extends ConsumerStatefulWidget {
   final String url;
 
   const StripeWebViewScreen({super.key, required this.url});
 
   @override
-  State<StripeWebViewScreen> createState() => _StripeWebViewScreenState();
+  ConsumerState<StripeWebViewScreen> createState() => _StripeWebViewScreenState();
 }
 
-class _StripeWebViewScreenState extends State<StripeWebViewScreen> {
+class _StripeWebViewScreenState extends ConsumerState<StripeWebViewScreen> {
   late final WebViewController _controller;
 
   @override
@@ -20,9 +23,13 @@ class _StripeWebViewScreenState extends State<StripeWebViewScreen> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onPageStarted: (String url) {
+          onPageStarted: (String url) async {
             if (url.startsWith('https://localhost:8000/expert/')) {
-              Navigator.of(context).pop();
+              await ref.read(paymentMethodNotifierProvider.notifier).getAccountStatus();
+
+              if (mounted) {
+                Navigator.of(context).pop();
+              }
             }
           },
         ),
@@ -33,7 +40,14 @@ class _StripeWebViewScreenState extends State<StripeWebViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Connect bank", textAlign: TextAlign.center,)),
+      appBar: AppBar(
+        title: const Text(
+          "Connect Bank",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 16),
+        ),
+        centerTitle: true,
+      ),
       body: WebViewWidget(controller: _controller),
     );
   }
