@@ -99,7 +99,11 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                               loading: () {},
                               error: (error, _) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Error: This booking has already been processed")),
+                                  SnackBar(
+                                    content: Text(
+                                      "Error: This booking has already been processed",
+                                    ),
+                                  ),
                                 );
                               },
                             );
@@ -122,10 +126,12 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                       onPressed: () async {
                         final actionUrl =
                             '/experts/bookings/actions/${meetingScheduleModel.id}/accept/${meetingScheduleModel.notificationId}';
-debugPrint('action url: $actionUrl');
+                        debugPrint('action url: $actionUrl');
                         if (actionUrl == null || actionUrl.isEmpty) return;
 
-                        await ref.read(acceptRejectBookingProvider.notifier).patchBookingAction(actionUrl);
+                        await ref
+                            .read(acceptRejectBookingProvider.notifier)
+                            .patchBookingAction(actionUrl);
 
                         final state = ref.read(acceptRejectBookingProvider);
 
@@ -151,7 +157,11 @@ debugPrint('action url: $actionUrl');
                           loading: () {},
                           error: (error, _) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Error: This booking has already been processed")),
+                              SnackBar(
+                                content: Text(
+                                  "Error: This booking has already been processed",
+                                ),
+                              ),
                             );
                           },
                         );
@@ -232,7 +242,9 @@ debugPrint('action url: $actionUrl');
                                         ),
                                       ),
                                     );
-                                    await ref.read(scheduleProvider.notifier).refreshMeetings();
+                                    await ref
+                                        .read(scheduleProvider.notifier)
+                                        .refreshMeetings();
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
@@ -244,14 +256,23 @@ debugPrint('action url: $actionUrl');
                                 loading: () {},
                                 error: (error, _) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text("Error: This booking has already been processed")),
+                                    SnackBar(
+                                      content: Text(
+                                        "Error: This booking has already been processed",
+                                      ),
+                                    ),
                                   );
                                 },
                               );
-                              ref.read(acceptRejectBookingProvider.notifier).reset();
+                              ref
+                                  .read(acceptRejectBookingProvider.notifier)
+                                  .reset();
                             }
                           },
-                          text: meetingScheduleModel.status == "COMPLETED" ? "Completed" : "Cancel",
+                          text:
+                              meetingScheduleModel.status == "COMPLETED"
+                                  ? "Completed"
+                                  : "Cancel",
                           backgroundColor: Color(0xff2B2C31),
                         ),
                       );

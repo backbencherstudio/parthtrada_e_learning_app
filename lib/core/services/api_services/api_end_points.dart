@@ -1,7 +1,7 @@
 class ApiEndPoints {
   static const String baseUrl = 'https://parthtrada.obotoronika.com';
   static const String profileInfo = '/profile/me';
-  static const String expertList = '$baseUrl/experts';
+  static String expertList(int page, int limit) => '$baseUrl/experts?page=$page&perPage=$limit';
   static const String skillList = '$baseUrl/experts/skills';
   static const String statList = '$baseUrl/home/stats';
   static String expertDetail(String expertId) => '$baseUrl/experts/$expertId';
