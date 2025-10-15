@@ -72,46 +72,49 @@ class _PayoutMethodScreenState extends ConsumerState<PayoutMethodScreen> {
 
     if (accountStatus.isOnboarded == true) {
       // Account is connected
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.account_balance_wallet, color: Colors.green, size: 50),
-          const SizedBox(height: 16),
-          Text(
-            'Account Connected',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Account ID: ${accountStatus.accountId ?? 'N/A'}',
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-          if (accountStatus.requirements?.currentlyDue?.isNotEmpty == true)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(
-                'Pending Requirements: ${accountStatus.requirements!.currentlyDue!.join(', ')}',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.red),
-              ),
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.account_balance_wallet, color: Colors.green, size: 50),
+            const SizedBox(height: 16),
+            Text(
+              'Account Connected',
+              style: Theme.of(context).textTheme.titleLarge,
             ),
-          if (accountStatus.requirements?.disabledReason != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(
-                'Disabled Reason: ${accountStatus.requirements!.disabledReason}',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.red),
-              ),
+            const SizedBox(height: 8),
+            Text(
+              'Account ID: ${accountStatus.accountId ?? 'N/A'}',
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
+            // if (accountStatus.requirements?.currentlyDue?.isNotEmpty == true)
+            //   Padding(
+            //     padding: const EdgeInsets.symmetric(vertical: 8.0),
+            //     child: Text(
+            //       'Pending Requirements: ${accountStatus.requirements!.currentlyDue!.join(', ')}',
+            //       style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.red),
+            //     ),
+            //   ),
+            // if (accountStatus.requirements?.disabledReason != null)
+            //   Padding(
+            //     padding: const EdgeInsets.symmetric(vertical: 8.0),
+            //     child: Text(
+            //       'Disabled Reason: ${accountStatus.requirements!.disabledReason}',
+            //       style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.red),
+            //     ),
+            //   ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
 
-              context.pushNamed(RouteName.withdrawScreen);
+                context.pushNamed(RouteName.withdrawScreen);
 
-            },
-            child: const Text('Withdraw'),
-          ),
-        ],
+              },
+              child: const Text('Withdraw'),
+            ),
+          ],
+        ),
       );
     } else {
       // Account is not connected

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../repository/api/expert/get_card_repository.dart';
 import '../../../../book_expert/model/get_card_data_model.dart';
 import '../data/models/account_status_response.dart';
+import '../data/models/balance_response.dart';
+import '../data/models/payout_response.dart';
 import '../data/repository/payment_method_repository_impl.dart';
 
 class PaymentMethodState {
@@ -27,6 +29,14 @@ class PaymentMethodState {
   final AccountStatusResponse? accountStatus;
   final String? errorMessageAccountStatus;
 
+  final bool isLoadingCheckBalance;
+  final BalanceResponse? balance;
+  final String? errorMessageCheckBalance;
+
+  final bool isLoadingPayoutBalance;
+  final PayoutResponse? payoutResponse;
+  final String? errorMessagePayoutBalance;
+
   const PaymentMethodState({
     this.isLoading = false,
     this.message,
@@ -43,6 +53,12 @@ class PaymentMethodState {
     this.isLoadingAccountStatus = false,
     this.accountStatus,
     this.errorMessageAccountStatus,
+    this.isLoadingCheckBalance = false,
+    this.balance,
+    this.errorMessageCheckBalance,
+    this.isLoadingPayoutBalance = false,
+    this.payoutResponse,
+    this.errorMessagePayoutBalance,
   });
 
   PaymentMethodState copyWith({
@@ -61,6 +77,12 @@ class PaymentMethodState {
     bool? isLoadingAccountStatus,
     AccountStatusResponse? accountStatus,
     String? errorMessageAccountStatus,
+    bool? isLoadingCheckBalance,
+    BalanceResponse? balance,
+    String? errorMessageCheckBalance,
+    bool? isLoadingPayoutBalance,
+    PayoutResponse? payoutResponse,
+    String? errorMessagePayoutBalance,
   }) {
     return PaymentMethodState(
       isLoading: isLoading ?? this.isLoading,
@@ -88,6 +110,15 @@ class PaymentMethodState {
       accountStatus: accountStatus ?? this.accountStatus,
       errorMessageAccountStatus:
       errorMessageAccountStatus ?? this.errorMessageAccountStatus,
+      isLoadingCheckBalance: isLoadingCheckBalance ?? this.isLoadingCheckBalance,
+      balance: balance ?? this.balance,
+      errorMessageCheckBalance:
+      errorMessageCheckBalance ?? this.errorMessageCheckBalance,
+      isLoadingPayoutBalance:
+      isLoadingPayoutBalance ?? this.isLoadingPayoutBalance,
+      payoutResponse: payoutResponse ?? this.payoutResponse,
+      errorMessagePayoutBalance:
+      errorMessagePayoutBalance ?? this.errorMessagePayoutBalance,
     );
   }
 }
@@ -102,10 +133,8 @@ class PaymentMethodNotifier extends StateNotifier<PaymentMethodState> {
 
   Future<void> _initialize() async {
     await getAccountStatus();
+    await checkBalance();
   }
-
-
-
 
   Future<void> addNewCard({
     required String cardNumber,
@@ -251,6 +280,56 @@ class PaymentMethodNotifier extends StateNotifier<PaymentMethodState> {
         isLoadingAccountStatus: false,
         accountStatus: null,
         errorMessageAccountStatus: "Error fetching account status: $e",
+      );
+    }
+  }
+
+  Future<void> checkBalance() async {
+    try {
+      state = state.copyWith(
+        isLoadingCheckBalance: true,
+        balance: null,
+        errorMessageCheckBalance: null,
+      );
+
+      final balance = await _repository.checkBalance();
+
+      state = state.copyWith(
+        isLoadingCheckBalance: false,
+        balance: balance,
+        errorMessageCheckBalance: null,
+      );
+    } catch (e, stackTrace) {
+      debugPrint("Error in checkBalance: $e\nStackTrace: $stackTrace");
+      state = state.copyWith(
+        isLoadingCheckBalance: false,
+        balance: null,
+        errorMessageCheckBalance: "Error fetching balance: $e",
+      );
+    }
+  }
+
+  Future<void> payoutBalance(double amount) async {
+    try {
+      state = state.copyWith(
+        isLoadingPayoutBalance: true,
+        payoutResponse: null,
+        errorMessagePayoutBalance: null,
+      );
+
+      final payoutResponse = await _repository.payoutBalance(amount);
+
+      state = state.copyWith(
+        isLoadingPayoutBalance: false,
+        payoutResponse: payoutResponse,
+        errorMessagePayoutBalance: payoutResponse.success == true ? null : "Failed to initiate payout",
+      );
+    } catch (e, stackTrace) {
+      debugPrint("Error in payoutBalance: $e\nStackTrace: $stackTrace");
+      state = state.copyWith(
+        isLoadingPayoutBalance: false,
+        payoutResponse: null,
+        errorMessagePayoutBalance: "Error initiating payout: $e",
       );
     }
   }

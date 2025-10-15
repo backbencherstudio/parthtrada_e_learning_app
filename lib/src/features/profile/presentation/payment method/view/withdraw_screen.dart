@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:e_learning_app/src/features/profile/presentation/payment%20method/viewmodel/payment_method_notifier_provider.dart';
 
-class WithdrawScreen extends StatefulWidget {
+class WithdrawScreen extends ConsumerStatefulWidget {
   const WithdrawScreen({super.key});
 
   @override
-  State<WithdrawScreen> createState() => _WithdrawScreenState();
+  _WithdrawScreenState createState() => _WithdrawScreenState();
 }
 
-class _WithdrawScreenState extends State<WithdrawScreen> {
+class _WithdrawScreenState extends ConsumerState<WithdrawScreen> {
   final TextEditingController _amountController = TextEditingController();
 
-  // Static for now
-  final double _currentBalance = 250.75;
+  @override
+  void initState() {
+    super.initState();
+    // Fetch balance when the screen loads
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(paymentMethodNotifierProvider.notifier).checkBalance();
+    });
+  }
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    super.dispose();
+  }
 
   void _showSuccessDialog(double amount) {
     showDialog(
@@ -50,19 +64,19 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
               const SizedBox(height: 24),
               Row(
                 children: [
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        "View Details",
-                        style: GoogleFonts.inter(
-                          fontSize: 16,
-                          color: const Color(0xFF26A69A),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
+                  // Expanded(
+                  //   child: TextButton(
+                  //     onPressed: () => Navigator.pop(context),
+                  //     child: Text(
+                  //       "View Details",
+                  //       style: GoogleFonts.inter(
+                  //         fontSize: 16,
+                  //         color: const Color(0xFF26A69A),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(width: 8),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
@@ -96,7 +110,9 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
   }
 
   void _onConfirmWithdraw() {
+    final paymentState = ref.read(paymentMethodNotifierProvider);
     final amountText = _amountController.text.trim();
+
     if (amountText.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -128,7 +144,8 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
       return;
     }
 
-    if (amount > _currentBalance) {
+    final currentBalance = paymentState.balance?.data?.amount?.toDouble() ?? 0;
+    if (amount > currentBalance) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -143,12 +160,43 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
       return;
     }
 
-    // Simulate success
-    _showSuccessDialog(amount);
+    // Initiate payout
+    ref.read(paymentMethodNotifierProvider.notifier).payoutBalance(double.tryParse(amountText)?? 0).then((_) {
+      final updatedState = ref.read(paymentMethodNotifierProvider);
+      if (updatedState.payoutResponse?.success == true) {
+        _showSuccessDialog(amount);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              updatedState.errorMessagePayoutBalance ?? "Failed to initiate payout",
+              style: GoogleFonts.inter(color: const Color(0xFFE0E0E0)),
+            ),
+            backgroundColor: const Color(0xFFCF6679),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        );
+      }
+    }).catchError((e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Error: $e",
+            style: GoogleFonts.inter(color: const Color(0xFFE0E0E0)),
+          ),
+          backgroundColor: const Color(0xFFCF6679),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final paymentState = ref.watch(paymentMethodNotifierProvider);
+
     return Scaffold(
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
@@ -214,14 +262,31 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  Text(
-                    "\$${_currentBalance.toStringAsFixed(2)}",
+                  paymentState.isLoadingCheckBalance
+                      ? const CircularProgressIndicator(
+                    color: Color(0xFF26A69A),
+                  )
+                      : Text(
+                    paymentState.balance != null
+                        ? "\$${paymentState.balance!.data!.amount!.toDouble().toStringAsFixed(2)}"
+                        : "Balance: Not loaded",
                     style: GoogleFonts.inter(
                       fontSize: 40,
                       fontWeight: FontWeight.w800,
                       color: const Color(0xFFE0E0E0),
                     ),
                   ),
+                  if (paymentState.errorMessageCheckBalance != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        paymentState.errorMessageCheckBalance!,
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          color: const Color(0xFFCF6679),
+                        ),
+                      ),
+                    ),
                   const SizedBox(height: 8),
                   Text(
                     "You can withdraw up to your available balance.",
@@ -319,7 +384,9 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: _onConfirmWithdraw,
+                      onPressed: paymentState.isLoadingPayoutBalance
+                          ? null
+                          : _onConfirmWithdraw,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF26A69A),
                         shape: RoundedRectangleBorder(
@@ -328,7 +395,11 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                         elevation: 2,
                         shadowColor: const Color(0xFF26A69A).withOpacity(0.4),
                       ),
-                      child: Text(
+                      child: paymentState.isLoadingPayoutBalance
+                          ? const CircularProgressIndicator(
+                        color: Color(0xFFE0E0E0),
+                      )
+                          : Text(
                         "Confirm Withdraw",
                         style: GoogleFonts.inter(
                           fontSize: 16,

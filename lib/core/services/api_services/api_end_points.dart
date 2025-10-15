@@ -30,4 +30,6 @@ class ApiEndPoints {
   static String createAccount = '/payments/stripe/create-account';
   static String onboardingLink = '/payments/stripe/onboarding-link';
   static String checkAccoutStatus = '/payments/stripe/status';
+  static String balanceCheck = '/payments/experts/balance';
+  static String payoutBalance = '/payments/experts/payouts';
 }
