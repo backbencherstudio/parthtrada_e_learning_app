@@ -113,8 +113,10 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
               final transaction = transactionState.history!.data![index];
               bool isRefunded =
                   transaction.status?.toLowerCase() == 'refunded';
+              bool isWithdraw = transaction.withdraw ?? false;
               return TransactionHistoryCard(
                 isRefunded: isRefunded,
+                isWithdraw: isWithdraw,
                 transaction: transaction,
                 isExpert: role == 'EXPERT',
               );
