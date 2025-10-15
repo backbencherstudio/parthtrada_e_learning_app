@@ -64,19 +64,19 @@ class _WithdrawScreenState extends ConsumerState<WithdrawScreen> {
               const SizedBox(height: 24),
               Row(
                 children: [
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        "View Details",
-                        style: GoogleFonts.inter(
-                          fontSize: 16,
-                          color: const Color(0xFF26A69A),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
+                  // Expanded(
+                  //   child: TextButton(
+                  //     onPressed: () => Navigator.pop(context),
+                  //     child: Text(
+                  //       "View Details",
+                  //       style: GoogleFonts.inter(
+                  //         fontSize: 16,
+                  //         color: const Color(0xFF26A69A),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(width: 8),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
