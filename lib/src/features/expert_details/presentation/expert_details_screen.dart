@@ -1,3 +1,4 @@
+import 'package:e_learning_app/src/features/expert_details/model/expert_detail_model.dart';
 import 'package:e_learning_app/src/features/expert_details/presentation/widgets/expert_bottom_book_button.dart';
 import 'package:e_learning_app/src/features/expert_details/presentation/widgets/expert_details_body.dart';
 import 'package:e_learning_app/src/features/expert_details/presentation/widgets/expert_details_header.dart';
@@ -70,6 +71,7 @@ class ExpertDetailsScreen extends ConsumerWidget {
                   stats: expertDetail.data?.stats,
                   experience: expertDetail.data?.expert?.experience.toString() ?? '0',
                   expertId: userId,
+                  availability: expertDetail.data?.expert?.availability ?? Availability(),
                 ),
               ],
             ),
