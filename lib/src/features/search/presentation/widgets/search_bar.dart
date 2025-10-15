@@ -1,9 +1,9 @@
 import 'package:e_learning_app/src/features/search/provider/expert_search_query_provider.dart';
+import 'package:e_learning_app/src/features/search/provider/expert_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../../../../core/constant/icons.dart';
 import '../../../../../core/constant/padding.dart';
 import '../../../../../core/utils/utils.dart';
@@ -31,8 +31,12 @@ class ExpertSearchBar extends ConsumerWidget {
                 onChanged: (value) {
                   ref.read(expertSearchQueryProvider.notifier).state = value;
                 },
+                onFieldSubmitted: (value) async {
+                  ref.read(expertSearchQueryProvider.notifier).state = value;
+                  await ref.read(expertPaginationProvider.notifier).fetchExperts(reset: true);
+                },
                 decoration: InputDecoration(
-                  hintText: "Type expert name",
+                  hintText: "Type expert name or skill",
                   prefixIcon: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: 20.w,
@@ -40,7 +44,7 @@ class ExpertSearchBar extends ConsumerWidget {
                     ),
                     child: SvgPicture.asset(
                       AppIcons.search,
-                      colorFilter: ColorFilter.mode(
+                      colorFilter: const ColorFilter.mode(
                         Colors.white,
                         BlendMode.srcIn,
                       ),
