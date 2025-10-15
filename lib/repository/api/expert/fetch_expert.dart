@@ -9,12 +9,24 @@ class FetchExpert {
         int page = 1,
         int perPage = 10,
         String? query,
+        String? skills,
       }) async {
     String urlStr = ApiEndPoints.expertList(page, perPage);
 
     if (query != null && query.trim().isNotEmpty) {
       urlStr =
       '${ApiEndPoints.baseUrl}/experts?q=${Uri.encodeComponent(query)}&page=$page&perPage=$perPage';
+    }
+
+    final bool hasSkills = skills != null && skills.trim().isNotEmpty;
+    if (hasSkills) {
+      final encodedSkills = Uri.encodeQueryComponent(skills!);
+      if (urlStr.contains('?')) {
+        urlStr = '$urlStr&skills=$encodedSkills';
+      } else {
+        urlStr =
+        '${ApiEndPoints.baseUrl}/experts?skills=$encodedSkills&page=$page&perPage=$perPage';
+      }
     }
 
     final url = Uri.parse(urlStr);

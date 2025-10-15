@@ -37,10 +37,8 @@ class SearchScreen extends ConsumerWidget {
               padding: EdgeInsets.all(16.h),
               child: GestureDetector(
                 onTap: () async {
-                  // 👇 Navigate and wait for pop
                   await context.push(RouteName.expertSearchScreen);
 
-                  // 👇 After returning, reset query & refresh list
                   ref.read(expertSearchQueryProvider.notifier).state = '';
                   await ref
                       .read(expertPaginationProvider.notifier)

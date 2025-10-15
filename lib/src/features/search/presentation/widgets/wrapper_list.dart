@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../provider/expert_provider.dart';
 import '../../provider/selected_skill_provider.dart';
 
 class WrapperList extends ConsumerWidget {
@@ -35,6 +36,7 @@ class WrapperList extends ConsumerWidget {
         return GestureDetector(
           onTap: () {
             ref.read(selectedSkillsProvider.notifier).toggleSkill(contentList[index]);
+            ref.read(expertPaginationProvider.notifier).fetchExperts(reset: true);
           },
           child: WrapItemContainer(
             text: contentList[index],

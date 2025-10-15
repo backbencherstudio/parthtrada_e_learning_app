@@ -38,9 +38,8 @@ class ExpertSearchBar extends ConsumerWidget {
                 decoration: InputDecoration(
                   hintText: "Type expert name or skill",
                   prefixIcon: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 20.w,
-                      vertical: 14.h,
+                    padding: EdgeInsets.fromLTRB(
+                      20.w, 14.h, 14.w, 14.h
                     ),
                     child: SvgPicture.asset(
                       AppIcons.search,

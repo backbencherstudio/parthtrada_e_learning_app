@@ -4,6 +4,8 @@ import 'package:e_learning_app/src/features/search/model/expert_model.dart';
 import 'package:e_learning_app/src/features/search/provider/expert_search_query_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:e_learning_app/src/features/search/provider/selected_skill_provider.dart';
+
 class ExpertPaginationNotifier extends StateNotifier<AsyncValue<List<Data>>> {
   final Ref ref;
   final _repository = FetchExpert();
@@ -22,6 +24,10 @@ class ExpertPaginationNotifier extends StateNotifier<AsyncValue<List<Data>>> {
 
     final token = ref.read(authTokenProvider);
     final query = ref.read(expertSearchQueryProvider);
+
+    final selectedSkills = ref.read(selectedSkillsProvider);
+    final String? skillsCsv =
+    selectedSkills.isNotEmpty ? selectedSkills.join(', ') : null;
 
     if (token == null) {
       state = AsyncValue.error("Unauthorized", StackTrace.current);
@@ -47,6 +53,7 @@ class ExpertPaginationNotifier extends StateNotifier<AsyncValue<List<Data>>> {
         page: _currentPage,
         perPage: 10,
         query: query.isNotEmpty ? query : null,
+        skills: skillsCsv,
       );
 
       final fetchedData = response.data ?? [];
