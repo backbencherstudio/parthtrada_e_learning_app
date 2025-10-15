@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/data/models/account_status_response.dart';
+import 'package:e_learning_app/src/features/profile/presentation/payment%20method/data/models/balance_response.dart';
+import 'package:e_learning_app/src/features/profile/presentation/payment%20method/data/models/payout_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
@@ -170,6 +172,60 @@ class PaymentMethodRepositoryImpl implements PaymentMethodRepository {
       }
 
       throw Exception("Unexpected error occurred while fetching account status");
+    }
+  }
+
+  @override
+  Future<BalanceResponse> checkBalance() async {
+    try {
+      final response = await _apiService.get(ApiEndPoints.balanceCheck);
+
+      debugPrint("checkBalance response: ${response.data}");
+
+      if (response.data != null) {
+        return BalanceResponse.fromJson(response.data);
+      } else {
+        throw Exception("Empty response from server");
+      }
+    } catch (e) {
+      debugPrint("Exception in checkBalance: $e");
+
+      if (e is DioException) {
+        final errorData = e.response?.data;
+        debugPrint("Error Response: $errorData");
+
+        final errorMessage = errorData?['message'] ?? 'Failed to fetch balance';
+        throw Exception(errorMessage);
+      }
+
+      throw Exception("Unexpected error occurred while fetching balance");
+    }
+  }
+
+  @override
+  Future<PayoutResponse> payoutBalance(double amount) async {
+    try {
+      final response = await _apiService.post(ApiEndPoints.payoutBalance, data: {'amount': amount});
+
+      debugPrint("payoutBalance response: ${response.data}");
+
+      if (response.data != null) {
+        return PayoutResponse.fromJson(response.data);
+      } else {
+        throw Exception("Empty response from server");
+      }
+    } catch (e) {
+      debugPrint("Exception in payoutBalance: $e");
+
+      if (e is DioException) {
+        final errorData = e.response?.data;
+        debugPrint("Error Response: $errorData");
+
+        final errorMessage = errorData?['message'] ?? 'Failed to initiate payout';
+        throw Exception(errorMessage);
+      }
+
+      throw Exception("Unexpected error occurred while initiating payout");
     }
   }
 
