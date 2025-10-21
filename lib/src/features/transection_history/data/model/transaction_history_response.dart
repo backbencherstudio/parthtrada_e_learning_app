@@ -63,6 +63,7 @@ class Data {
   String? updatedAt;
   bool? refunded;
   bool? withdraw;
+  String? type;
 
   Data({
     this.name,
@@ -74,6 +75,7 @@ class Data {
     this.updatedAt,
     this.refunded,
     this.withdraw,
+    this.type,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -88,6 +90,7 @@ class Data {
     updatedAt = json['updatedAt'] as String?;
     refunded = json['refunded'] as bool?;
     withdraw = json['withdraw'] as bool?;
+    type = json['type'] as String?;
   }
 
   Map<String, dynamic> toJson() {
@@ -101,6 +104,7 @@ class Data {
     data['updatedAt'] = updatedAt;
     data['refunded'] = refunded;
     data['withdraw'] = withdraw;
+    data['type'] = type;
     return data;
   }
 
@@ -114,6 +118,7 @@ class Data {
     String? updatedAt,
     bool? refunded,
     bool? withdraw,
+    String? type,
   }) {
     return Data(
       name: name ?? this.name,
@@ -125,6 +130,7 @@ class Data {
       updatedAt: updatedAt ?? this.updatedAt,
       refunded: refunded ?? this.refunded,
       withdraw: withdraw ?? this.withdraw,
+      type: type ?? this.type,
     );
   }
 }
