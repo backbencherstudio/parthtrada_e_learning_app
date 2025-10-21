@@ -12,6 +12,6 @@ final paymentRepositoryProvider = Provider<PaymentRepository>((ref) {
 });
 
 final paymentNotifierProvider = StateNotifierProvider<PaymentNotifier, AsyncValue<bool>>((ref) {
-      final repo = ref.read(paymentRepositoryProvider);
-      return PaymentNotifier(repository: repo, ref: ref);
-    });
+  final repo = ref.read(paymentRepositoryProvider);
+  return PaymentNotifier(repository: repo, ref: ref);
+});
