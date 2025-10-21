@@ -70,13 +70,7 @@ class TransactionHistoryCard extends StatelessWidget {
           Text(
             '${getBalanceIcon()} \$${transaction.amount?.toStringAsFixed(2) ?? '0.00'}',
             style: textTheme.labelMedium!.copyWith(
-              color: isWithdraw
-                  ? AppColors.error
-                  : isRefunded
-                  ? AppColors.refundedColor
-                  : isExpert
-                  ? AppColors.primary
-                  : AppColors.error,
+              color: getBalanceColor(),
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -87,6 +81,21 @@ class TransactionHistoryCard extends StatelessWidget {
 
   String getBalanceIcon() {
     if (isWithdraw) return '-';
-    return isExpert ? (isRefunded ? '-' : '+') : (isRefunded ? '+' : '-');
+    if (transaction.type == 'send-order') {
+      return isRefunded ? '+' : '-';
+    } else if (transaction.type == 'received-order') {
+      return isRefunded ? '-' : '+';
+    }
+    return '-'; // Fallback
+  }
+
+  Color getBalanceColor() {
+    if (isWithdraw) return AppColors.error;
+    if (transaction.type == 'send-order') {
+      return isRefunded ? AppColors.primary: AppColors.error;
+    } else if (transaction.type == 'received-order') {
+      return isRefunded ? AppColors.refundedColor : AppColors.primary;
+    }
+    return AppColors.error; // Fallback
   }
 }
