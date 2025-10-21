@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../data/models/user_profile.dart';
+import '../../../data/viewmodels/profile_viewmodel.dart';
 import '../../../sub_feature/user profile/widget/custom_button.dart';
 import '../Riverpod/skill_selection_provider.dart';
+
+
 
 void sessionDetailstBottomSheet(BuildContext context) {
   showModalBottomSheet(
@@ -37,6 +40,36 @@ class _SessionDetailsBottomSheetState extends ConsumerState<_SessionDetailsBotto
   String? errorMessage;
 
   @override
+  void initState() {
+    super.initState();
+    // Fetch profile data from profileViewmodel
+    final profileState = ref.read(profileViewmodel);
+    final profileData = profileState.profileResponseData;
+
+    // Initialize fields from ProfileResponseData
+    if (profileData.data != null) {
+      if (profileData.data!.name != null) {
+        nameController.text = profileData.data!.name!;
+      }
+      if (profileData.data!.meta != null) {
+        final meta = profileData.data!.meta!;
+        if (meta.university != null) {
+          universityController.text = meta.university!;
+        }
+        if (meta.profession != null) {
+          professionController.text = meta.profession!;
+        }
+        if (meta.organization != null) {
+          organizationController.text = meta.organization!;
+        }
+        if (meta.location != null) {
+          locationController.text = meta.location!;
+        }
+      }
+    }
+  }
+
+  @override
   void dispose() {
     nameController.dispose();
     universityController.dispose();
@@ -46,7 +79,7 @@ class _SessionDetailsBottomSheetState extends ConsumerState<_SessionDetailsBotto
     super.dispose();
   }
 
-  void onSave() {
+  void onSave() async {
     final name = nameController.text.trim();
     final university = universityController.text.trim();
     final profession = professionController.text.trim();
@@ -84,6 +117,7 @@ class _SessionDetailsBottomSheetState extends ConsumerState<_SessionDetailsBotto
       return;
     }
 
+    // Update profile data in SkillSelectionNotifier
     ref.read(skillSelectionProvider.notifier).updateProfileData(
       UserProfile(
         name: name,
@@ -94,12 +128,22 @@ class _SessionDetailsBottomSheetState extends ConsumerState<_SessionDetailsBotto
       ),
     );
 
-    Navigator.pop(context);
-    timeDateSelectionBottomSheet(context);
+    // Save expert profile
+    final success = await ref.read(skillSelectionProvider.notifier).saveExpertProfile();
+    if (success) {
+      Navigator.pop(context);
+      timeDateSelectionBottomSheet(context);
+    } else {
+      setState(() {
+        errorMessage = ref.read(skillSelectionProvider.notifier).errorMessage;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(skillSelectionProvider.notifier).isLoading;
+
     return IntrinsicHeight(
       child: ClipPath(
         child: Container(
@@ -232,8 +276,8 @@ class _SessionDetailsBottomSheetState extends ConsumerState<_SessionDetailsBotto
                     Expanded(
                       child: Mybutton(
                         color: AppColors.primary,
-                        text: "Save",
-                        onTap: onSave,
+                        text: isLoading ? "Saving..." : "Save",
+                        onTap: isLoading ? null : onSave,
                       ),
                     ),
                   ],
