@@ -30,13 +30,13 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController()
-      ..addListener(() {
-        if (_scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent - 200) {
-          ref.read(expertPaginationProvider.notifier).loadMoreExperts();
-        }
-      });
+    _scrollController =
+        ScrollController()..addListener(() {
+          if (_scrollController.position.pixels >=
+              _scrollController.position.maxScrollExtent - 200) {
+            ref.read(expertPaginationProvider.notifier).loadMoreExperts();
+          }
+        });
   }
 
   @override
@@ -62,7 +62,7 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
           child: ListView.separated(
             controller: _scrollController,
             scrollDirection:
-            widget.isVerticalList ? Axis.vertical : Axis.horizontal,
+                widget.isVerticalList ? Axis.vertical : Axis.horizontal,
             itemCount: experts.length + 1,
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             itemBuilder: (_, index) {
@@ -71,9 +71,9 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
               if (index == experts.length) {
                 return notifier.hasNextPage
                     ? const Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Center(child: CircularProgressIndicator()),
-                )
+                      padding: EdgeInsets.all(20),
+                      child: Center(child: CircularProgressIndicator()),
+                    )
                     : const SizedBox.shrink();
               }
 
@@ -87,10 +87,11 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
                 ref,
               );
             },
-            separatorBuilder: (_, __) => SizedBox(
-              height: widget.isVerticalList ? 12.h : 0.h,
-              width: widget.isVerticalList ? 0.w : 12.w,
-            ),
+            separatorBuilder:
+                (_, __) => SizedBox(
+                  height: widget.isVerticalList ? 12.h : 0.h,
+                  width: widget.isVerticalList ? 0.w : 12.w,
+                ),
           ),
         );
       },
@@ -99,8 +100,14 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
     );
   }
 
-  Widget _expertCard(BuildContext context, TextTheme textTheme, Data expert,
-      String userType, bool isVerticalList, WidgetRef ref) {
+  Widget _expertCard(
+    BuildContext context,
+    TextTheme textTheme,
+    Data expert,
+    String userType,
+    bool isVerticalList,
+    WidgetRef ref,
+  ) {
     return GestureDetector(
       onTap: () {
         context.push(
@@ -123,23 +130,24 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipOval(
-              child: expert.user?.image != null &&
-                  (expert.user!.image?.isNotEmpty ?? false)
-                  ? Image.network(
-                '${ApiEndPoints.baseUrl}/uploads/${expert.user!.image!}',
-                width: 56.w,
-                height: 56.w,
-                fit: BoxFit.cover,
-              )
-                  : CircleAvatar(
-                radius: 28.w,
-                backgroundColor: Colors.white,
-                child: Image.asset(
-                  AppImages.maiya,
-                  width: 32.w,
-                  height: 32.w,
-                ),
-              ),
+              child:
+                  expert.user?.image != null &&
+                          (expert.user!.image?.isNotEmpty ?? false)
+                      ? Image.network(
+                        '${ApiEndPoints.baseUrl}/uploads/${expert.user!.image!}',
+                        width: 56.w,
+                        height: 56.w,
+                        fit: BoxFit.cover,
+                      )
+                      : CircleAvatar(
+                        radius: 28.w,
+                        backgroundColor: Colors.white,
+                        child: Image.asset(
+                          AppImages.maiya,
+                          width: 32.w,
+                          height: 32.w,
+                        ),
+                      ),
             ),
             SizedBox(height: 16.h),
             Text(
@@ -175,11 +183,12 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
             SizedBox(height: 7.h),
             Row(
               children: [
-                ...expert.skills!.take(2).map(
-                      (skill) => Expanded(
-                    child: WrapItemContainer(text: skill),
-                  ),
-                ),
+                ...expert.skills!
+                    .take(2)
+                    .map(
+                      (skill) =>
+                          Expanded(child: WrapItemContainer(text: skill)),
+                    ),
                 if (expert.skills!.length > 2)
                   WrapItemContainer(
                     text: "+${expert.skills!.length - 2}",
@@ -193,31 +202,23 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
               child: CommonWidget.primaryButton(
                 context: context,
                 onPressed: () async {
-                  if (userType == 'EXPERT') {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('You are already an expert'),
-                      ),
-                    );
-                  } else {
-                    final sessionDataNotifier =
-                    ref.read(sessionDataProvider.notifier);
-                    sessionDataNotifier.setExpertId(expert.userId ?? '');
-                    sessionDataNotifier.setExpertName(expert.user?.name ?? '');
-                    sessionDataNotifier
-                        .setHourlyRate(expert.hourlyRate.toString());
-                    await scheduleForBook(
-                      ref: ref,
-                      context: context,
-                      availableTime: expert.availableTime ?? [],
-                      availableDays: expert.availableDays ?? [],
-                    );
-                  }
+                  final sessionDataNotifier = ref.read(
+                    sessionDataProvider.notifier,
+                  );
+                  sessionDataNotifier.setExpertId(expert.userId ?? '');
+                  sessionDataNotifier.setExpertName(expert.user?.name ?? '');
+                  sessionDataNotifier.setHourlyRate(
+                    expert.hourlyRate.toString(),
+                  );
+                  await scheduleForBook(
+                    ref: ref,
+                    context: context,
+                    availableTime: expert.availableTime ?? [],
+                    availableDays: expert.availableDays ?? [],
+                  );
                 },
                 text: "Book \$${expert.hourlyRate}/hour",
-                backgroundColor: userType == 'EXPERT'
-                    ? AppColors.secondaryStrokeColor
-                    : AppColors.primary,
+                backgroundColor: AppColors.primary,
               ),
             ),
           ],
