@@ -14,21 +14,28 @@ class PastCallList {
     final url = Uri.parse(ApiEndPoints.getPastCalls(page, limit));
     final token = await LoginPreferences().loadAuthToken();
 
-    if (token == null || token == '') {
-      debugPrint('======= token is null =======');
+    if (token == null || token.isEmpty) {
+      debugPrint('======= Token is null or empty =======');
       return null;
     }
 
-    final response = await http.get(
-      url,
-      headers: {'Authorization': 'Bearer $token'},
-    );
+    try {
+      final response = await http.get(
+        url,
+        headers: {'Authorization': 'Bearer $token'},
+      );
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      final jsonData = jsonDecode(response.body);
-      return PastCallsResponse.fromJson(jsonData);
-    } else {
-      throw Exception('Failed to fetch past calls: ${response.statusCode}');
+      debugPrint("Past call response: ${response.body}");
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final jsonData = jsonDecode(response.body);
+        return PastCallsResponse.fromJson(jsonData);
+      } else {
+        throw Exception('Failed to fetch past calls: ${response.statusCode}');
+      }
+    } catch (e) {
+      debugPrint('Error fetching past calls: $e');
+      throw Exception('Failed to fetch past calls: $e');
     }
   }
 }

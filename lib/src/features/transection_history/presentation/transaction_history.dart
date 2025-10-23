@@ -37,9 +37,9 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
     // Fetch initial data
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final transactionState = ref.read(transactionHistoryViewModelProvider);
-      if (transactionState.history == null && transactionState.error == null) {
+    //  if (transactionState.history == null && transactionState.error == null) {
         ref.read(transactionHistoryViewModelProvider.notifier).fetchTransactionHistory();
-      }
+     // }
     });
   }
 

@@ -4,77 +4,64 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PastCallRiverpod extends StateNotifier<PastCallState> {
   PastCallRiverpod() : super(PastCallState()) {
-    fetchPastCallsList();
+    fetchPastCalls(page: 1);
   }
 
-  int _currentPage = 1;
-  final int _limit = 10;
-
-  Future<void> fetchPastCallsList() async {
-    state = state.copyWith(isLoading: true, error: null);
-
-    try {
-      final result = await PastCallList().getPastCalls(
-        page: _currentPage,
-        limit: _limit,
-      );
-
-      if (result != null) {
-        state = state.copyWith(
-          pastCalls: result.data,
-          pagination: result.pagination,
-          isLoading: false,
-        );
-      } else {
-        state = state.copyWith(
-          pastCalls: [],
-          pagination: null,
-          isLoading: false,
-        );
-      }
-    } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
+  Future<void> fetchPastCalls({
+    required int page,
+    int limit = 10,
+    bool isRefresh = false,
+  }) async {
+    if (isRefresh) {
+      state = state.copyWith(pastCalls: [], pagination: null, error: null);
     }
-  }
 
-  Future<void> loadMorePastCalls() async {
-    if (state.pagination?.hasNextPage != true || state.isLoadingMore) return;
+    if (state.isLoading || (state.isLoadingMore && !isRefresh)) return;
 
-    state = state.copyWith(isLoadingMore: true, error: null);
-    _currentPage++;
+    state = state.copyWith(
+      isLoading: page == 1 && !state.isLoadingMore,
+      isLoadingMore: page > 1,
+      error: null,
+    );
 
     try {
       final result = await PastCallList().getPastCalls(
-        page: _currentPage,
-        limit: _limit,
+        page: page,
+        limit: limit,
       );
 
       if (result != null) {
         state = state.copyWith(
-          pastCalls: [...state.pastCalls, ...result.data],
+          pastCalls: isRefresh || page == 1
+              ? result.data
+              : [...state.pastCalls, ...result.data],
           pagination: result.pagination,
+          isLoading: false,
           isLoadingMore: false,
         );
       } else {
-        state = state.copyWith(isLoadingMore: false);
+        state = state.copyWith(
+          pastCalls: isRefresh || page == 1 ? [] : state.pastCalls,
+          pagination: null,
+          isLoading: false,
+          isLoadingMore: false,
+          error: 'No data received',
+        );
       }
     } catch (e) {
-      _currentPage--;
-      state = state.copyWith(isLoadingMore: false, error: e.toString());
+      state = state.copyWith(
+        isLoading: false,
+        isLoadingMore: false,
+        error: e.toString(),
+      );
     }
-  }
-
-  Future<void> refreshPastCalls() async {
-    _currentPage = 1;
-    state = state.copyWith(pastCalls: [], pagination: null, error: null);
-    await fetchPastCallsList();
   }
 }
 
 final pastCallsProvider =
-    StateNotifierProvider<PastCallRiverpod, PastCallState>(
+StateNotifierProvider<PastCallRiverpod, PastCallState>(
       (ref) => PastCallRiverpod(),
-    );
+);
 
 class PastCallState {
   final List<PastCall> pastCalls;
