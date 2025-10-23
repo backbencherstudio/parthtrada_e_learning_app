@@ -73,7 +73,7 @@ class ScheduleShowContainer extends StatelessWidget {
 
           /// Designation
           Text(
-            '$expertProfession, $expertOrganization',
+            expertProfession,
             style: textTheme.bodyMedium?.copyWith(
               color: AppColors.secondaryTextColor,
             ),

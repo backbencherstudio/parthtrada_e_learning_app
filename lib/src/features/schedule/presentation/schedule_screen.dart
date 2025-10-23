@@ -155,11 +155,11 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                                 return ScheduleShowContainer(
                                   key: ValueKey(meeting.id),
                                   expertName:
-                                      expert.data?.expert?.user?.name ?? "",
+                                      meeting.user?.name ?? "",
                                   expertImage:
-                                      expert.data?.expert?.user?.image ?? "",
+                                  meeting.user?.image ?? "",
                                   expertOrganization:
-                                      expert.data?.expert?.organization ?? "",
+                                  meeting.user?.profession ?? "",
                                   expertProfession:
                                       expert.data?.expert?.profession ?? "",
                                   meetingScheduleModel: meeting,

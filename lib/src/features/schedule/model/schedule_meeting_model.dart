@@ -52,6 +52,7 @@ class Booking {
   DateTime createdAt;
   DateTime updatedAt;
   Review? review;
+  User? user;
   bool? shouldReview;
   bool? shouldRefund;
 
@@ -74,6 +75,7 @@ class Booking {
     required this.createdAt,
     required this.updatedAt,
     this.review,
+    this.user,
     this.shouldReview,
     this.shouldRefund,
   });
@@ -105,12 +107,35 @@ class Booking {
       updatedAt: DateTime.parse(
         json['updatedAt'] ?? DateTime.now().toIso8601String(),
       ),
+      user: User.fromJson(json['user']),
       review: json['review'] != null ? Review.fromJson(json['review']) : null,
       shouldReview: json['should_review'] ?? null,
       shouldRefund: json['should_refund'] ?? null,
     );
   }
 }
+
+
+class User {
+  final String name;
+  final String? image;
+  final String? profession;
+
+  User({
+    required this.name,
+    this.image,
+    this.profession,
+  });
+
+  factory User.fromJson(Map<String, dynamic> map) {
+    return User(
+      name: map['name'],
+      image: map['image'],
+      profession: map['profession'],
+    );
+  }
+}
+
 
 class Review {
   final String? id;
