@@ -109,11 +109,15 @@ Future<void> selectSessionDurationForBook({
                                 Future.microtask(() async {
                                   try {
                                     final bookExpertNotifier = ref.read(bookExpertRiverpod(availableTime).notifier);
-                                    final selectedIndex = bookExpertState.selectedDuration!;
+                                    final selectedIndex = bookExpertState.selectedDuration;
                                     final selectedDurationStr = bookExpertNotifier.sessionDurationList[selectedIndex];
-                                    int durationInMinutes = selectedDurationStr.toLowerCase().contains("hour")
-                                        ? 60
-                                        : int.tryParse(selectedDurationStr.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
+                                    int durationInMinutes = 0;
+                                    if (selectedDurationStr.toLowerCase().contains("hour")) {
+                                      double hourValue = double.tryParse(selectedDurationStr.replaceAll(RegExp(r'[^0-9.]'), '')) ?? 0;
+                                      durationInMinutes = (hourValue * 60).toInt();
+                                    } else {
+                                      durationInMinutes = int.tryParse(selectedDurationStr.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
+                                    }
                                     ref.read(sessionDataProvider.notifier).setSessionDuration(durationInMinutes);
                                     await bookExpertNotifier.onConfirmBooking();
                                     final sessionData = ref.read(sessionDataProvider);
