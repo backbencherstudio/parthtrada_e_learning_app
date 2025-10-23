@@ -15,6 +15,7 @@ class PastCall extends ConsumerStatefulWidget {
 
 class _PastCallState extends ConsumerState<PastCall> {
   final ScrollController _scrollController = ScrollController();
+  int _currentPage = 1;
 
   @override
   void initState() {
@@ -26,7 +27,8 @@ class _PastCallState extends ConsumerState<PastCall> {
     final state = ref.read(pastCallsProvider);
     if (!state.isLoadingMore && state.pagination?.hasNextPage == true) {
       if (_scrollController.position.extentAfter < 300) {
-        ref.read(pastCallsProvider.notifier).loadMorePastCalls();
+        _currentPage++;
+        ref.read(pastCallsProvider.notifier).fetchPastCalls(page: _currentPage);
       }
     }
   }
@@ -51,13 +53,53 @@ class _PastCallState extends ConsumerState<PastCall> {
 
     if (pastCallsState.error != null && pastCalls.isEmpty) {
       return Scaffold(
-        body: Center(child: Text('No past calls found', style: textTheme.bodyLarge)),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                pastCallsState.error!,
+                style: textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  ref.read(pastCallsProvider.notifier).fetchPastCalls(
+                    page: 1,
+                    isRefresh: true,
+                  );
+                },
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
       );
     }
 
     if (pastCalls.isEmpty) {
       return Scaffold(
-        body: Center(child: Text('No past calls found', style: textTheme.bodyLarge)),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'No past calls found',
+                style: textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  ref.read(pastCallsProvider.notifier).fetchPastCalls(
+                    page: 1,
+                    isRefresh: true,
+                  );
+                },
+                child: const Text('Refresh'),
+              ),
+            ],
+          ),
+        ),
       );
     }
 
@@ -72,7 +114,11 @@ class _PastCallState extends ConsumerState<PastCall> {
           padding: AppPadding.screenHorizontal,
           child: RefreshIndicator(
             onRefresh: () async {
-              await ref.read(pastCallsProvider.notifier).refreshPastCalls();
+              _currentPage = 1;
+              await ref.read(pastCallsProvider.notifier).fetchPastCalls(
+                page: _currentPage,
+                isRefresh: true,
+              );
             },
             child: ListView.builder(
               controller: _scrollController,
