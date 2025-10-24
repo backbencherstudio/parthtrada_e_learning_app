@@ -1,18 +1,27 @@
+import 'dart:core';
+
 import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/src/features/expert_details/model/expert_review_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 class ReviewCard extends StatelessWidget {
   const ReviewCard({super.key, required this.review});
 
   final ReviewItem review;
 
+
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+
+    final createdAt = DateTime.parse(review.createdAt);
+    final formattedDate = DateFormat('dd-MM-yyyy').format(createdAt);
+
     return Container(
       margin: EdgeInsets.only(bottom: 22.h),
       child: Row(
@@ -73,7 +82,7 @@ class ReviewCard extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  "${review.student.email} - 1 day ago",
+                  "${review.student.email} - $formattedDate",
                   style: textTheme.labelMedium?.copyWith(color: Color(0xffA5A5AB)),
                 ),
               ],

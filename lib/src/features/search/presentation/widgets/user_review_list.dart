@@ -19,7 +19,7 @@ class UserReviewList extends ConsumerWidget {
         }
 
         return SizedBox(
-          height: 200, // adjust height as needed
+          height: 230, // adjust height as needed
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: reviews.data!.length,
@@ -34,7 +34,7 @@ class UserReviewList extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Container(
-                  width: 250, // width of each card
+                  width: 260.h, // width of each card
                   padding: const EdgeInsets.all(12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,12 +67,12 @@ class UserReviewList extends ConsumerWidget {
                           //       : const NetworkImage(review.student?.image)
                           //   as ImageProvider,
                           // ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8.w),
                           Expanded(
                             child: Text(
                               student?.name ?? "Anonymous",
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18.sp),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),

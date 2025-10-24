@@ -27,7 +27,7 @@ class ExpertReviewList extends StatelessWidget {
           children: [
             ListView.builder(
               itemCount: !expertState.isFullReviewShow
-                  ? 3
+                  ? expertState.expertReviewList.length < 3 ? expertState.expertReviewList.length : 3
                   : expertState.expertReviewList.length,
               padding: EdgeInsets.zero,
               physics: NeverScrollableScrollPhysics(),
