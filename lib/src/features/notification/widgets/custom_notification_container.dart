@@ -71,7 +71,7 @@ class CustomNotificationContainer extends ConsumerWidget {
               child:
                   item.img != null && item.img!.isNotEmpty
                       ? Image.network(
-                        '${ApiEndPoints.baseUrl}/uploads/$item.img',
+                        '${ApiEndPoints.baseUrl}/uploads/${item.img}',
                         width: 56.w,
                         height: 56.w,
                         fit: BoxFit.cover,
