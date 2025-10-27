@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../../core/services/api_services/api_end_points.dart';
 import '../../../data/viewmodels/profile_viewmodel.dart';
 import '../../../sub_feature/user profile/widget/custom_button.dart';
 import '../../../sub_feature/user profile/widget/headers.dart';
@@ -69,7 +70,11 @@ class _UserProfileState extends ConsumerState<UserProfile> {
           child: Column(
             children: [
               SizedBox(height: 48.h),
-              const Headers(),
+              Headers(
+                imageUrl: profileState.profileResponseData.data?.image != null
+                    ? "${ApiEndPoints.baseUrl}/uploads/${profileState.profileResponseData.data?.image!}"
+                    : null,
+              ),
               SizedBox(height: 24.h),
               Text(
                 profileState.profileResponseData.data?.name ?? "",
