@@ -44,11 +44,11 @@ class HorizontalListCalendarRiverpod extends StateNotifier<HorizontalListCalenda
       case DateTime.monday:
         return "Mon";
       case DateTime.tuesday:
-        return "Tues";
+        return "Tue";
       case DateTime.wednesday:
         return "Wed";
       case DateTime.thursday:
-        return "Thur";
+        return "Thu";
       case DateTime.friday:
         return "Fri";
       case DateTime.saturday:
