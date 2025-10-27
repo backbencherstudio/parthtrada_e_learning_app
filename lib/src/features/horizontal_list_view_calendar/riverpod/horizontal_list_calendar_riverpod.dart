@@ -28,6 +28,7 @@ class HorizontalListCalendarRiverpod extends StateNotifier<HorizontalListCalenda
     return allDays.where((date) {
       // DateFormat.E() returns short day name like "Sun", "Mon", but your list has full names, so get full weekday name
       final weekdayName = _weekdayFullName(date.weekday);
+      debugPrint("----- $weekdayName ----");
       return availableDays.contains(weekdayName);
     }).toList();
   }
@@ -41,19 +42,19 @@ class HorizontalListCalendarRiverpod extends StateNotifier<HorizontalListCalenda
   String _weekdayFullName(int weekday) {
     switch (weekday) {
       case DateTime.monday:
-        return "Monday";
+        return "Mon";
       case DateTime.tuesday:
-        return "Tuesday";
+        return "Tues";
       case DateTime.wednesday:
-        return "Wednesday";
+        return "Wed";
       case DateTime.thursday:
-        return "Thursday";
+        return "Thur";
       case DateTime.friday:
-        return "Friday";
+        return "Fri";
       case DateTime.saturday:
-        return "Saturday";
+        return "Sat";
       case DateTime.sunday:
-        return "Sunday";
+        return "Sun";
       default:
         return "";
     }

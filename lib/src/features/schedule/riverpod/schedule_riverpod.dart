@@ -3,74 +3,64 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../repository/api/schedule/schedule_meeting_list.dart';
 
-final scheduleProvider = StateNotifierProvider<ScheduleRiverpod, ScheduleState>(
+final scheduleProvider =
+StateNotifierProvider<ScheduleRiverpod, ScheduleState>(
       (ref) => ScheduleRiverpod(),
 );
 
 class ScheduleRiverpod extends StateNotifier<ScheduleState> {
   ScheduleRiverpod() : super(ScheduleState()) {
-    fetchMeetingList();
+    fetchMeetings(page: 1);
   }
 
-  int _currentPage = 1;
-  final int _limit = 10;
+  Future<void> fetchMeetings({
+    required int page,
+    int limit = 10,
+    bool isRefresh = false,
+  }) async {
+    if (isRefresh) {
+      state = state.copyWith(meetings: [], pagination: null, error: null);
+    }
 
-  Future<void> fetchMeetingList() async {
-    state = state.copyWith(isLoading: true);
+    if (state.isLoading || (state.isLoadingMore && !isRefresh)) return;
+
+    state = state.copyWith(
+      isLoading: page == 1 && !state.isLoadingMore,
+      isLoadingMore: page > 1,
+      error: null,
+    );
 
     try {
       final result = await ScheduleMeetingList().getScheduleMeetings(
-        page: _currentPage,
-        limit: _limit,
+        page: page,
+        limit: limit,
       );
 
       if (result != null) {
         state = state.copyWith(
-          meetings: result.data,
+          meetings: isRefresh || page == 1
+              ? result.data
+              : [...state.meetings, ...result.data],
           pagination: result.pagination,
           isLoading: false,
-        );
-      }
-    } catch (e) {
-      state = state.copyWith(isLoading: false);
-      rethrow;
-    }
-  }
-
-  Future<void> loadMoreMeetings() async {
-    if (state.isLoadingMore || state.pagination?.hasNextPage != true) return;
-
-    state = state.copyWith(isLoadingMore: true);
-    _currentPage++;
-
-    try {
-      final result = await ScheduleMeetingList().getScheduleMeetings(
-        page: _currentPage,
-        limit: _limit,
-      );
-
-      if (result != null) {
-        final newMeetings = result.data.where((newMeeting) {
-          return !state.meetings.any((existing) => existing.id == newMeeting.id);
-        }).toList();
-
-        state = state.copyWith(
-          meetings: [...state.meetings, ...newMeetings],
-          pagination: result.pagination,
           isLoadingMore: false,
         );
+      } else {
+        state = state.copyWith(
+          meetings: isRefresh || page == 1 ? [] : state.meetings,
+          pagination: null,
+          isLoading: false,
+          isLoadingMore: false,
+          error: 'No data received',
+        );
       }
     } catch (e) {
-      _currentPage--;
-      state = state.copyWith(isLoadingMore: false);
-      rethrow;
+      state = state.copyWith(
+        isLoading: false,
+        isLoadingMore: false,
+        error: e.toString(),
+      );
     }
-  }
-
-  Future<void> refreshMeetings() async {
-    _currentPage = 1;
-    state = state.copyWith(meetings: []);
-    await fetchMeetingList();
   }
 
   void removeMeeting(String id) {
