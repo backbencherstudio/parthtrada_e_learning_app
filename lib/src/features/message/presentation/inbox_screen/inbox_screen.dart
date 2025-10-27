@@ -103,14 +103,14 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
               ),
 
               /// Typing Indicator
-              if (state.typingUserId != null)
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.h),
-                  child: Text(
-                    '${state.typingUserId} is typing...',
-                    style: textTheme.bodySmall!.copyWith(color: Colors.grey),
-                  ),
-                ),
+              // if (state.typingUserId != null)
+              //   Padding(
+              //     padding: EdgeInsets.symmetric(vertical: 8.h),
+              //     child: Text(
+              //       '${state.typingUserId} is typing...',
+              //       style: textTheme.bodySmall!.copyWith(color: Colors.grey),
+              //     ),
+              //   ),
 
               /// Message input
               MessageWritingWidget(
