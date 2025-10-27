@@ -153,7 +153,7 @@ class UserReviewList extends ConsumerWidget {
           ),
         ),
       ),
-      error: (err, stack) => Center(child: Text("Error: $err")),
+      error: (err, stack) => Center(child: Text("Error: Unable to fetch Reviews")),
     );
   }
 }

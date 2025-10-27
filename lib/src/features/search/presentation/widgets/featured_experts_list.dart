@@ -114,7 +114,7 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
           ),
         ),
       ),
-      error: (err, _) => Center(child: Text("Error: $err")),
+      error: (err, _) => Center(child: Text("Error: Unable to fetch Experts")),
     );
   }
 
