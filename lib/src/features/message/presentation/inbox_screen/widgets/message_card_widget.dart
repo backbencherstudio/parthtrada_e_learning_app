@@ -1,6 +1,7 @@
 import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../../core/services/api_services/api_end_points.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
@@ -30,6 +31,7 @@ class MessageCardWidget extends StatelessWidget {
     final String? imageUrl = isMe ? msg.sender?.image : msg.sender?.image;
     final String displayName =
     isMe ? (msg.sender?.name ?? "Me") : (msg.sender?.name ?? widget.name);
+
 
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
@@ -103,7 +105,7 @@ class MessageCardWidget extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(left: 10.w, right: 10.w),
                       child: Text(
-                        msg.createdAt ?? "",
+                        DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.parse(msg.createdAt ?? "")),
                         style: textTheme.labelSmall?.copyWith(
                           color: Colors.grey,
                           fontSize: 10.sp,
