@@ -2,9 +2,9 @@ import 'package:e_learning_app/src/features/schedule/presentation/widgets/schedu
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../core/constant/padding.dart';
 import '../../../../core/theme/theme_part/app_colors.dart';
-import '../../../../core/utils/common_widget.dart';
 import '../../expert_details/riverpod/expert_details_provider.dart';
 import '../riverpod/schedule_riverpod.dart';
 
@@ -17,6 +17,7 @@ class ScheduleScreen extends ConsumerStatefulWidget {
 
 class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   final ScrollController _scrollController = ScrollController();
+  int _currentPage = 1;
 
   @override
   void initState() {
@@ -27,8 +28,9 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   void _loadMoreData() {
     final state = ref.read(scheduleProvider);
     if (!state.isLoadingMore && state.pagination?.hasNextPage == true) {
-      if (_scrollController.position.extentAfter < 100) {
-        ref.read(scheduleProvider.notifier).loadMoreMeetings();
+      if (_scrollController.position.extentAfter < 300) {
+        _currentPage++;
+        ref.read(scheduleProvider.notifier).fetchMeetings(page: _currentPage);
       }
     }
   }
@@ -43,141 +45,133 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   Widget build(BuildContext context) {
     final scheduleState = ref.watch(scheduleProvider);
     final meetings = scheduleState.meetings;
+    final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-      body: Column(
-        children: [
-          CommonWidget.customAppBar(
-            textTheme: Theme.of(context).textTheme,
-            isNotification: false,
-            title: "Your Schedule",
-            subtitle: "Your overall sessions",
+    /// 🔹 1. Initial Loading
+    if (scheduleState.isLoading && meetings.isEmpty) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    /// 🔹 2. Error State
+    if (scheduleState.error != null && meetings.isEmpty) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(scheduleState.error!, style: textTheme.bodyLarge),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  ref.read(scheduleProvider.notifier).fetchMeetings(
+                    page: 1,
+                    isRefresh: true,
+                  );
+                },
+                child: const Text('Retry'),
+              ),
+            ],
           ),
-          Expanded(
-            child: Padding(
-              padding: AppPadding.screenHorizontal,
-              child: Column(
-                children: [
-                  if (scheduleState.isLoading && meetings.isEmpty)
-                    const Expanded(
-                      child: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
+    /// 🔹 3. Empty State
+    if (meetings.isEmpty) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('No Schedule Found', style: textTheme.bodyLarge),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  ref.read(scheduleProvider.notifier).fetchMeetings(
+                    page: 1,
+                    isRefresh: true,
+                  );
+                },
+                child: const Text('Refresh'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    /// 🔹 4. Success State
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Your Schedule', style: textTheme.titleLarge),
+        backgroundColor: AppColors.screenBackgroundColor,
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: AppPadding.screenHorizontal,
+          child: RefreshIndicator(
+            onRefresh: () async {
+              _currentPage = 1;
+              await ref.read(scheduleProvider.notifier).fetchMeetings(
+                page: _currentPage,
+                isRefresh: true,
+              );
+            },
+            child: ListView.builder(
+              controller: _scrollController,
+              itemCount: meetings.length + (scheduleState.isLoadingMore ? 1 : 0),
+              padding: EdgeInsets.only(bottom: 24.h),
+              itemBuilder: (context, index) {
+                if (index < meetings.length) {
+                  final meeting = meetings[index];
+
+                  // Load expert details
+                  final expertAsync =
+                  ref.watch(expertDetailProvider(meeting.expertId));
+
+                  return expertAsync.when(
+                    data: (expert) => ScheduleShowContainer(
+                      key: ValueKey(meeting.id),
+                      expertName: meeting.user?.name ?? "",
+                      expertImage: meeting.user?.image ?? "",
+                      expertOrganization: meeting.user?.profession ?? "",
+                      expertProfession: expert.data?.expert?.profession ?? "",
+                      meetingScheduleModel: meeting,
                     ),
-
-                  if (!(scheduleState.isLoading))
-                    Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: () async {
-                          await ref
-                              .read(scheduleProvider.notifier)
-                              .refreshMeetings();
-                        },
-                        child: Consumer(
-                          builder: (context, ref, _) {
-                            final expertStates =
-                                meetings
-                                    .map(
-                                      (meeting) => ref.watch(
-                                        expertDetailProvider(meeting.expertId),
-                                      ),
-                                    )
-                                    .toList();
-
-                            final isAnyLoading = expertStates.any(
-                              (state) => state.isLoading,
-                            );
-                            final isAnyError = expertStates.any(
-                              (state) => state.hasError,
-                            );
-
-                            if (isAnyLoading) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-
-                            if (isAnyError) {
-                              return const Center(
-                                child: Text("Error loading expert data"),
-                              );
-                            }
-
-                            if (meetings.isEmpty) {
-                              return RefreshIndicator(
-                                onRefresh: () async {
-                                  await ref
-                                      .read(scheduleProvider.notifier)
-                                      .refreshMeetings();
-                                },
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text("No Schedule Found"),
-                                      SizedBox(height: 12.h),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          await ref
-                                              .read(scheduleProvider.notifier)
-                                              .refreshMeetings();
-                                        },
-                                        child: Container(
-                                          height: 40.h,
-                                          width: 40.h,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey.shade900,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Icon(
-                                            Icons.refresh_outlined,
-                                            color: AppColors.primary,
-                                            size: 24.sp,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }
-
-                            return ListView.builder(
-                              controller: _scrollController,
-                              itemCount: meetings.length,
-                              padding: EdgeInsets.only(bottom: 24.h),
-                              itemBuilder: (context, index) {
-                                final meeting = meetings[index];
-                                final expert =
-                                    expertStates[index].asData!.value;
-
-                                return ScheduleShowContainer(
-                                  key: ValueKey(meeting.id),
-                                  expertName:
-                                      meeting.user?.name ?? "",
-                                  expertImage:
-                                  meeting.user?.image ?? "",
-                                  expertOrganization:
-                                  meeting.user?.profession ?? "",
-                                  expertProfession:
-                                      expert.data?.expert?.profession ?? "",
-                                  meetingScheduleModel: meeting,
-                                );
-                              },
-                            );
-                          },
+                    loading: () => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Shimmer.fromColors(
+                        baseColor: AppColors.secondary,
+                        highlightColor: Colors.grey.shade600,
+                        child: Center(
+                          child: Container(
+                            width: double.infinity,
+                            height: 150.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade700,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
                         ),
                       ),
                     ),
-
-                  if (scheduleState.isLoadingMore)
-                    const LinearProgressIndicator(),
-                ],
-              ),
+                    error: (_, __) => const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      child: Center(child: Text("Error loading expert data")),
+                    ),
+                  );
+                } else {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+              },
             ),
           ),
-        ],
+        ),
       ),
     );
   }

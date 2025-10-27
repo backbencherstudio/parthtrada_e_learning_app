@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../../core/routes/route_name.dart';
 
 class FeaturedExpertsList extends ConsumerStatefulWidget {
@@ -95,7 +96,24 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
           ),
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => SizedBox(
+        height: widget.isVerticalList ? 550.h : 308.h,
+        child: ListView.separated(
+          controller: _scrollController,
+          scrollDirection:
+          widget.isVerticalList ? Axis.vertical : Axis.horizontal,
+          itemCount: 3,
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          itemBuilder: (_, index) {
+            return _expertCardShimmer(context, false);
+          },
+          separatorBuilder:
+              (_, __) => SizedBox(
+            height: widget.isVerticalList ? 12.h : 0.h,
+            width: widget.isVerticalList ? 0.w : 12.w,
+          ),
+        ),
+      ),
       error: (err, _) => Center(child: Text("Error: $err")),
     );
   }
@@ -219,6 +237,120 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
                 },
                 text: "Book \$${expert.hourlyRate}/hour",
                 backgroundColor: AppColors.primary,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+  Widget _expertCardShimmer(BuildContext context, bool isVerticalList) {
+    return Container(
+      width: isVerticalList ? double.infinity : 274.w,
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+      decoration: Utils.commonBoxDecoration(),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey.shade800,
+        highlightColor: Colors.grey.shade600,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Avatar shimmer
+            ClipOval(
+              child: Container(
+                width: 56.w,
+                height: 56.w,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade700,
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+              ),
+            ),
+            SizedBox(height: 16.h),
+
+            // Name shimmer
+            Container(
+              width: 140.w,
+              height: 16.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade700,
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+            ),
+            SizedBox(height: 4.h),
+
+            // Profession shimmer
+            Container(
+              width: 100.w,
+              height: 14.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade700,
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+            ),
+            SizedBox(height: 7.h),
+
+            // Rating shimmer row
+            Row(
+              children: [
+                Container(
+                  width: 20.sp,
+                  height: 20.sp,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade700,
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Container(width: 60.w, height: 14.h, color: Colors.grey.shade700),
+              ],
+            ),
+            SizedBox(height: 7.h),
+
+            // Skills shimmer row
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 24.h,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade700,
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: Container(
+                    height: 24.h,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade700,
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Container(
+                  width: 40.w,
+                  height: 24.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade700,
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 12.h),
+
+            // Button shimmer
+            Container(
+              width: double.infinity,
+              height: 40.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade700,
+                borderRadius: BorderRadius.circular(12.r),
               ),
             ),
           ],

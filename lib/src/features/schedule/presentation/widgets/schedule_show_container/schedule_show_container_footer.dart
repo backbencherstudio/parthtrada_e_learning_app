@@ -85,9 +85,10 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                                       ),
                                     ),
                                   );
-                                  await ref
-                                      .read(scheduleProvider.notifier)
-                                      .refreshMeetings();
+                                  await ref.read(scheduleProvider.notifier).fetchMeetings(
+                                    page: 1,
+                                    isRefresh: true,
+                                  );
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
@@ -145,9 +146,10 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                                   ),
                                 ),
                               );
-                              await ref
-                                  .read(scheduleProvider.notifier)
-                                  .refreshMeetings();
+                              await ref.read(scheduleProvider.notifier).fetchMeetings(
+                                page: 1,
+                                isRefresh: true,
+                              );
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text("Action failed")),
@@ -242,9 +244,10 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                                         ),
                                       ),
                                     );
-                                    await ref
-                                        .read(scheduleProvider.notifier)
-                                        .refreshMeetings();
+                                    await ref.read(scheduleProvider.notifier).fetchMeetings(
+                                      page: 1,
+                                      isRefresh: true,
+                                    );
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
@@ -367,6 +370,10 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                                       "Meeting Cancelled Successfully",
                                     ),
                                   ),
+                                );
+                                await ref.read(scheduleProvider.notifier).fetchMeetings(
+                                  page: 1,
+                                  isRefresh: true,
                                 );
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -505,21 +512,25 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                       ref.read(addReviewProvider.notifier).state = reviewState
                           .copyWith(bookingId: meetingScheduleModel.id);
                       await addReviewBottomSheet(context: context);
+                      await ref.read(scheduleProvider.notifier).fetchMeetings(
+                        page: 1,
+                        isRefresh: true,
+                      );
                     },
                     text: "Add Review",
                     textStyle: buttonTextStyle,
                   ),
                 ),
-              SizedBox(
-                width: double.infinity,
-                child: CommonWidget.primaryButton(
-                  backgroundColor: Color(0xff2B2C31),
-                  context: context,
-                  onPressed: () {}, // todo view summary
-                  text: "View Summary",
-                  textStyle: buttonTextStyle,
-                ),
-              ),
+              // SizedBox(
+              //   width: double.infinity,
+              //   child: CommonWidget.primaryButton(
+              //     backgroundColor: Color(0xff2B2C31),
+              //     context: context,
+              //     onPressed: () {}, // view summary
+              //     text: "View Summary",
+              //     textStyle: buttonTextStyle,
+              //   ),
+              // ),
             ],
           );
         }
