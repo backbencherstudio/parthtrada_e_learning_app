@@ -52,50 +52,45 @@ class ProfileScreen extends ConsumerWidget {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(90.r),
                                   child: Center(
-                                    child:
-                                        profileData.image != null
-                                            ? Container(
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
+                                    child: Container(
+                                      height: 120.h,
+                                      width: 120.w,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: ClipOval(
+                                        child: profileData.image != null
+                                            ? Image.network(
+                                          "${ApiEndPoints.baseUrl}/uploads/${profileData.image!}",
+                                          height: 120.h,
+                                          width: 120.w,
+                                          fit: BoxFit.cover, // Ensures image fills circle
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return Image.asset(
+                                              AppImages.maiya,
+                                              height: 120.h,
+                                              width: 120.w,
+                                              fit: BoxFit.cover,
+                                            );
+                                          },
+                                          loadingBuilder: (context, child, loadingProgress) {
+                                            if (loadingProgress == null) return child;
+                                            return const Center(
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
                                               ),
-                                              child: Image.network(
-                                                "${ApiEndPoints.baseUrl}/uploads/${profileData.image!}",
-                                                height: 120.h,
-                                                width: 120.w,
-                                                errorBuilder:
-                                                    (
-                                                      context,
-                                                      error,
-                                                      stackTrace,
-                                                    ) => Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                            8.0,
-                                                          ),
-                                                      child: Image.asset(
-                                                        AppImages.maiya,
-                                                        height: 110.h,
-                                                        width: 110.w,
-                                                      ),
-                                                    ),
-                                              ),
-                                            )
-                                            : ClipRRect(
-                                              borderRadius:
-                                                  BorderRadiusGeometry.circular(
-                                                    90.r,
-                                                  ),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: Image.asset(
-                                                  AppImages.maiya,
-                                                  height: 110.h,
-                                                  width: 110.w,
-                                                ),
-                                              ),
-                                            ),
+                                            );
+                                          },
+                                        )
+                                            : Image.asset(
+                                          AppImages.maiya,
+                                          height: 120.h,
+                                          width: 120.w,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 const Expanded(child: SizedBox()),
