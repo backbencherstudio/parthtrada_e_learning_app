@@ -1,14 +1,17 @@
 import 'package:e_learning_app/core/constant/padding.dart';
+import 'package:e_learning_app/core/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../../core/services/api_services/api_end_points.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
+import '../../../../profile/data/viewmodels/profile_viewmodel.dart';
 import '../../../model/message_model.dart';
 import '../inbox_screen.dart';
 
-class MessageCardWidget extends StatelessWidget {
+class MessageCardWidget extends ConsumerWidget {  // Change to ConsumerWidget
   const MessageCardWidget({
     super.key,
     required this.isMe,
@@ -21,37 +24,46 @@ class MessageCardWidget extends StatelessWidget {
 
   final bool isMe;
   final InboxScreen widget;
-  final Data msg; // single message
+  final Data msg;
   final TextTheme textTheme;
   final List<Data> chatMessages;
   final int index;
 
   @override
-  Widget build(BuildContext context) {
-    final String? imageUrl = isMe ? msg.sender?.image : msg.sender?.image;
-    final String displayName =
-    isMe ? (msg.sender?.name ?? "Me") : (msg.sender?.name ?? widget.name);
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Watch the profile state
+    final profileState = ref.watch(profileViewmodel);
 
+    // Determine image and name based on isMe
+    final String? profileImage = profileState.profileResponseData.data?.image;
+    final String? profileName = profileState.profileResponseData.data?.name;
+
+    final String? imageUrl = isMe
+        ? profileImage // Use profile image when it's me
+        : msg.sender?.image; // Otherwise use sender's image
+
+    final String displayName = isMe
+        ? (profileName ?? "Me") // Use profile name or fallback
+        : (msg.sender?.name ?? widget.name);
+
+    debugPrint("datetime in chat list: ${msg.createdAt} for message ${msg.content}");
 
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Column(
-        crossAxisAlignment:
-        isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// Receiver avatar
-              if (!isMe)
-                _buildAvatar(imageUrl ?? ""),
+              if (!isMe) _buildAvatar(imageUrl ?? ""),
 
               /// Message bubble
               Flexible(
                 child: Column(
-                  crossAxisAlignment:
-                  isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                  crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     /// Name above message
@@ -72,15 +84,10 @@ class MessageCardWidget extends StatelessWidget {
                         maxWidth: 260.w,
                         minWidth: ScreenUtil.defaultSize.width * 0.25,
                       ),
-                      margin: EdgeInsets.symmetric(
-                        vertical: 4.h,
-                        horizontal: 10.w,
-                      ),
+                      margin: EdgeInsets.symmetric(vertical: 4.h, horizontal: 10.w),
                       padding: EdgeInsets.all(12.r),
                       decoration: BoxDecoration(
-                        color: isMe
-                            ? AppColors.primary
-                            : Colors.grey.shade200, // lighter for received
+                        color: isMe ? AppColors.primary : Colors.grey.shade200,
                         borderRadius: isMe
                             ? BorderRadius.only(
                           bottomLeft: Radius.circular(16.r),
@@ -105,7 +112,7 @@ class MessageCardWidget extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(left: 10.w, right: 10.w),
                       child: Text(
-                        DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.parse(msg.createdAt ?? "")),
+                        Utils.formatDateTimeFromIso(msg.createdAt ?? ""),
                         style: textTheme.labelSmall?.copyWith(
                           color: Colors.grey,
                           fontSize: 10.sp,
@@ -132,11 +139,15 @@ class MessageCardWidget extends StatelessWidget {
 
   /// Avatar widget with fallback handling
   Widget _buildAvatar(String imageUrl) {
+    final String fullImageUrl = imageUrl.isNotEmpty
+        ? "${ApiEndPoints.baseUrl}/uploads/$imageUrl"
+        : "";
+
     return CircleAvatar(
       radius: 26.r,
       backgroundColor: AppColors.primary.withOpacity(0.2),
-      backgroundImage: imageUrl.isNotEmpty ? NetworkImage("${ApiEndPoints.baseUrl}/uploads/$imageUrl") : null,
-      child: imageUrl.isEmpty
+      backgroundImage: fullImageUrl.isNotEmpty ? NetworkImage(fullImageUrl) : null,
+      child: fullImageUrl.isEmpty
           ? Icon(Icons.person, color: AppColors.primary, size: 24.sp)
           : null,
     );
