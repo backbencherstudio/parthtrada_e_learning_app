@@ -7,7 +7,7 @@ import '../../../core/services/api_services/api_end_points.dart';
 import '../../login_preferences.dart';
 
 class CancelSchedule {
-  Future<bool> cancelScheduleMeetings({
+  Future<CancelResponse?> cancelScheduleMeetings({
     required String id
   }) async {
     final url = Uri.parse(ApiEndPoints.cancelScheduleMeetings(id));
@@ -15,7 +15,7 @@ class CancelSchedule {
 
     if (token == null || token == '') {
       debugPrint('======= token is null =======');
-      return false;
+      return null;
     }
 
     final response = await http.patch(
@@ -25,12 +25,33 @@ class CancelSchedule {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonData = jsonDecode(response.body);
+      final result = CancelResponse.fromJson(jsonData);
       debugPrint('Successful to cancel schedule: ${response.body}');
-      debugPrint('result: ${jsonData['success']}');
-      return jsonData['success'];
+      debugPrint('result: ${result.message}');
+      return result;
     } else {
+      final jsonData = jsonDecode(response.body);
+      final result = CancelResponse.fromJson(jsonData);
       debugPrint('Failed to cancel schedule: ${response.body}');
-      throw Exception('Failed to cancel schedule: ${response.statusCode}');
+      debugPrint('result: ${result.message}');
+      return result;
     }
+  }
+}
+
+class CancelResponse {
+  final bool success;
+  final String message;
+
+  CancelResponse({
+    required this.success,
+    required this.message,
+  });
+
+  factory CancelResponse.fromJson(Map<String, dynamic> json) {
+    return CancelResponse(
+      success: json['success'],
+      message: json['message'],
+    );
   }
 }

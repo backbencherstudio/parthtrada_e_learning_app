@@ -14,6 +14,7 @@ import '../../../riverpod/add_review_provider.dart';
 import '../../../riverpod/cancel_meeting_provider.dart';
 import '../../../riverpod/complete_meeting_provider.dart';
 import '../../../riverpod/loader_provider.dart';
+import '../../../riverpod/refund_riverpod.dart';
 import '../../../riverpod/schedule_riverpod.dart';
 import '../add_review_bottom_sheet/add_review_bottom_sheet.dart';
 
@@ -35,6 +36,9 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
     debugPrint("meetingScheduleModel: $role");
 
     final reviewState = ref.watch(addReviewProvider);
+
+    /// expert actions
+
     if (role == 'EXPERT') {
       return Column(
         spacing: 12.h,
@@ -55,218 +59,170 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
           ),
           meetingScheduleModel.status == 'PENDING'
               ? Row(
-                spacing: 8.w,
-                children: [
-                  Consumer(
-                    builder: (context, ref, __) {
-                      final state = ref.watch(acceptRejectBookingProvider);
-                      final isLoading = state.isLoading; // Easy check for loading state
+            spacing: 8.w,
+            children: [
+              Consumer(
+                builder: (context, ref, __) {
+                  final bookingKey = "${meetingScheduleModel.id}_reject"; // 👈 unique key for cancel
+                  final state = ref.watch(acceptRejectBookingProvider(bookingKey));
+                  final isLoading = state is AsyncLoading;
 
-                      return Expanded(
-                        child: CommonWidget.primaryButton(
-                          textStyle: buttonTextStyle,
-                          context: context,
-                          onPressed: isLoading
-                              ? (){} // Disable button during loading
-                              : () async {
-                            final actionUrl =
-                                '/experts/bookings/actions/${meetingScheduleModel.id}/reject/${meetingScheduleModel.notificationId}';
-                            debugPrint('action url: $actionUrl');
-                            if (actionUrl.isEmpty) return;
+                  return Expanded(
+                    child: CommonWidget.primaryButton(
+                      textStyle: buttonTextStyle,
+                      context: context,
+                      onPressed: isLoading
+                          ? (){}
+                          : () async {
+                        final actionUrl =
+                            '/experts/bookings/actions/${meetingScheduleModel.id}/reject/${meetingScheduleModel.notificationId}';
 
-                            // Start API call
-                            await ref
-                                .read(acceptRejectBookingProvider.notifier)
-                                .patchBookingAction(actionUrl);
+                        await ref
+                            .read(acceptRejectBookingProvider(bookingKey).notifier)
+                            .patchBookingAction(actionUrl);
 
-                            // Handle result
-                            final state = ref.read(acceptRejectBookingProvider);
-                            state.when(
-                              data: (response) async {
-                                if (response?.success == true) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        response?.message ?? "Action successful",
-                                      ),
-                                    ),
-                                  );
-
-                                  await ref
-                                      .read(scheduleProvider.notifier)
-                                      .fetchMeetings(page: 1, isRefresh: true);
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Action failed"),
-                                    ),
-                                  );
-                                }
-                              },
-                              loading: () {
-                                // Already handled by isLoading (UI button change)
-                              },
-                              error: (error, _) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      "Error: This booking has already been processed",
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-
-                            // Reset provider to initial state
-                            ref.read(acceptRejectBookingProvider.notifier).reset();
+                        final result = ref.read(acceptRejectBookingProvider(bookingKey));
+                        result.when(
+                          data: (response) async {
+                            if (response?.success == true) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(response?.message ?? "Rejected")),
+                              );
+                              await ref
+                                  .read(scheduleProvider.notifier)
+                                  .fetchMeetings(page: 1, isRefresh: true);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Action failed")),
+                              );
+                            }
                           },
-                          text: isLoading ? "Cancelling..." : "Cancel",
-                          backgroundColor: const Color(0xff2B2C31),
-                        ),
-                      );
-                    },
-                  ),
-
-                  Consumer(
-                    builder: (context, ref, __) {
-                      final state = ref.watch(acceptRejectBookingProvider);
-                      final isLoading = state is AsyncLoading; // Detects loading state
-
-                      return Expanded(
-                        child: CommonWidget.primaryButton(
-                          backgroundColor: AppColors.primary,
-                          textStyle: buttonTextStyle?.copyWith(color: Colors.white),
-                          context: context,
-                          onPressed: isLoading
-                              ? (){} // Disable button while loading
-                              : () async {
-                            final actionUrl =
-                                '/experts/bookings/actions/${meetingScheduleModel.id}/accept/${meetingScheduleModel.notificationId}';
-                            debugPrint('action url: $actionUrl');
-                            if (actionUrl.isEmpty) return;
-
-                            await ref
-                                .read(acceptRejectBookingProvider.notifier)
-                                .patchBookingAction(actionUrl);
-
-                            final state = ref.read(acceptRejectBookingProvider);
-
-                            state.when(
-                              data: (response) async {
-                                if (response?.success == true) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        response?.message ?? "Action successful",
-                                      ),
-                                    ),
-                                  );
-
-                                  await ref
-                                      .read(scheduleProvider.notifier)
-                                      .fetchMeetings(page: 1, isRefresh: true);
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Action failed"),
-                                    ),
-                                  );
-                                }
-                              },
-                              loading: () {
-                                // Already handled by isLoading and button text
-                              },
-                              error: (error, _) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      "Error: This booking has already been processed",
-                                    ),
-                                  ),
-                                );
-                              },
+                          error: (error, _) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Error: $error")),
                             );
-
-                            // Reset provider after completion
-                            ref.read(acceptRejectBookingProvider.notifier).reset();
                           },
-                          text: isLoading ? "Accepting..." : "Create Link",
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              )
+                          loading: () {},
+                        );
+
+                        ref.read(acceptRejectBookingProvider(bookingKey).notifier).reset();
+                      },
+                      text: isLoading ? "Cancelling..." : "Cancel",
+                      backgroundColor: const Color(0xff2B2C31),
+                    ),
+                  );
+                },
+              ),
+              Consumer(
+                builder: (context, ref, __) {
+                  final bookingKey = "${meetingScheduleModel.id}_accept"; // 👈 unique key for accept
+                  final state = ref.watch(acceptRejectBookingProvider(bookingKey));
+                  final isLoading = state is AsyncLoading;
+
+                  return Expanded(
+                    child: CommonWidget.primaryButton(
+                      backgroundColor: AppColors.primary,
+                      textStyle: buttonTextStyle?.copyWith(color: Colors.white),
+                      context: context,
+                      onPressed: isLoading
+                          ? (){}
+                          : () async {
+                        final actionUrl =
+                            '/experts/bookings/actions/${meetingScheduleModel.id}/accept/${meetingScheduleModel.notificationId}';
+
+                        await ref
+                            .read(acceptRejectBookingProvider(bookingKey).notifier)
+                            .patchBookingAction(actionUrl);
+
+                        final result = ref.read(acceptRejectBookingProvider(bookingKey));
+                        result.when(
+                          data: (response) async {
+                            if (response?.success == true) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(response?.message ?? "Accepted")),
+                              );
+                              await ref
+                                  .read(scheduleProvider.notifier)
+                                  .fetchMeetings(page: 1, isRefresh: true);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Action failed")),
+                              );
+                            }
+                          },
+                          error: (error, _) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Error: $error")),
+                            );
+                          },
+                          loading: () {},
+                        );
+
+                        ref.read(acceptRejectBookingProvider(bookingKey).notifier).reset();
+                      },
+                      text: isLoading ? "Accepting..." : "Create Link",
+                    ),
+                  );
+                },
+              ),
+            ],
+          )
+
               : Row(
                 spacing: 8.w,
                 children: [
-                  Consumer(
-                    builder: (context, ref, __) {
-                      final state = ref.watch(acceptRejectBookingProvider);
-                      final isLoading = state.isLoading; // Easy check for loading state
-                      return Expanded(
-                        child: CommonWidget.primaryButton(
-                          textStyle: buttonTextStyle,
-                          context: context,
-                          onPressed: () async {
-                            if (meetingScheduleModel.status == 'COMPLETED') {
-                              /// Nothing
-                            } else {
-                              final actionUrl =
-                                  '/experts/bookings/actions/${meetingScheduleModel.id}/accept/${meetingScheduleModel.notificationId}';
-                              debugPrint('action url: $actionUrl');
-                              if (actionUrl == null || actionUrl.isEmpty) return;
-
-                              await ref
-                                  .read(acceptRejectBookingProvider.notifier)
-                                  .patchBookingAction(actionUrl);
-
-                              final state = ref.read(acceptRejectBookingProvider);
-
-                              state.when(
-                                data: (response) async {
-                                  if (response?.success == true) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          response?.message ?? "Action successful",
-                                        ),
-                                      ),
-                                    );
-                                    await ref.read(scheduleProvider.notifier).fetchMeetings(
-                                      page: 1,
-                                      isRefresh: true,
-                                    );
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text("Action failed")),
-                                    );
-                                  }
-                                },
-                                loading: () {},
-                                error: (error, _) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        "Error: This booking has already been processed",
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-
-                              ref.read(acceptRejectBookingProvider.notifier).reset();
-                            }
-                          },
-                          text:
-                              meetingScheduleModel.status == "COMPLETED"
-                                  ? "Completed"
-                                  : isLoading ? "Cancelling..." : "Cancel",
-                          backgroundColor: Color(0xff2B2C31),
-                        ),
-                      );
-                    },
-                  ),
+                  // Consumer(
+                  //   builder: (context, ref, __) {
+                  //     final bookingId = meetingScheduleModel.id;
+                  //     final state = ref.watch(acceptRejectBookingProvider(bookingId));
+                  //     final isLoading = state is AsyncLoading;
+                  //
+                  //     return Expanded(
+                  //       child: CommonWidget.primaryButton(
+                  //         textStyle: buttonTextStyle,
+                  //         context: context,
+                  //         onPressed: isLoading
+                  //             ? (){}
+                  //             : () async {
+                  //           final actionUrl =
+                  //               '/experts/bookings/actions/$bookingId/reject/${meetingScheduleModel.notificationId}';
+                  //
+                  //           await ref
+                  //               .read(acceptRejectBookingProvider(bookingId).notifier)
+                  //               .patchBookingAction(actionUrl);
+                  //
+                  //           final result = ref.read(acceptRejectBookingProvider(bookingId));
+                  //           result.when(
+                  //             data: (response) async {
+                  //               if (response?.success == true) {
+                  //                 ScaffoldMessenger.of(context).showSnackBar(
+                  //                   SnackBar(content: Text(response?.message ?? "Rejected")),
+                  //                 );
+                  //                 await ref
+                  //                     .read(scheduleProvider.notifier)
+                  //                     .fetchMeetings(page: 1, isRefresh: true);
+                  //               } else {
+                  //                 ScaffoldMessenger.of(context).showSnackBar(
+                  //                   const SnackBar(content: Text("Action failed")),
+                  //                 );
+                  //               }
+                  //             },
+                  //             error: (error, _) {
+                  //               ScaffoldMessenger.of(context).showSnackBar(
+                  //                 SnackBar(content: Text("This booking has already been processed")),
+                  //               );
+                  //             },
+                  //             loading: () {},
+                  //           );
+                  //
+                  //           ref.read(acceptRejectBookingProvider(bookingId).notifier).reset();
+                  //         },
+                  //         text: isLoading ? "Cancelling..." : "Cancel",
+                  //         backgroundColor: const Color(0xff2B2C31),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                   Expanded(
                     child: CommonWidget.primaryButton(
                       backgroundColor: AppColors.primary,
@@ -309,6 +265,10 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
         ],
       );
     }
+
+
+    /// Student actions
+
     else {
       if (meetingScheduleModel.status == 'UPCOMING' ||
           meetingScheduleModel.status == 'PENDING') {
@@ -348,20 +308,16 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
 
                           if (!context.mounted) return;
 
+                          final updatedState = ref.read(cancelScheduleNotifierProvider(meetingScheduleModel.id));
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(updatedState.errorMessage ?? 'Unknown response')),
+                          );
+
                           if (success) {
                             ref.read(scheduleProvider.notifier).removeMeeting(meetingScheduleModel.id);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Meeting Cancelled Successfully")),
-                            );
                             await ref.read(scheduleProvider.notifier)
                                 .fetchMeetings(page: 1, isRefresh: true);
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(cancelState.errorMessage ??
-                                    "You can only cancel bookings with a completed transaction."),
-                              ),
-                            );
                           }
                         },
                         text: cancelState.isLoading ? "Cancelling..." : "Cancel",
@@ -440,14 +396,48 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
 
               SizedBox(
                 width: double.infinity,
-                child: CommonWidget.primaryButton(
-                  context: context,
-                  onPressed: () {}, // todo refund
-                  text: "Refund",
-                  textStyle: buttonTextStyle,
-                  backgroundColor: AppColors.error,
+                child: Consumer(
+                  builder: (context, ref, _) {
+                    final refundState = ref.watch(refundProvider(meetingScheduleModel.id));
+                    final refundNotifier = ref.read(refundProvider(meetingScheduleModel.id).notifier);
+
+                    final isLoading = refundState.isLoading;
+                    final isSuccess = refundState.success;
+
+                    return CommonWidget.primaryButton(
+                      context: context,
+                      onPressed: isLoading
+                          ? () {}
+                          : () async {
+                        final success = await refundNotifier.refund(meetingScheduleModel.id);
+                        final message = ref.read(refundProvider(meetingScheduleModel.id)).error ?? 'Something went wrong';
+
+                        if (!context.mounted) return;
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(message)),
+                        );
+
+                        if (success) {
+                          await ref
+                              .read(scheduleProvider.notifier)
+                              .fetchMeetings(page: 1, isRefresh: true);
+                        }
+                      },
+                      text: isLoading
+                          ? "Processing..."
+                          : isSuccess
+                          ? "Requested Refund"
+                          : "Refund",
+                      textStyle: buttonTextStyle,
+                      backgroundColor: isSuccess
+                          ? Color(0xff2B2C31)
+                          : Colors.red,
+                    );
+                  },
                 ),
               ),
+
             ],
           );
         } else {
