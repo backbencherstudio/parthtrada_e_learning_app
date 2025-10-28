@@ -25,11 +25,12 @@ class CancelSchedule {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonData = jsonDecode(response.body);
+      debugPrint('Successful to cancel schedule: ${response.body}');
+      debugPrint('result: ${jsonData['success']}');
       return jsonData['success'];
     } else {
       debugPrint('Failed to cancel schedule: ${response.body}');
       throw Exception('Failed to cancel schedule: ${response.statusCode}');
-
     }
   }
 }

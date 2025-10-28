@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../repository/api/schedule/cancel_schedule.dart';
 
@@ -38,20 +39,22 @@ class CancelScheduleNotifier extends StateNotifier<CancelScheduleState> {
   CancelScheduleNotifier(this._repository)
       : super(const CancelScheduleState());
 
-  Future<void> cancelMeeting(String id) async {
+  Future<bool> cancelMeeting(String id) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
-
     try {
       final result = await _repository.cancelScheduleMeetings(id: id);
       state = state.copyWith(isLoading: false, isSuccess: result);
+      return result;
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
         isSuccess: false,
         errorMessage: e.toString(),
       );
+      return false;
     }
   }
+
 
   void reset() {
     state = const CancelScheduleState();

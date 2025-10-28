@@ -309,8 +309,6 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
         ],
       );
     }
-
-
     else {
       if (meetingScheduleModel.status == 'UPCOMING' ||
           meetingScheduleModel.status == 'PENDING') {
@@ -336,10 +334,8 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
               children: [
                 Consumer(
                   builder: (context, ref, __) {
-                    final cancelState =
-                    ref.watch(cancelScheduleNotifierProvider(meetingScheduleModel.id));
-                    final notifier =
-                    ref.read(cancelScheduleNotifierProvider(meetingScheduleModel.id).notifier);
+                    final cancelState = ref.watch(cancelScheduleNotifierProvider(meetingScheduleModel.id));
+                    final notifier = ref.read(cancelScheduleNotifierProvider(meetingScheduleModel.id).notifier);
 
                     return Expanded(
                       child: CommonWidget.primaryButton(
@@ -348,29 +344,24 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                         onPressed: cancelState.isLoading
                             ? (){}
                             : () async {
-                          await notifier.cancelMeeting(meetingScheduleModel.id);
+                          final success = await notifier.cancelMeeting(meetingScheduleModel.id);
 
-                          if (context.mounted) {
-                            if (cancelState.isSuccess == true) {
-                              ref
-                                  .read(scheduleProvider.notifier)
-                                  .removeMeeting(meetingScheduleModel.id);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Meeting Cancelled Successfully"),
-                                ),
-                              );
-                              await ref
-                                  .read(scheduleProvider.notifier)
-                                  .fetchMeetings(page: 1, isRefresh: true);
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(cancelState.errorMessage ??
-                                      "You can only cancel bookings with a completed transaction."),
-                                ),
-                              );
-                            }
+                          if (!context.mounted) return;
+
+                          if (success) {
+                            ref.read(scheduleProvider.notifier).removeMeeting(meetingScheduleModel.id);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Meeting Cancelled Successfully")),
+                            );
+                            await ref.read(scheduleProvider.notifier)
+                                .fetchMeetings(page: 1, isRefresh: true);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(cancelState.errorMessage ??
+                                    "You can only cancel bookings with a completed transaction."),
+                              ),
+                            );
                           }
                         },
                         text: cancelState.isLoading ? "Cancelling..." : "Cancel",
