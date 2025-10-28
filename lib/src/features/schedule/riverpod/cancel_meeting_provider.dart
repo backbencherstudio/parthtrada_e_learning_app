@@ -43,8 +43,8 @@ class CancelScheduleNotifier extends StateNotifier<CancelScheduleState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
       final result = await _repository.cancelScheduleMeetings(id: id);
-      state = state.copyWith(isLoading: false, isSuccess: result);
-      return result;
+      state = state.copyWith(isLoading: false, isSuccess: result?.success, errorMessage: result?.message);
+      return result?.success ?? false;
     } catch (e) {
       state = state.copyWith(
         isLoading: false,

@@ -112,47 +112,62 @@ class CustomNotificationContainer extends ConsumerWidget {
                   return Expanded(
                     child: Consumer(
                       builder: (_, ref, __) {
+                        final bookingId = item.id.toString(); // use whatever uniquely identifies this booking
+
+                        // Watch the specific booking provider instance
+                        final state = ref.watch(acceptRejectBookingProvider(bookingId));
+                        final isLoading = state is AsyncLoading;
+
                         return CommonWidget.primaryButton(
                           context: context,
-                            onPressed: () async {
-                              final actionUrl = item.actions[index].url;
-                              final actionMethod = item.actions[index].reqMethod; // todo:- perform with this method
-                              if (actionUrl == null || actionUrl.isEmpty) return;
+                          onPressed: isLoading
+                              ? (){} // disable when loading
+                              : () async {
+                            final actionUrl = item.actions[index].url;
+                            final actionMethod = item.actions[index].reqMethod;
 
-                              if (item.actions[index].disabled) return;
-                              await ref.read(acceptRejectBookingProvider.notifier).patchBookingAction(actionUrl);
+                            if (actionUrl == null || actionUrl.isEmpty || item.actions[index].disabled) return;
 
-                              final state = ref.read(acceptRejectBookingProvider);
+                            // Trigger API call for this specific booking
+                            await ref
+                                .read(acceptRejectBookingProvider(bookingId).notifier)
+                                .patchBookingAction(actionUrl);
 
-                              state.when(
-                                data: (response) async {
-                                  if (response?.success == true) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(response?.message ?? "Action successful")),
-                                    );
-                                    await ref.read(notificationsProvider.notifier).refreshNotifications();
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text("Action failed")),
-                                    );
-                                  }
-                                },
-                                loading: () {},
-                                error: (error, _) {
+                            final state = ref.read(acceptRejectBookingProvider(bookingId));
+
+                            state.when(
+                              data: (response) async {
+                                if (response?.success == true) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text("Error: This booking has already been processed")),
+                                    SnackBar(content: Text(response?.message ?? "Action successful")),
                                   );
-                                },
-                              );
+                                  await ref.read(notificationsProvider.notifier).refreshNotifications();
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text("Action failed")),
+                                  );
+                                }
+                              },
+                              loading: () {},
+                              error: (error, _) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Error: This booking has already been processed")),
+                                );
+                              },
+                            );
 
-                              ref.read(acceptRejectBookingProvider.notifier).reset();
-                            },
+                            // Reset after completion
+                            ref.read(acceptRejectBookingProvider(bookingId).notifier).reset();
+                          },
                           text: item.actions[index].text,
-                          backgroundColor: item.actions[index].bgPrimary && !item.actions[index].disabled ? AppColors.primary : Color(0xff4A4C56),
-                          textStyle: buttonTextStyle
+                          backgroundColor: item.actions[index].bgPrimary && !item.actions[index].disabled
+                              ? AppColors.primary
+                              : const Color(0xff4A4C56),
+                          textStyle: buttonTextStyle,
                         );
-                      }
+                      },
                     ),
+
                   );
                 }),
               ),
