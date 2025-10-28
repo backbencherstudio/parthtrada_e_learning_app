@@ -112,7 +112,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text("No Conversations Found"),
+                              Text("No Schedules Found"),
                               SizedBox(height: 12.h),
                               GestureDetector(
                                 onTap: () async {
@@ -144,6 +144,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
 
                     return RefreshIndicator(
                       onRefresh: () async {
+                        _scrollController.jumpTo(0);
                         _currentPage = 1;
                         await ref.read(scheduleProvider.notifier).fetchMeetings(
                           page: _currentPage,
@@ -152,6 +153,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                       },
                       child: ListView.builder(
                         controller: _scrollController,
+                        physics: const AlwaysScrollableScrollPhysics(),
                         itemCount: meetings.length + (scheduleState.isLoadingMore ? 1 : 0),
                         padding: EdgeInsets.only(bottom: 24.h),
                         itemBuilder: (context, index) {

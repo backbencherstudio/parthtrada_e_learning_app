@@ -20,9 +20,8 @@ class RefundRiverpod extends StateNotifier<ScheduleState> {
   Future<bool> refund(String bookingId) async {
     debugPrint("Booking Id received: $bookingId");
     try {
-      final response = await _apiService.post(
-        ApiEndPoints.refund,
-        data: {"bookingId": bookingId},
+      final response = await _apiService.patch(
+        ApiEndPoints.refundByStudent(bookingId),
       );
       if (response.data != null) {
         return true;
