@@ -386,7 +386,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
             children: [
               Text(
                 meetingScheduleModel.status == "CANCELLED"
-                    ? "Cancelled The Meeting"
+                    ? meetingScheduleModel.refundReason ?? "Cancelled The Meeting"
                     : "No Response",
                 style: textTheme.bodyMedium?.copyWith(
                   color: AppColors.error,
@@ -409,28 +409,30 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                       onPressed: isLoading
                           ? () {}
                           : () async {
-                        final success = await refundNotifier.refund(meetingScheduleModel.id);
-                        final message = ref.read(refundProvider(meetingScheduleModel.id)).error ?? 'Something went wrong';
+                        if (meetingScheduleModel.transaction.type != 'refund-request') {
+                          final success = await refundNotifier.refund(meetingScheduleModel.id);
+                          final message = ref.read(refundProvider(meetingScheduleModel.id)).error ?? 'Something went wrong';
 
-                        if (!context.mounted) return;
+                          if (!context.mounted) return;
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(message)),
-                        );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(message)),
+                          );
 
-                        if (success) {
-                          await ref
-                              .read(scheduleProvider.notifier)
-                              .fetchMeetings(page: 1, isRefresh: true);
+                          if (success) {
+                            await ref
+                                .read(scheduleProvider.notifier)
+                                .fetchMeetings(page: 1, isRefresh: true);
+                          }
                         }
                       },
                       text: isLoading
                           ? "Processing..."
-                          : isSuccess
-                          ? "Requested Refund"
-                          : "Refund",
+                          : meetingScheduleModel.transaction.refunded
+                          ? "Refunded"
+                          : meetingScheduleModel.transaction.type == 'refund-request' ? 'Requested Refund' : "Refund",
                       textStyle: buttonTextStyle,
-                      backgroundColor: isSuccess
+                      backgroundColor: meetingScheduleModel.transaction.refunded == true || (meetingScheduleModel.transaction.refunded == false && meetingScheduleModel.transaction.type == 'refund-request')
                           ? Color(0xff2B2C31)
                           : Colors.red,
                     );
