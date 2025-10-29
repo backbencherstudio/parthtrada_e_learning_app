@@ -59,115 +59,182 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
           ),
           meetingScheduleModel.status == 'PENDING'
               ? Row(
-            spacing: 8.w,
-            children: [
-              Consumer(
-                builder: (context, ref, __) {
-                  final bookingKey = "${meetingScheduleModel.id}_reject"; // 👈 unique key for cancel
-                  final state = ref.watch(acceptRejectBookingProvider(bookingKey));
-                  final isLoading = state is AsyncLoading;
+                spacing: 8.w,
+                children: [
+                  Consumer(
+                    builder: (context, ref, __) {
+                      final bookingKey =
+                          "${meetingScheduleModel.id}_reject"; // 👈 unique key for cancel
+                      final state = ref.watch(
+                        acceptRejectBookingProvider(bookingKey),
+                      );
+                      final isLoading = state is AsyncLoading;
 
-                  return Expanded(
-                    child: CommonWidget.primaryButton(
-                      textStyle: buttonTextStyle,
-                      context: context,
-                      onPressed: isLoading
-                          ? (){}
-                          : () async {
-                        final actionUrl =
-                            '/experts/bookings/actions/${meetingScheduleModel.id}/reject/${meetingScheduleModel.notificationId}';
+                      return Expanded(
+                        child: CommonWidget.primaryButton(
+                          textStyle: buttonTextStyle,
+                          context: context,
+                          onPressed:
+                              isLoading
+                                  ? () {}
+                                  : () async {
+                                    final actionUrl =
+                                        '/experts/bookings/actions/${meetingScheduleModel.id}/reject/${meetingScheduleModel.notificationId}';
 
-                        await ref
-                            .read(acceptRejectBookingProvider(bookingKey).notifier)
-                            .patchBookingAction(actionUrl);
+                                    await ref
+                                        .read(
+                                          acceptRejectBookingProvider(
+                                            bookingKey,
+                                          ).notifier,
+                                        )
+                                        .patchBookingAction(actionUrl);
 
-                        final result = ref.read(acceptRejectBookingProvider(bookingKey));
-                        result.when(
-                          data: (response) async {
-                            if (response?.success == true) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(response?.message ?? "Rejected")),
-                              );
-                              await ref
-                                  .read(scheduleProvider.notifier)
-                                  .fetchMeetings(page: 1, isRefresh: true);
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("Action failed")),
-                              );
-                            }
-                          },
-                          error: (error, _) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Error: $error")),
-                            );
-                          },
-                          loading: () {},
-                        );
+                                    final result = ref.read(
+                                      acceptRejectBookingProvider(bookingKey),
+                                    );
+                                    result.when(
+                                      data: (response) async {
+                                        if (response?.success == true) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                response?.message ?? "Rejected",
+                                              ),
+                                            ),
+                                          );
+                                          await ref
+                                              .read(scheduleProvider.notifier)
+                                              .fetchMeetings(
+                                                page: 1,
+                                                isRefresh: true,
+                                              );
+                                        } else {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            const SnackBar(
+                                              content: Text("Action failed"),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      error: (error, _) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text("Error: $error"),
+                                          ),
+                                        );
+                                      },
+                                      loading: () {},
+                                    );
 
-                        ref.read(acceptRejectBookingProvider(bookingKey).notifier).reset();
-                      },
-                      text: isLoading ? "Cancelling..." : "Cancel",
-                      backgroundColor: const Color(0xff2B2C31),
-                    ),
-                  );
-                },
-              ),
-              Consumer(
-                builder: (context, ref, __) {
-                  final bookingKey = "${meetingScheduleModel.id}_accept"; // 👈 unique key for accept
-                  final state = ref.watch(acceptRejectBookingProvider(bookingKey));
-                  final isLoading = state is AsyncLoading;
+                                    ref
+                                        .read(
+                                          acceptRejectBookingProvider(
+                                            bookingKey,
+                                          ).notifier,
+                                        )
+                                        .reset();
+                                  },
+                          text: isLoading ? "Cancelling..." : "Cancel",
+                          backgroundColor: const Color(0xff2B2C31),
+                        ),
+                      );
+                    },
+                  ),
+                  Consumer(
+                    builder: (context, ref, __) {
+                      final bookingKey =
+                          "${meetingScheduleModel.id}_accept"; // 👈 unique key for accept
+                      final state = ref.watch(
+                        acceptRejectBookingProvider(bookingKey),
+                      );
+                      final isLoading = state is AsyncLoading;
 
-                  return Expanded(
-                    child: CommonWidget.primaryButton(
-                      backgroundColor: AppColors.primary,
-                      textStyle: buttonTextStyle?.copyWith(color: Colors.white),
-                      context: context,
-                      onPressed: isLoading
-                          ? (){}
-                          : () async {
-                        final actionUrl =
-                            '/experts/bookings/actions/${meetingScheduleModel.id}/accept/${meetingScheduleModel.notificationId}';
+                      return Expanded(
+                        child: CommonWidget.primaryButton(
+                          backgroundColor: AppColors.primary,
+                          textStyle: buttonTextStyle?.copyWith(
+                            color: Colors.white,
+                          ),
+                          context: context,
+                          onPressed:
+                              isLoading
+                                  ? () {}
+                                  : () async {
+                                    final actionUrl =
+                                        '/experts/bookings/actions/${meetingScheduleModel.id}/accept/${meetingScheduleModel.notificationId}';
 
-                        await ref
-                            .read(acceptRejectBookingProvider(bookingKey).notifier)
-                            .patchBookingAction(actionUrl);
+                                    await ref
+                                        .read(
+                                          acceptRejectBookingProvider(
+                                            bookingKey,
+                                          ).notifier,
+                                        )
+                                        .patchBookingAction(actionUrl);
 
-                        final result = ref.read(acceptRejectBookingProvider(bookingKey));
-                        result.when(
-                          data: (response) async {
-                            if (response?.success == true) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(response?.message ?? "Accepted")),
-                              );
-                              await ref
-                                  .read(scheduleProvider.notifier)
-                                  .fetchMeetings(page: 1, isRefresh: true);
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("Action failed")),
-                              );
-                            }
-                          },
-                          error: (error, _) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Error: $error")),
-                            );
-                          },
-                          loading: () {},
-                        );
+                                    final result = ref.read(
+                                      acceptRejectBookingProvider(bookingKey),
+                                    );
+                                    result.when(
+                                      data: (response) async {
+                                        if (response?.success == true) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                response?.message ?? "Accepted",
+                                              ),
+                                            ),
+                                          );
+                                          await ref
+                                              .read(scheduleProvider.notifier)
+                                              .fetchMeetings(
+                                                page: 1,
+                                                isRefresh: true,
+                                              );
+                                        } else {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            const SnackBar(
+                                              content: Text("Action failed"),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      error: (error, _) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text("Error: $error"),
+                                          ),
+                                        );
+                                      },
+                                      loading: () {},
+                                    );
 
-                        ref.read(acceptRejectBookingProvider(bookingKey).notifier).reset();
-                      },
-                      text: isLoading ? "Accepting..." : "Create Link",
-                    ),
-                  );
-                },
-              ),
-            ],
-          )
-
+                                    ref
+                                        .read(
+                                          acceptRejectBookingProvider(
+                                            bookingKey,
+                                          ).notifier,
+                                        )
+                                        .reset();
+                                  },
+                          text: isLoading ? "Accepting..." : "Create Link",
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              )
               : Row(
                 spacing: 8.w,
                 children: [
@@ -265,10 +332,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
         ],
       );
     }
-
-
     /// Student actions
-
     else {
       if (meetingScheduleModel.status == 'UPCOMING' ||
           meetingScheduleModel.status == 'PENDING') {
@@ -294,33 +358,58 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
               children: [
                 Consumer(
                   builder: (context, ref, __) {
-                    final cancelState = ref.watch(cancelScheduleNotifierProvider(meetingScheduleModel.id));
-                    final notifier = ref.read(cancelScheduleNotifierProvider(meetingScheduleModel.id).notifier);
+                    final cancelState = ref.watch(
+                      cancelScheduleNotifierProvider(meetingScheduleModel.id),
+                    );
+                    final notifier = ref.read(
+                      cancelScheduleNotifierProvider(
+                        meetingScheduleModel.id,
+                      ).notifier,
+                    );
 
                     return Expanded(
                       child: CommonWidget.primaryButton(
                         textStyle: buttonTextStyle,
                         context: context,
-                        onPressed: cancelState.isLoading
-                            ? (){}
-                            : () async {
-                          final success = await notifier.cancelMeeting(meetingScheduleModel.id);
+                        onPressed:
+                            cancelState.isLoading
+                                ? () {}
+                                : () async {
+                                  final success = await notifier.cancelMeeting(
+                                    meetingScheduleModel.id,
+                                  );
 
-                          if (!context.mounted) return;
+                                  if (!context.mounted) return;
 
-                          final updatedState = ref.read(cancelScheduleNotifierProvider(meetingScheduleModel.id));
+                                  final updatedState = ref.read(
+                                    cancelScheduleNotifierProvider(
+                                      meetingScheduleModel.id,
+                                    ),
+                                  );
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(updatedState.errorMessage ?? 'Unknown response')),
-                          );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        updatedState.errorMessage ??
+                                            'Unknown response',
+                                      ),
+                                    ),
+                                  );
 
-                          if (success) {
-                            ref.read(scheduleProvider.notifier).removeMeeting(meetingScheduleModel.id);
-                            await ref.read(scheduleProvider.notifier)
-                                .fetchMeetings(page: 1, isRefresh: true);
-                          }
-                        },
-                        text: cancelState.isLoading ? "Cancelling..." : "Cancel",
+                                  if (success) {
+                                    ref
+                                        .read(scheduleProvider.notifier)
+                                        .removeMeeting(meetingScheduleModel.id);
+                                    await ref
+                                        .read(scheduleProvider.notifier)
+                                        .fetchMeetings(
+                                          page: 1,
+                                          isRefresh: true,
+                                        );
+                                  }
+                                },
+                        text:
+                            cancelState.isLoading ? "Cancelling..." : "Cancel",
                         backgroundColor: const Color(0xff2B2C31),
                       ),
                     );
@@ -377,6 +466,26 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
             ),
           ],
         );
+      }
+      else if (meetingScheduleModel.status == "REFUNDED") {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 12.h,
+          children: [
+            Text(meetingScheduleModel.refundReason ?? "Cancelled The Meeting"),
+
+            SizedBox(
+              width: double.infinity,
+              child: CommonWidget.primaryButton(
+                context: context,
+                onPressed: () {},
+                text: "Refunded",
+                textStyle: buttonTextStyle,
+                backgroundColor: Color(0xff2B2C31),
+              ),
+            ),
+          ],
+        );
       } else {
         if (meetingScheduleModel.shouldReview == false &&
             meetingScheduleModel.shouldRefund == true) {
@@ -386,7 +495,8 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
             children: [
               Text(
                 meetingScheduleModel.status == "CANCELLED"
-                    ? meetingScheduleModel.refundReason ?? "Cancelled The Meeting"
+                    ? meetingScheduleModel.refundReason ??
+                        "Cancelled The Meeting"
                     : "No Response",
                 style: textTheme.bodyMedium?.copyWith(
                   color: AppColors.error,
@@ -398,48 +508,75 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                 width: double.infinity,
                 child: Consumer(
                   builder: (context, ref, _) {
-                    final refundState = ref.watch(refundProvider(meetingScheduleModel.id));
-                    final refundNotifier = ref.read(refundProvider(meetingScheduleModel.id).notifier);
+                    final refundState = ref.watch(
+                      refundProvider(meetingScheduleModel.id),
+                    );
+                    final refundNotifier = ref.read(
+                      refundProvider(meetingScheduleModel.id).notifier,
+                    );
 
                     final isLoading = refundState.isLoading;
                     final isSuccess = refundState.success;
 
                     return CommonWidget.primaryButton(
                       context: context,
-                      onPressed: isLoading
-                          ? () {}
-                          : () async {
-                        if (meetingScheduleModel.transaction.type != 'refund-request') {
-                          final success = await refundNotifier.refund(meetingScheduleModel.id);
-                          final message = ref.read(refundProvider(meetingScheduleModel.id)).error ?? 'Something went wrong';
+                      onPressed:
+                          isLoading
+                              ? () {}
+                              : () async {
+                                if (meetingScheduleModel.transaction?.type !=
+                                    'refund-request') {
+                                  final success = await refundNotifier.refund(
+                                    meetingScheduleModel.id,
+                                  );
+                                  final message =
+                                      ref
+                                          .read(
+                                            refundProvider(
+                                              meetingScheduleModel.id,
+                                            ),
+                                          )
+                                          .error ??
+                                      'Something went wrong';
 
-                          if (!context.mounted) return;
+                                  if (!context.mounted) return;
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(message)),
-                          );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(message)),
+                                  );
 
-                          if (success) {
-                            await ref
-                                .read(scheduleProvider.notifier)
-                                .fetchMeetings(page: 1, isRefresh: true);
-                          }
-                        }
-                      },
-                      text: isLoading
-                          ? "Processing..."
-                          : meetingScheduleModel.transaction.refunded
-                          ? "Refunded"
-                          : meetingScheduleModel.transaction.type == 'refund-request' ? 'Requested Refund' : "Refund",
+                                  if (success) {
+                                    await ref
+                                        .read(scheduleProvider.notifier)
+                                        .fetchMeetings(
+                                          page: 1,
+                                          isRefresh: true,
+                                        );
+                                  }
+                                }
+                              },
+                      text:
+                          isLoading
+                              ? "Processing..."
+                              : meetingScheduleModel.transaction?.refunded ?? false
+                              ? "Refunded"
+                              : meetingScheduleModel.transaction?.type ==
+                                  'refund-request'
+                              ? 'Requested Refund'
+                              : "Refund",
                       textStyle: buttonTextStyle,
-                      backgroundColor: meetingScheduleModel.transaction.refunded == true || (meetingScheduleModel.transaction.refunded == false && meetingScheduleModel.transaction.type == 'refund-request')
-                          ? Color(0xff2B2C31)
-                          : Colors.red,
+                      backgroundColor:
+                          meetingScheduleModel.transaction?.refunded == true ||
+                                  (meetingScheduleModel.transaction?.refunded ==
+                                          false &&
+                                      meetingScheduleModel.transaction?.type ==
+                                          'refund-request')
+                              ? Color(0xff2B2C31)
+                              : Colors.red,
                     );
                   },
                 ),
               ),
-
             ],
           );
         } else {
@@ -478,10 +615,9 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                       ref.read(addReviewProvider.notifier).state = reviewState
                           .copyWith(bookingId: meetingScheduleModel.id);
                       await addReviewBottomSheet(context: context);
-                      await ref.read(scheduleProvider.notifier).fetchMeetings(
-                        page: 1,
-                        isRefresh: true,
-                      );
+                      await ref
+                          .read(scheduleProvider.notifier)
+                          .fetchMeetings(page: 1, isRefresh: true);
                     },
                     text: "Add Review",
                     textStyle: buttonTextStyle,
