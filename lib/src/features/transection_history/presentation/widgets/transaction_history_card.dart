@@ -81,7 +81,7 @@ class TransactionHistoryCard extends StatelessWidget {
 
   String getBalanceIcon() {
     if (isWithdraw) return '-';
-    if (transaction.type == 'send-order') {
+    if (transaction.type == 'send-order' || transaction.refunded == true) {
       return isRefunded ? '+' : '-';
     } else if (transaction.type == 'received-order') {
       return isRefunded ? '-' : '+';
@@ -91,7 +91,7 @@ class TransactionHistoryCard extends StatelessWidget {
 
   Color getBalanceColor() {
     if (isWithdraw) return AppColors.error;
-    if (transaction.type == 'send-order') {
+    if (transaction.type == 'send-order' || transaction.refunded == true) {
       return isRefunded ? AppColors.primary: AppColors.error;
     } else if (transaction.type == 'received-order') {
       return isRefunded ? AppColors.refundedColor : AppColors.primary;

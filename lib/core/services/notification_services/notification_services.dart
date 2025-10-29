@@ -85,7 +85,7 @@ class NotificationService {
 
     await _notificationsPlugin.show(
       message.id.hashCode,
-      'New Message from ${message.sender?.name}',
+      message.sender?.name,
       message.content,
       notificationDetails,
       payload: message.id,
