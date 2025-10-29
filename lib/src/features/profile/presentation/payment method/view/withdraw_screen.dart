@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/viewmodel/payment_method_notifier_provider.dart';
 
+import '../../../../../../core/theme/theme_part/app_colors.dart';
+
 class WithdrawScreen extends ConsumerStatefulWidget {
   const WithdrawScreen({super.key});
 
@@ -42,7 +44,7 @@ class _WithdrawScreenState extends ConsumerState<WithdrawScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Icon(Icons.check_circle_rounded,
-                  color: Color(0xFF26A69A), size: 64), // Accent color
+                  color: AppColors.primary, size: 64), // Accent color
               const SizedBox(height: 16),
               Text(
                 "Withdraw Successful",
@@ -71,7 +73,7 @@ class _WithdrawScreenState extends ConsumerState<WithdrawScreen> {
                   //       "View Details",
                   //       style: GoogleFonts.inter(
                   //         fontSize: 16,
-                  //         color: const Color(0xFF26A69A),
+                  //         color: AppColors.primary,
                   //       ),
                   //     ),
                   //   ),
@@ -84,7 +86,7 @@ class _WithdrawScreenState extends ConsumerState<WithdrawScreen> {
                         Navigator.pop(context); // go back to payout screen
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF26A69A), // Accent color
+                        backgroundColor: AppColors.primary, // Accent color
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -144,7 +146,8 @@ class _WithdrawScreenState extends ConsumerState<WithdrawScreen> {
       return;
     }
 
-    final currentBalance = paymentState.balance?.data?.amount?.toDouble() ?? 0;
+    final amountString = paymentState.balance?.data?.amount?.toString() ?? "";
+    final currentBalance = double.tryParse(amountString) ?? 0.0;
     if (amount > currentBalance) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -264,11 +267,11 @@ class _WithdrawScreenState extends ConsumerState<WithdrawScreen> {
                   const SizedBox(height: 12),
                   paymentState.isLoadingCheckBalance
                       ? const CircularProgressIndicator(
-                    color: Color(0xFF26A69A),
+                    color: AppColors.primary,
                   )
                       : Text(
                     paymentState.balance != null
-                        ? "\$${paymentState.balance!.data!.amount!.toDouble().toStringAsFixed(2)}"
+                        ? "\$${(double.tryParse(paymentState.balance?.data?.amount?.toString() ?? '') ?? 0.0).toStringAsFixed(2)}"
                         : "Balance: Not loaded",
                     style: GoogleFonts.inter(
                       fontSize: 40,
@@ -276,6 +279,7 @@ class _WithdrawScreenState extends ConsumerState<WithdrawScreen> {
                       color: const Color(0xFFE0E0E0),
                     ),
                   ),
+
                   if (paymentState.errorMessageCheckBalance != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 8),
@@ -371,7 +375,7 @@ class _WithdrawScreenState extends ConsumerState<WithdrawScreen> {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide:
-                        const BorderSide(color: Color(0xFF26A69A), width: 2),
+                        const BorderSide(color: AppColors.primary, width: 2),
                       ),
                       filled: true,
                       fillColor: const Color(0xFF2C2C2C),
@@ -388,12 +392,12 @@ class _WithdrawScreenState extends ConsumerState<WithdrawScreen> {
                           ? null
                           : _onConfirmWithdraw,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF26A69A),
+                        backgroundColor: AppColors.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                         elevation: 2,
-                        shadowColor: const Color(0xFF26A69A).withOpacity(0.4),
+                        shadowColor: AppColors.primary,
                       ),
                       child: paymentState.isLoadingPayoutBalance
                           ? const CircularProgressIndicator(

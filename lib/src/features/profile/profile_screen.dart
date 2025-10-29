@@ -1,6 +1,5 @@
 import 'package:e_learning_app/core/constant/images.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
-import 'package:e_learning_app/src/features/profile/data/models/profile_response_data.dart';
 import 'package:e_learning_app/src/features/profile/data/viewmodels/profile_viewmodel.dart';
 import 'package:e_learning_app/src/features/profile/sub_feature/widgets/widget_List.dart';
 import 'package:flutter/material.dart';
@@ -59,36 +58,50 @@ class ProfileScreen extends ConsumerWidget {
                                         shape: BoxShape.circle,
                                       ),
                                       child: ClipOval(
-                                        child: profileData.image != null
-                                            ? Image.network(
-                                          "${ApiEndPoints.baseUrl}/uploads/${profileData.image!}",
-                                          height: 120.h,
-                                          width: 120.w,
-                                          fit: BoxFit.cover, // Ensures image fills circle
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return Image.asset(
-                                              AppImages.maiya,
-                                              height: 120.h,
-                                              width: 120.w,
-                                              fit: BoxFit.cover,
-                                            );
-                                          },
-                                          loadingBuilder: (context, child, loadingProgress) {
-                                            if (loadingProgress == null) return child;
-                                            return const Center(
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
-                                                valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
-                                              ),
-                                            );
-                                          },
-                                        )
-                                            : Image.asset(
-                                          AppImages.maiya,
-                                          height: 120.h,
-                                          width: 120.w,
-                                          fit: BoxFit.cover,
-                                        ),
+                                        child:
+                                            profileData.image != null
+                                                ? Image.network(
+                                                  "${ApiEndPoints.baseUrl}/uploads/${profileData.image!}",
+                                                  height: 120.h,
+                                                  width: 120.w,
+                                                  fit: BoxFit.cover,
+                                                  // Ensures image fills circle
+                                                  errorBuilder: (
+                                                    context,
+                                                    error,
+                                                    stackTrace,
+                                                  ) {
+                                                    return Image.asset(
+                                                      AppImages.maiya,
+                                                      height: 120.h,
+                                                      width: 120.w,
+                                                      fit: BoxFit.cover,
+                                                    );
+                                                  },
+                                                  loadingBuilder: (
+                                                    context,
+                                                    child,
+                                                    loadingProgress,
+                                                  ) {
+                                                    if (loadingProgress == null)
+                                                      return child;
+                                                    return const Center(
+                                                      child: CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                              Color
+                                                            >(Colors.grey),
+                                                      ),
+                                                    );
+                                                  },
+                                                )
+                                                : Image.asset(
+                                                  AppImages.maiya,
+                                                  height: 120.h,
+                                                  width: 120.w,
+                                                  fit: BoxFit.cover,
+                                                ),
                                       ),
                                     ),
                                   ),

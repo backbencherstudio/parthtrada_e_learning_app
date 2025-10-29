@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../../../../core/constant/images.dart';
 import '../../../../../core/services/api_services/api_end_points.dart';
 import '../../../../../core/utils/utils.dart';
 import '../../provider/expert_review_provider.dart';

@@ -1,6 +1,4 @@
-import 'package:e_learning_app/core/services/local_storage_services/user_id_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/constant/padding.dart';
@@ -25,6 +23,7 @@ class InboxScreen extends ConsumerStatefulWidget {
   final String name;
   final String userId;
   final String recipientId;
+
   //final String recipientRole;
 
   @override
@@ -58,7 +57,8 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final state = ref.watch(conversationViewModelProvider);
     // Use ScrollController from ViewModel
-    final scrollController = ref.read(conversationViewModelProvider.notifier).scrollController;
+    final scrollController =
+        ref.read(conversationViewModelProvider.notifier).scrollController;
 
     return Scaffold(
       body: SafeArea(
@@ -79,27 +79,28 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
 
               /// Messages
               Expanded(
-                child: state.isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : state.error != null
-                    ? Center(child: Text(state.error!))
-                    : ListView.builder(
-                  key: const ValueKey('message_list'),
-                  controller: scrollController,
-                  itemCount: state.messages?.data?.length ?? 0,
-                  itemBuilder: (_, index) {
-                    final Data msg = state.messages!.data![index];
-                    return MessageCardWidget(
-                      key: ValueKey(msg.id),
-                      isMe: msg.me ?? false,
-                      widget: widget,
-                      msg: msg,
-                      textTheme: textTheme,
-                      chatMessages: state.messages!.data!,
-                      index: index,
-                    );
-                  },
-                ),
+                child:
+                    state.isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : state.error != null
+                        ? Center(child: Text(state.error!))
+                        : ListView.builder(
+                          key: const ValueKey('message_list'),
+                          controller: scrollController,
+                          itemCount: state.messages?.data?.length ?? 0,
+                          itemBuilder: (_, index) {
+                            final Data msg = state.messages!.data![index];
+                            return MessageCardWidget(
+                              key: ValueKey(msg.id),
+                              isMe: msg.me ?? false,
+                              widget: widget,
+                              msg: msg,
+                              textTheme: textTheme,
+                              chatMessages: state.messages!.data!,
+                              index: index,
+                            );
+                          },
+                        ),
               ),
 
               /// Typing Indicator
@@ -117,7 +118,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                 textTheme: textTheme,
                 userId: widget.userId,
                 recipientId: widget.recipientId,
-               // recipientRole: widget.recipientRole,
+                // recipientRole: widget.recipientRole,
               ),
             ],
           ),

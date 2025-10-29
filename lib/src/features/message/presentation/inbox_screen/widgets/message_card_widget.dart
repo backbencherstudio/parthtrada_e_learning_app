@@ -1,10 +1,7 @@
-import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:e_learning_app/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
-
 import '../../../../../../core/services/api_services/api_end_points.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../profile/data/viewmodels/profile_viewmodel.dart';
