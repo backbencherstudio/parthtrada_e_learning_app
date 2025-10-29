@@ -1,9 +1,7 @@
-import 'package:e_learning_app/core/constant/icons.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../../../core/constant/padding.dart';

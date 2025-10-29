@@ -1,16 +1,13 @@
 import 'package:e_learning_app/core/constant/icons.dart';
-import 'package:e_learning_app/core/constant/images.dart';
 import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
-import 'package:e_learning_app/src/features/expert_details/model/expert_review_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../../repository/api/schedule/add_review_repository.dart';
-import '../../../../expert_details/model/temp/temp_expert_review_model.dart';
-import '../../../../expert_details/riverpod/expert_riverpod.dart';
+
 import '../../../riverpod/add_review_provider.dart';
 
 class AddReviewForExpert extends ConsumerStatefulWidget {

@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../rvierpod/session_notifier.dart';
-import '../../../rvierpod/session_provider.dart';
 import '../select_duration_for_booking_bottom_sheet/select_duration_for_booking_bottom_sheet.dart';
 
 Future<void> answerSessionDetailsForBook({

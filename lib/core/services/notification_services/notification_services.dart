@@ -2,8 +2,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:e_learning_app/src/features/message/model/message_model.dart';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:e_learning_app/src/features/message/model/message_model.dart';
+
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();

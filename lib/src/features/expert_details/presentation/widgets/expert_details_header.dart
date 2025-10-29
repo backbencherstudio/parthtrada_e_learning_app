@@ -9,7 +9,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../../core/constant/images.dart';
 import '../../../../../core/routes/route_name.dart';
 import '../../../../../core/services/local_storage_services/user_id_storage.dart';
-import '../../../../../repository/linkedin_login_webview.dart';
 
 class ExpertDetailsHeader extends StatelessWidget {
   final String name;
@@ -27,7 +26,8 @@ class ExpertDetailsHeader extends StatelessWidget {
     required this.profession,
     required this.location,
     required this.recipientId,
-    this.imageUrl, required this.organization,
+    this.imageUrl,
+    required this.organization,
   });
 
   @override
@@ -66,15 +66,15 @@ class ExpertDetailsHeader extends StatelessWidget {
                           fit: BoxFit.cover,
                         )
                         : CircleAvatar(
-                      radius: 50.w,
-                      backgroundColor: Colors.white,
-                      child: Image.asset(
-                        AppImages.maiya,
-                        width: 32.w,
-                        height: 32.w,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                          radius: 50.w,
+                          backgroundColor: Colors.white,
+                          child: Image.asset(
+                            AppImages.maiya,
+                            width: 32.w,
+                            height: 32.w,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
               ),
             ),
             SizedBox(height: 30.h),
@@ -110,7 +110,6 @@ class ExpertDetailsHeader extends StatelessWidget {
             CommonWidget.primaryButton(
               context: context,
               onPressed: () async {
-
                 final userId = await UserIdStorage().getUserId();
 
                 context.push(
@@ -122,11 +121,6 @@ class ExpertDetailsHeader extends StatelessWidget {
                     'recipientId': recipientId ?? '',
                   },
                 );
-
-
-
-
-
               },
               text: "Message",
             ),

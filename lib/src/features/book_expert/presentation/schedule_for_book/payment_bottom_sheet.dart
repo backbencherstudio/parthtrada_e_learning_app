@@ -5,11 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../../core/constant/padding.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
-import '../../../../../core/routes/route_name.dart';
 import '../../rvierpod/get_card_notifier.dart';
 import '../../rvierpod/payment_provider.dart';
 import 'confirm_booking_bottom_sheet/confirm_and_pay_bottom_sheet.dart';
-import 'confirm_booking_bottom_sheet/confirm_booking_bottom_sheet.dart';
 
 class PaymentConstants {
   static const selectPaymentMethod = "Select your payment method to proceed";
