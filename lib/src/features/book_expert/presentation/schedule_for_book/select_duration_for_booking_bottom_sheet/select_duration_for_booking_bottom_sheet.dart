@@ -45,6 +45,7 @@ Future<void> selectSessionDurationForBook({
                 builder: (_, ref, __) {
                   final bookExpertState = ref.watch(bookExpertRiverpod(availableTime));
                   final bookExpertNotifier = ref.read(bookExpertRiverpod(availableTime).notifier);
+
                   return ListView.builder(
                     itemCount: bookExpertNotifier.sessionDurationList.length,
                     itemBuilder: (_, index) {
@@ -91,69 +92,68 @@ Future<void> selectSessionDurationForBook({
                     child: Consumer(
                       builder: (_, ref, __) {
                         final bookExpertState = ref.watch(bookExpertRiverpod(availableTime));
-                        final isLoading = ValueNotifier<bool>(false);
-                        return ValueListenableBuilder<bool>(
-                          valueListenable: isLoading,
-                          builder: (context, loading, child) {
-                            return CommonWidget.primaryButton(
-                              padding: EdgeInsets.symmetric(vertical: 16.h),
-                              textStyle: textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                              context: bottomSheetContext,
-                              onPressed: bookExpertState.selectedDuration == null || loading
-                                  ? () {}
-                                  : () {
-                                isLoading.value = true;
-                                Future.microtask(() async {
-                                  try {
-                                    final bookExpertNotifier = ref.read(bookExpertRiverpod(availableTime).notifier);
-                                    final selectedIndex = bookExpertState.selectedDuration;
-                                    final selectedDurationStr = bookExpertNotifier.sessionDurationList[selectedIndex];
-                                    int durationInMinutes = 0;
-                                    if (selectedDurationStr.toLowerCase().contains("hour")) {
-                                      double hourValue = double.tryParse(selectedDurationStr.replaceAll(RegExp(r'[^0-9.]'), '')) ?? 0;
-                                      durationInMinutes = (hourValue * 60).toInt();
-                                    } else {
-                                      durationInMinutes = int.tryParse(selectedDurationStr.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
-                                    }
-                                    ref.read(sessionDataProvider.notifier).setSessionDuration(durationInMinutes);
-                                    await bookExpertNotifier.onConfirmBooking();
-                                    final sessionData = ref.read(sessionDataProvider);
-                                    final res = await ref.read(bookingResponseProvider(sessionData).future);
-                                    if (res.success == true && bottomSheetContext.mounted) {
-                                      ref.read(paymentIntentIdProvider.notifier).state = res.data.paymentIntentId;
-                                      bottomSheetContext.pop();
-                                      await Future.delayed(const Duration(milliseconds: 200));
-                                      if (bottomSheetContext.mounted) {
-                                        await confirmAndPayBottomSheet(
-                                          context: bottomSheetContext,
-                                          availableTime: availableTime,
-                                        );
-                                      }
-                                    } else if (bottomSheetContext.mounted) {
-                                      ScaffoldMessenger.of(bottomSheetContext).showSnackBar(
-                                        SnackBar(content: Text("Booking failed: ${res.message ?? 'Please try again.'}")),
-                                      );
-                                    }
-                                  } catch (e) {
-                                    if (bottomSheetContext.mounted) {
-                                      ScaffoldMessenger.of(bottomSheetContext).showSnackBar(
-                                        SnackBar(content: Text("Error: $e")),
-                                      );
-                                    }
-                                  } finally {
-                                    isLoading.value = false;
-                                  }
-                                });
-                              },
-                              text: loading ? "Booking..." : "Next",
-                              backgroundColor: bookExpertState.selectedDuration == null
-                                  ? AppColors.secondaryStrokeColor
-                                  : AppColors.primary,
-                            );
+                        final bookExpertNotifier = ref.read(bookExpertRiverpod(availableTime).notifier);
+
+                        return CommonWidget.primaryButton(
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          textStyle: textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                          context: bottomSheetContext,
+                          onPressed: bookExpertState.selectedDuration == null || bookExpertState.isConfirmLoading
+                              ? () {}
+                              : () async {
+                            try {
+                              final selectedIndex = bookExpertState.selectedDuration!;
+                              final selectedDurationStr =
+                              bookExpertNotifier.sessionDurationList[selectedIndex];
+                              int durationInMinutes = 0;
+                              if (selectedDurationStr.toLowerCase().contains("hour")) {
+                                double hourValue =
+                                    double.tryParse(selectedDurationStr.replaceAll(RegExp(r'[^0-9.]'), '')) ?? 0;
+                                durationInMinutes = (hourValue * 60).toInt();
+                              } else {
+                                durationInMinutes =
+                                    int.tryParse(selectedDurationStr.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
+                              }
+
+                              ref.read(sessionDataProvider.notifier).setSessionDuration(durationInMinutes);
+
+                              // Call Riverpod function that sets isConfirmLoading
+                              await bookExpertNotifier.onConfirmBooking();
+
+                              // Continue your booking logic
+                              final sessionData = ref.read(sessionDataProvider);
+                              final res = await ref.read(bookingResponseProvider(sessionData).future);
+
+                              if (res.success == true && bottomSheetContext.mounted) {
+                                ref.read(paymentIntentIdProvider.notifier).state = res.data.paymentIntentId;
+                                bottomSheetContext.pop();
+                                await Future.delayed(const Duration(milliseconds: 200));
+                                if (bottomSheetContext.mounted) {
+                                  await confirmAndPayBottomSheet(
+                                    context: bottomSheetContext,
+                                    availableTime: availableTime,
+                                  );
+                                }
+                              } else if (bottomSheetContext.mounted) {
+                                ScaffoldMessenger.of(bottomSheetContext).showSnackBar(
+                                  SnackBar(content: Text("Booking failed: ${res.message ?? 'Please try again.'}")),
+                                );
+                              }
+                            } catch (e) {
+                              if (bottomSheetContext.mounted) {
+                                ScaffoldMessenger.of(bottomSheetContext).showSnackBar(
+                                  SnackBar(content: Text("Error: $e")),
+                                );
+                              }
+                            }
                           },
+                          text: bookExpertState.isConfirmLoading ? "Booking..." : "Next",
+                          backgroundColor: bookExpertState.selectedDuration == null
+                              ? AppColors.secondaryStrokeColor
+                              : AppColors.primary,
                         );
                       },
                     ),

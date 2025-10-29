@@ -55,6 +55,8 @@ class Booking {
   User? user;
   bool? shouldReview;
   bool? shouldRefund;
+  Transaction? transaction;
+
 
   Booking({
     required this.id,
@@ -78,6 +80,7 @@ class Booking {
     this.user,
     this.shouldReview,
     this.shouldRefund,
+    this.transaction,
   });
 
   factory Booking.fromJson(Map<String, dynamic> json) {
@@ -111,6 +114,24 @@ class Booking {
       review: json['review'] != null ? Review.fromJson(json['review']) : null,
       shouldReview: json['should_review'] ?? null,
       shouldRefund: json['should_refund'] ?? null,
+      transaction: json['transaction'] != null ? Transaction.fromJson(json['transaction']) : null,
+    );
+  }
+}
+
+class Transaction {
+  final String? type;
+  final bool refunded;
+
+  Transaction({
+    this.type,
+    required this.refunded,
+});
+
+  factory Transaction.fromJson(Map<String, dynamic> map) {
+    return Transaction(
+      type: map['type'],
+      refunded: map['refunded'],
     );
   }
 }

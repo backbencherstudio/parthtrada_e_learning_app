@@ -121,20 +121,32 @@ class _AddReviewForExpertState extends ConsumerState<AddReviewForExpert> {
 
               Expanded(
                 child: Consumer(
-                  builder: (_, ref, _) {
+                  builder: (context, ref, _) {
+                    final isLoading = ref.watch(addReviewLoadingProvider);
+                    final textTheme = Theme.of(context).textTheme;
+
                     return CommonWidget.primaryButton(
                       context: context,
-                      onPressed: () async {
+                      onPressed: isLoading
+                          ? (){} // Disable button while submitting
+                          : () async {
                         final review = ref.read(addReviewProvider);
-                        if (_reviewTextEditingController.text.isEmpty || review.rating == 0) {
+                        if (_reviewTextEditingController.text.isEmpty ||
+                            review.rating == 0) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("Please add rating and review")),
+                            const SnackBar(
+                              content: Text("Please add rating and review"),
+                            ),
                           );
                           return;
                         }
+
                         ref.read(addReviewProvider.notifier).state = review.copyWith(
                           description: _reviewTextEditingController.text,
                         );
+
+                        ref.read(addReviewLoadingProvider.notifier).state = true;
+
                         try {
                           final success = await AddReviewRepository().addReview(
                             review: ref.read(addReviewProvider),
@@ -142,21 +154,27 @@ class _AddReviewForExpertState extends ConsumerState<AddReviewForExpert> {
 
                           if (success) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Review submitted successfully!")),
+                              const SnackBar(
+                                content: Text("Review submitted successfully!"),
+                              ),
                             );
                             context.pop();
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Failed to submit review")),
+                              const SnackBar(
+                                content: Text("Failed to submit review"),
+                              ),
                             );
                           }
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text("Error: $e")),
                           );
+                        } finally {
+                          ref.read(addReviewLoadingProvider.notifier).state = false;
                         }
                       },
-                      text: "Submit",
+                      text: isLoading ? "Submitting..." : "Submit",
                       textStyle: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),

@@ -9,3 +9,4 @@ final addReviewProvider = StateProvider<AddReviewModel>((ref) {
   );
 });
 
+final addReviewLoadingProvider = StateProvider<bool>((ref) => false);
