@@ -9,7 +9,6 @@ import '../../../../../core/routes/route_name.dart';
 import '../../rvierpod/get_card_notifier.dart';
 import '../../rvierpod/payment_provider.dart';
 import 'confirm_booking_bottom_sheet/confirm_and_pay_bottom_sheet.dart';
-import 'confirm_booking_bottom_sheet/confirm_booking_bottom_sheet.dart';
 
 class PaymentConstants {
   static const selectPaymentMethod = "Select your payment method to proceed";
@@ -177,14 +176,14 @@ Future<void> paymentBottomSheet({
                                 ? PaymentConstants.paymentProcessing
                                 : PaymentConstants.paymentProceed,
                         backgroundColor:
-                            (cardState.cardsResponse?.data.isEmpty ?? true) ||
-                                    paymentState.isLoading || selectedMethodId == null
+                            (cardState.cardsResponse?.data.isEmpty ?? true) || selectedMethodId == null ||
+                                    paymentState.isLoading
                                 ? AppColors.secondaryStrokeColor
                                 : AppColors.primary,
                         onPressed:
-                            paymentState.isLoading ||
+                            paymentState.isLoading || selectedMethodId == null ||
                                     (cardState.cardsResponse?.data.isEmpty ??
-                                        true) || selectedMethodId == null
+                                        true)
                                 ? (cardState.cardsResponse?.data.isEmpty ??
                                         true)
                                     ? () {

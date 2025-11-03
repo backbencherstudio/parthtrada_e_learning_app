@@ -17,7 +17,7 @@ class BalanceResponse {
 }
 
 class Data {
-  int? amount;
+  String? amount;
   String? currency;
 
   Data({this.amount, this.currency});

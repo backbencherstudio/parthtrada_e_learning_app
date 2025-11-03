@@ -1,6 +1,5 @@
 import 'package:e_learning_app/src/features/onboarding/presentation/widgets/onboarding_tab_container.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constant/images.dart';
 
@@ -39,7 +38,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 "Get career advice from verified professionals -one-on-one.",
             imagePath: AppImages.onboardingImageOne,
             tabController: _tabController,
-             buttonText: "Next",
+            buttonText: "Next",
           ),
 
           OnboardingPageWidget(
@@ -53,8 +52,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
           OnboardingPageWidget(
             heading: "Achieve More, Faster",
-            bodyText:
-                "Book sessions, learn new skills, and reach your goals.",
+            bodyText: "Book sessions, learn new skills, and reach your goals.",
             imagePath: AppImages.onboardingImageThree,
             tabController: _tabController,
             buttonText: "Get Started",

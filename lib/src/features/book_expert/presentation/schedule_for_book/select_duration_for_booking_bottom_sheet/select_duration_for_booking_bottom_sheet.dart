@@ -5,12 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
-import '../../../../../../repository/api/expert/expert_booking.dart';
 import '../../../rvierpod/book_expert_riverpod.dart';
 import '../../../rvierpod/booking_response_provider.dart';
 import '../../../rvierpod/payment_provider.dart';
 import '../../../rvierpod/session_provider.dart';
-import '../confirm_booking_bottom_sheet/confirm_and_pay_bottom_sheet.dart';
 import '../confirm_booking_bottom_sheet/confirm_booking_bottom_sheet.dart';
 
 Future<void> selectSessionDurationForBook({

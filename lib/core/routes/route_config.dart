@@ -197,7 +197,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../src/features/message/presentation/message_screen/message_screen.dart';
-import '../../src/features/notification/data/model/notification_model.dart';
 import '../../src/features/notification/data/model/wrapper_model.dart';
 import '../../src/features/profile/presentation/payment method/view/payment_method_screen.dart';
 import '../../src/features/profile/presentation/payment method/view/withdraw_screen.dart';

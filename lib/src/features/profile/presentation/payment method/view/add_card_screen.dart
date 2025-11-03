@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../../../../book_expert/rvierpod/get_card_notifier.dart';
 import '../../../sub_feature/user profile/widget/custom_button.dart';
 import '../viewmodel/payment_method_notifier_provider.dart';
@@ -201,7 +202,7 @@ class _AddCardScreenState extends ConsumerState<AddCardScreen> {
 
             // Save button
             Mybutton(
-              color: Colors.blue,
+              color: AppColors.primary,
               text: state.isLoading ? "Saving..." : "Save Card",
               width: double.infinity,
               onTap: (!_isValid || state.isLoading)

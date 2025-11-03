@@ -34,7 +34,7 @@ Future <List<Widget>> callContainerGeneral(BuildContext context) async {
       },
     ),
 
-    if(userType == "STUDENT")
+//    if(userType == "STUDENT")
     ProfileContainer(
       title: "Payment Method",
       icon: AppIcons.creditCard,
@@ -43,7 +43,7 @@ Future <List<Widget>> callContainerGeneral(BuildContext context) async {
       },
     ),
 
-    if(userType == "EXPERT")
+ //   if(userType == "EXPERT")
     ProfileContainer(
       title: "Payout Method",
       icon: AppIcons.creditCard,
