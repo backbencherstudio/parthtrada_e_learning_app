@@ -178,13 +178,13 @@ Future<void> paymentBottomSheet({
                                 : PaymentConstants.paymentProceed,
                         backgroundColor:
                             (cardState.cardsResponse?.data.isEmpty ?? true) ||
-                                    paymentState.isLoading
+                                    paymentState.isLoading || selectedMethodId == null
                                 ? AppColors.secondaryStrokeColor
                                 : AppColors.primary,
                         onPressed:
                             paymentState.isLoading ||
                                     (cardState.cardsResponse?.data.isEmpty ??
-                                        true)
+                                        true) || selectedMethodId == null
                                 ? (cardState.cardsResponse?.data.isEmpty ??
                                         true)
                                     ? () {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/utils/common_widget.dart';
+import '../../provider/expert_provider.dart';
 import '../../provider/selected_skill_provider.dart';
 
 class ExpertSearchScreen extends ConsumerStatefulWidget {

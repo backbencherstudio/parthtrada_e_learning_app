@@ -15,121 +15,132 @@ import '../../../../core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../provider/expert_review_provider.dart';
+import '../provider/home_stat_provider.dart';
+
 class SearchScreen extends ConsumerWidget {
   const SearchScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            CommonWidget.customAppBar(
-              textTheme: Theme.of(context).textTheme,
-              isNotification: false,
-              title: "Find Experts",
-              subtitle: "Connect with Professionals",
-            ),
+    return RefreshIndicator(
+      onRefresh: () async {
+        debugPrint('Refreshing all....');
+        ref.read(expertSearchQueryProvider.notifier).state = '';
+        await ref.read(expertPaginationProvider.notifier).fetchExperts(reset: true);
+        await ref.refresh(expertReviewProvider.future);
+        await ref.refresh(homeStatProvider.future);
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              CommonWidget.customAppBar(
+                textTheme: Theme.of(context).textTheme,
+                isNotification: false,
+                title: "Find Experts",
+                subtitle: "Connect with Professionals",
+              ),
 
-            SizedBox(height: 24.h),
+              SizedBox(height: 24.h),
 
-            Padding(
-              padding: EdgeInsets.all(16.h),
-              child: GestureDetector(
-                onTap: () async {
-                  await context.push(RouteName.expertSearchScreen);
+              Padding(
+                padding: EdgeInsets.all(16.h),
+                child: GestureDetector(
+                  onTap: () async {
+                    await context.push(RouteName.expertSearchScreen);
 
-                  ref.read(expertSearchQueryProvider.notifier).state = '';
-                  await ref
-                      .read(expertPaginationProvider.notifier)
-                      .fetchExperts(reset: true);
-                },
-                child: SizedBox(
-                  height: 48.h,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.fillColor,
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 20.w,
-                                  vertical: 14.h,
-                                ),
-                                child: SvgPicture.asset(
-                                  AppIcons.search,
-                                  colorFilter: const ColorFilter.mode(
-                                    Colors.white,
-                                    BlendMode.srcIn,
+                    ref.read(expertSearchQueryProvider.notifier).state = '';
+                    await ref.read(expertPaginationProvider.notifier).fetchExperts(reset: true);
+                  },
+                  child: SizedBox(
+                    height: 48.h,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.fillColor,
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 20.w,
+                                    vertical: 14.h,
+                                  ),
+                                  child: SvgPicture.asset(
+                                    AppIcons.search,
+                                    colorFilter: const ColorFilter.mode(
+                                      Colors.white,
+                                      BlendMode.srcIn,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const Text('Search by expert name'),
-                            ],
+                                const Text('Search by expert name'),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 8.w),
-                      GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.all(14.r),
-                          decoration: Utils.commonBoxDecoration(),
-                          child: SvgPicture.asset(AppIcons.filter),
+                        SizedBox(width: 8.w),
+                        GestureDetector(
+                          child: Container(
+                            padding: EdgeInsets.all(14.r),
+                            decoration: Utils.commonBoxDecoration(),
+                            child: SvgPicture.asset(AppIcons.filter),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            SizedBox(height: 24.h),
+              SizedBox(height: 24.h),
 
-            Padding(
-              padding: AppPadding.screenHorizontal,
-              child: Row(
-                children: [
-                  Text(
-                    "Featured Experts",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () async {
-                      await context.push(RouteName.expertSearchScreen);
-                      ref.read(expertSearchQueryProvider.notifier).state = '';
-                      await ref
-                          .read(expertPaginationProvider.notifier)
-                          .fetchExperts(reset: true);
-                    },
-                    child: Text(
-                      "View all",
-                      style: Theme.of(context).textTheme.titleSmall,
+              Padding(
+                padding: AppPadding.screenHorizontal,
+                child: Row(
+                  children: [
+                    Text(
+                      "Featured Experts",
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
-                  ),
-                ],
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: () async {
+                        await context.push(RouteName.expertSearchScreen);
+                        ref.read(expertSearchQueryProvider.notifier).state = '';
+                        await ref
+                            .read(expertPaginationProvider.notifier)
+                            .fetchExperts(reset: true);
+                      },
+                      child: Text(
+                        "View all",
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
 
-            SizedBox(height: 16.h),
+              SizedBox(height: 16.h),
 
-            FeaturedExpertsList(isVerticalList: false),
+              FeaturedExpertsList(isVerticalList: false),
 
-            SizedBox(height: 24.h),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: UserReviewList(),
-            ),
-            SizedBox(height: 24.h),
-            SearchFooter(),
-            SizedBox(height: 24.h),
-          ],
+              SizedBox(height: 24.h),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: UserReviewList(),
+              ),
+              SizedBox(height: 24.h),
+              SearchFooter(),
+              SizedBox(height: 24.h),
+            ],
+          ),
         ),
       ),
     );
