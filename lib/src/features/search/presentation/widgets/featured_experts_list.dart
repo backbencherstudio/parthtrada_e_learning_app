@@ -15,6 +15,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../../core/routes/route_name.dart';
+import '../../provider/expert_search_query_provider.dart';
 
 class FeaturedExpertsList extends ConsumerStatefulWidget {
   const FeaturedExpertsList({super.key, required this.isVerticalList});
@@ -60,39 +61,48 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
 
         return SizedBox(
           height: widget.isVerticalList ? 550.h : 308.h,
-          child: ListView.separated(
-            controller: _scrollController,
-            scrollDirection:
-                widget.isVerticalList ? Axis.vertical : Axis.horizontal,
-            itemCount: experts.length + 1,
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
-            itemBuilder: (_, index) {
-              final notifier = ref.read(expertPaginationProvider.notifier);
-
-              if (index == experts.length) {
-                return notifier.hasNextPage
-                    ? const Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Center(child: CircularProgressIndicator()),
-                    )
-                    : const SizedBox.shrink();
+          child: RefreshIndicator(
+            onRefresh: () async {
+              if (widget.isVerticalList) {
+                ref.read(expertSearchQueryProvider.notifier).state = '';
+                await ref.read(expertPaginationProvider.notifier).fetchExperts(reset: true);
               }
-
-              final expert = experts[index];
-              return _expertCard(
-                context,
-                textTheme,
-                expert,
-                userType ?? '',
-                widget.isVerticalList,
-                ref,
-              );
             },
-            separatorBuilder:
-                (_, __) => SizedBox(
-                  height: widget.isVerticalList ? 12.h : 0.h,
-                  width: widget.isVerticalList ? 0.w : 12.w,
-                ),
+            child: ListView.separated(
+              physics: AlwaysScrollableScrollPhysics(),
+              controller: _scrollController,
+              scrollDirection:
+                  widget.isVerticalList ? Axis.vertical : Axis.horizontal,
+              itemCount: experts.length + 1,
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              itemBuilder: (_, index) {
+                final notifier = ref.read(expertPaginationProvider.notifier);
+
+                if (index == experts.length) {
+                  return notifier.hasNextPage
+                      ? const Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Center(child: CircularProgressIndicator()),
+                      )
+                      : const SizedBox.shrink();
+                }
+
+                final expert = experts[index];
+                return _expertCard(
+                  context,
+                  textTheme,
+                  expert,
+                  userType ?? '',
+                  widget.isVerticalList,
+                  ref,
+                );
+              },
+              separatorBuilder:
+                  (_, __) => SizedBox(
+                    height: widget.isVerticalList ? 12.h : 0.h,
+                    width: widget.isVerticalList ? 0.w : 12.w,
+                  ),
+            ),
           ),
         );
       },
