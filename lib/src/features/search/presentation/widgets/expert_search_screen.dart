@@ -35,6 +35,9 @@ class _ExpertSearchScreenState extends ConsumerState<ExpertSearchScreen> {
                 isNotification: false,
                 title: "Find Experts",
                 subtitle: "Connect with Professionals",
+                context: context,
+                showBackButton: true
+
               ),
               SizedBox(height: 24.h),
               const ExpertSearchBar(readOnly: false),

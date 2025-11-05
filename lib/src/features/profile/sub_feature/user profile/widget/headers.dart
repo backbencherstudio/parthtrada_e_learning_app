@@ -20,7 +20,11 @@ class Headers extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: SvgPicture.asset(AppIcons.backlongArrow),
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+            size: 22,
+          ),
         ),
         SizedBox(width: 70.w),
 

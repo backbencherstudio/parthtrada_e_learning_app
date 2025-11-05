@@ -32,6 +32,7 @@ class SearchScreen extends ConsumerWidget {
         await ref.refresh(homeStatProvider.future);
       },
       child: Scaffold(
+
         body: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
