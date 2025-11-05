@@ -23,6 +23,8 @@ class SearchScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final reviewsAsync = ref.watch(expertReviewProvider);
+
     return RefreshIndicator(
       onRefresh: () async {
         debugPrint('Refreshing all....');
@@ -32,7 +34,6 @@ class SearchScreen extends ConsumerWidget {
         await ref.refresh(homeStatProvider.future);
       },
       child: Scaffold(
-
         body: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
@@ -46,12 +47,12 @@ class SearchScreen extends ConsumerWidget {
 
               SizedBox(height: 24.h),
 
+              // Search Bar
               Padding(
                 padding: EdgeInsets.all(16.h),
                 child: GestureDetector(
                   onTap: () async {
                     await context.push(RouteName.expertSearchScreen);
-
                     ref.read(expertSearchQueryProvider.notifier).state = '';
                     await ref.read(expertPaginationProvider.notifier).fetchExperts(reset: true);
                   },
@@ -69,16 +70,10 @@ class SearchScreen extends ConsumerWidget {
                             child: Row(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 20.w,
-                                    vertical: 14.h,
-                                  ),
+                                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
                                   child: SvgPicture.asset(
                                     AppIcons.search,
-                                    colorFilter: const ColorFilter.mode(
-                                      Colors.white,
-                                      BlendMode.srcIn,
-                                    ),
+                                    colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                                   ),
                                 ),
                                 const Text('Search by expert name'),
@@ -102,27 +97,20 @@ class SearchScreen extends ConsumerWidget {
 
               SizedBox(height: 24.h),
 
+              // Featured Experts Header
               Padding(
                 padding: AppPadding.screenHorizontal,
                 child: Row(
                   children: [
-                    Text(
-                      "Featured Experts",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
+                    Text("Featured Experts", style: Theme.of(context).textTheme.titleLarge),
                     const Spacer(),
                     GestureDetector(
                       onTap: () async {
                         await context.push(RouteName.expertSearchScreen);
                         ref.read(expertSearchQueryProvider.notifier).state = '';
-                        await ref
-                            .read(expertPaginationProvider.notifier)
-                            .fetchExperts(reset: true);
+                        await ref.read(expertPaginationProvider.notifier).fetchExperts(reset: true);
                       },
-                      child: Text(
-                        "View all",
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
+                      child: Text("View all", style: Theme.of(context).textTheme.titleSmall),
                     ),
                   ],
                 ),
@@ -130,13 +118,36 @@ class SearchScreen extends ConsumerWidget {
 
               SizedBox(height: 16.h),
 
+              // Featured Experts List
               FeaturedExpertsList(isVerticalList: false),
 
               SizedBox(height: 24.h),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: UserReviewList(),
+
+              // User Reviews Section - Only show if has data
+              reviewsAsync.when(
+                data: (reviews) {
+                  if (reviews.data == null || reviews.data!.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          "User Reviews",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                      SizedBox(height: 12.h),
+                      UserReviewList(),
+                    ],
+                  );
+                },
+                loading: () => const SizedBox.shrink(),
+                error: (_, __) => const SizedBox.shrink(),
               ),
+
               SizedBox(height: 24.h),
               SearchFooter(),
               SizedBox(height: 24.h),
