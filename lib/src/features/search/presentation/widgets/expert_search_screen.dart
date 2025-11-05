@@ -28,19 +28,25 @@ class _ExpertSearchScreenState extends ConsumerState<ExpertSearchScreen> {
       },
       child: Scaffold(
         body: SafeArea(
-          child: Column(
-            children: [
-              CommonWidget.customAppBar(
-                textTheme: Theme.of(context).textTheme,
-                isNotification: false,
-                title: "Find Experts",
-                subtitle: "Connect with Professionals",
-              ),
-              SizedBox(height: 24.h),
-              const ExpertSearchBar(readOnly: false),
-              SizedBox(height: 24.h),
-              const Expanded(child: FeaturedExpertsList(isVerticalList: true)),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                CommonWidget.customAppBar(
+                  textTheme: Theme.of(context).textTheme,
+                  isNotification: false,
+                  title: "Find Experts",
+                  subtitle: "Connect with Professionals",
+                  context: context,
+                  showBackButton: true
+
+                ),
+                SizedBox(height: 24.h),
+                const ExpertSearchBar(readOnly: false),
+                SizedBox(height: 24.h),
+                const Expanded(child: FeaturedExpertsList(isVerticalList: true)),
+              ],
+            ),
           ),
         ),
       ),

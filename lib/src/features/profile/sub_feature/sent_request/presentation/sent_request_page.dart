@@ -51,12 +51,22 @@ class _SentRequestPageState extends ConsumerState<SentRequestPage> {
 
     if (sendRequestState.error != null && sendRequests.isEmpty) {
       return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: true,
+          title: Text('Sent Requests', style: textTheme.titleLarge),
+          backgroundColor: AppColors.screenBackgroundColor,
+        ),
         body: Center(child: Text('No send requests found', style: textTheme.bodyLarge)),
       );
     }
 
     if (sendRequests.isEmpty) {
       return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: true,
+          title: Text('Sent Requests', style: textTheme.titleLarge),
+          backgroundColor: AppColors.screenBackgroundColor,
+        ),
         body: Center(child: Text('No sent requests found', style: textTheme.bodyLarge)),
       );
     }

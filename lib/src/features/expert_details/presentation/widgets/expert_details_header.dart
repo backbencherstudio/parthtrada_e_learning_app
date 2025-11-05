@@ -47,7 +47,7 @@ class ExpertDetailsHeader extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   onPressed: () => context.pop(),
                   icon: Icon(
-                    Icons.arrow_back,
+                    Icons.arrow_back_ios,
                     color: Colors.white,
                     size: 24.sp,
                   ),

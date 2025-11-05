@@ -315,7 +315,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text("Link Can Not be Copied!"),
+                                content: Text("Expert don't accept the booking yet"),
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
                               ),
                             );
@@ -450,7 +450,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Link Can Not be Copied!"),
+                              content: Text("Expert don't accept the booking yet"),
                               clipBehavior: Clip.antiAliasWithSaveLayer,
                             ),
                           );
