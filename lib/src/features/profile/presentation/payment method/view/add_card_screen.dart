@@ -93,7 +93,7 @@ class _AddCardScreenState extends ConsumerState<AddCardScreen> {
               .copyWith(fontWeight: FontWeight.w700),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: () async {
             await ref.read(cardProvider.notifier).fetchCards();
             Navigator.pop(context);

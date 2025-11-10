@@ -43,7 +43,7 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => context.pop(),
         ),
       ),

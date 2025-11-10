@@ -22,8 +22,7 @@ class FeaturedExpertsList extends ConsumerStatefulWidget {
   final bool isVerticalList;
 
   @override
-  ConsumerState<FeaturedExpertsList> createState() =>
-      _FeaturedExpertsListState();
+  ConsumerState<FeaturedExpertsList> createState() => _FeaturedExpertsListState();
 }
 
 class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
@@ -32,13 +31,12 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
   @override
   void initState() {
     super.initState();
-    _scrollController =
-        ScrollController()..addListener(() {
-          if (_scrollController.position.pixels >=
-              _scrollController.position.maxScrollExtent - 200) {
-            ref.read(expertPaginationProvider.notifier).loadMoreExperts();
-          }
-        });
+    _scrollController = ScrollController()..addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 200) {
+        ref.read(expertPaginationProvider.notifier).loadMoreExperts();
+      }
+    });
   }
 
   @override
@@ -59,49 +57,53 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
           return const Center(child: Text("No Experts Found"));
         }
 
+        final isSingleItem = experts.length == 1;
+
         return SizedBox(
           height: widget.isVerticalList ? 550.h : 308.h,
-          child: RefreshIndicator(
-            onRefresh: () async {
-              if (widget.isVerticalList) {
-                ref.read(expertSearchQueryProvider.notifier).state = '';
-                await ref.read(expertPaginationProvider.notifier).fetchExperts(reset: true);
+          child: isSingleItem && !widget.isVerticalList
+              ? Center(
+            child: _expertCard(
+              context,
+              textTheme,
+              experts[0],
+              userType ?? '',
+              widget.isVerticalList,
+              ref,
+            ),
+          )
+              : ListView.separated(
+            physics: const AlwaysScrollableScrollPhysics(),
+            controller: _scrollController,
+            scrollDirection: widget.isVerticalList ? Axis.vertical : Axis.horizontal,
+            itemCount: experts.length + 1,
+            padding: EdgeInsets.symmetric(
+              horizontal: widget.isVerticalList ? 0 : 24.w,
+            ),
+            itemBuilder: (_, index) {
+              final notifier = ref.read(expertPaginationProvider.notifier);
+
+              if (index == experts.length) {
+                return notifier.hasNextPage
+                    ? const Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Center(child: CircularProgressIndicator()),
+                )
+                    : const SizedBox.shrink();
               }
+
+              return _expertCard(
+                context,
+                textTheme,
+                experts[index],
+                userType ?? '',
+                widget.isVerticalList,
+                ref,
+              );
             },
-            child: ListView.separated(
-              physics: AlwaysScrollableScrollPhysics(),
-              controller: _scrollController,
-              scrollDirection:
-                  widget.isVerticalList ? Axis.vertical : Axis.horizontal,
-              itemCount: experts.length + 1,
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              itemBuilder: (_, index) {
-                final notifier = ref.read(expertPaginationProvider.notifier);
-
-                if (index == experts.length) {
-                  return notifier.hasNextPage
-                      ? const Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Center(child: CircularProgressIndicator()),
-                      )
-                      : const SizedBox.shrink();
-                }
-
-                final expert = experts[index];
-                return _expertCard(
-                  context,
-                  textTheme,
-                  expert,
-                  userType ?? '',
-                  widget.isVerticalList,
-                  ref,
-                );
-              },
-              separatorBuilder:
-                  (_, __) => SizedBox(
-                    height: widget.isVerticalList ? 12.h : 0.h,
-                    width: widget.isVerticalList ? 0.w : 12.w,
-                  ),
+            separatorBuilder: (_, __) => SizedBox(
+              height: widget.isVerticalList ? 12.h : 0.h,
+              width: widget.isVerticalList ? 0.w : 12.w,
             ),
           ),
         );
@@ -109,33 +111,28 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
       loading: () => SizedBox(
         height: widget.isVerticalList ? 550.h : 308.h,
         child: ListView.separated(
-          controller: _scrollController,
-          scrollDirection:
-          widget.isVerticalList ? Axis.vertical : Axis.horizontal,
+          scrollDirection: widget.isVerticalList ? Axis.vertical : Axis.horizontal,
           itemCount: 3,
           padding: EdgeInsets.symmetric(horizontal: 24.w),
-          itemBuilder: (_, index) {
-            return _expertCardShimmer(context, false);
-          },
-          separatorBuilder:
-              (_, __) => SizedBox(
+          itemBuilder: (_, index) => _expertCardShimmer(context, false),
+          separatorBuilder: (_, __) => SizedBox(
             height: widget.isVerticalList ? 12.h : 0.h,
             width: widget.isVerticalList ? 0.w : 12.w,
           ),
         ),
       ),
-      error: (err, _) => Center(child: Text("Error: Unable to fetch Experts")),
+      error: (err, _) => const Center(child: Text("Error: Unable to fetch Experts")),
     );
   }
 
   Widget _expertCard(
-    BuildContext context,
-    TextTheme textTheme,
-    Data expert,
-    String userType,
-    bool isVerticalList,
-    WidgetRef ref,
-  ) {
+      BuildContext context,
+      TextTheme textTheme,
+      Data expert,
+      String userType,
+      bool isVerticalList,
+      WidgetRef ref,
+      ) {
     return GestureDetector(
       onTap: () {
         context.push(
@@ -158,38 +155,25 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipOval(
-              child:
-                  expert.user?.image != null &&
-                          (expert.user!.image?.isNotEmpty ?? false)
-                      ? Image.network(
-                        '${ApiEndPoints.baseUrl}/uploads/${expert.user!.image!}',
-                        width: 56.w,
-                        height: 56.w,
-                        fit: BoxFit.cover,
-                      )
-                      : CircleAvatar(
-                        radius: 28.w,
-                        backgroundColor: Colors.white,
-                        child: Image.asset(
-                          AppImages.maiya,
-                          width: 32.w,
-                          height: 32.w,
-                        ),
-                      ),
+              child: expert.user?.image != null && (expert.user!.image?.isNotEmpty ?? false)
+                  ? Image.network(
+                '${ApiEndPoints.baseUrl}/uploads/${expert.user!.image!}',
+                width: 56.w,
+                height: 56.w,
+                fit: BoxFit.cover,
+              )
+                  : CircleAvatar(
+                radius: 28.w,
+                backgroundColor: Colors.white,
+                child: Image.asset(AppImages.maiya, width: 32.w, height: 32.w),
+              ),
             ),
             SizedBox(height: 16.h),
-            Text(
-              expert.user?.name ?? '',
-              style: textTheme.titleLarge,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+            Text(expert.user?.name ?? '', style: textTheme.titleLarge, maxLines: 1, overflow: TextOverflow.ellipsis),
             SizedBox(height: 4.h),
             Text(
               expert.profession ?? '',
-              style: textTheme.bodyMedium?.copyWith(
-                color: AppColors.secondaryTextColor,
-              ),
+              style: textTheme.bodyMedium?.copyWith(color: AppColors.secondaryTextColor),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -200,12 +184,8 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
                 SizedBox(width: 4.w),
                 Text(expert.rating?.avg?.toString() ?? '0'),
                 SizedBox(width: 4.w),
-                Text(
-                  "(${expert.rating?.total ?? 0} reviews)",
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: AppColors.secondaryTextColor,
-                  ),
-                ),
+                Text("(${expert.rating?.total ?? 0} reviews)",
+                    style: textTheme.bodyMedium?.copyWith(color: AppColors.secondaryTextColor)),
               ],
             ),
             SizedBox(height: 7.h),
@@ -214,13 +194,21 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
                 ...expert.skills!
                     .take(2)
                     .map(
-                      (skill) =>
-                          Expanded(child: WrapItemContainer(text: skill)),
+                      (skill) => Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: expert.skills!.length > 1 ? 4.w : 0), // Add right padding if not last
+                      child: WrapItemContainer(text: skill),
                     ),
+                  ),
+                )
+                    .toList(),
                 if (expert.skills!.length > 2)
-                  WrapItemContainer(
-                    text: "+${expert.skills!.length - 2}",
-                    isRemainingItemShow: true,
+                  Padding(
+                    padding: EdgeInsets.only(left: 4.w),
+                    child: WrapItemContainer(
+                      text: "+${expert.skills!.length - 2}",
+                      isRemainingItemShow: true,
+                    ),
                   ),
               ],
             ),
@@ -230,14 +218,10 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
               child: CommonWidget.primaryButton(
                 context: context,
                 onPressed: () async {
-                  final sessionDataNotifier = ref.read(
-                    sessionDataProvider.notifier,
-                  );
+                  final sessionDataNotifier = ref.read(sessionDataProvider.notifier);
                   sessionDataNotifier.setExpertId(expert.userId ?? '');
                   sessionDataNotifier.setExpertName(expert.user?.name ?? '');
-                  sessionDataNotifier.setHourlyRate(
-                    expert.hourlyRate.toString(),
-                  );
+                  sessionDataNotifier.setHourlyRate(expert.hourlyRate.toString());
                   await scheduleForBook(
                     ref: ref,
                     context: context,
@@ -255,7 +239,6 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
     );
   }
 
-
   Widget _expertCardShimmer(BuildContext context, bool isVerticalList) {
     return Container(
       width: isVerticalList ? double.infinity : 274.w,
@@ -267,102 +250,27 @@ class _FeaturedExpertsListState extends ConsumerState<FeaturedExpertsList> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Avatar shimmer
-            ClipOval(
-              child: Container(
-                width: 56.w,
-                height: 56.w,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade700,
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-              ),
-            ),
+            ClipOval(child: Container(width: 56.w, height: 56.w, color: Colors.grey.shade700)),
             SizedBox(height: 16.h),
-
-            // Name shimmer
-            Container(
-              width: 140.w,
-              height: 16.h,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade700,
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-            ),
+            Container(width: 140.w, height: 16.h, color: Colors.grey.shade700),
             SizedBox(height: 4.h),
-
-            // Profession shimmer
-            Container(
-              width: 100.w,
-              height: 14.h,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade700,
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-            ),
+            Container(width: 100.w, height: 14.h, color: Colors.grey.shade700),
             SizedBox(height: 7.h),
-
-            // Rating shimmer row
-            Row(
-              children: [
-                Container(
-                  width: 20.sp,
-                  height: 20.sp,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade700,
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                ),
-                SizedBox(width: 8.w),
-                Container(width: 60.w, height: 14.h, color: Colors.grey.shade700),
-              ],
-            ),
+            Row(children: [
+              Container(width: 20.sp, height: 20.sp, color: Colors.grey.shade700),
+              SizedBox(width: 8.w),
+              Container(width: 60.w, height: 14.h, color: Colors.grey.shade700),
+            ]),
             SizedBox(height: 7.h),
-
-            // Skills shimmer row
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 24.h,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade700,
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 8.w),
-                Expanded(
-                  child: Container(
-                    height: 24.h,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade700,
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 8.w),
-                Container(
-                  width: 40.w,
-                  height: 24.h,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade700,
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                ),
-              ],
-            ),
+            Row(children: [
+              Expanded(child: Container(height: 24.h, color: Colors.grey.shade700)),
+              SizedBox(width: 8.w),
+              Expanded(child: Container(height: 24.h, color: Colors.grey.shade700)),
+              SizedBox(width: 8.w),
+              Container(width: 40.w, height: 24.h, color: Colors.grey.shade700),
+            ]),
             SizedBox(height: 12.h),
-
-            // Button shimmer
-            Container(
-              width: double.infinity,
-              height: 40.h,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade700,
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-            ),
+            Container(width: double.infinity, height: 40.h, color: Colors.grey.shade700),
           ],
         ),
       ),

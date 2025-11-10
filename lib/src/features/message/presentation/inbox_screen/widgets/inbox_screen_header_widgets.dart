@@ -23,7 +23,7 @@ class InboxScreenHeaderWidget extends StatelessWidget {
         GestureDetector(
           onTap: () => Navigator.pop(context),
           child: Icon(
-            Icons.arrow_back_outlined,
+            Icons.arrow_back_ios_outlined,
             size: 24,
             color: AppColors.onSecondary,
           ),
