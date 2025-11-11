@@ -37,7 +37,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
 
     /// expert actions
 
-    if (role == 'EXPERT') {
+    if (role == 'EXPERT' && meetingScheduleModel.roleInBooking == 'EXPERT') {
       return Column(
         spacing: 12.h,
         children: [
@@ -315,7 +315,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text("Link Can Not be Copied!"),
+                                content: Text("Expert don't accept the booking yet"),
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
                               ),
                             );
@@ -354,65 +354,66 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
             Row(
               spacing: 8.w,
               children: [
-                Consumer(
-                  builder: (context, ref, __) {
-                    final cancelState = ref.watch(
-                      cancelScheduleNotifierProvider(meetingScheduleModel.id),
-                    );
-                    final notifier = ref.read(
-                      cancelScheduleNotifierProvider(
-                        meetingScheduleModel.id,
-                      ).notifier,
-                    );
+                if (meetingScheduleModel.status == "PENDING")
+                  Consumer(
+                    builder: (context, ref, __) {
+                      final cancelState = ref.watch(
+                        cancelScheduleNotifierProvider(meetingScheduleModel.id),
+                      );
+                      final notifier = ref.read(
+                        cancelScheduleNotifierProvider(
+                          meetingScheduleModel.id,
+                        ).notifier,
+                      );
 
-                    return Expanded(
-                      child: CommonWidget.primaryButton(
-                        textStyle: buttonTextStyle,
-                        context: context,
-                        onPressed:
-                            cancelState.isLoading
-                                ? () {}
-                                : () async {
-                                  final success = await notifier.cancelMeeting(
-                                    meetingScheduleModel.id,
-                                  );
+                      return Expanded(
+                        child: CommonWidget.primaryButton(
+                          textStyle: buttonTextStyle,
+                          context: context,
+                          onPressed:
+                          cancelState.isLoading
+                              ? () {}
+                              : () async {
+                            final success = await notifier.cancelMeeting(
+                              meetingScheduleModel.id,
+                            );
 
-                                  if (!context.mounted) return;
+                            if (!context.mounted) return;
 
-                                  final updatedState = ref.read(
-                                    cancelScheduleNotifierProvider(
-                                      meetingScheduleModel.id,
-                                    ),
-                                  );
+                            final updatedState = ref.read(
+                              cancelScheduleNotifierProvider(
+                                meetingScheduleModel.id,
+                              ),
+                            );
 
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        updatedState.errorMessage ??
-                                            'Unknown response',
-                                      ),
-                                    ),
-                                  );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  updatedState.errorMessage ??
+                                      'Unknown response',
+                                ),
+                              ),
+                            );
 
-                                  if (success) {
-                                    ref
-                                        .read(scheduleProvider.notifier)
-                                        .removeMeeting(meetingScheduleModel.id);
-                                    await ref
-                                        .read(scheduleProvider.notifier)
-                                        .fetchMeetings(
-                                          page: 1,
-                                          isRefresh: true,
-                                        );
-                                  }
-                                },
-                        text:
-                            cancelState.isLoading ? "Cancelling..." : "Cancel",
-                        backgroundColor: const Color(0xff2B2C31),
-                      ),
-                    );
-                  },
-                ),
+                            if (success) {
+                              ref
+                                  .read(scheduleProvider.notifier)
+                                  .removeMeeting(meetingScheduleModel.id);
+                              await ref
+                                  .read(scheduleProvider.notifier)
+                                  .fetchMeetings(
+                                page: 1,
+                                isRefresh: true,
+                              );
+                            }
+                          },
+                          text:
+                          cancelState.isLoading ? "Cancelling..." : "Cancel",
+                          backgroundColor: const Color(0xff2B2C31),
+                        ),
+                      );
+                    },
+                  ),
 
                 Expanded(
                   child: CommonWidget.primaryButton(
@@ -450,7 +451,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Link Can Not be Copied!"),
+                              content: Text("Expert don't accept the booking yet"),
                               clipBehavior: Clip.antiAliasWithSaveLayer,
                             ),
                           );

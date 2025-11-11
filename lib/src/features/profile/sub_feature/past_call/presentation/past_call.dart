@@ -53,6 +53,7 @@ class _PastCallState extends ConsumerState<PastCall> {
 
     if (pastCallsState.error != null && pastCalls.isEmpty) {
       return Scaffold(
+
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -79,6 +80,11 @@ class _PastCallState extends ConsumerState<PastCall> {
 
     if (pastCalls.isEmpty) {
       return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: true,
+          title: Text('Past Calls', style: textTheme.titleLarge),
+          backgroundColor: AppColors.screenBackgroundColor,
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

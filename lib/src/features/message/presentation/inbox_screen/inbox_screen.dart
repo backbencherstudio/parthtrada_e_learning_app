@@ -79,29 +79,34 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
 
               /// Messages
               Expanded(
-                child:
-                    state.isLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : state.error != null
-                        ? Center(child: Text(state.error!))
-                        : ListView.builder(
-                          key: const ValueKey('message_list'),
-                          controller: scrollController,
-                          itemCount: state.messages?.data?.length ?? 0,
-                          itemBuilder: (_, index) {
-                            final Data msg = state.messages!.data![index];
-                            return MessageCardWidget(
-                              key: ValueKey(msg.id),
-                              isMe: msg.me ?? false,
-                              widget: widget,
-                              msg: msg,
-                              textTheme: textTheme,
-                              chatMessages: state.messages!.data!,
-                              index: index,
-                            );
-                          },
-                        ),
+                child: state.isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : state.error != null
+                    ? Center(child: Text(state.error!))
+                    : ListView.builder(
+                  key: const ValueKey('message_list'),
+                  controller: scrollController,
+                  itemCount: state.messages?.data?.length ?? 0,
+                  itemBuilder: (_, index) {
+                    final Data msg = state.messages!.data![index];
+
+                    if (msg.content == null) {
+                      return const SizedBox.shrink(); // skip rendering
+                    }
+
+                    return MessageCardWidget(
+                      key: ValueKey(msg.id),
+                      isMe: msg.me ?? false,
+                      widget: widget,
+                      msg: msg,
+                      textTheme: textTheme,
+                      chatMessages: state.messages!.data!,
+                      index: index,
+                    );
+                  },
+                ),
               ),
+
 
               /// Typing Indicator
               // if (state.typingUserId != null)

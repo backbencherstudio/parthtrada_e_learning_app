@@ -56,7 +56,6 @@ class MessageCardWidget extends ConsumerWidget {  // Change to ConsumerWidget
             children: [
               /// Receiver avatar
               if (!isMe) _buildAvatar(imageUrl ?? ""),
-
               /// Message bubble
               Flexible(
                 child: Column(
@@ -97,6 +96,7 @@ class MessageCardWidget extends ConsumerWidget {  // Change to ConsumerWidget
                           topRight: Radius.circular(16.r),
                         ),
                       ),
+
                       child: Text(
                         msg.content ?? "",
                         style: textTheme.bodySmall?.copyWith(
@@ -104,6 +104,10 @@ class MessageCardWidget extends ConsumerWidget {  // Change to ConsumerWidget
                         ),
                       ),
                     ),
+
+
+
+
 
                     /// Time
                     Padding(
