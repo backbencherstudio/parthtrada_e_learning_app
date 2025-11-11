@@ -44,6 +44,7 @@ class PaymentRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('======= Payment confirmed successfully =======');
+        debugPrint('======= ${response.body} =======');
         return true;
       } else {
         throw Exception('Failed to confirm payment: ${response.statusCode} - ${response.body}');
