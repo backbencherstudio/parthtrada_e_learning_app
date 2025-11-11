@@ -54,25 +54,40 @@ class _GlobalNotificationScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 45.h),
-              Text(
-                "Notifications",
-                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  fontSize: 32.sp,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xffffffff),
-                ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20.h, width: 20.w, child: GestureDetector(onTap: () => Navigator.pop(context),child: Icon(Icons.arrow_back_ios_new, size: 20.w,))),
+                  SizedBox(width: 16.w,),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 45.h),
+                        Text(
+                          "Notifications",
+                          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                            fontSize: 32.sp,
+                            fontWeight: FontWeight.w800,
+                            color: Color(0xffffffff),
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        Text(
+                          "See your notifications",
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xffffffff),
+                          ),
+                        ),
+                        SizedBox(height: 16.h),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: 8.h),
-              Text(
-                "See your notifications",
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xffffffff),
-                ),
-              ),
-              SizedBox(height: 16.h),
 
               // Main Body
               Expanded(
