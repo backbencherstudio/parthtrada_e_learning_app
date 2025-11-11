@@ -49,13 +49,13 @@ class Booking {
   String? answer2;
   String? answer3;
   String? notificationId;
+  String? roleInBooking;
   DateTime createdAt;
   DateTime updatedAt;
   Review? review;
   User? user;
   bool? shouldReview;
   bool? shouldRefund;
-  String? roleInBooking;
   Transaction? transaction;
 
 
@@ -75,13 +75,13 @@ class Booking {
     this.answer2,
     this.answer3,
     this.notificationId,
+    this.roleInBooking,
     required this.createdAt,
     required this.updatedAt,
     this.review,
     this.user,
     this.shouldReview,
     this.shouldRefund,
-    this.roleInBooking,
     this.transaction,
   });
 
@@ -106,6 +106,7 @@ class Booking {
       answer2: json['answer2'],
       answer3: json['answer3'],
       notificationId: json['notification_id'],
+      roleInBooking: json['roleInBooking'],
       createdAt: DateTime.parse(
         json['createdAt'] ?? DateTime.now().toIso8601String(),
       ),
@@ -116,7 +117,6 @@ class Booking {
       review: json['review'] != null ? Review.fromJson(json['review']) : null,
       shouldReview: json['should_review'] ?? null,
       shouldRefund: json['should_refund'] ?? null,
-      roleInBooking: json['roleInBooking'] ?? '',
       transaction: json['transaction'] != null ? Transaction.fromJson(json['transaction']) : null,
     );
   }
