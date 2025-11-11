@@ -61,8 +61,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                 children: [
                   Consumer(
                     builder: (context, ref, __) {
-                      final bookingKey =
-                          "${meetingScheduleModel.id}_reject";
+                      final bookingKey = "${meetingScheduleModel.id}_reject";
                       final state = ref.watch(
                         acceptRejectBookingProvider(bookingKey),
                       );
@@ -144,12 +143,10 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                       );
                     },
                   ),
-                  // TODO solve with student actions
-                  // meetingScheduleModel.roleInBooking == "STUDENT" ?
+
                   Consumer(
                     builder: (context, ref, __) {
-                      final bookingKey =
-                          "${meetingScheduleModel.id}_accept";
+                      final bookingKey = "${meetingScheduleModel.id}_accept";
                       final state = ref.watch(
                         acceptRejectBookingProvider(bookingKey),
                       );
@@ -235,6 +232,23 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                   ),
                 ],
               )
+              : meetingScheduleModel.status == 'COMPLETED'
+              ? Row(
+                spacing: 8.w,
+                children: [
+                  Expanded(
+                    child: CommonWidget.primaryButton(
+                      backgroundColor: Color(0xff2B2C31),
+                      textStyle: buttonTextStyle?.copyWith(color: Colors.white),
+                      context: context,
+                      onPressed: ()  {
+
+                      },
+                      text: "Completed",
+                    ),
+                  ),
+                ],
+              )
               : Row(
                 spacing: 8.w,
                 children: [
@@ -317,7 +331,9 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text("Expert don't accept the booking yet"),
+                                content: Text(
+                                  "Expert don't accept the booking yet",
+                                ),
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
                               ),
                             );
@@ -373,44 +389,47 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                           textStyle: buttonTextStyle,
                           context: context,
                           onPressed:
-                          cancelState.isLoading
-                              ? () {}
-                              : () async {
-                            final success = await notifier.cancelMeeting(
-                              meetingScheduleModel.id,
-                            );
+                              cancelState.isLoading
+                                  ? () {}
+                                  : () async {
+                                    final success = await notifier
+                                        .cancelMeeting(meetingScheduleModel.id);
 
-                            if (!context.mounted) return;
+                                    if (!context.mounted) return;
 
-                            final updatedState = ref.read(
-                              cancelScheduleNotifierProvider(
-                                meetingScheduleModel.id,
-                              ),
-                            );
+                                    final updatedState = ref.read(
+                                      cancelScheduleNotifierProvider(
+                                        meetingScheduleModel.id,
+                                      ),
+                                    );
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  updatedState.errorMessage ??
-                                      'Unknown response',
-                                ),
-                              ),
-                            );
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          updatedState.errorMessage ??
+                                              'Unknown response',
+                                        ),
+                                      ),
+                                    );
 
-                            if (success) {
-                              ref
-                                  .read(scheduleProvider.notifier)
-                                  .removeMeeting(meetingScheduleModel.id);
-                              await ref
-                                  .read(scheduleProvider.notifier)
-                                  .fetchMeetings(
-                                page: 1,
-                                isRefresh: true,
-                              );
-                            }
-                          },
+                                    if (success) {
+                                      ref
+                                          .read(scheduleProvider.notifier)
+                                          .removeMeeting(
+                                            meetingScheduleModel.id,
+                                          );
+                                      await ref
+                                          .read(scheduleProvider.notifier)
+                                          .fetchMeetings(
+                                            page: 1,
+                                            isRefresh: true,
+                                          );
+                                    }
+                                  },
                           text:
-                          cancelState.isLoading ? "Cancelling..." : "Cancel",
+                              cancelState.isLoading
+                                  ? "Cancelling..."
+                                  : "Cancel",
                           backgroundColor: const Color(0xff2B2C31),
                         ),
                       );
@@ -453,7 +472,9 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Expert don't accept the booking yet"),
+                              content: Text(
+                                "Expert don't accept the booking yet",
+                              ),
                               clipBehavior: Clip.antiAliasWithSaveLayer,
                             ),
                           );
@@ -467,8 +488,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
             ),
           ],
         );
-      }
-      else if (meetingScheduleModel.status == "REFUNDED") {
+      } else if (meetingScheduleModel.status == "REFUNDED") {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 12.h,
@@ -559,7 +579,8 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                       text:
                           isLoading
                               ? "Processing..."
-                              : meetingScheduleModel.transaction?.refunded ?? false
+                              : meetingScheduleModel.transaction?.refunded ??
+                                  false
                               ? "Refunded"
                               : meetingScheduleModel.transaction?.type ==
                                   'refund-request'
