@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import '../../../../../core/theme/theme_part/app_colors.dart';
 import '../../data/model/transaction_history_response.dart';
 
 class TransactionHistoryCard extends StatelessWidget {
   final bool isRefunded;
+  final bool isWithdraw;
   final Data transaction;
+  final bool isExpert;
 
   const TransactionHistoryCard({
     super.key,
     required this.isRefunded,
+    required this.isWithdraw,
     required this.transaction,
+    required this.isExpert,
   });
 
   @override
@@ -37,7 +42,8 @@ class TransactionHistoryCard extends StatelessWidget {
               ),
               SizedBox(height: 2.h),
               Text(
-                transaction.createdAt ?? 'N/A',
+                DateFormat('yyyy-MM-dd, hh:mm a').format(
+                    DateTime.parse(transaction.createdAt ?? DateTime.now().toIso8601String())),
                 style: textTheme.labelSmall!.copyWith(
                   fontWeight: FontWeight.w400,
                 ),
@@ -51,12 +57,20 @@ class TransactionHistoryCard extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                   ),
                 ),
+              if (isWithdraw)
+                Text(
+                  'Withdrawn',
+                  style: textTheme.labelSmall!.copyWith(
+                    color: AppColors.error,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
             ],
           ),
           Text(
-            '${getBalanceIcon()} \$${transaction.amount?.toString() ?? '0'}',
+            '${getBalanceIcon()} \$${transaction.amount?.toStringAsFixed(2) ?? '0.00'}',
             style: textTheme.labelMedium!.copyWith(
-              color: isRefunded ? AppColors.refundedColor : AppColors.error,
+              color: getBalanceColor(),
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -66,6 +80,22 @@ class TransactionHistoryCard extends StatelessWidget {
   }
 
   String getBalanceIcon() {
-    return isRefunded ? '+' : '-';
+    if (isWithdraw) return '-';
+    if (transaction.type == 'send-order' || transaction.refunded == true) {
+      return isRefunded ? '+' : '-';
+    } else if (transaction.type == 'received-order') {
+      return isRefunded ? '-' : '+';
+    }
+    return '-'; // Fallback
+  }
+
+  Color getBalanceColor() {
+    if (isWithdraw) return AppColors.error;
+    if (transaction.type == 'send-order' || transaction.refunded == true) {
+      return isRefunded ? AppColors.primary: AppColors.error;
+    } else if (transaction.type == 'received-order') {
+      return isRefunded ? AppColors.refundedColor : AppColors.primary;
+    }
+    return AppColors.error; // Fallback
   }
 }

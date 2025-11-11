@@ -1,23 +1,22 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final selectedSkillsProvider = StateNotifierProvider<SelectedSkillsNotifier, Set<String>>((ref) {
-  return SelectedSkillsNotifier();
-});
-
 class SelectedSkillsNotifier extends StateNotifier<Set<String>> {
-  SelectedSkillsNotifier() : super({});
+  SelectedSkillsNotifier() : super(<String>{});
 
   void toggleSkill(String skill) {
-    if (state.contains(skill)) {
-      state = {...state}..remove(skill);
+    final s = Set<String>.from(state);
+    if (s.contains(skill)) {
+      s.remove(skill);
     } else {
-      state = {...state}..add(skill);
+      s.add(skill);
     }
-    debugPrint("\nSelected indexes: $state\n");
+    state = s;
   }
 
-  void clear() {
-    state = {};
-  }
+  void clear() => state = <String>{};
 }
+
+final selectedSkillsProvider =
+StateNotifierProvider<SelectedSkillsNotifier, Set<String>>(
+      (ref) => SelectedSkillsNotifier(),
+);

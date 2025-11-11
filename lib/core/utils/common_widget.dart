@@ -1,6 +1,5 @@
 import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:e_learning_app/core/routes/route_name.dart';
-import 'package:e_learning_app/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';

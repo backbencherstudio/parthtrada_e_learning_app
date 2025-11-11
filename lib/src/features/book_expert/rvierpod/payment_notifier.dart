@@ -11,7 +11,7 @@ class PaymentNotifier extends StateNotifier<AsyncValue<bool>> {
 
   Future<bool> confirmPayment() async {
     final paymentIntentId = ref.read(paymentIntentIdProvider);
-    // final paymentMethodId = ref.read(selectedCardMethodIdProvider);
+    final paymentMethodId = ref.read(selectedCardMethodIdProvider);
 
     if (paymentIntentId == null) {
       state = AsyncValue.error('Payment data not available', StackTrace.current);
@@ -23,7 +23,7 @@ class PaymentNotifier extends StateNotifier<AsyncValue<bool>> {
     try {
       final success = await repository.confirmPayment(
         paymentIntentId: paymentIntentId,
-        // paymentMethodId: paymentMethodId,
+        paymentMethodId: paymentMethodId ?? '',
       );
 
       state = AsyncValue.data(success);

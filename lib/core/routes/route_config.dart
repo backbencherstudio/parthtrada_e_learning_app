@@ -190,15 +190,16 @@ import 'package:e_learning_app/src/features/profile/presentation/help_and_suppor
 import 'package:e_learning_app/src/features/profile/presentation/language/language.dart';
 import 'package:e_learning_app/src/features/profile/presentation/notification/view/notification.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/view/add_card_screen.dart';
+import 'package:e_learning_app/src/features/profile/presentation/payment%20method/view/payout_method_screen.dart';
 import 'package:e_learning_app/src/features/profile/presentation/user%20profile/view/user_profile.dart';
 import 'package:e_learning_app/src/features/search/presentation/widgets/expert_search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../src/features/message/presentation/message_screen/message_screen.dart';
-import '../../src/features/notification/data/model/notification_model.dart';
 import '../../src/features/notification/data/model/wrapper_model.dart';
 import '../../src/features/profile/presentation/payment method/view/payment_method_screen.dart';
+import '../../src/features/profile/presentation/payment method/view/withdraw_screen.dart';
 import '../../src/features/profile/sub_feature/past_call/presentation/past_call.dart';
 import '../../src/features/profile/sub_feature/privacy_policy/presentation/privacy_policy.dart';
 import '../../src/features/profile/sub_feature/sent_request/presentation/sent_request_page.dart';
@@ -282,6 +283,32 @@ class RouteConfig {
               context: context,
               state: state,
               child: PaymentMethodScreen(),
+            );
+          },
+        ),
+
+        GoRoute(
+          name: RouteName.withdrawScreen,
+          path: RouteName.withdrawScreen,
+          pageBuilder: (context, state) {
+            return buildPageWithTransition(
+              transitionType: PageTransitionType.fade,
+              context: context,
+              state: state,
+              child: WithdrawScreen(),
+            );
+          },
+        ),
+
+        GoRoute(
+          name: RouteName.payoutMethodScreen,
+          path: RouteName.payoutMethodScreen,
+          pageBuilder: (context, state) {
+            return buildPageWithTransition(
+              transitionType: PageTransitionType.slideRightToLeft,
+              context: context,
+              state: state,
+              child: PayoutMethodScreen(),
             );
           },
         ),

@@ -24,12 +24,14 @@ Future<void> paymentBottomSheet({
 }) async {
   await showModalBottomSheet(
     backgroundColor: Colors.transparent,
+    useSafeArea: true,
     isScrollControlled: true,
     context: context,
     builder: (bottomSheetContext) {
       final textTheme = Theme.of(bottomSheetContext).textTheme;
       final buttonTextStyle = textTheme.titleMedium?.copyWith(
         fontWeight: FontWeight.w700,
+        color: Colors.white,
       );
 
       return Consumer(
@@ -40,7 +42,9 @@ Future<void> paymentBottomSheet({
           if (!cardState.isLoading &&
               cardState.cardsResponse == null &&
               cardState.error == null) {
-            Future.microtask(() => ref.read(cardProvider.notifier).fetchCards());
+            Future.microtask(
+              () => ref.read(cardProvider.notifier).fetchCards(),
+            );
           }
 
           final selectedMethodId = ref.watch(selectedCardMethodIdProvider);
@@ -66,120 +70,172 @@ Future<void> paymentBottomSheet({
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 16.h),
-
-                // Card List
                 Expanded(
-                  child: cardState.isLoading
-                      ? const Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.primary,
-                    ),
-                  )
-                      : cardState.error != null
-                      ? Center(
-                    child: Text(
-                      cardState.error!,
-                      style: textTheme.bodyMedium?.copyWith(
-                        color: AppColors.error,
-                      ),
-                    ),
-                  )
-                      : (cardState.cardsResponse?.data.isEmpty ?? true)
-                      ? Center(
-                    child: Text(
-                      PaymentConstants.noCardsFound,
-                      style: textTheme.bodyMedium?.copyWith(
-                        color: AppColors.secondaryTextColor,
-                      ),
-                    ),
-                  )
-                      : ListView.builder(
-                    itemCount:
-                    cardState.cardsResponse?.data.length ?? 0,
-                    itemBuilder: (context, index) {
-                      final card =
-                      cardState.cardsResponse!.data[index];
-                      final isSelected =
-                          selectedMethodId == card.methodId;
-
-                      return GestureDetector(
-                        onTap: () {
-                          ref
-                              .read(selectedCardMethodIdProvider
-                              .notifier)
-                              .state = card.methodId;
-                          debugPrint(
-                              'Selected card: ${card.methodId}');
-                        },
-                        child: Container(
-                          height: 50.h,
-                          width: double.infinity,
-                          margin: EdgeInsets.only(bottom: 16.h),
-                          decoration: BoxDecoration(
-                            color: AppColors.surface,
-                            borderRadius:
-                            BorderRadius.circular(10.r),
-                            border: isSelected
-                                ? Border.all(
+                  child:
+                      cardState.isLoading
+                          ? const Center(
+                            child: CircularProgressIndicator(
                               color: AppColors.primary,
-                              width: 2,
-                            )
-                                : null,
-                          ),
-                          child: Center(
-                            child: RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: '**** **** **** ',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.bold,
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: card.last4,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1.5,
-                                    ),
-                                  ),
-                                ],
+                            ),
+                          )
+                          : cardState.error != null
+                          ? Center(
+                            child: Text(
+                              cardState.error!,
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: AppColors.error,
                               ),
                             ),
+                          )
+                          : (cardState.cardsResponse?.data.isEmpty ?? true)
+                          ? Center(
+                            child: Text(
+                              PaymentConstants.noCardsFound,
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: AppColors.secondaryTextColor,
+                              ),
+                            ),
+                          )
+                          : ListView.builder(
+                            itemCount:
+                                cardState.cardsResponse?.data.length ?? 0,
+                            itemBuilder: (context, index) {
+                              final card = cardState.cardsResponse!.data[index];
+                              final isSelected =
+                                  selectedMethodId == card.methodId;
+                              return GestureDetector(
+                                onTap: () {
+                                  ref
+                                      .read(
+                                        selectedCardMethodIdProvider.notifier,
+                                      )
+                                      .state = card.methodId;
+                                  debugPrint('Selected card: ${card.methodId}');
+                                },
+                                child: Container(
+                                  height: 50.h,
+                                  width: double.infinity,
+                                  margin: EdgeInsets.only(bottom: 16.h),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.surface,
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    border:
+                                        isSelected
+                                            ? Border.all(
+                                              color: AppColors.primary,
+                                              width: 2,
+                                            )
+                                            : null,
+                                  ),
+                                  child: Center(
+                                    child: RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: '**** **** **** ',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.bold,
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: card.last4,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 1.5,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        ),
-                      );
-                    },
-                  ),
                 ),
-
                 SizedBox(height: 16.h),
                 SizedBox(
                   width: double.infinity,
-                  child: CommonWidget.primaryButton(
-                    padding: EdgeInsets.symmetric(vertical: 16.h),
-                    textStyle: buttonTextStyle,
-                    context: bottomSheetContext,
-                    text: (cardState.cardsResponse?.data.isEmpty ?? true) ? 'Add Your Card' : ref.watch(paymentNotifierProvider).isLoading
-                        ? PaymentConstants.paymentProcessing
-                        : PaymentConstants.paymentProceed,
-                    onPressed: () {
-                      if (cardState.cardsResponse?.data.isEmpty ?? true) {
-                        context.push(RouteName.addPaymentMethod);
-                      } else {
-                        _handlePayment(
-                          ref,
-                          bottomSheetContext,
-                          context,
-                          availableTime,
-                        );
-                      }
-                    }
+                  child: Consumer(
+                    builder: (context, ref, _) {
+                      final paymentState = ref.watch(paymentNotifierProvider);
+                      final cardState = ref.watch(cardProvider);
+                      return CommonWidget.primaryButton(
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        textStyle: buttonTextStyle,
+                        context: bottomSheetContext,
+                        text:
+                            (cardState.cardsResponse?.data.isEmpty ?? true)
+                                ? 'Add Your Card'
+                                : paymentState.isLoading
+                                ? PaymentConstants.paymentProcessing
+                                : PaymentConstants.paymentProceed,
+                        backgroundColor:
+                            (cardState.cardsResponse?.data.isEmpty ?? true) || selectedMethodId == null ||
+                                    paymentState.isLoading
+                                ? AppColors.secondaryStrokeColor
+                                : AppColors.primary,
+                        onPressed:
+                            paymentState.isLoading || selectedMethodId == null ||
+                                    (cardState.cardsResponse?.data.isEmpty ??
+                                        true)
+                                ? (cardState.cardsResponse?.data.isEmpty ??
+                                        true)
+                                    ? () {
+                                      debugPrint('add payment route clicked');
+                                      Navigator.of(bottomSheetContext).pop();
+                                      context.push(RouteName.addPaymentMethod);
+                                    }
+                                    : () {}
+                                : () {
+                                  Future.microtask(() async {
+                                    final notifier = ref.read(
+                                      paymentNotifierProvider.notifier,
+                                    );
+                                    try {
+                                      final success =
+                                          await notifier.confirmPayment();
+                                      if (success &&
+                                          bottomSheetContext.mounted) {
+                                        bottomSheetContext.pop();
+                                        await Future.delayed(
+                                          const Duration(milliseconds: 200),
+                                        );
+                                        if (bottomSheetContext.mounted) {
+                                          await confirmBookingBottomSheet(
+                                            context: bottomSheetContext,
+                                            availableTime: availableTime,
+                                          );
+                                        }
+                                      } else if (bottomSheetContext.mounted) {
+                                        ScaffoldMessenger.of(
+                                          bottomSheetContext,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              PaymentConstants.paymentFailed,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    } catch (e) {
+                                      if (bottomSheetContext.mounted) {
+                                        ScaffoldMessenger.of(
+                                          bottomSheetContext,
+                                        ).showSnackBar(
+                                          SnackBar(content: Text("Error: $e")),
+                                        );
+                                      }
+                                    }
+                                  });
+                                },
+                      );
+                    },
                   ),
                 ),
                 SizedBox(height: 28.h),
@@ -190,41 +246,4 @@ Future<void> paymentBottomSheet({
       );
     },
   );
-}
-
-Future<void> _handlePayment(
-    WidgetRef ref,
-    BuildContext bottomSheetContext,
-    BuildContext context,
-    List<String> availableTime,
-    ) async {
-  final notifier = ref.read(paymentNotifierProvider.notifier);
-
-  try {
-    final success = await notifier.confirmPayment();
-
-    if (success && bottomSheetContext.mounted) {
-      Navigator.of(bottomSheetContext).pop();
-      await Future.delayed(const Duration(milliseconds: 200));
-
-      if (context.mounted) {
-        await confirmBookingBottomSheet(
-          context: context,
-          availableTime: availableTime,
-        );
-      }
-    } else if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(PaymentConstants.paymentFailed),
-        ),
-      );
-    }
-  } catch (e) {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: $e")),
-      );
-    }
-  }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/constant/images.dart';
 import '../../../../../core/constant/padding.dart';
 import '../../../../../core/routes/route_name.dart';
 import '../../../../../core/services/api_services/api_end_points.dart';
@@ -20,8 +21,11 @@ class StudentDetailsScreen extends ConsumerWidget {
   final NotificationItem notificationItem;
   final StudentData studentData;
 
-
-  const StudentDetailsScreen({super.key, required this.notificationItem, required this.studentData});
+  const StudentDetailsScreen({
+    super.key,
+    required this.notificationItem,
+    required this.studentData,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -64,10 +68,11 @@ class StudentDetailsScreen extends ConsumerWidget {
                         : CircleAvatar(
                           radius: 50.w,
                           backgroundColor: Colors.white,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.grey,
-                            size: 28.w,
+                          child: Image.asset(
+                            AppImages.maiya,
+                            width: 32.w,
+                            height: 32.w,
+                            fit: BoxFit.cover,
                           ),
                         ),
               ),
@@ -168,50 +173,118 @@ class StudentDetailsScreen extends ConsumerWidget {
             if (notificationItem.actions.isNotEmpty)
               Row(
                 spacing: 8.w,
-                children: List.generate(notificationItem.actions.length, (index) {
+                children: List.generate(notificationItem.actions.length, (
+                  index,
+                ) {
                   return Expanded(
                     child: Consumer(
-                        builder: (_, ref, __) {
-                          return CommonWidget.primaryButton(
-                              context: context,
-                              onPressed: () async {
-                                final actionUrl = notificationItem.actions[index].url;
-                                final actionMethod = notificationItem.actions[index].reqMethod; // todo:- perform with this method
-                                if (actionUrl == null || actionUrl.isEmpty) return;
+                      builder: (_, ref, __) {
+                        final bookingId =
+                            notificationItem.id
+                                .toString();
+                        final state = ref.watch(
+                          acceptRejectBookingProvider(bookingId),
+                        );
+                        final isLoading = state is AsyncLoading;
 
-                                if (notificationItem.actions[index].disabled) return;
-                                await ref.read(acceptRejectBookingProvider.notifier).patchBookingAction(actionUrl);
+                        return CommonWidget.primaryButton(
+                          context: context,
+                          onPressed:
+                              isLoading
+                                  ? () {} // ✅ disable button while loading
+                                  : () async {
+                                    final actionUrl =
+                                        notificationItem.actions[index].url;
+                                    final actionMethod =
+                                        notificationItem
+                                            .actions[index]
+                                            .reqMethod; // todo: handle PATCH/POST later if needed
 
-                                final state = ref.read(acceptRejectBookingProvider);
+                                    if (actionUrl == null || actionUrl.isEmpty)
+                                      return;
+                                    if (notificationItem
+                                        .actions[index]
+                                        .disabled)
+                                      return;
 
-                                state.when(
-                                  data: (response) async {
-                                    if (response?.success == true) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text(response?.message ?? "Action successful")),
-                                      );
-                                      await ref.read(notificationsProvider.notifier).refreshNotifications();
-                                    } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text("Action failed")),
-                                      );
-                                    }
-                                  },
-                                  loading: () {},
-                                  error: (error, _) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text("Error: This booking has already been processed")),
+                                    // ✅ call the specific instance for this booking
+                                    await ref
+                                        .read(
+                                          acceptRejectBookingProvider(
+                                            bookingId,
+                                          ).notifier,
+                                        )
+                                        .patchBookingAction(actionUrl);
+
+                                    // ✅ read the same instance state
+                                    final state = ref.read(
+                                      acceptRejectBookingProvider(bookingId),
                                     );
-                                  },
-                                );
 
-                                ref.read(acceptRejectBookingProvider.notifier).reset();
-                              },
-                              text: notificationItem.actions[index].text,
-                              backgroundColor: notificationItem.actions[index].bgPrimary && !notificationItem.actions[index].disabled ? AppColors.primary : Color(0xff4A4C56),
-                              textStyle: buttonTextStyle
-                          );
-                        }
+                                    state.when(
+                                      data: (response) async {
+                                        if (response?.success == true) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                response?.message ??
+                                                    "Action successful",
+                                              ),
+                                            ),
+                                          );
+
+                                          // ✅ Refresh notifications after success
+                                          await ref
+                                              .read(
+                                                notificationsProvider.notifier,
+                                              )
+                                              .refreshNotifications();
+                                        } else {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            const SnackBar(
+                                              content: Text("Action failed"),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      loading: () {
+                                        // No need here — UI already shows loading state
+                                      },
+                                      error: (error, _) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "Error: This booking has already been processed",
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+
+                                    // ✅ Reset state after finishing
+                                    ref
+                                        .read(
+                                          acceptRejectBookingProvider(
+                                            bookingId,
+                                          ).notifier,
+                                        )
+                                        .reset();
+                                  },
+                          text: notificationItem.actions[index].text,
+                          backgroundColor:
+                              notificationItem.actions[index].bgPrimary &&
+                                      !notificationItem.actions[index].disabled
+                                  ? AppColors.primary
+                                  : const Color(0xff4A4C56),
+                          textStyle: buttonTextStyle,
+                        );
+                      },
                     ),
                   );
                 }),

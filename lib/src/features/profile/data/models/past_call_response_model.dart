@@ -35,7 +35,8 @@ class PastCall {
   final String name;
   final int duration;
   final DateTime date;
-  final int amount;
+  final double amount;
+  final String? meetingSummery;
 
   PastCall({
     required this.id,
@@ -43,6 +44,7 @@ class PastCall {
     required this.duration,
     required this.date,
     required this.amount,
+    this.meetingSummery,
   });
 
   factory PastCall.fromJson(Map<String, dynamic> json) {
@@ -51,7 +53,8 @@ class PastCall {
       name: json['name'],
       duration: json['duration'],
       date: DateTime.parse(json['date']),
-      amount: json['amount'],
+      amount: (json['amount'] as num).toDouble(),
+      meetingSummery: json['meeting_summery'],
     );
   }
 
@@ -61,6 +64,7 @@ class PastCall {
     'duration': duration,
     'date': date.toIso8601String(),
     'amount': amount,
+    'meeting_summery': meetingSummery,
   };
 }
 

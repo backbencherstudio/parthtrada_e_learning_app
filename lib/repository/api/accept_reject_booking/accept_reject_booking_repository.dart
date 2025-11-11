@@ -23,6 +23,7 @@ class AcceptRejectBookingRepository {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonData = jsonDecode(response.body);
+      debugPrint('Response: ${AcceptRejectResponseModel.fromJson(jsonData).message}');
       return AcceptRejectResponseModel.fromJson(jsonData);
     } else {
       debugPrint('Error PATCH: ${response.statusCode} ${response.body}');

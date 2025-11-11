@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/services/local_storage_services/user_id_storage.dart';
 import '../../../../core/services/message_services/message_service.dart';
 import '../model/conversation_model.dart' hide Data;
 import '../model/message_model.dart';
@@ -22,7 +21,7 @@ class ConversationState {
     this.error,
     this.typingUserId,
     this.isLoadingConversation = false,
-    this.errorMessageConversation
+    this.errorMessageConversation,
   });
 
   ConversationState copyWith({
@@ -33,7 +32,6 @@ class ConversationState {
     String? typingUserId,
     bool? isLoadingConversation,
     String? errorMessageConversation,
-
   }) {
     return ConversationState(
       isLoading: isLoading ?? this.isLoading,
@@ -41,8 +39,10 @@ class ConversationState {
       messages: messages ?? this.messages,
       error: error ?? this.error,
       typingUserId: typingUserId ?? this.typingUserId,
-      isLoadingConversation: isLoadingConversation ?? this.isLoadingConversation,
-      errorMessageConversation: errorMessageConversation ?? this.errorMessageConversation
+      isLoadingConversation:
+          isLoadingConversation ?? this.isLoadingConversation,
+      errorMessageConversation:
+          errorMessageConversation ?? this.errorMessageConversation,
     );
   }
 }
@@ -53,15 +53,13 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
   MessageService? _messageService;
 
   ConversationViewModel(this._repository, this.scrollController)
-      : super(ConversationState()) {
+    : super(ConversationState()) {
     fetchConversation();
   }
 
   void initializeMessageService(BuildContext context) {
-
     _messageService = MessageService(
       onMessageReceived: (Data message) {
-
         debugPrint("Message Received in viewmodel:  $message");
         fetchConversation();
 
@@ -73,7 +71,6 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
               data: List.from(currentMessages)..add(message),
             ),
           );
-
 
           // Smoothly scroll to bottom
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -97,11 +94,10 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
           state = state.copyWith(typingUserId: null);
         }
       },
+      onNotificationReceived: (Data message) {},
     );
     _messageService!.connect();
   }
-
-
 
   void disposeMessageService() {
     _messageService?.disconnect();
@@ -118,7 +114,7 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
       debugPrint("message set: ${recipientId}  - $content");
       _messageService?.sendMessage(
         recipientId: recipientId,
-       // recipientRole: recipientRole,
+        // recipientRole: recipientRole,
         content: content,
       );
       //
@@ -159,13 +155,17 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
   /// Fetch all conversations
   Future<void> fetchConversation() async {
     try {
-      state = state.copyWith(isLoadingConversation: true, errorMessageConversation: null);
+      state = state.copyWith(
+        isLoadingConversation: true,
+        errorMessageConversation: null,
+      );
       final result = await _repository.getConversation();
 
       state = state.copyWith(
         isLoadingConversation: false,
         conversation: result,
-        errorMessageConversation: (result.success == false) ? result.message : null,
+        errorMessageConversation:
+            (result.success == false) ? result.message : null,
       );
     } catch (e) {
       state = state.copyWith(
@@ -175,12 +175,20 @@ class ConversationViewModel extends StateNotifier<ConversationState> {
     }
   }
 
-
   /// Fetch messages of a given conversation
-  Future<void> fetchMessages(String conversationId, String page, String perPage, {required BuildContext context}) async {
+  Future<void> fetchMessages(
+    String conversationId,
+    String page,
+    String perPage, {
+    required BuildContext context,
+  }) async {
     try {
       state = state.copyWith(isLoading: true, error: null);
-      final result = await _repository.getMessages(conversationId, page, perPage);
+      final result = await _repository.getMessages(
+        conversationId,
+        page,
+        perPage,
+      );
 
       if (context.mounted) {
         state = state.copyWith(
@@ -215,9 +223,9 @@ final conversationRepositoryProvider = Provider<ConversationRepository>((ref) {
 });
 
 final conversationViewModelProvider =
-StateNotifierProvider<ConversationViewModel, ConversationState>((ref) {
-  return ConversationViewModel(
-    ref.read(conversationRepositoryProvider),
-    ScrollController(),
-  );
-});
+    StateNotifierProvider<ConversationViewModel, ConversationState>((ref) {
+      return ConversationViewModel(
+        ref.read(conversationRepositoryProvider),
+        ScrollController(),
+      );
+    });

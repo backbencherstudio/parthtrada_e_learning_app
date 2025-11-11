@@ -1,7 +1,7 @@
 class ApiEndPoints {
   static const String baseUrl = 'https://parthtrada.obotoronika.com';
   static const String profileInfo = '/profile/me';
-  static const String expertList = '$baseUrl/experts';
+  static String expertList(int page, int limit) => '$baseUrl/experts?page=$page&perPage=$limit';
   static const String skillList = '$baseUrl/experts/skills';
   static const String statList = '$baseUrl/home/stats';
   static String expertDetail(String expertId) => '$baseUrl/experts/$expertId';
@@ -25,5 +25,12 @@ class ApiEndPoints {
   static String getCards = '$baseUrl/payments/cards';
   static String confirmPayment = '$baseUrl/payments/confirm-payment';
   static String getStudentById(String sId) => '$baseUrl/students/$sId';
+  static String refundByStudent(String bookingId) => '$baseUrl/payments/refund-req/$bookingId';
   static String transactionsHistory = '/payments/transactions';
+
+  static String createAccount = '/payments/stripe/create-account';
+  static String onboardingLink = '/payments/stripe/onboarding-link';
+  static String checkAccoutStatus = '/payments/stripe/status';
+  static String balanceCheck = '/payments/experts/balance';
+  static String payoutBalance = '/payments/experts/payouts';
 }

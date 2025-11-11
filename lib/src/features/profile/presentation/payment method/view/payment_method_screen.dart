@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../../core/theme/theme_part/app_colors.dart';
 import '../viewmodel/payment_method_notifier_provider.dart';
 
 class PaymentMethodScreen extends ConsumerStatefulWidget {
@@ -48,7 +49,7 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
       ),
       body: paymentState.isLoadingGetPaymentMethod
           ? const Center(
-        child: CircularProgressIndicator(color: Color(0xFF4CAF50)),
+        child: CircularProgressIndicator(color: AppColors.primary),
       )
           : paymentState.isSuccessGetPaymentMethod &&
           paymentState.cardsResponse != null
@@ -105,7 +106,7 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
                   .read(paymentMethodNotifierProvider.notifier)
                   .getCards(),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF4CAF50),
+                backgroundColor: AppColors.primary,
                 padding: EdgeInsets.symmetric(
                     horizontal: 24.w, vertical: 12.h),
                 shape: RoundedRectangleBorder(
@@ -125,7 +126,7 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
 
 
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFF4CAF50),
+        backgroundColor: AppColors.primary,
         onPressed: () => context.push(RouteName.addPaymentMethod),
         child: const Icon(Icons.add, color: Colors.white),
       ),

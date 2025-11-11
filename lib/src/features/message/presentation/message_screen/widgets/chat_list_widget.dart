@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../../core/routes/route_name.dart';
+import '../../../../../../core/services/api_services/api_end_points.dart';
 import '../../../../../../core/theme/theme_part/app_colors.dart';
 
 class ChatListWidget extends StatelessWidget {
@@ -59,7 +60,7 @@ class ChatListWidget extends StatelessWidget {
               radius: 26.r,
               backgroundColor: AppColors.primary.withOpacity(0.2),
               backgroundImage: imageUrl.isNotEmpty
-                  ? NetworkImage(imageUrl)
+                  ? NetworkImage("${ApiEndPoints.baseUrl}/uploads/$imageUrl")
                   : null,
               child: imageUrl.isEmpty
                   ? Icon(Icons.person, color: AppColors.primary, size: 24.sp)
@@ -110,22 +111,22 @@ class ChatListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 6.h),
-                if (unreadCount > 0)
-                  Container(
-                    padding: EdgeInsets.all(6.r),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Text(
-                      unreadCount.toString(),
-                      style: textTheme.bodySmall?.copyWith(
-                        color: AppColors.onPrimary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 10.sp,
-                      ),
-                    ),
-                  ),
+                // if (unreadCount > 0)
+                //   Container(
+                //     padding: EdgeInsets.all(6.r),
+                //     decoration: BoxDecoration(
+                //       color: AppColors.primary,
+                //       shape: BoxShape.circle,
+                //     ),
+                //     child: Text(
+                //       unreadCount.toString(),
+                //       style: textTheme.bodySmall?.copyWith(
+                //         color: AppColors.onPrimary,
+                //         fontWeight: FontWeight.bold,
+                //         fontSize: 10.sp,
+                //       ),
+                //     ),
+                //   ),
               ],
             ),
           ],
@@ -134,3 +135,5 @@ class ChatListWidget extends StatelessWidget {
     );
   }
 }
+
+

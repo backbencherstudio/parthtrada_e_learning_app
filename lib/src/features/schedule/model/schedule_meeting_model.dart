@@ -48,11 +48,15 @@ class Booking {
   String? answer1;
   String? answer2;
   String? answer3;
+  String? notificationId;
   DateTime createdAt;
   DateTime updatedAt;
   Review? review;
+  User? user;
   bool? shouldReview;
   bool? shouldRefund;
+  Transaction? transaction;
+
 
   Booking({
     required this.id,
@@ -69,11 +73,14 @@ class Booking {
     this.answer1,
     this.answer2,
     this.answer3,
+    this.notificationId,
     required this.createdAt,
     required this.updatedAt,
     this.review,
+    this.user,
     this.shouldReview,
     this.shouldRefund,
+    this.transaction,
   });
 
   factory Booking.fromJson(Map<String, dynamic> json) {
@@ -96,40 +103,60 @@ class Booking {
       answer1: json['answer1'],
       answer2: json['answer2'],
       answer3: json['answer3'],
+      notificationId: json['notification_id'],
       createdAt: DateTime.parse(
         json['createdAt'] ?? DateTime.now().toIso8601String(),
       ),
       updatedAt: DateTime.parse(
         json['updatedAt'] ?? DateTime.now().toIso8601String(),
       ),
+      user: User.fromJson(json['user']),
       review: json['review'] != null ? Review.fromJson(json['review']) : null,
       shouldReview: json['should_review'] ?? null,
       shouldRefund: json['should_refund'] ?? null,
+      transaction: json['transaction'] != null ? Transaction.fromJson(json['transaction']) : null,
     );
   }
-
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'studentId': studentId,
-    'expertId': expertId,
-    'date': date.toIso8601String(),
-    'expertDateTime': expertDateTime.toIso8601String(),
-    'studentDateTime': studentDateTime.toIso8601String(),
-    'meetingLink': meetingLink,
-    'sessionDetails': sessionDetails,
-    'sessionDuration': sessionDuration,
-    'status': status,
-    'refund_reason': refundReason,
-    'answer1': answer1,
-    'answer2': answer2,
-    'answer3': answer3,
-    'createdAt': createdAt.toIso8601String(),
-    'updatedAt': updatedAt.toIso8601String(),
-    'review': review,
-    'should_review': shouldReview,
-    'should_refund': shouldRefund,
-  };
 }
+
+class Transaction {
+  final String? type;
+  final bool refunded;
+
+  Transaction({
+    this.type,
+    required this.refunded,
+});
+
+  factory Transaction.fromJson(Map<String, dynamic> map) {
+    return Transaction(
+      type: map['type'],
+      refunded: map['refunded'],
+    );
+  }
+}
+
+
+class User {
+  final String name;
+  final String? image;
+  final String? profession;
+
+  User({
+    required this.name,
+    this.image,
+    this.profession,
+  });
+
+  factory User.fromJson(Map<String, dynamic> map) {
+    return User(
+      name: map['name'],
+      image: map['image'],
+      profession: map['profession'],
+    );
+  }
+}
+
 
 class Review {
   final String? id;

@@ -8,7 +8,7 @@ import '../../login_preferences.dart';
 class PaymentRepository {
   Future<bool> confirmPayment({
     required String paymentIntentId,
-    // required String paymentMethodId,
+    required String paymentMethodId,
   }) async {
     // Validate input parameters
     if (paymentIntentId.isEmpty) {
@@ -18,8 +18,8 @@ class PaymentRepository {
 
     final url = Uri.parse(ApiEndPoints.confirmPayment);
     final body = jsonEncode({
-      "paymentIntentId": paymentIntentId
-      // "paymentMethodId": paymentMethodId,
+      "paymentIntentId": paymentIntentId,
+      "paymentMethodId": paymentMethodId,
     });
 
     // Log the request body for debugging

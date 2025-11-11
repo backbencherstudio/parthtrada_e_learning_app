@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../core/theme/theme_part/app_colors.dart';
+import '../../../../book_expert/rvierpod/get_card_notifier.dart';
 import '../../../sub_feature/user profile/widget/custom_button.dart';
 import '../viewmodel/payment_method_notifier_provider.dart';
 
@@ -92,7 +94,10 @@ class _AddCardScreenState extends ConsumerState<AddCardScreen> {
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () async {
+            await ref.read(cardProvider.notifier).fetchCards();
+            Navigator.pop(context);
+          }
         ),
       ),
       body: SingleChildScrollView(
@@ -197,7 +202,7 @@ class _AddCardScreenState extends ConsumerState<AddCardScreen> {
 
             // Save button
             Mybutton(
-              color: Colors.blue,
+              color: AppColors.primary,
               text: state.isLoading ? "Saving..." : "Save Card",
               width: double.infinity,
               onTap: (!_isValid || state.isLoading)
@@ -216,27 +221,26 @@ class _AddCardScreenState extends ConsumerState<AddCardScreen> {
                   cvc: cvc,
                 );
 
-                // 👇 Pop back after loading finishes & success message appears
                 final newState = ref.read(paymentMethodNotifierProvider);
                 if (!newState.isLoading &&
                     newState.message != null &&
                     newState.message!.toLowerCase().contains("success")) {
-                  Future.delayed(const Duration(milliseconds: 800), () {
-                    if (mounted) Navigator.pop(context);
+                  Future.delayed(const Duration(milliseconds: 800), () async {
+                    if (mounted) {
+                      await ref.read(cardProvider.notifier).fetchCards();
+                      Navigator.pop(context);
+                    }
                   });
                 }
               },
             ),
 
-            // Loading indicator
             if (state.isLoading)
               const Center(child: Padding(
                 padding: EdgeInsets.all(16.0),
                 child: CircularProgressIndicator(),
               )),
 
-
-            // Message (success/error)
             if (state.message != null)
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 12.h),
@@ -253,7 +257,6 @@ class _AddCardScreenState extends ConsumerState<AddCardScreen> {
                   ),
                 ),
               ),
-
           ],
         ),
       ),
