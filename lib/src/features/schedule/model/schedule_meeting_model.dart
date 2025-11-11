@@ -55,6 +55,7 @@ class Booking {
   User? user;
   bool? shouldReview;
   bool? shouldRefund;
+  String? roleInBooking;
   Transaction? transaction;
 
 
@@ -80,6 +81,7 @@ class Booking {
     this.user,
     this.shouldReview,
     this.shouldRefund,
+    this.roleInBooking,
     this.transaction,
   });
 
@@ -114,6 +116,7 @@ class Booking {
       review: json['review'] != null ? Review.fromJson(json['review']) : null,
       shouldReview: json['should_review'] ?? null,
       shouldRefund: json['should_refund'] ?? null,
+      roleInBooking: json['roleInBooking'] ?? '',
       transaction: json['transaction'] != null ? Transaction.fromJson(json['transaction']) : null,
     );
   }
