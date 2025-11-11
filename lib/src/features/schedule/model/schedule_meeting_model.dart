@@ -49,6 +49,7 @@ class Booking {
   String? answer2;
   String? answer3;
   String? notificationId;
+  String? roleInBooking;
   DateTime createdAt;
   DateTime updatedAt;
   Review? review;
@@ -74,6 +75,7 @@ class Booking {
     this.answer2,
     this.answer3,
     this.notificationId,
+    this.roleInBooking,
     required this.createdAt,
     required this.updatedAt,
     this.review,
@@ -104,6 +106,7 @@ class Booking {
       answer2: json['answer2'],
       answer3: json['answer3'],
       notificationId: json['notification_id'],
+      roleInBooking: json['roleInBooking'],
       createdAt: DateTime.parse(
         json['createdAt'] ?? DateTime.now().toIso8601String(),
       ),
