@@ -304,7 +304,7 @@ class PaymentMethodNotifier extends StateNotifier<PaymentMethodState> {
       state = state.copyWith(
         isLoadingCheckBalance: false,
         balance: null,
-        errorMessageCheckBalance: "Error fetching balance: $e",
+     //   errorMessageCheckBalance: "Error fetching balance: $e",
       );
     }
   }
