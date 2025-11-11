@@ -62,7 +62,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                   Consumer(
                     builder: (context, ref, __) {
                       final bookingKey =
-                          "${meetingScheduleModel.id}_reject"; // 👈 unique key for cancel
+                          "${meetingScheduleModel.id}_reject";
                       final state = ref.watch(
                         acceptRejectBookingProvider(bookingKey),
                       );
@@ -144,10 +144,12 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
                       );
                     },
                   ),
+                  // TODO solve with student actions
+                  // meetingScheduleModel.roleInBooking == "STUDENT" ?
                   Consumer(
                     builder: (context, ref, __) {
                       final bookingKey =
-                          "${meetingScheduleModel.id}_accept"; // 👈 unique key for accept
+                          "${meetingScheduleModel.id}_accept";
                       final state = ref.watch(
                         acceptRejectBookingProvider(bookingKey),
                       );

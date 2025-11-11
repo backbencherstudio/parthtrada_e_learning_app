@@ -24,7 +24,7 @@ class _StripeWebViewScreenState extends ConsumerState<StripeWebViewScreen> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (String url) async {
-            if (url.startsWith('https://localhost:8000/expert/')) {
+            if (url.startsWith('http://localhost:8000/views/expert/')) {
               await ref.read(paymentMethodNotifierProvider.notifier).getAccountStatus();
 
               if (mounted) {
