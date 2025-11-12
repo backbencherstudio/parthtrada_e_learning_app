@@ -1,5 +1,5 @@
 class ApiEndPoints {
-  static const String baseUrl = 'http://46.202.164.243:8010';
+  static const String baseUrl = 'https://parthtrada.signalsmind.com';
  // static const String baseUrl = 'https://parthtrada.obotoronika.com';
   static const String profileInfo = '/profile/me';
   static String expertList(int page, int limit) => '$baseUrl/experts?page=$page&perPage=$limit';

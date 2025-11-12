@@ -7,7 +7,7 @@ import '../local_storage_services/user_id_storage.dart';
 
 class MessageService {
   IO.Socket? _socket;
-  final String socketUrl = 'https://parthtrada.obotoronika.com';
+  final String socketUrl = 'https://parthtrada.signalsmind.com';
   final void Function(Data message) onMessageReceived;
   final void Function(Data message) onNotificationReceived;
   final void Function(String userId) onTyping;

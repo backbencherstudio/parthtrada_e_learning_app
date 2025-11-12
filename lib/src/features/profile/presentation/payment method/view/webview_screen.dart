@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../../../../core/services/api_services/api_end_points.dart';
 import '../viewmodel/payment_method_notifier_provider.dart';
 
 class StripeWebViewScreen extends ConsumerStatefulWidget {
@@ -24,7 +25,7 @@ class _StripeWebViewScreenState extends ConsumerState<StripeWebViewScreen> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (String url) async {
-            if (url.startsWith('http://localhost:8000/views/expert/')) {
+            if (url.startsWith('${ApiEndPoints.baseUrl}/views/expert/')) {
               await ref.read(paymentMethodNotifierProvider.notifier).getAccountStatus();
 
               if (mounted) {
