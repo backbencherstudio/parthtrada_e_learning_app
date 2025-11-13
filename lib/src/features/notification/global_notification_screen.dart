@@ -115,6 +115,8 @@ class _GlobalNotificationScreenState
                       }
 
                       return ListView.separated(
+                        shrinkWrap: true,
+                        physics: AlwaysScrollableScrollPhysics(),
                         controller: _scrollController,
                         itemCount: state.notifications.length,
                         separatorBuilder: (context, index) =>

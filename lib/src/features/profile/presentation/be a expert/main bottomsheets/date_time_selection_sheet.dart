@@ -31,10 +31,12 @@ void timeDateSelectionBottomSheet(BuildContext context) {
 
 class _TimeDateSelectionBottomSheet extends ConsumerStatefulWidget {
   @override
-  ConsumerState<_TimeDateSelectionBottomSheet> createState() => _TimeDateSelectionBottomSheetState();
+  ConsumerState<_TimeDateSelectionBottomSheet> createState() =>
+      _TimeDateSelectionBottomSheetState();
 }
 
-class _TimeDateSelectionBottomSheetState extends ConsumerState<_TimeDateSelectionBottomSheet> {
+class _TimeDateSelectionBottomSheetState
+    extends ConsumerState<_TimeDateSelectionBottomSheet> {
   final TextEditingController experienceController = TextEditingController();
   String? errorMessage;
   bool isSaving = false;
@@ -105,15 +107,18 @@ class _TimeDateSelectionBottomSheetState extends ConsumerState<_TimeDateSelectio
       errorMessage = null;
     });
 
-    ref.read(skillSelectionProvider.notifier).updateProfileData(
-      UserProfile(
-        experience: experience,
-        availableDays: availability.days.toList(),
-        availableTime: availability.times.toList(),
-      ),
-    );
+    ref
+        .read(skillSelectionProvider.notifier)
+        .updateProfileData(
+          UserProfile(
+            experience: experience,
+            availableDays: availability.days.toList(),
+            availableTime: availability.times.toList(),
+          ),
+        );
 
-    final success = await ref.read(skillSelectionProvider.notifier).saveExpertProfile();
+    final success =
+        await ref.read(skillSelectionProvider.notifier).saveExpertProfile();
 
     setState(() {
       isSaving = false;
@@ -124,7 +129,9 @@ class _TimeDateSelectionBottomSheetState extends ConsumerState<_TimeDateSelectio
       context.pushReplacement(RouteName.splash);
     } else {
       setState(() {
-        errorMessage = ref.read(skillSelectionProvider.notifier).errorMessage ?? 'Failed to save profile';
+        errorMessage =
+            ref.read(skillSelectionProvider.notifier).errorMessage ??
+            'Failed to save profile';
       });
     }
   }
@@ -135,22 +142,22 @@ class _TimeDateSelectionBottomSheetState extends ConsumerState<_TimeDateSelectio
     final notifier = ref.read(availabilityProvider.notifier);
 
     return IntrinsicHeight(
-        child: ClipPath(
-          child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: const BoxDecoration(
-                color: AppColors.screenBackgroundColor,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(32),
-                  bottom: Radius.circular(32),
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                  Align(
+      child: ClipPath(
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: const BoxDecoration(
+            color: AppColors.screenBackgroundColor,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(32),
+              bottom: Radius.circular(32),
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Align(
                   alignment: Alignment.centerRight,
                   child: ClipOval(
                     child: SizedBox(
@@ -169,157 +176,178 @@ class _TimeDateSelectionBottomSheetState extends ConsumerState<_TimeDateSelectio
                   ),
                 ),
                 Text(
-                    "Session Details",
-                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  "Session Details",
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              const Divider(thickness: 1, color: Color(0xff2B2C31)),
-              SizedBox(height: 16.h),
-              Text(
-                "Experience",
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+                const Divider(thickness: 1, color: Color(0xff2B2C31)),
+                SizedBox(height: 16.h),
+                Text(
+                  "Experience",
+                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              TextFormField(
-                controller: experienceController,
-                decoration: const InputDecoration(hintText: "4"),
-              ),
-              SizedBox(height: 16.h),
-              Text(
-                "Available Time",
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+                TextFormField(
+                  controller: experienceController,
+                  decoration: const InputDecoration(hintText: "4"),
                 ),
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Select Time",
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                      availabilityBottomSheet(context);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: SvgPicture.asset(
-                        AppIcons.calender,
-                        color: Colors.white,
+                SizedBox(height: 16.h),
+                Text(
+                  "Available Time",
+                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Select Time",
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        availabilityBottomSheet(context);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: SvgPicture.asset(
+                          AppIcons.calender,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              if (availability.days.isNotEmpty || availability.times.isNotEmpty)
-          Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 12.h),
-            // Days
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: availability.days.map((day) {
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(41.r),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
+                if (availability.days.isNotEmpty ||
+                    availability.times.isNotEmpty)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        day,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      SizedBox(height: 12.h),
+                      // Days
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children:
+                            availability.days.map((day) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.w,
+                                  vertical: 6.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(41.r),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      day,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall!.copyWith(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(width: 4.w),
+                                    GestureDetector(
+                                      onTap: () => notifier.toggleDay(day),
+                                      child: Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
                       ),
-                      SizedBox(width: 4.w),
-                      GestureDetector(
-                        onTap: () => notifier.toggleDay(day),
-                        child: Icon(Icons.close, color: Colors.white, size: 16),
+                      SizedBox(height: 12.h),
+                      // Times
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children:
+                            availability.times.map((time) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.w,
+                                  vertical: 6.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(41.r),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      time,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall!.copyWith(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(width: 4.w),
+                                    GestureDetector(
+                                      onTap: () => notifier.toggleTime(time),
+                                      child: Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
                       ),
                     ],
                   ),
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 12.h),
-            // Times
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: availability.times.map((time) {
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(41.r),
+                SizedBox(height: 15.h),
+                if (errorMessage != null) ...[
+                  Text(
+                    errorMessage!,
+                    style: const TextStyle(color: Colors.red),
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        time,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
+                  SizedBox(height: 10.h),
+                ],
+                Row(
+                  children: [
+                    Expanded(
+                      child: Mybutton(
+                        color: const Color(0xff2B2C31),
+                        text: "Back",
+                        onTap: () {
+                          Navigator.pop(context);
+                          sessionDetailstBottomSheet(context);
+                        },
                       ),
-                      SizedBox(width: 4.w),
-                      GestureDetector(
-                        onTap: () => notifier.toggleTime(time),
-                        child: Icon(Icons.close, color: Colors.white, size: 16),
+                    ),
+                    SizedBox(width: 8.w),
+                    Expanded(
+                      child: Mybutton(
+                        color: AppColors.primary,
+                        text: isSaving ? "Saving..." : "Done",
+                        onTap: isSaving ? null : onDone,
                       ),
-                    ],
-                  ),
-                );
-              }).toList(),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15.h),
+              ],
             ),
-          ],
+          ),
         ),
-        SizedBox(height: 15.h),
-        if (errorMessage != null) ...[
-    Text(
-    errorMessage!,
-    style: const TextStyle(color: Colors.red),
-    ),
-    SizedBox(height: 10.h),
-    ],
-    Row(
-    children: [
-    Expanded(
-    child: Mybutton(
-    color: const Color(0xff2B2C31),
-    text: "Back",
-    onTap: () {
-    Navigator.pop(context);
-    sessionDetailstBottomSheet(context);
-    },
-    ),
-    ),
-    SizedBox(width: 8.w),
-    Expanded(
-    child: Mybutton(
-    color: AppColors.primary,
-    text: isSaving ? "Saving..." : "Done",
-    onTap: isSaving ? null : onDone,
-    ),
-    ),
-    ],
-    ),
-    SizedBox(height: 15.h),
-    ],
-    ),
-    ),
-    ),
-    ),
+      ),
     );
   }
 }
