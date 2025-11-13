@@ -31,7 +31,7 @@ class ScheduleShowContainerFooter extends ConsumerWidget {
       fontWeight: FontWeight.w800,
     );
     final role = ref.watch(userTypeProvider).asData?.value;
-    debugPrint("meetingScheduleModel: $role");
+    debugPrint("Meeting Schedule User Role: $role");
 
     final reviewState = ref.watch(addReviewProvider);
 

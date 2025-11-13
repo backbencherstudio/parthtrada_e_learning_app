@@ -1,6 +1,7 @@
 import 'package:e_learning_app/core/services/api_services/api_end_points.dart';
 import 'package:flutter/cupertino.dart';
 import '../../../../../../core/services/api_services/api_services.dart';
+import '../../../../../../core/utils/utils.dart';
 import '../../../../../../repository/login_preferences.dart';
 import 'expert_profile_repository.dart';
 
@@ -49,6 +50,7 @@ class ExpertProfileRepositoryImpl implements ExpertProfileRepository {
       debugPrint("updated token: ${response.data['token']}");
 
       await LoginPreferences().setAuthToken("${response.data['token']}");
+      await Utils.isTokenValid(response.data['token']);
 
 
       return response.statusCode == 200 || response.statusCode == 201;
