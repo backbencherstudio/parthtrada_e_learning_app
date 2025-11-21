@@ -21,6 +21,12 @@ class _GlobalNotificationScreenState
   void initState() {
     super.initState();
     _scrollController.addListener(_loadMoreData);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _scrollController.jumpTo(0);
+      final notifier = ref.read(notificationsProvider.notifier);
+      await notifier.refreshNotifications();
+    });
   }
 
   void _loadMoreData() {
