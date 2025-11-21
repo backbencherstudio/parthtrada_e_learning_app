@@ -25,6 +25,15 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_loadMoreData);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _scrollController.jumpTo(0);
+      _currentPage = 1;
+      await ref.read(scheduleProvider.notifier).fetchMeetings(
+        page: _currentPage,
+        isRefresh: true,
+      );
+    });
   }
 
   void _loadMoreData() {
