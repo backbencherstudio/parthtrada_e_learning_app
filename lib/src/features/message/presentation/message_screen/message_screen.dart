@@ -8,11 +8,28 @@ import '../../../../../core/theme/theme_part/app_colors.dart';
 import '../../riverpod/conversation_viewmodel.dart';
 import 'widgets/chat_list_widget.dart';
 
-class MessageScreen extends ConsumerWidget {
+class MessageScreen extends ConsumerStatefulWidget {
   const MessageScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MessageScreen> createState() => _MessageScreenState();
+}
+
+class _MessageScreenState extends ConsumerState<MessageScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final notifier = ref.read(conversationViewModelProvider.notifier);
+      await notifier.fetchConversation();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(conversationViewModelProvider);
     final notifier = ref.read(conversationViewModelProvider.notifier);
 
