@@ -16,7 +16,7 @@ class RouteName{
 
   static const String parentScreen = "/ParentScreen";
   static const String paymentMethodScreen = "/PaymentMethodScreen";
-
+  static const String addPaymentMethod = "/addPaymentMethod";
 
   static const String sentRequest = '/sent-request';
   static const String pastCall = '/past-call';
@@ -26,9 +26,15 @@ class RouteName{
   static const String languageScreen ="/LanguageScreen";
 
   static const String expertDetailsScreen ="/expertDetailsScreen";
+  static const String expertSearchScreen ="/expertSearchScreen";
 
   static const String globalNotificationScreen = "/GlobalNotificationScreen";
 
   static const String authenticationScreen = "/authenticationScreen";
+  static const String studentDetailsScreen = "/studentDetailsScreen";
+  static const String helpAndSupportScreen = "/helpAndSupportScreen";
+
+  static const String payoutMethodScreen = "/payoutMethodScreen";
+  static const String withdrawScreen = "/withdrawScreen";
 
 }

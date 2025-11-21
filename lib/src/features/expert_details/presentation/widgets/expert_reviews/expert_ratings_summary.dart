@@ -32,7 +32,7 @@ class ExpertRatingsSummary extends StatelessWidget {
                 ),
                 Row(
                   children: List.generate(
-                    5,
+                    5, /// todo handle the stars in the future cause no data type is founded to handle this star count
                     (index) => SvgPicture.asset(
                       AppIcons.starFill,
                       colorFilter: const ColorFilter.mode(
@@ -51,9 +51,11 @@ class ExpertRatingsSummary extends StatelessWidget {
             SizedBox(width: 25.w),
             Expanded(
               child: Column(
-                children: List.generate(
-                  5,
-                  (index) => Row(
+                spacing: 2.h,
+                children: List.generate(5, (index) {
+                  final ratingData = stats?.ratingDistribution?[index];
+                  final percentage = double.tryParse(ratingData?.percentage ?? '') ?? 0.0;
+                  return Row(
                     children: [
                       Text(
                         (5 - index).toString(),
@@ -64,14 +66,14 @@ class ExpertRatingsSummary extends StatelessWidget {
                         child: LinearProgressIndicator(
                           borderRadius: BorderRadius.circular(20.r),
                           minHeight: 8.h,
-                          value: 0.8,
+                          value: percentage,
                           color: AppColors.primary,
                           backgroundColor: Colors.white,
                         ),
                       ),
                     ],
-                  ),
-                ),
+                  );
+                }),
               ),
             ),
           ],

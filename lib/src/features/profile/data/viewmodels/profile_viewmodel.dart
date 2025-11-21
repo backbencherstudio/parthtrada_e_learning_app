@@ -58,7 +58,10 @@ class ProfileState {
 }
 
 class ProfileProvider extends StateNotifier<ProfileState> {
-  ProfileProvider() : super(ProfileState.initial());
+  ProfileProvider() : super(ProfileState.initial()) {
+    getProfileInfo();
+  }
+
 
   final ProfileRepositoryImpl _profileRepository = ProfileRepositoryImpl();
 

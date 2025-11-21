@@ -4,12 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/models/user_profile.dart';
 
 final skillSelectionProvider =
-StateNotifierProvider<SkillSelectionNotifier, Set<String>>(
+    StateNotifierProvider<SkillSelectionNotifier, Set<String>>(
       (ref) => SkillSelectionNotifier(ref),
-);
+    );
 
 class SkillSelectionNotifier extends StateNotifier<Set<String>> {
   final Ref ref;
+
   SkillSelectionNotifier(this.ref) : super({});
 
   bool isLoading = false;
@@ -51,7 +52,6 @@ class SkillSelectionNotifier extends StateNotifier<Set<String>> {
     );
   }
 
-
   bool validateFields(List<String> fields) {
     final fieldValues = {
       'name': profileData.name,
@@ -79,7 +79,8 @@ class SkillSelectionNotifier extends StateNotifier<Set<String>> {
     isLoading = true;
     errorMessage = null;
     final skills = state.toList();
-    final ExpertProfileRepositoryImpl expertProfileRepositoryImpl = ExpertProfileRepositoryImpl();
+    final ExpertProfileRepositoryImpl expertProfileRepositoryImpl =
+        ExpertProfileRepositoryImpl();
 
     try {
       final success = await expertProfileRepositoryImpl.saveExpertProfile(

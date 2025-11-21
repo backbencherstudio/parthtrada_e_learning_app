@@ -17,7 +17,6 @@ class Network {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        // Remove Authorization from here
       },
     );
 

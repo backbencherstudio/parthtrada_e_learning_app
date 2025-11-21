@@ -1,6 +1,5 @@
 import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:e_learning_app/core/routes/route_name.dart';
-import 'package:e_learning_app/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,39 +8,64 @@ import 'package:go_router/go_router.dart';
 import '../constant/icons.dart';
 import '../theme/theme_part/app_colors.dart';
 
-class CommonWidget {
+class CommonWidget  {
   static Widget customAppBar({
     required TextTheme textTheme,
     required bool isNotification,
     required String title,
     required String subtitle,
     BuildContext? context,
+    bool showBackButton = false,
   }) {
     return SafeArea(
       child: Padding(
         padding: AppPadding.screenHorizontal,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: textTheme.headlineLarge),
-                  Text(
-                    subtitle,
-                    style: textTheme.labelLarge!.copyWith(fontSize: 16.sp),
+            // 👇 Back button (above text)
+            if (showBackButton && context != null)
+              Padding(
+                padding: EdgeInsets.only(bottom: 8.h),
+                child: GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: const Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.white, // or your theme color
+                    size: 28,
                   ),
-                ],
+                ),
               ),
+
+            // 👇 Title + Subtitle + Notification
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title, style: textTheme.headlineLarge),
+                      Text(
+                        subtitle,
+                        style: textTheme.labelLarge!.copyWith(fontSize: 16.sp),
+                      ),
+                    ],
+                  ),
+                ),
+                isNotification
+                    ? notificationWidget(context!)
+                    : const SizedBox.shrink(),
+              ],
             ),
-            isNotification ? notificationWidget(context!) : SizedBox.shrink(),
           ],
         ),
       ),
     );
   }
+
+
 
   static Container notificationWidget(BuildContext context) {
     return Container(
@@ -69,6 +93,7 @@ class CommonWidget {
     Color? foregroundColor,
     TextStyle? textStyle,
     EdgeInsets? padding,
+    Widget? child,
   }){
 
 
