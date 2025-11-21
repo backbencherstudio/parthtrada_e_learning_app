@@ -1,7 +1,7 @@
 import 'package:e_learning_app/core/constant/asset_path.dart';
 
 class AppIcons {
-  static const notificationIcon = 'assets/icons/notification_icon.svg';
+  static const notificationIcon = 'assets/icons/notification.svg';
   static const sendIcon = 'assets/icons/send_icon.svg';
 
   static const String calender = "assets/bottomNavbar_icons/calendar.svg";

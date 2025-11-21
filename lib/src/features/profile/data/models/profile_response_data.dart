@@ -1,5 +1,3 @@
-// profile_response_model.dart
-
 class ProfileResponseData {
   bool? success;
   String? message;
@@ -92,7 +90,16 @@ class Meta {
   String? organization;
   String? location;
   String? description;
+  String? experience;
+  int? hourlyRate;
+  List<String>? skills;
+  List<String>? availableDays;
+  List<String>? availableTime;
+  String? status;
+  String? stripeAccountId;
+  bool? isOnboardCompleted;
   String? userId;
+  String? university; // Added to align with UserProfile
 
   Meta({
     this.id,
@@ -100,7 +107,16 @@ class Meta {
     this.organization,
     this.location,
     this.description,
+    this.experience,
+    this.hourlyRate,
+    this.skills,
+    this.availableDays,
+    this.availableTime,
+    this.status,
+    this.stripeAccountId,
+    this.isOnboardCompleted,
     this.userId,
+    this.university,
   });
 
   factory Meta.fromJson(Map<String, dynamic> json) {
@@ -110,7 +126,16 @@ class Meta {
       organization: json['organization'],
       location: json['location'],
       description: json['description'],
+      experience: json['experience'],
+      hourlyRate: json['hourlyRate'],
+      skills: json['skills'] != null ? List<String>.from(json['skills']) : null,
+      availableDays: json['availableDays'] != null ? List<String>.from(json['availableDays']) : null,
+      availableTime: json['availableTime'] != null ? List<String>.from(json['availableTime']) : null,
+      status: json['status'],
+      stripeAccountId: json['stripeAccountId'],
+      isOnboardCompleted: json['isOnboardCompleted'],
       userId: json['userId'],
+      university: json['university'],
     );
   }
 
@@ -121,7 +146,16 @@ class Meta {
       'organization': organization,
       'location': location,
       'description': description,
+      'experience': experience,
+      'hourlyRate': hourlyRate,
+      'skills': skills,
+      'availableDays': availableDays,
+      'availableTime': availableTime,
+      'status': status,
+      'stripeAccountId': stripeAccountId,
+      'isOnboardCompleted': isOnboardCompleted,
       'userId': userId,
+      'university': university,
     };
   }
 }

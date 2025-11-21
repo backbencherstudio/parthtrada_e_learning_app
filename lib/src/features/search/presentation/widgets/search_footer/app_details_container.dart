@@ -1,4 +1,6 @@
+import 'package:e_learning_app/src/features/search/provider/home_stat_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -31,62 +33,81 @@ class AppDetailsContainer extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return           /// App Details
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-        width: double.infinity,
-        decoration: Utils.commonBoxDecoration(),
-        child: FittedBox(
-          child: Row(
-            spacing: 18.w,
-            children: [
-              appSuccessColumnMaker(
-                context: context,
-                iconPath: AppIcons.trophyOutline,
-                title: "2K+",
-                subTitle: "Mentors",
-              ),
+    return Consumer(
+        builder: (_, ref, __) {
+          final statData = ref.watch(homeStatProvider);
+          return statData.when(
+            data: (data) {
+              if (data.success == false) {
+                return const Center(child: Text("No data available"));
+              }
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+                width: double.infinity,
+                decoration: Utils.commonBoxDecoration(),
+                child: FittedBox(
+                  child: Row(
+                    spacing: 18.w,
+                    children: [
+                      appSuccessColumnMaker(
+                        context: context,
+                        iconPath: AppIcons.trophyOutline,
+                        title: data.data.mentors.toString(),
+                        subTitle: "Mentors",
+                      ),
 
-              SizedBox(
-                height: 43.h,
-                width: 2.w,
-                child: VerticalDivider(color: AppColors.dividerColor),
-              ),
+                      SizedBox(
+                        height: 43.h,
+                        width: 2.w,
+                        child: VerticalDivider(color: AppColors.dividerColor),
+                      ),
 
-              appSuccessColumnMaker(
-                context: context,
-                iconPath: AppIcons.targetBoardOutline,
-                title: "100K+",
-                subTitle: "Sessions",
-              ),
+                      appSuccessColumnMaker(
+                        context: context,
+                        iconPath: AppIcons.targetBoardOutline,
+                        title: data.data.sessions.toString(),
+                        subTitle: "Sessions",
+                      ),
 
-              SizedBox(
-                height: 43.h,
-                width: 2.w,
-                child: VerticalDivider(color: AppColors.dividerColor),
-              ),
-              appSuccessColumnMaker(
-                context: context,
-                iconPath: AppIcons.usersOutline,
-                title: "50K+",
-                subTitle: "Users",
-              ),
+                      SizedBox(
+                        height: 43.h,
+                        width: 2.w,
+                        child: VerticalDivider(color: AppColors.dividerColor),
+                      ),
+                      appSuccessColumnMaker(
+                        context: context,
+                        iconPath: AppIcons.usersOutline,
+                        title: data.data.users.toString(),
+                        subTitle: "Users",
+                      ),
 
-              SizedBox(
-                height: 43.h,
-                width: 2.w,
-                child: VerticalDivider(color: AppColors.dividerColor),
-              ),
+                      SizedBox(
+                        height: 43.h,
+                        width: 2.w,
+                        child: VerticalDivider(color: AppColors.dividerColor),
+                      ),
 
-              appSuccessColumnMaker(
-                context: context,
-                iconPath: AppIcons.starOutline,
-                title: "4.9",
-                subTitle: "Rating",
-              ),
-            ],
-          ),
-        ),
+                      appSuccessColumnMaker(
+                        context: context,
+                        iconPath: AppIcons.starOutline,
+                        title: data.data.rating.toString(),
+                        subTitle: "Rating",
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+            loading: () {
+              debugPrint("Loading...");
+              return Center(child: CircularProgressIndicator());
+            },
+            error: (error, stackTrace) {
+              debugPrint("Error: $error");
+              return Center(child: Text('Unable to fetch stats'));
+            },
+          );
+        }
       );
   }
 }

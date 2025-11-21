@@ -1,16 +1,21 @@
 import 'package:e_learning_app/core/constant/icons.dart';
+import 'package:e_learning_app/src/features/profile/data/models/sent_request_response_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 
+import '../../../../../../../core/services/api_services/api_end_points.dart';
 import '../../../../../../../core/theme/theme_part/app_colors.dart';
 
 class SentRequestCard extends StatelessWidget {
   const SentRequestCard({
     super.key,
     required this.textTheme,
+    required this.sendRequest,
   });
 
+  final SendRequest sendRequest;
   final TextTheme textTheme;
 
   @override
@@ -31,12 +36,21 @@ class SentRequestCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipOval(
-                child: SizedBox(
-                  height: 56.w,
+                child:
+                sendRequest.image != null && sendRequest.image!.isNotEmpty
+                    ? Image.network(
+                  '${ApiEndPoints.baseUrl}/uploads/${sendRequest.image!}',
                   width: 56.w,
-                  child: Image.network(
-                    'https://randomuser.me/api/portraits/men/32.jpg',
-                    fit: BoxFit.cover,
+                  height: 56.w,
+                  fit: BoxFit.cover,
+                )
+                    : CircleAvatar(
+                  radius: 28.w,
+                  backgroundColor: Colors.white,
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.grey,
+                    size: 28.w,
                   ),
                 ),
               ),
@@ -49,14 +63,12 @@ class SentRequestCard extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           Text(
-            'David Kim',
-            style: textTheme.titleLarge!.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            sendRequest.name,
+            style: textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 5.h),
           Text(
-            'Senior Data Scientist at Google',
+            sendRequest.description,
             style: textTheme.bodyMedium!.copyWith(
               color: AppColors.secondaryTextColor,
             ),
@@ -68,7 +80,7 @@ class SentRequestCard extends StatelessWidget {
             children: [
               SvgPicture.asset(AppIcons.calender),
               Text(
-                'June 1 Monday 02:00 PM',
+                DateFormat('dd/MM/yyyy, hh:mm a').format(DateTime.parse(sendRequest.date.toString())),
                 style: textTheme.bodyMedium!.copyWith(
                   color: AppColors.secondaryTextColor,
                 ),

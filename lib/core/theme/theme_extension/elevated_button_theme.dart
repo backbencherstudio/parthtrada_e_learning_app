@@ -16,7 +16,6 @@ class AppEvaluatedButtonThemes {
         textStyle: TextStyle(fontSize: 18.sp),
         color: AppColors.onPrimary,
       ),
-
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
     ),
   );

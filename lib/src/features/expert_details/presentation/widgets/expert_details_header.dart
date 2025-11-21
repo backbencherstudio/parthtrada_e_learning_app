@@ -6,14 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../repository/linkedin_login_webview.dart';
+import '../../../../../core/constant/images.dart';
+import '../../../../../core/routes/route_name.dart';
+import '../../../../../core/services/local_storage_services/user_id_storage.dart';
 
 class ExpertDetailsHeader extends StatelessWidget {
   final String name;
   final String rating;
   final String profession;
+  final String organization;
   final String location;
   final String? imageUrl;
+  final String? recipientId;
 
   const ExpertDetailsHeader({
     super.key,
@@ -21,7 +25,9 @@ class ExpertDetailsHeader extends StatelessWidget {
     required this.rating,
     required this.profession,
     required this.location,
+    required this.recipientId,
     this.imageUrl,
+    required this.organization,
   });
 
   @override
@@ -41,7 +47,7 @@ class ExpertDetailsHeader extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   onPressed: () => context.pop(),
                   icon: Icon(
-                    Icons.arrow_back,
+                    Icons.arrow_back_ios,
                     color: Colors.white,
                     size: 24.sp,
                   ),
@@ -54,18 +60,19 @@ class ExpertDetailsHeader extends StatelessWidget {
                 child:
                     imageUrl != null && imageUrl!.isNotEmpty
                         ? Image.network(
-                          '${ApiEndPoints.baseUrl}/uploads/${imageUrl}',
-                          width: 56.w,
-                          height: 56.w,
+                          '${ApiEndPoints.baseUrl}/uploads/$imageUrl',
+                          width: 100.w,
+                          height: 100.w,
                           fit: BoxFit.cover,
                         )
                         : CircleAvatar(
-                          radius: 28.w,
+                          radius: 50.w,
                           backgroundColor: Colors.white,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.grey,
-                            size: 28.w,
+                          child: Image.asset(
+                            AppImages.maiya,
+                            width: 32.w,
+                            height: 32.w,
+                            fit: BoxFit.cover,
                           ),
                         ),
               ),
@@ -81,8 +88,8 @@ class ExpertDetailsHeader extends StatelessWidget {
             ),
             SizedBox(height: 4.h),
 
-            /// Profession
-            Text(profession, style: textTheme.labelMedium),
+            /// Profession, organization
+            Text('$profession, $organization', style: textTheme.labelLarge),
             SizedBox(height: 10.h),
 
             /// Location
@@ -102,7 +109,19 @@ class ExpertDetailsHeader extends StatelessWidget {
             /// Message button
             CommonWidget.primaryButton(
               context: context,
-              onPressed: () {},
+              onPressed: () async {
+                final userId = await UserIdStorage().getUserId();
+
+                context.push(
+                  RouteName.inboxScreen,
+                  extra: {
+                    'image': imageUrl ?? '',
+                    'name': name ?? '',
+                    'userId': userId ?? '',
+                    'recipientId': recipientId ?? '',
+                  },
+                );
+              },
               text: "Message",
             ),
           ],

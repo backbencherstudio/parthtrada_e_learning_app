@@ -11,6 +11,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/utils.dart';
+
 class AuthenticationScreen extends ConsumerWidget {
   const AuthenticationScreen({super.key});
 
@@ -63,6 +65,7 @@ class AuthenticationScreen extends ConsumerWidget {
                       if (token != null) {
                         ref.read(authTokenProvider.notifier).state = token;
                         await LoginPreferences().setAuthToken(token);
+                        await Utils.isTokenValid(token);
                         context.go(RouteName.parentScreen);
                       }
                     } else {

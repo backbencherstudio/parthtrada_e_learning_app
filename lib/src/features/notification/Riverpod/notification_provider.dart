@@ -1,71 +1,115 @@
-import 'package:e_learning_app/core/constant/images.dart';
-import 'package:e_learning_app/src/features/notification/widgets/model/notification_model.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:e_learning_app/src/features/notification/data/model/notification_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:e_learning_app/src/features/notification/data/repository/notification_repository.dart';
 
-final notificationProvider = StateNotifierProvider<NotificationNotifier, List<NotificationItem>>((ref) {
-  return NotificationNotifier();
-});
+class NotificationState {
+  final List<NotificationItem> notifications;
+  final Pagination? pagination;
+  final bool isLoading;
+  final bool isLoadingMore;
+  final String? error;
 
-class NotificationNotifier extends StateNotifier<List<NotificationItem>> {
-  NotificationNotifier() : super(_initialNotifications);
+  NotificationState({
+    this.notifications = const [],
+    this.pagination,
+    this.isLoading = false,
+    this.isLoadingMore = false,
+    this.error,
+  });
 
-  static final List<NotificationItem> _initialNotifications = [
-    NotificationItem(
-      title: 'Sarah Chen',
-      description: 'Accepted your consultation request for June 13th at 3 PM.',
-      img: AppImages.women, // replace with actual asset path
-    ),
-    NotificationItem(
-      title: 'Dr. Mark',
-      description: 'Sent you a message regarding your last session.',
-      img: AppImages.men,
-    ),
-    NotificationItem(
-      title: 'App Reminder',
-      description: 'Your free trial ends in 2 days. Don’t forget to upgrade.',
-      img: AppImages.women,
-    ),
-     NotificationItem(
-      title: 'Sarah Chen',
-      description: 'Accepted your consultation request for June 13th at 3 PM.',
-      img: AppImages.women, 
-    ),
-    NotificationItem(
-      title: 'Dr. Mark',
-      description: 'Sent you a message regarding your last session.',
-      img: AppImages.men,
-    ),
-    NotificationItem(
-      title: 'App Reminder',
-      description: 'Your free trial ends in 2 days. Don’t forget to upgrade.',
-      img: AppImages.women,
-    ),
-     NotificationItem(
-      title: 'Sarah Chen',
-      description: 'Accepted your consultation request for June 13th at 3 PM.',
-      img: AppImages.women, 
-    ),
-    NotificationItem(
-      title: 'Dr. Mark',
-      description: 'Sent you a message regarding your last session.',
-      img: AppImages.men,
-    ),
-    NotificationItem(
-      title: 'App Reminder',
-      description: 'Your free trial ends in 2 days. Don’t forget to upgrade.',
-      img: AppImages.women,
-    ),
-  ];
+  NotificationState copyWith({
+    List<NotificationItem>? notifications,
+    Pagination? pagination,
+    bool? isLoading,
+    bool? isLoadingMore,
+    String? error,
+  }) {
+    return NotificationState(
+      notifications: notifications ?? this.notifications,
+      pagination: pagination ?? this.pagination,
+      isLoading: isLoading ?? this.isLoading,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      error: error,
+    );
+  }
+}
 
-  void addNotification(NotificationItem item) {
-    state = [...state, item];
+final notificationsProvider =
+StateNotifierProvider<NotificationRiverpod, NotificationState>(
+      (ref) => NotificationRiverpod(),
+);
+
+class NotificationRiverpod extends StateNotifier<NotificationState> {
+  NotificationRiverpod() : super(NotificationState()) {
+    fetchNotifications();
   }
 
-  void removeNotification(int index) {
-    state = List.from(state)..removeAt(index);
+  int _currentPage = 1;
+  final int _limit = 10;
+
+  Future<void> fetchNotifications() async {
+    state = state.copyWith(isLoading: true, error: null);
+
+    try {
+      final result = await NotificationList().getNotifications(
+        page: _currentPage,
+        limit: _limit,
+      );
+
+      if (result != null) {
+        state = state.copyWith(
+          notifications: result.data,
+          pagination: result.pagination,
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          notifications: [],
+          pagination: null,
+          isLoading: false,
+        );
+      }
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.toString(),
+      );
+    }
   }
 
-  void clearAll() {
-    state = [];
+  Future<void> loadMoreNotifications() async {
+    if (state.pagination?.hasNextPage != true || state.isLoadingMore) return;
+
+    state = state.copyWith(isLoadingMore: true, error: null);
+    _currentPage++;
+
+    try {
+      final result = await NotificationList().getNotifications(
+        page: _currentPage,
+        limit: _limit,
+      );
+
+      if (result != null) {
+        state = state.copyWith(
+          notifications: [...state.notifications, ...result.data],
+          pagination: result.pagination,
+          isLoadingMore: false,
+        );
+      } else {
+        state = state.copyWith(isLoadingMore: false);
+      }
+    } catch (e) {
+      _currentPage--;
+      state = state.copyWith(
+        isLoadingMore: false,
+        error: e.toString(),
+      );
+    }
+  }
+
+  Future<void> refreshNotifications() async {
+    _currentPage = 1;
+    state = state.copyWith(notifications: [], pagination: null, error: null);
+    await fetchNotifications();
   }
 }

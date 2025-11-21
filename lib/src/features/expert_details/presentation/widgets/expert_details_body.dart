@@ -1,5 +1,4 @@
 import 'package:e_learning_app/core/constant/padding.dart';
-import 'package:e_learning_app/core/theme/theme_part/app_colors.dart';
 import 'package:e_learning_app/src/features/expert_details/model/expert_detail_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,6 +14,9 @@ class ExpertDetailsBody extends StatelessWidget {
   final List<String> availableDays;
   final List<String> availableTime;
   final Stats? stats;
+  final String experience;
+  final String expertId;
+  final Availability availability;
 
   const ExpertDetailsBody({
     super.key,
@@ -22,25 +24,21 @@ class ExpertDetailsBody extends StatelessWidget {
     required this.skills,
     required this.availableDays,
     required this.availableTime,
-    this.stats,
+    this.stats, required this.experience, required this.expertId, required this.availability,
   });
 
   @override
   Widget build(BuildContext context) {
-    final availability =
-        availableDays.isNotEmpty
-            ? "${availableDays.join(', ')} : ${availableTime.join(', ')}"
-            : "Not available";
 
     return Padding(
       padding: AppPadding.screenHorizontal,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ExpertDetailsSummary(stats: stats),
+          ExpertDetailsSummary(stats: stats, experience: experience,),
           SizedBox(height: 30.h),
 
-          ExpertSkill(skills: skills),
+         ExpertSkill(skills: skills),
           SizedBox(height: 30.h),
 
           ExpertBio(description: description),
@@ -52,18 +50,24 @@ class ExpertDetailsBody extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           SizedBox(height: 10.h),
-          Text(
-            availability,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.secondaryTextColor,
-            ),
+
+          Column(
+            children: List.generate(availability.days?.length ?? 0, (index) {
+              return Row(
+                children: [
+                  Text('${availability.days?[index]} : '),
+                  Text(availability.time?[index] ?? ''),
+                ],
+              );
+            }),
           ),
+
           SizedBox(height: 30.h),
 
           /// Reviews Section
           ExpertRatingsSummary(stats: stats),
           SizedBox(height: 30.h),
-          const ExpertReviewList(),
+          ExpertReviewList(expertId: expertId,),
           SizedBox(height: 30.h),
         ],
       ),

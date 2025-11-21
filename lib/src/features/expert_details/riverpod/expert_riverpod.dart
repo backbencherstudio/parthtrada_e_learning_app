@@ -1,97 +1,65 @@
-
-import 'package:e_learning_app/core/constant/images.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:e_learning_app/repository/api/expert/expart_detail.dart';
 import 'package:e_learning_app/src/features/expert_details/model/expert_review_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import '../../onboarding/riverpod/login_state.dart';
 import 'expert_state.dart';
 
+// final expertIdProvider = Provider<String>((ref) {
+//   return 'some_expert_id';
+// });
 
-final expertRiverpod = StateNotifierProvider<ExpertRiverpod,ExpertState>((ref)=>ExpertRiverpod());
+final expertRiverpod = StateNotifierProvider.family<ExpertRiverpod, ExpertState, String>((ref, expertId) {
+  return ExpertRiverpod(ref: ref, expertId: expertId);
+});
 
-class ExpertRiverpod extends StateNotifier<ExpertState>{
-  ExpertRiverpod():super(ExpertState()){
+class ExpertRiverpod extends StateNotifier<ExpertState> {
+  final String expertId;
+  final Ref ref;
+
+  ExpertRiverpod({required this.ref, required this.expertId}) : super(ExpertState()) {
     fetchReviews();
   }
 
-  final List<Map<String,dynamic>> expertReviews = const [
-    {
-      "userName": "Olivia Rhye",
-      "profilePicture":AppImages.women,
-      "ratings": 4,
-      "e-mail": "olivia@gmail.com",
-      "reviews": "Incredible group of people and talented professionals."
-    },
-    {
-      "userName": "Olivia Rhye",
-      "profilePicture":AppImages.women,
-      "ratings": 4,
-      "e-mail": "olivia@gmail.com",
-      "reviews": "Incredible group of people and talented professionals."
-    },
-    {
-      "userName": "Olivia Rhye",
-      "profilePicture":AppImages.women,
-      "ratings": 4,
-      "e-mail": "olivia@gmail.com",
-      "reviews": "Incredible group of people and talented professionals."
-    },
-    {
-      "userName": "Olivia Rhye",
-      "profilePicture":AppImages.women,
-      "ratings": 4,
-      "e-mail": "olivia@gmail.com",
-      "reviews": "Incredible group of people and talented professionals."
-    },
-    {
-      "userName": "Olivia Rhye",
-      "profilePicture":AppImages.women,
-      "ratings": 4,
-      "e-mail": "olivia@gmail.com",
-      "reviews": "Incredible group of people and talented professionals."
-    },
-    {
-      "userName": "Olivia Rhye",
-      "profilePicture":AppImages.women,
-      "ratings": 4,
-      "e-mail": "olivia@gmail.com",
-      "reviews": "Incredible group of people and talented professionals."
-    },
-    {
-      "userName": "Olivia Rhye",
-      "profilePicture":AppImages.women,
-      "ratings": 4,
-      "e-mail": "olivia@gmail.com",
-      "reviews": "Incredible group of people and talented professionals."
-    },
-
-  ];
-
-  /// fetch reviews
+  /// Fetch reviews from the API
   Future<void> fetchReviews() async {
-    final reviewList = expertReviews.map((review)=>ExpertReviewModel.fromJson(review)).toList();
-    state = state.copyWith(
-      expertReviewList: reviewList
-    );
+    final token = ref.read(authTokenProvider);
+
+    if (token == null) {
+      throw Exception('Unauthorized/No auth token found');
+    }
+
+    final repository = FetchExpertDetail();
+
+    try {
+      final reviews = await repository.getExpertReviews(token, expertId);
+      debugPrint('Successfully fetched expert reviews');
+
+      state = state.copyWith(
+        expertReviewList: reviews.data.items,
+      );
+    } catch (e) {
+      debugPrint('Error fetching expert reviews: $e');
+      throw Exception('Failed to fetch reviews: $e');
+    }
   }
 
-  /// Give reviews for expert
-  Future<void> addReviews({required ExpertReviewModel userReview}) async{
-    state.expertReviewList!.add(userReview);
-    //final review = state.expertReviewList;
-    state = state.copyWith(
-      expertReviewList: state.expertReviewList
-    );
+  /// Add a review for the expert
+  Future<void> addReview({required ReviewItem userReview}) async {
+    final updatedList = List<ReviewItem>.from(state.expertReviewList);
+    updatedList.add(userReview);
+
+    state = state.copyWith(expertReviewList: updatedList);
   }
 
-  /// give rating for expert
-  void onRating({required int ratings}){
-    debugPrint("Ratings $ratings");
+  /// Update the expert's rating
+  void onRating({required int ratings}) {
+    debugPrint("Rating: $ratings");
     state = state.copyWith(starRating: ratings);
   }
 
-  /// show full review
-  void showFullReview(){
+  /// Toggle full review visibility
+  void showFullReview() {
     state = state.copyWith(isFullReviewShow: !state.isFullReviewShow);
   }
 }

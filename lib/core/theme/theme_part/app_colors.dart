@@ -12,7 +12,7 @@ class AppColors {
     surface: Color(0xff252525),
     onSurface: Color(0xffA5A5AB),
   );
-  static const Color screenBackgroundColor = Color(0xff0F0F0F);
+  static const Color screenBackgroundColor = Color(0xff000000);
   static const Color primary = Color(0xff019877);
   static const Color onPrimary = Color(0xffFFFFFF);
   static const Color secondary = Color(0xff191919);
@@ -32,5 +32,4 @@ class AppColors {
   static const Color secondaryStrokeColor = Color(0xff2B2C31);
   static const Color refundedColor = Color(0xffFF7F48);
   static const Color dividerColor = Color(0xff5F5F5F);
-
 }

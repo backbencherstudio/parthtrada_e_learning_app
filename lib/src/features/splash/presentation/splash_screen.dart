@@ -6,6 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
 
+import '../../../../core/utils/utils.dart';
+import '../../../../repository/login_preferences.dart';
+
 class SplashScreen extends StatefulWidget{
   const SplashScreen({super.key});
 
@@ -18,13 +21,21 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
+    super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final loginPrefs = LoginPreferences();
+      final token = await loginPrefs.loadAuthToken();
       await Future.delayed(const Duration(seconds: 1));
-      if (mounted) {
+
+      if (!mounted) return;
+      if (token != null && token.isNotEmpty) {
+        await Utils.isTokenValid(token);
+        context.pushReplacement(RouteName.parentScreen);
+      } else {
         context.go(RouteName.onboarding);
       }
     });
-    super.initState();
   }
 
   @override
