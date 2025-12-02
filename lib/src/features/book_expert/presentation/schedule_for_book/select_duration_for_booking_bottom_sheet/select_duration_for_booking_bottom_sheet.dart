@@ -1,5 +1,6 @@
 import 'package:e_learning_app/core/constant/padding.dart';
 import 'package:e_learning_app/core/utils/common_widget.dart';
+import 'package:e_learning_app/core/utils/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -128,6 +129,7 @@ Future<void> selectSessionDurationForBook({
                               if (res.success == true && bottomSheetContext.mounted) {
                                 ref.read(paymentIntentIdProvider.notifier).state = res.data.paymentIntentId;
                                 bottomSheetContext.pop();
+
                                 await Future.delayed(const Duration(milliseconds: 200));
                                 if (bottomSheetContext.mounted) {
                                   await confirmAndPayBottomSheet(
@@ -136,15 +138,11 @@ Future<void> selectSessionDurationForBook({
                                   );
                                 }
                               } else if (bottomSheetContext.mounted) {
-                                ScaffoldMessenger.of(bottomSheetContext).showSnackBar(
-                                  SnackBar(content: Text("Booking failed: ${res.message ?? 'Please try again.'}")),
-                                );
+                                showCustomSnackBar(context, "Booking failed: ${res.message ?? 'Please try again.'}");
                               }
                             } catch (e) {
                               if (bottomSheetContext.mounted) {
-                                ScaffoldMessenger.of(bottomSheetContext).showSnackBar(
-                                  SnackBar(content: Text("Error: $e")),
-                                );
+                                showCustomSnackBar(context, "Error: $e");
                               }
                             }
                           },
