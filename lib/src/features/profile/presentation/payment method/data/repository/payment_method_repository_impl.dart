@@ -34,8 +34,8 @@ class PaymentMethodRepositoryImpl implements PaymentMethodRepository {
         },
         body: {
           "card[number]": cardNumber,
-          "card[exp_month]": expMonth, // Use expMonth directly (e.g., "12")
-          "card[exp_year]": expYear,   // Use expYear as-is (e.g., "25" or "2025")
+          "card[exp_month]": expMonth,
+          "card[exp_year]": expYear,
           "card[cvc]": cvc,
         },
       );
