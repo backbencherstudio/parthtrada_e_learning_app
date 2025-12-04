@@ -1,7 +1,10 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../repository/api/expert/get_card_repository.dart';
 import '../../../../book_expert/model/get_card_data_model.dart';
+import '../../../data/models/delete_card_response.dart';
 import '../data/models/account_status_response.dart';
 import '../data/models/balance_response.dart';
 import '../data/models/payout_response.dart';
@@ -37,6 +40,10 @@ class PaymentMethodState {
   final PayoutResponse? payoutResponse;
   final String? errorMessagePayoutBalance;
 
+  final bool isLoadingDeleteCard;
+  final DeleteCardResponse? deleteCardResponse;
+  final String? errorMessageDeleteCard;
+
   const PaymentMethodState({
     this.isLoading = false,
     this.message,
@@ -59,6 +66,9 @@ class PaymentMethodState {
     this.isLoadingPayoutBalance = false,
     this.payoutResponse,
     this.errorMessagePayoutBalance,
+    this.deleteCardResponse,
+    this.errorMessageDeleteCard,
+    this.isLoadingDeleteCard = false
   });
 
   PaymentMethodState copyWith({
@@ -80,9 +90,15 @@ class PaymentMethodState {
     bool? isLoadingCheckBalance,
     BalanceResponse? balance,
     String? errorMessageCheckBalance,
+
     bool? isLoadingPayoutBalance,
     PayoutResponse? payoutResponse,
     String? errorMessagePayoutBalance,
+
+    bool? isLoadingDeleteCard,
+    DeleteCardResponse? deleteCardResponse,
+    String? errorMessageDeleteCard,
+
   }) {
     return PaymentMethodState(
       isLoading: isLoading ?? this.isLoading,
@@ -119,6 +135,15 @@ class PaymentMethodState {
       payoutResponse: payoutResponse ?? this.payoutResponse,
       errorMessagePayoutBalance:
       errorMessagePayoutBalance ?? this.errorMessagePayoutBalance,
+
+      isLoadingDeleteCard:
+      isLoadingDeleteCard ?? this.isLoadingDeleteCard,
+      deleteCardResponse:
+      deleteCardResponse ?? this.deleteCardResponse,
+      errorMessageDeleteCard:
+      errorMessageDeleteCard ?? this.errorMessageDeleteCard,
+
+
     );
   }
 }
@@ -304,7 +329,7 @@ class PaymentMethodNotifier extends StateNotifier<PaymentMethodState> {
       state = state.copyWith(
         isLoadingCheckBalance: false,
         balance: null,
-     //   errorMessageCheckBalance: "Error fetching balance: $e",
+        //   errorMessageCheckBalance: "Error fetching balance: $e",
       );
     }
   }
@@ -333,6 +358,35 @@ class PaymentMethodNotifier extends StateNotifier<PaymentMethodState> {
       );
     }
   }
+
+  Future<void> deleteCard(String id) async {
+    try {
+      state = state.copyWith(
+        isLoadingDeleteCard: true,
+        deleteCardResponse: null,
+        errorMessageDeleteCard: null,
+      );
+
+      final deleteResponse = await _repository.deleteCard(id);
+
+      state = state.copyWith(
+        isLoadingDeleteCard: false,
+        deleteCardResponse: deleteResponse,
+        errorMessageDeleteCard: deleteResponse.success == true ? null : "Failed to delete card",
+      );
+
+      if (deleteResponse.success == true) {
+        await getCards(); // Refresh the cards list after successful deletion
+      }
+    } catch (e, stackTrace) {
+      debugPrint("Error in deleteCard: $e\nStackTrace: $stackTrace");
+      state = state.copyWith(
+        isLoadingDeleteCard: false,
+        deleteCardResponse: null,
+        errorMessageDeleteCard: "Error deleting card: $e",
+      );
+    }
+  }
 }
 
 final paymentMethodNotifierProvider =
@@ -344,12 +398,16 @@ StateNotifierProvider<PaymentMethodNotifier, PaymentMethodState>(
 
 
 
-
-
+// import 'dart:ffi';
+//
 // import 'package:flutter/material.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import '../../../../../../repository/api/expert/get_card_repository.dart';
 // import '../../../../book_expert/model/get_card_data_model.dart';
+// import '../../../data/models/delete_card_response.dart';
+// import '../data/models/account_status_response.dart';
+// import '../data/models/balance_response.dart';
+// import '../data/models/payout_response.dart';
 // import '../data/repository/payment_method_repository_impl.dart';
 //
 // class PaymentMethodState {
@@ -362,6 +420,30 @@ StateNotifierProvider<PaymentMethodNotifier, PaymentMethodState>(
 //   final bool isLoadingGetPaymentMethod;
 //   final String? errorMessageGetPaymentMethod;
 //
+//   final bool isLoadingCreateAccount;
+//   final bool? isSuccessCreateAccount;
+//   final String? errorMessageCreateAccount;
+//
+//   final bool isLoadingOnboardingUrl;
+//   final String? onboardingUrl;
+//   final String? errorMessageOnboardingUrl;
+//
+//   final bool isLoadingAccountStatus;
+//   final AccountStatusResponse? accountStatus;
+//   final String? errorMessageAccountStatus;
+//
+//   final bool isLoadingCheckBalance;
+//   final BalanceResponse? balance;
+//   final String? errorMessageCheckBalance;
+//
+//   final bool isLoadingPayoutBalance;
+//   final PayoutResponse? payoutResponse;
+//   final String? errorMessagePayoutBalance;
+//
+//   final bool isLoadingDeleteCard;
+//   final DeleteCardResponse? deleteCardResponse;
+//   final String? errorMessageDeleteCard;
+//
 //   const PaymentMethodState({
 //     this.isLoading = false,
 //     this.message,
@@ -369,6 +451,24 @@ StateNotifierProvider<PaymentMethodNotifier, PaymentMethodState>(
 //     this.errorMessageGetPaymentMethod,
 //     this.cardsResponse,
 //     this.isSuccessGetPaymentMethod = false,
+//     this.isLoadingCreateAccount = false,
+//     this.isSuccessCreateAccount,
+//     this.errorMessageCreateAccount,
+//     this.isLoadingOnboardingUrl = false,
+//     this.onboardingUrl,
+//     this.errorMessageOnboardingUrl,
+//     this.isLoadingAccountStatus = false,
+//     this.accountStatus,
+//     this.errorMessageAccountStatus,
+//     this.isLoadingCheckBalance = false,
+//     this.balance,
+//     this.errorMessageCheckBalance,
+//     this.isLoadingPayoutBalance = false,
+//     this.payoutResponse,
+//     this.errorMessagePayoutBalance,
+//     this.deleteCardResponse,
+//     this.errorMessageDeleteCard,
+//     this.isLoadingDeleteCard = false
 //   });
 //
 //   PaymentMethodState copyWith({
@@ -378,16 +478,72 @@ StateNotifierProvider<PaymentMethodNotifier, PaymentMethodState>(
 //     String? errorMessageGetPaymentMethod,
 //     CardsResponse? cardsResponse,
 //     bool? isSuccessGetPaymentMethod,
+//     bool? isLoadingCreateAccount,
+//     bool? isSuccessCreateAccount,
+//     String? errorMessageCreateAccount,
+//     bool? isLoadingOnboardingUrl,
+//     String? onboardingUrl,
+//     String? errorMessageOnboardingUrl,
+//     bool? isLoadingAccountStatus,
+//     AccountStatusResponse? accountStatus,
+//     String? errorMessageAccountStatus,
+//     bool? isLoadingCheckBalance,
+//     BalanceResponse? balance,
+//     String? errorMessageCheckBalance,
+//
+//     bool? isLoadingPayoutBalance,
+//     PayoutResponse? payoutResponse,
+//     String? errorMessagePayoutBalance,
+//
+//     bool? isLoadingDeleteCard,
+//     DeleteCardResponse? deleteCardResponse,
+//     String? errorMessageDeleteCard,
+//
 //   }) {
 //     return PaymentMethodState(
 //       isLoading: isLoading ?? this.isLoading,
 //       message: message ?? this.message,
 //       isLoadingGetPaymentMethod:
-//           isLoadingGetPaymentMethod ?? this.isLoadingGetPaymentMethod,
+//       isLoadingGetPaymentMethod ?? this.isLoadingGetPaymentMethod,
 //       errorMessageGetPaymentMethod:
-//           errorMessageGetPaymentMethod ?? this.errorMessageGetPaymentMethod,
+//       errorMessageGetPaymentMethod ?? this.errorMessageGetPaymentMethod,
 //       cardsResponse: cardsResponse ?? this.cardsResponse,
-//       isSuccessGetPaymentMethod: isSuccessGetPaymentMethod ?? this.isSuccessGetPaymentMethod,
+//       isSuccessGetPaymentMethod:
+//       isSuccessGetPaymentMethod ?? this.isSuccessGetPaymentMethod,
+//       isLoadingCreateAccount:
+//       isLoadingCreateAccount ?? this.isLoadingCreateAccount,
+//       isSuccessCreateAccount:
+//       isSuccessCreateAccount ?? this.isSuccessCreateAccount,
+//       errorMessageCreateAccount:
+//       errorMessageCreateAccount ?? this.errorMessageCreateAccount,
+//       isLoadingOnboardingUrl:
+//       isLoadingOnboardingUrl ?? this.isLoadingOnboardingUrl,
+//       onboardingUrl: onboardingUrl ?? this.onboardingUrl,
+//       errorMessageOnboardingUrl:
+//       errorMessageOnboardingUrl ?? this.errorMessageOnboardingUrl,
+//       isLoadingAccountStatus:
+//       isLoadingAccountStatus ?? this.isLoadingAccountStatus,
+//       accountStatus: accountStatus ?? this.accountStatus,
+//       errorMessageAccountStatus:
+//       errorMessageAccountStatus ?? this.errorMessageAccountStatus,
+//       isLoadingCheckBalance: isLoadingCheckBalance ?? this.isLoadingCheckBalance,
+//       balance: balance ?? this.balance,
+//       errorMessageCheckBalance:
+//       errorMessageCheckBalance ?? this.errorMessageCheckBalance,
+//       isLoadingPayoutBalance:
+//       isLoadingPayoutBalance ?? this.isLoadingPayoutBalance,
+//       payoutResponse: payoutResponse ?? this.payoutResponse,
+//       errorMessagePayoutBalance:
+//       errorMessagePayoutBalance ?? this.errorMessagePayoutBalance,
+//
+//       isLoadingDeleteCard:
+//       isLoadingDeleteCard ?? this.isLoadingDeleteCard,
+//       deleteCardResponse:
+//       deleteCardResponse ?? this.deleteCardResponse,
+//       errorMessageDeleteCard:
+//       errorMessageDeleteCard ?? this.errorMessageDeleteCard,
+//
+//
 //     );
 //   }
 // }
@@ -396,7 +552,14 @@ StateNotifierProvider<PaymentMethodNotifier, PaymentMethodState>(
 //   final PaymentMethodRepositoryImpl _repository = PaymentMethodRepositoryImpl();
 //   final GetCardRepository _getCardRepository = GetCardRepository();
 //
-//   PaymentMethodNotifier() : super(const PaymentMethodState());
+//   PaymentMethodNotifier() : super(const PaymentMethodState()) {
+//     _initialize();
+//   }
+//
+//   Future<void> _initialize() async {
+//     await getAccountStatus();
+//     await checkBalance();
+//   }
 //
 //   Future<void> addNewCard({
 //     required String cardNumber,
@@ -432,13 +595,10 @@ StateNotifierProvider<PaymentMethodNotifier, PaymentMethodState>(
 //         message: success ? "Card added successfully" : "Failed to add card",
 //       );
 //     } catch (e) {
-//       debugPrint("Error: $e");
+//       debugPrint("Error in addNewCard: $e");
 //       state = state.copyWith(isLoading: false, message: "Error: $e");
 //     }
 //   }
-//
-//
-//
 //
 //   Future<void> getCards() async {
 //     try {
@@ -465,6 +625,7 @@ StateNotifierProvider<PaymentMethodNotifier, PaymentMethodState>(
 //         );
 //       }
 //     } catch (e) {
+//       debugPrint("Error in getCards: $e");
 //       state = state.copyWith(
 //         isLoadingGetPaymentMethod: false,
 //         isSuccessGetPaymentMethod: false,
@@ -473,11 +634,133 @@ StateNotifierProvider<PaymentMethodNotifier, PaymentMethodState>(
 //     }
 //   }
 //
+//   Future<void> createAccount() async {
+//     try {
+//       state = state.copyWith(
+//         isLoadingCreateAccount: true,
+//         isSuccessCreateAccount: null,
+//         errorMessageCreateAccount: null,
+//       );
 //
+//       final success = await _repository.createAccount();
 //
+//       state = state.copyWith(
+//         isLoadingCreateAccount: false,
+//         isSuccessCreateAccount: success,
+//         errorMessageCreateAccount: success ? null : "Failed to create account",
+//       );
+//     } catch (e, stackTrace) {
+//       debugPrint("Error in createAccount: $e\nStackTrace: $stackTrace");
+//       state = state.copyWith(
+//         isLoadingCreateAccount: false,
+//         isSuccessCreateAccount: false,
+//         errorMessageCreateAccount: "Error creating account: $e",
+//       );
+//     }
+//   }
+//
+//   Future<void> getOnboardingUrl() async {
+//     try {
+//       state = state.copyWith(
+//         isLoadingOnboardingUrl: true,
+//         onboardingUrl: null,
+//         errorMessageOnboardingUrl: null,
+//       );
+//
+//       final url = await _repository.getOnbordingUrl();
+//
+//       state = state.copyWith(
+//         isLoadingOnboardingUrl: false,
+//         onboardingUrl: url,
+//         errorMessageOnboardingUrl: null,
+//       );
+//     } catch (e, stackTrace) {
+//       debugPrint("Error in getOnboardingUrl: $e\nStackTrace: $stackTrace");
+//       state = state.copyWith(
+//         isLoadingOnboardingUrl: false,
+//         onboardingUrl: null,
+//         errorMessageOnboardingUrl: "Error fetching onboarding URL: $e",
+//       );
+//     }
+//   }
+//
+//   Future<void> getAccountStatus() async {
+//     try {
+//       state = state.copyWith(
+//         isLoadingAccountStatus: true,
+//         accountStatus: null,
+//         errorMessageAccountStatus: null,
+//       );
+//
+//       final accountStatus = await _repository.getAccountStatus();
+//
+//       state = state.copyWith(
+//         isLoadingAccountStatus: false,
+//         accountStatus: accountStatus,
+//         errorMessageAccountStatus: null,
+//       );
+//     } catch (e, stackTrace) {
+//       debugPrint("Error in getAccountStatus: $e\nStackTrace: $stackTrace");
+//       state = state.copyWith(
+//         isLoadingAccountStatus: false,
+//         accountStatus: null,
+//         errorMessageAccountStatus: "Error fetching account status: $e",
+//       );
+//     }
+//   }
+//
+//   Future<void> checkBalance() async {
+//     try {
+//       state = state.copyWith(
+//         isLoadingCheckBalance: true,
+//         balance: null,
+//         errorMessageCheckBalance: null,
+//       );
+//
+//       final balance = await _repository.checkBalance();
+//
+//       state = state.copyWith(
+//         isLoadingCheckBalance: false,
+//         balance: balance,
+//         errorMessageCheckBalance: null,
+//       );
+//     } catch (e, stackTrace) {
+//       debugPrint("Error in checkBalance: $e\nStackTrace: $stackTrace");
+//       state = state.copyWith(
+//         isLoadingCheckBalance: false,
+//         balance: null,
+//      //   errorMessageCheckBalance: "Error fetching balance: $e",
+//       );
+//     }
+//   }
+//
+//   Future<void> payoutBalance(double amount) async {
+//     try {
+//       state = state.copyWith(
+//         isLoadingPayoutBalance: true,
+//         payoutResponse: null,
+//         errorMessagePayoutBalance: null,
+//       );
+//
+//       final payoutResponse = await _repository.payoutBalance(amount);
+//
+//       state = state.copyWith(
+//         isLoadingPayoutBalance: false,
+//         payoutResponse: payoutResponse,
+//         errorMessagePayoutBalance: payoutResponse.success == true ? null : "Failed to initiate payout",
+//       );
+//     } catch (e, stackTrace) {
+//       debugPrint("Error in payoutBalance: $e\nStackTrace: $stackTrace");
+//       state = state.copyWith(
+//         isLoadingPayoutBalance: false,
+//         payoutResponse: null,
+//         errorMessagePayoutBalance: "Error initiating payout: $e",
+//       );
+//     }
+//   }
 // }
 //
 // final paymentMethodNotifierProvider =
-//     StateNotifierProvider<PaymentMethodNotifier, PaymentMethodState>(
+// StateNotifierProvider<PaymentMethodNotifier, PaymentMethodState>(
 //       (ref) => PaymentMethodNotifier(),
-//     );
+// );

@@ -1,3 +1,4 @@
+import 'package:e_learning_app/src/features/profile/data/models/delete_card_response.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/data/models/account_status_response.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/data/models/balance_response.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/data/models/payout_response.dart';
@@ -10,4 +11,5 @@ abstract class PaymentMethodRepository {
   Future<AccountStatusResponse>getAccountStatus();
   Future<BalanceResponse>checkBalance();
   Future<PayoutResponse>payoutBalance(double amount);
+  Future<DeleteCardResponse>deleteCard(String id);
 }
