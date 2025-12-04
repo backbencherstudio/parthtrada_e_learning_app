@@ -1,4 +1,5 @@
 import 'package:e_learning_app/core/utils/common_widget.dart';
+import 'package:e_learning_app/core/utils/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +17,7 @@ class PaymentConstants {
   static const paymentProcessing = "Processing...";
   static const paymentProceed = "Proceed with Payment";
   static const paymentFailed = "Payment failed. Please try again.";
+  static const paymentSuccessful = "Payment Successful!!!";
 }
 
 Future<void> paymentBottomSheet({
@@ -206,6 +208,7 @@ Future<void> paymentBottomSheet({
                                         await Future.delayed(
                                           const Duration(milliseconds: 200),
                                         );
+                                        showCustomSnackBar(context, PaymentConstants.paymentSuccessful, bgColor: AppColors.primary);
                                         if (bottomSheetContext.mounted) {
                                           await confirmBookingBottomSheet(
                                             context: bottomSheetContext,
@@ -213,23 +216,11 @@ Future<void> paymentBottomSheet({
                                           );
                                         }
                                       } else if (bottomSheetContext.mounted) {
-                                        ScaffoldMessenger.of(
-                                          bottomSheetContext,
-                                        ).showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                              PaymentConstants.paymentFailed,
-                                            ),
-                                          ),
-                                        );
+                                        showCustomSnackBar(context, PaymentConstants.paymentFailed);
                                       }
                                     } catch (e) {
                                       if (bottomSheetContext.mounted) {
-                                        ScaffoldMessenger.of(
-                                          bottomSheetContext,
-                                        ).showSnackBar(
-                                          SnackBar(content: Text("Error: $e")),
-                                        );
+                                        showCustomSnackBar(context, "Error: $e");
                                       }
                                     }
                                   });

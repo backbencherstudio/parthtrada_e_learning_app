@@ -1,4 +1,5 @@
 import 'package:e_learning_app/core/utils/common_widget.dart';
+import 'package:e_learning_app/core/utils/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -111,12 +112,7 @@ Future<void> selectSessionTimeForBook({
                               context: bottomSheetContext,
                               onPressed: () {
                                 if (!hasSelectedDate || !hasSelectedTime) {
-                                  ScaffoldMessenger.of(bottomSheetContext).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Please select both date and time."),
-                                      backgroundColor: Colors.redAccent,
-                                    ),
-                                  );
+                                  showCustomSnackBar(context, "Please select both date and time.", bgColor: AppColors.error);
                                   return;
                                 }
                                 Future.microtask(() async {
