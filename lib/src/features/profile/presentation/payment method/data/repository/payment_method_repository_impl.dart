@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:e_learning_app/src/features/profile/data/models/delete_card_response.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/data/models/account_status_response.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/data/models/balance_response.dart';
 import 'package:e_learning_app/src/features/profile/presentation/payment%20method/data/models/payout_response.dart';
@@ -228,6 +229,36 @@ class PaymentMethodRepositoryImpl implements PaymentMethodRepository {
       throw Exception("Unexpected error occurred while initiating payout");
     }
   }
+
+  @override
+  Future<DeleteCardResponse> deleteCard(String id) async {
+    try {
+      final response = await _apiService.delete(
+        '${ApiEndPoints.deleteCard}/$id',
+      );
+
+      debugPrint("deleteCard response: ${response.data}");
+
+      if (response.data != null) {
+        return DeleteCardResponse.fromJson(response.data);
+      } else {
+        throw Exception("Empty response from server");
+      }
+    } catch (e) {
+      debugPrint("Exception in deleteCard: $e");
+
+      if (e is DioException) {
+        final errorData = e.response?.data;
+        debugPrint("Error Response: $errorData");
+
+        final errorMessage = errorData?['message'] ?? 'Failed to delete card';
+        throw Exception(errorMessage);
+      }
+
+      throw Exception("Unexpected error occurred while deleting card");
+    }
+  }
+
 
 
 }
