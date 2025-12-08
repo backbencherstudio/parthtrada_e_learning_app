@@ -183,6 +183,76 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen> {
               ],
             ),
           ),
+          IconButton(
+            icon: Icon(
+              Icons.delete_outline,
+              color: Colors.white70,
+              size: 24.sp,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text(
+                      'Delete Card',
+                      style: textStyle.titleMedium?.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                    content: Text(
+                      'Are you sure you want to delete this card? This action cannot be undone.',
+                      style: textStyle.bodyMedium?.copyWith(
+                        color: const Color(0xFFA5A5AB),
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(
+                          'Cancel',
+                          style: textStyle.bodyMedium?.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          Navigator.of(context).pop();
+                          try {
+                            await ref.read(paymentMethodNotifierProvider.notifier).deleteCard(card.id);
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Card deleted successfully'),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Failed to delete card: $e'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          }
+                        },
+                        child: Text(
+                          'Delete',
+                          style: textStyle.bodyMedium?.copyWith(
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
         ],
       ),
     );
